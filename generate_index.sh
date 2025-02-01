@@ -8,7 +8,7 @@ cd dists/bookworm
 cat Release | gpg -s --default-key 3B9335DF576D3D58059C6AA50B56A1A69762E9FF -abs > Release.gpg
 cd -
 cd dists/trixie
-#cat Release | gpg -s --default-key 3B9335DF576D3D58059C6AA50B56A1A69762E9FF -abs > Release.gpg
+cat Release | gpg -s --default-key 3B9335DF576D3D58059C6AA50B56A1A69762E9FF -abs > Release.gpg
 cd -
 cd dists/sid
 cat Release | gpg -s --default-key 3B9335DF576D3D58059C6AA50B56A1A69762E9FF -abs > Release.gpg
