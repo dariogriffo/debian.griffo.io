@@ -46,3 +46,9 @@ apt install -y ghostty
 
 - This repo is not open for issues related to the tools provided, please refer to the owners for that.
 
+
+## Important Notice
+
+- 4th of March 2025 - Public key changed, please update with the instruction above.
+
+
