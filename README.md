@@ -11,10 +11,14 @@
 This repository contains _unofficial_ Debian packages (.deb) for
 - [Ghostty](https://ghostty.org)
 - [lazydocker](https://github.com/jesseduffield/lazydocker/)
+- [lazygit](https://github.com/jesseduffield/lazygit/)
 
 Packages are build in the following repos
-[ghostty-build](https://github.com/ghostty-debian/build-pipeline)
-[lazydocker-build](https://github.com/lazydocker-debian/build-pipeline)
+[ghostty-build](https://github.com/dariogriffo/ghostty-debian/)
+[lazydocker-build](https://github.com/dariogriffo/lazydocker-debian/)
+[lazygit-build](https://github.com/dariogriffo/lazygit-debian/)
+
+
 
 Currently supported debian distros are:
 - Bookworm
@@ -34,6 +38,7 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | su
 
 ```sh
 apt install -y lazydocker
+apt install -y lazygit
 apt install -y ghostty
 ```
 
