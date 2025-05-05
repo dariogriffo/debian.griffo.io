@@ -4,7 +4,7 @@ BUILD_VERSION=${2:-1}
 PACKAGE_NAME=yazi
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 ./generate_index.sh
-git add .
-git commit -m "Update yazi to ${PACKAGE_VERSION}"
-git push -u origin main
+#git add .
+#git commit -m "Update yazi to ${PACKAGE_VERSION}"
+#git push -u origin main
 
