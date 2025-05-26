@@ -14,13 +14,20 @@ This repository contains _unofficial_ Debian packages (.deb) for
 - [lazygit](https://github.com/jesseduffield/lazygit/)
 - [lowfi](https://github.com/talwat/lowfi)
 - [yazi](https://github.com/sxyazi/yazi/)
-  
-Packages are build in the following repos
+- [uv](https://github.com/astral-sh/uv/)
+- [fzf](https://github.com/junegunn/fzf/)
+- [zoxide](https://github.com/ajeetdsouza/zoxide/) 
+
+Since Debian has a freeze and slow release policy, while running stable I like to have the below packages updated, and hosted them myself.
+
 [ghostty-build](https://github.com/dariogriffo/ghostty-debian/)
 [lazydocker-build](https://github.com/dariogriffo/lazydocker-debian/)
 [lazygit-build](https://github.com/dariogriffo/lazygit-debian/)
 [lowfi-build](https://github.com/dariogriffo/lowfi-debian/)
 [yazi-build](https://github.com/dariogriffo/yazi-debian/)
+[uv-build](https://github.com/dariogriffo/uv-debian/)
+[fzf-build](https://github.com/dariogriffo/fzf-debian/)
+[zoxide-build](https://github.com/dariogriffo/zoxide-debian/)
 
 
 
