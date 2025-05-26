@@ -53,6 +53,9 @@ apt install -y lazydocker
 apt install -y lazygit
 apt install -y lowfi
 apt install -y ghostty
+apt install -y uv
+apt install -y fzf
+apt install -y zoxide
 ```
 
 ## Disclaimer
