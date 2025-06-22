@@ -17,6 +17,7 @@ This repository contains _unofficial_ Debian packages (.deb) for
 - [uv](https://github.com/astral-sh/uv/)
 - [fzf](https://github.com/junegunn/fzf/)
 - [zoxide](https://github.com/ajeetdsouza/zoxide/) 
+- [termusic](https://github.com/tramhao/termusic/) 
 
 Since Debian has a freeze and slow release policy, while running stable I like to have the below packages updated, and hosted them myself.
 
@@ -28,7 +29,7 @@ Since Debian has a freeze and slow release policy, while running stable I like t
 - [uv-build](https://github.com/dariogriffo/uv-debian/)
 - [fzf-build](https://github.com/dariogriffo/fzf-debian/)
 - [zoxide-build](https://github.com/dariogriffo/zoxide-debian/)
-
+- [termusic-build](https://github.com/dariogriffo/termusic-debian/)
 
 
 Currently supported debian distros are:
