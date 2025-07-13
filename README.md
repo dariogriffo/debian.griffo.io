@@ -9,6 +9,7 @@
 # What is this repo??
 
 This repository contains _unofficial_ Debian packages (.deb) for
+- [Zig](https://ziglang.org/)
 - [Ghostty](https://ghostty.org)
 - [lazydocker](https://github.com/jesseduffield/lazydocker/)
 - [lazygit](https://github.com/jesseduffield/lazygit/)
@@ -18,9 +19,14 @@ This repository contains _unofficial_ Debian packages (.deb) for
 - [fzf](https://github.com/junegunn/fzf/)
 - [zoxide](https://github.com/ajeetdsouza/zoxide/) 
 - [termusic](https://github.com/tramhao/termusic/) 
+- [unregistry](https://github.com/psviderski/unregistry/)
+- [uncloud](https://github.com/psviderski/uncloud/)
+- [docker-pussh](https://github.com/psviderski/unregistry/)
 
 Since Debian has a freeze and slow release policy, while running stable I like to have the below packages updated, and hosted them myself.
 
+- [zig-master-build](https://github.com/dariogriffo/zig-master-debian)
+- [zig-build](https://github.com/dariogriffo/zig-debian)
 - [ghostty-build](https://github.com/dariogriffo/ghostty-debian/)
 - [lazydocker-build](https://github.com/dariogriffo/lazydocker-debian/)
 - [lazygit-build](https://github.com/dariogriffo/lazygit-debian/)
@@ -30,7 +36,9 @@ Since Debian has a freeze and slow release policy, while running stable I like t
 - [fzf-build](https://github.com/dariogriffo/fzf-debian/)
 - [zoxide-build](https://github.com/dariogriffo/zoxide-debian/)
 - [termusic-build](https://github.com/dariogriffo/termusic-debian/)
-
+- [unregistry](https://github.com/dariogriffo/unregistry-debian)
+- [uncloud](https://github.com/dariogriffo/uncloud-debian)
+- [docker-pussh](https://github.com/dariogriffo/unregistry-debian)
 
 Currently supported debian distros are:
 - Bookworm
@@ -49,6 +57,8 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | su
 ## Install packages
 
 ```sh
+apt install -y zig #lastest stable
+apt install -y zig-master #nightly builds
 apt install -y yazi
 apt install -y lazydocker
 apt install -y lazygit
@@ -57,6 +67,9 @@ apt install -y ghostty
 apt install -y uv
 apt install -y fzf
 apt install -y zoxide
+apt install -y uncloud
+apt install -y unregistry
+apt install -y docker-pussh
 ```
 
 ## Disclaimer
