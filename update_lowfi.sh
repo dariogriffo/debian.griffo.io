@@ -5,6 +5,6 @@ PACKAGE_NAME=lowfi
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 ./generate_index.sh
 git add .
-git commit -m "Update lowfi to ${PACKAGE_VERSION}"
+git commit -m "Update lowfi to ${BUILD_VERSION}"
 git push -u origin main
 
