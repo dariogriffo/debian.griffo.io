@@ -8,77 +8,121 @@
 
 # What is this repo??
 
-This repository contains _unofficial_ Debian packages (.deb) for
-- [Zig](https://ziglang.org/)
-- [Ghostty](https://ghostty.org)
-- [lazydocker](https://github.com/jesseduffield/lazydocker/)
-- [lazygit](https://github.com/jesseduffield/lazygit/)
-- [lowfi](https://github.com/talwat/lowfi)
-- [yazi](https://github.com/sxyazi/yazi/)
-- [uv](https://github.com/astral-sh/uv/)
-- [fzf](https://github.com/junegunn/fzf/)
-- [zoxide](https://github.com/ajeetdsouza/zoxide/) 
-- [termusic](https://github.com/tramhao/termusic/) 
-- [unregistry](https://github.com/psviderski/unregistry/)
-- [uncloud](https://github.com/psviderski/uncloud/)
-- [docker-pussh](https://github.com/psviderski/unregistry/)
+This repository contains _unofficial_ Debian packages (.deb) for the **most up-to-date versions** of popular development tools:
 
-Since Debian has a freeze and slow release policy, while running stable I like to have the below packages updated, and hosted them myself.
+- [Zig](https://ziglang.org/) - General-purpose programming language and toolchain
+- [ZLS](https://github.com/zigtools/zls) - Language Server Protocol for Zig
+- [Ghostty](https://ghostty.org) - Fast, feature-rich terminal emulator
+- [lazydocker](https://github.com/jesseduffield/lazydocker/) - Terminal UI for Docker
+- [lazygit](https://github.com/jesseduffield/lazygit/) - Terminal UI for Git
+- [eza](https://github.com/eza-community/eza) - Modern replacement for 'ls' command
+- [lowfi](https://github.com/talwat/lowfi) - Minimalist lofi music player
+- [yazi](https://github.com/sxyazi/yazi/) - Terminal file manager written in Rust
+- [uv](https://github.com/astral-sh/uv/) - Extremely fast Python package manager
+- [fzf](https://github.com/junegunn/fzf/) - Command-line fuzzy finder
+- [zoxide](https://github.com/ajeetdsouza/zoxide/) - Smarter cd command
+- [termusic](https://github.com/tramhao/termusic/) - Terminal music and podcast player
+- [unregistry](https://github.com/psviderski/unregistry/) - Lightweight container registry
+- [uncloud](https://github.com/psviderski/uncloud/) - Container orchestration tool
+- [docker-pussh](https://github.com/psviderski/docker-pussh/) - Push Docker images over SSH
 
-- [zig-master-build](https://github.com/dariogriffo/zig-master-debian)
-- [zig-build](https://github.com/dariogriffo/zig-debian)
-- [ghostty-build](https://github.com/dariogriffo/ghostty-debian/)
-- [lazydocker-build](https://github.com/dariogriffo/lazydocker-debian/)
-- [lazygit-build](https://github.com/dariogriffo/lazygit-debian/)
-- [lowfi-build](https://github.com/dariogriffo/lowfi-debian/)
-- [yazi-build](https://github.com/dariogriffo/yazi-debian/)
-- [uv-build](https://github.com/dariogriffo/uv-debian/)
-- [fzf-build](https://github.com/dariogriffo/fzf-debian/)
-- [zoxide-build](https://github.com/dariogriffo/zoxide-debian/)
-- [termusic-build](https://github.com/dariogriffo/termusic-debian/)
-- [unregistry](https://github.com/dariogriffo/unregistry-debian)
-- [uncloud](https://github.com/dariogriffo/uncloud-debian)
-- [docker-pussh](https://github.com/dariogriffo/unregistry-debian)
+Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
-Currently supported debian distros are:
-- Bookworm
-- Trixie
-- Sid
+## 🔧 Build Pipelines
 
-This is an unofficial community project to provide deb packages for tooling that are not provided officially by Debian
+Each package is built through dedicated GitHub repositories with automated CI/CD:
 
-## Add the repository to your sources.list
+- [zig-debian](https://github.com/dariogriffo/zig-debian) - Zig stable releases
+- [zig-master-debian](https://github.com/dariogriffo/zig-master-debian) - Zig nightly builds
+- [zls-debian](https://github.com/dariogriffo/zls-debian) - ZLS stable releases
+- [zls-master-debian](https://github.com/dariogriffo/zls-master-debian) - ZLS nightly builds
+- [ghostty-debian](https://github.com/dariogriffo/ghostty-debian/) - Ghostty terminal
+- [lazydocker-debian](https://github.com/dariogriffo/lazydocker-debian/) - Docker TUI
+- [lazygit-debian](https://github.com/dariogriffo/lazygit-debian/) - Git TUI
+- [eza-debian](https://github.com/dariogriffo/eza-debian/) - Modern ls replacement
+- [lowfi-debian](https://github.com/dariogriffo/lowfi-debian/) - Lofi music player
+- [yazi-debian](https://github.com/dariogriffo/yazi-debian/) - Terminal file manager
+- [uv-debian](https://github.com/dariogriffo/uv-debian/) - Python package manager
+- [fzf-debian](https://github.com/dariogriffo/fzf-debian/) - Fuzzy finder
+- [zoxide-debian](https://github.com/dariogriffo/zoxide-debian/) - Smart cd command
+- [termusic-debian](https://github.com/dariogriffo/termusic-debian/) - Terminal music player
+- [unregistry-debian](https://github.com/dariogriffo/unregistry-debian) - Container registry
+- [uncloud-debian](https://github.com/dariogriffo/uncloud-debian) - Container orchestration
+- [docker-pussh-debian](https://github.com/dariogriffo/docker-pussh-debian) - Docker over SSH
 
-```sh
+## 🐧 Supported Debian Distributions
+
+- **Bookworm** (Debian 12 - stable)
+- **Trixie** (Debian 13 - testing)
+- **Sid** (unstable)
+
+This is an unofficial community project providing **the most up-to-date versions** of development tools as properly packaged Debian packages, filling the gap between fast-moving upstream releases and Debian's stable packaging cycle.
+
+## 🚀 Quick Setup
+
+### Add the repository to your sources.list
+
+```bash
+# Add repository GPG key
 curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+
+# Add repository to sources
 echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+
+# Update package list
+sudo apt update
 ```
 
-## Install packages
+### Install packages
 
-```sh
-apt install -y zig #lastest stable
-apt install -y zig-master #nightly builds
-apt install -y yazi
-apt install -y lazydocker
-apt install -y lazygit
-apt install -y lowfi
-apt install -y ghostty
-apt install -y uv
-apt install -y fzf
-apt install -y zoxide
-apt install -y uncloud
-apt install -y unregistry
-apt install -y docker-pussh
+```bash
+# Programming Languages & Tools
+sudo apt install -y zig          # Latest stable Zig
+sudo apt install -y zig-master   # Nightly Zig builds
+sudo apt install -y zls          # Zig Language Server (stable)
+sudo apt install -y zls-master   # Zig Language Server (nightly)
+
+# Terminal & File Management
+sudo apt install -y ghostty      # Modern terminal emulator
+sudo apt install -y eza          # Modern ls replacement
+sudo apt install -y yazi         # Terminal file manager
+sudo apt install -y fzf          # Fuzzy finder
+sudo apt install -y zoxide       # Smart cd command
+
+# Development Tools
+sudo apt install -y lazygit      # Git terminal UI
+sudo apt install -y lazydocker   # Docker terminal UI
+sudo apt install -y uv           # Fast Python package manager
+
+# Media & Entertainment
+sudo apt install -y lowfi        # Lofi music player
+sudo apt install -y termusic     # Terminal music player
+
+# Container & Cloud Tools
+sudo apt install -y unregistry   # Container registry
+sudo apt install -y uncloud      # Container orchestration
+sudo apt install -y docker-pussh # Docker over SSH
+
+# Install everything at once
+sudo apt install -y zig ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic
 ```
 
-## Disclaimer
+## ⚠️ Important Information
 
-- This repo is not open for issues related to the tools provided, please refer to the owners for that.
+### Disclaimer
+This repository focuses exclusively on **unofficial Debian packaging**. For issues with the tools themselves, please contact the respective upstream projects. We only handle packaging-related concerns.
 
+### Key Features
+- ✅ **Always up-to-date** - Packages updated automatically when new versions are released
+- ✅ **Multiple distributions** - Support for Bookworm, Trixie, and Sid
+- ✅ **Proper packaging** - Follows Debian packaging standards and dependencies
+- ✅ **Nightly builds** - Available for Zig and ZLS for cutting-edge features
 
-## Important Notice
+### Important Notice
+📅 **March 4th, 2025** - Public key was updated. Please run the setup commands above to update your system with the new GPG key.
 
-- 4th of March 2025 - Public key changed, please update with the instruction above.
+---
+
+**Visit [debian.griffo.io](https://debian.griffo.io) for more information and the latest updates.**
 
 
