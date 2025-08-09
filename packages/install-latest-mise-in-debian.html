@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Latest mise Development Environment Manager on Debian | debian.griffo.io</title>
+    <meta name="description" content="Install the latest mise (v2025.8.7+) on Debian - dev tools, env vars, and task runner written in Rust. Get up-to-date packages with runtime management, environment variables, and task automation from debian.griffo.io.">
+    <meta name="keywords" content="mise debian, install mise debian, asdf alternative, runtime manager, dev tools manager, rust development tools, debian packages, bookworm, trixie, sid, jdx">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/packages/install-latest-mise-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/packages/install-latest-mise-in-debian.html">
+    <meta property="og:title" content="Install Latest mise Development Environment Manager on Debian">
+    <meta property="og:description" content="Get the most up-to-date mise for Debian. The front-end to your dev env with runtime management, environment variables, and task automation.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.png">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .trinity-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🛠️ Install Latest mise on Debian</h1>
+        <p class="subtitle">The front-end to your dev env - dev tools, env vars, task runner</p>
+        <div class="version-badge">Latest Version: 2025.8.7+ (August 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to debian.griffo.io</a>
+        
+        <h2>What is mise?</h2>
+        <p>mise (pronounced "meez") is <strong>the front-end to your dev environment</strong> written in Rust by jdx. It combines the functionality of asdf, direnv, and make into a single, fast tool. With over 18k GitHub stars, it has become the modern choice for managing development environments, providing runtime management, environment variables, and task automation in one unified tool.</p>
+
+        <div class="trinity-box">
+            <strong>🎯 The Holy Trinity of Development:</strong>
+            <ul>
+                <li><strong>Like asdf:</strong> Manages dev tools like node, python, terraform, and hundreds more</li>
+                <li><strong>Like direnv:</strong> Manages environment variables for different project directories</li>
+                <li><strong>Like make:</strong> Manages tasks used to build and test projects</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> mise is rapidly evolving with frequent releases containing new tool support, performance improvements, and enhanced features. The latest versions include better task management, improved environment handling, and support for hundreds of new development tools.
+        </div>
+
+        <h3>⚡ Key Features of mise</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔧 Universal Tool Manager</h4>
+                <p>Manage hundreds of dev tools including Node.js, Python, Go, Terraform, kubectl, and more. Single tool replaces nvm, pyenv, rbenv, and others.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🌍 Environment Management</h4>
+                <p>Per-project environment variables with .env file support. Automatic activation when entering project directories.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⚡ Task Runner</h4>
+                <p>Define and run project tasks with dependencies, parallel execution, and environment integration. Modern alternative to Makefiles.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🚀 Rust Performance</h4>
+                <p>Significantly faster than asdf and other shell-based tools. Efficient caching and parallel operations for better developer experience.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📦 Plugin Ecosystem</h4>
+                <p>Compatible with asdf plugins plus native mise plugins. Extensive registry of tools and easy custom plugin creation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔄 Cross-Platform</h4>
+                <p>Works on Linux, macOS, and Windows. Consistent development environment across all platforms and team members.</p>
+            </div>
+        </div>
+
+        <h3>🆕 What's New in mise 2025.8.7+</h3>
+        <ul>
+            <li><strong>Enhanced Task System:</strong> Improved task dependencies and parallel execution</li>
+            <li><strong>Better Tool Registry:</strong> Expanded tool support and faster installations</li>
+            <li><strong>Performance Improvements:</strong> Faster tool switching and environment activation</li>
+            <li><strong>Enhanced Configuration:</strong> Better TOML configuration and validation</li>
+            <li><strong>Improved Shell Integration:</strong> Better bash, zsh, and fish support</li>
+            <li><strong>Cross-Platform Features:</strong> Enhanced Windows and macOS compatibility</li>
+        </ul>
+
+        <h2>📦 Installation from debian.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+            <div class="code-block">
+# Add GPG key
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+
+# Add repository
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+
+# Update package list
+sudo apt update
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install mise</h3>
+            <div class="code-block">
+# Install latest mise
+sudo apt install mise
+
+# Verify installation
+mise --version
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Set Up Shell Integration</h3>
+            <div class="code-block">
+# For bash users
+echo 'eval "$(mise activate bash)"' >> ~/.bashrc
+
+# For zsh users  
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+
+# For fish users
+echo 'mise activate fish | source' >> ~/.config/fish/config.fish
+
+# Reload shell
+source ~/.bashrc  # or ~/.zshrc
+            </div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+        
+        <p><strong>Tool management:</strong></p>
+        <div class="code-block">
+# Install and use Node.js 22
+mise use --global node@22
+
+# Install Python 3.12 for current project
+mise use python@3.12
+
+# Install multiple tools
+mise use node@22 python@3.12 go@1.23
+
+# List available tools
+mise registry
+        </div>
+
+        <p><strong>Environment variables:</strong></p>
+        <div class="code-block">
+# Set environment variable for project
+mise set DATABASE_URL=postgres://localhost/myapp
+
+# Load .env files automatically
+echo "API_KEY=secret" > .env
+
+# Check current environment
+mise env
+        </div>
+
+        <p><strong>Task management:</strong></p>
+        <div class="code-block">
+# Create mise.toml with tasks
+[tasks.build]
+description = "Build the project"
+run = "npm run build"
+
+[tasks.test]
+description = "Run tests"
+run = "npm test"
+depends = ["build"]
+
+# Run tasks
+mise run build
+mise run test
+        </div>
+
+        <h2>🚀 Why Choose debian.griffo.io?</h2>
+        
+        <div class="trinity-box">
+            <strong>📊 Installation Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> Available but often outdated versions</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation</li>
+                <li><strong>Install Script:</strong> Manual updates and no package management</li>
+                <li><strong>debian.griffo.io:</strong> Latest version (2025.8.7+) with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Tool Support:</strong> Get newest development tool integrations immediately</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built binaries, no toolchain needed</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Complete Package:</strong> Includes shell integrations and completions</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from debian.griffo.io:</p>
+        <ul>
+            <li><a href="/packages/install-latest-uv-in-debian.html">uv Python Manager</a> - Fast Python package management</li>
+            <li><a href="/packages/install-latest-zig-in-debian.html">Zig Programming Language</a> - Modern systems programming</li>
+            <li><a href="/packages/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Enhanced command searching</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers managing multiple language runtimes, teams needing consistent development environments, anyone frustrated with juggling nvm/pyenv/rbenv, and projects requiring unified tool and task management.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest mise Development Environment Manager on Debian",
+    "description": "Complete guide to installing the latest mise development environment manager on Debian using debian.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-01-09",
+    "dateModified": "2025-01-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "mise",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "2025.8.7+",
+        "description": "The front-end to your dev env - dev tools, env vars, and task runner written in Rust"
+    }
+}
+</script>
+</body>
+</html>
