@@ -52,8 +52,9 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 
 ## 🐧 Supported Debian Distributions
 
-- **Bookworm** (Debian 12 - stable)
-- **Trixie** (Debian 13 - testing)
+- **Bookworm** (Debian 12 - oldstable)
+- **Trixie** (Debian 13 - stable)
+- **Forky** (Debian 14 - testing)
 - **Sid** (unstable)
 
 This is an unofficial community project providing **the most up-to-date versions** of development tools as properly packaged Debian packages, filling the gap between fast-moving upstream releases and Debian's stable packaging cycle.
