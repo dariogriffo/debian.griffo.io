@@ -24,7 +24,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [termusic](https://github.com/tramhao/termusic/) - Terminal music and podcast player
 - [unregistry](https://github.com/psviderski/unregistry/) - Lightweight container registry
 - [uncloud](https://github.com/psviderski/uncloud/) - Container orchestration tool
-- [docker-pussh](https://github.com/psviderski/docker-pussh/) - Push Docker images over SSH
+- [docker-pussh](https://github.com/psviderski/unregistry#usage) - Push Docker images over SSH
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
