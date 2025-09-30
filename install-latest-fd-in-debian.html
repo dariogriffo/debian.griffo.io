@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Latest fd Fast Find Alternative on Debian | debian.griffo.io</title>
+    <meta name="description" content="Install the latest fd (v10.2.0+) on Debian - simple, fast, and user-friendly alternative to find written in Rust. Get up-to-date packages with intuitive syntax and blazing performance from debian.griffo.io.">
+    <meta name="keywords" content="fd debian, install fd debian, fast find, rust find, file search, directory search, debian packages, bookworm, trixie, sid, sharkdp">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/packages/install-latest-fd-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/packages/install-latest-fd-in-debian.html">
+    <meta property="og:title" content="Install Latest fd Fast Find Alternative on Debian">
+    <meta property="og:description" content="Get the most up-to-date fd for Debian. Simple, fast, and user-friendly alternative to find with intuitive syntax and Rust performance.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.png">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .comparison-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📁 Install Latest fd on Debian</h1>
+        <p class="subtitle">Simple, fast, and user-friendly alternative to find</p>
+        <div class="version-badge">Latest Version: 10.2.0+ (July 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <h2>What is fd?</h2>
+        <p>fd is a <strong>simple, fast, and user-friendly alternative to find</strong> written in Rust by David Peter (sharkdp). It provides intuitive syntax, smart defaults, and blazing fast performance for file and directory searching. With over 35k GitHub stars, it has become the modern replacement for the traditional find command.</p>
+
+        <div class="comparison-box">
+            <strong>🆚 fd vs find:</strong>
+            <ul>
+                <li><strong>Intuitive syntax:</strong> <code>fd pattern</code> vs <code>find . -name "*pattern*"</code></li>
+                <li><strong>Smart defaults:</strong> Ignores hidden files and .gitignore by default</li>
+                <li><strong>Colored output:</strong> Beautiful, readable results with syntax highlighting</li>
+                <li><strong>Faster performance:</strong> Rust implementation with parallel directory traversal</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> fd is actively developed with frequent releases containing performance improvements, new features, and enhanced compatibility. The latest versions include better regex support, improved performance optimizations, and enhanced integration with other tools.
+        </div>
+
+        <h3>⚡ Key Features of fd</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎯 Intuitive Syntax</h4>
+                <p>Simple command structure that's easy to remember. No complex options needed for common searches - just type what you're looking for.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🚀 Blazing Fast</h4>
+                <p>Rust implementation with parallel directory traversal. Consistently faster than find, especially on large directory structures.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎨 Smart Defaults</h4>
+                <p>Respects .gitignore, skips hidden files, and provides colored output by default. Sensible behavior for modern development workflows.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔍 Regex Support</h4>
+                <p>Full regex pattern support with Unicode handling. Search with complex patterns while maintaining readable syntax.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔧 Flexible Filtering</h4>
+                <p>Filter by file type, size, modification time, and more. Combine filters for precise search results.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔌 Tool Integration</h4>
+                <p>Perfect companion to fzf, ripgrep, and other modern command-line tools. Designed for modern development workflows.</p>
+            </div>
+        </div>
+
+        <h3>🆕 What's New in fd 10.2.0+</h3>
+        <ul>
+            <li><strong>Performance Improvements:</strong> Enhanced parallel directory traversal and faster searches</li>
+            <li><strong>Better Regex Support:</strong> Improved pattern matching and Unicode handling</li>
+            <li><strong>Enhanced Filtering:</strong> More flexible file type and attribute filtering</li>
+            <li><strong>Output Improvements:</strong> Better formatting and color options</li>
+            <li><strong>Integration Features:</strong> Enhanced compatibility with other command-line tools</li>
+            <li><strong>Cross-Platform:</strong> Better Windows, macOS, and Linux compatibility</li>
+        </ul>
+
+        <h2>📦 Installation from debian.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+            <div class="code-block">
+# Add GPG key
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+
+# Add repository
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+
+# Update package list
+sudo apt update
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install fd</h3>
+            <div class="code-block">
+# Install latest fd
+sudo apt install fd-find
+
+# Verify installation
+fd --version
+
+# Create convenient alias
+echo "alias fd='fdfind'" >> ~/.bashrc
+source ~/.bashrc
+            </div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+        
+        <p><strong>Simple file searching:</strong></p>
+        <div class="code-block">
+# Find files by name
+fd config
+
+# Find with extension
+fd -e py
+fd -e js
+
+# Find directories only
+fd -t d cache
+
+# Find files only
+fd -t f README
+        </div>
+
+        <p><strong>Advanced searching:</strong></p>
+        <div class="code-block">
+# Regex patterns
+fd "^test.*\.py$"
+
+# Case insensitive
+fd -i readme
+
+# Include hidden files
+fd -H config
+
+# Search in specific directory
+fd pattern /path/to/search
+
+# Exclude patterns
+fd -E "*.tmp" -E "node_modules"
+        </div>
+
+        <p><strong>Integration examples:</strong></p>
+        <div class="code-block">
+# Use with fzf for interactive file selection
+fd | fzf
+
+# Execute commands on results
+fd -e py -x python {}
+
+# Use as input for other commands
+fd -e md | xargs grep "TODO"
+
+# Set as FZF_DEFAULT_COMMAND for better fzf integration
+export FZF_DEFAULT_COMMAND='fd --type f'
+        </div>
+
+        <h2>🚀 Why Choose debian.griffo.io?</h2>
+        
+        <div class="comparison-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> Available as fd-find but often outdated</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation</li>
+                <li><strong>debian.griffo.io:</strong> Latest version (10.2.0+) with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Performance:</strong> Get newest speed optimizations and search improvements</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built binaries, no toolchain needed</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Complete Package:</strong> Includes shell completions and documentation</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from debian.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep</a> - Fast grep alternative (same author ecosystem)</li>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Perfect companion for interactive selection</li>
+            <li><a href="/install-latest-eza-in-debian.html">eza</a> - Modern ls replacement</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers who need fast file searching, anyone frustrated with complex find syntax, users who appreciate intuitive command-line tools, and teams requiring efficient file discovery workflows.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest fd Fast Find Alternative on Debian",
+    "description": "Complete guide to installing the latest fd file search tool on Debian using debian.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-01-09",
+    "dateModified": "2025-01-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "fd",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "10.2.0+",
+        "description": "Simple, fast, and user-friendly alternative to find written in Rust with intuitive syntax"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
