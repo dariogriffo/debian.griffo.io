@@ -5,7 +5,6 @@ PACKAGE_NAME=eza
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 ./generate_index.sh
 
-git add .
-git commit -m "Update eza to ${BUILD_VERSION}"
-git push -u origin main
+
+
 
