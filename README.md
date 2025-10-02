@@ -25,6 +25,9 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [unregistry](https://github.com/psviderski/unregistry/) - Lightweight container registry
 - [uncloud](https://github.com/psviderski/uncloud/) - Container orchestration tool
 - [docker-pussh](https://github.com/psviderski/docker-pussh/) - Push Docker images over SSH
+- [Ulauncher](https://ulauncher.io/) - Application launcher for Linux
+- [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime
+- [TigerBeetle](https://tigerbeetle.com/) - Distributed financial transactions database
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -49,6 +52,9 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [unregistry-debian](https://github.com/dariogriffo/unregistry-debian) - Container registry
 - [uncloud-debian](https://github.com/dariogriffo/uncloud-debian) - Container orchestration
 - [docker-pussh-debian](https://github.com/dariogriffo/docker-pussh-debian) - Docker over SSH
+- [ulauncher-debian](https://github.com/dariogriffo/ulauncher-debian) - Application launcher
+- [bun-debian](https://github.com/dariogriffo/bun-debian) - JavaScript runtime
+- [tigerbeetle-debian](https://github.com/dariogriffo/tigerbeetle-debian) - Financial database
 
 ## 🐧 Supported Debian Distributions
 
@@ -104,8 +110,17 @@ sudo apt install -y unregistry   # Container registry
 sudo apt install -y uncloud      # Container orchestration
 sudo apt install -y docker-pussh # Docker over SSH
 
+# Application Launchers & Runtimes
+sudo apt install -y ulauncher    # Application launcher
+sudo apt install -y bun          # JavaScript runtime
+sudo apt install -y bun-one      # Bun with single binary
+sudo apt install -y bun-profile  # Bun with profile support
+
+# Databases
+sudo apt install -y tigerbeetle  # Financial transactions database
+
 # Install everything at once
-sudo apt install -y zig ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic
+sudo apt install -y zig ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle
 ```
 
 ## ⚠️ Important Information
