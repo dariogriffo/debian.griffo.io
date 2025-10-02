@@ -218,10 +218,6 @@ Each package page will include:
 12. `packages/install-latest-termusic-in-debian.html` - termusic Terminal Music Player
 13. `packages/install-latest-unregistry-in-debian.html` - unregistry Docker Image Transfer
 14. `packages/install-latest-uncloud-in-debian.html` - uncloud Container Orchestration
-15. `packages/install-latest-ruff-in-debian.html` - Ruff Python Linter & Formatter
-16. `packages/install-latest-mise-in-debian.html` - mise Development Environment Manager
-17. `packages/install-latest-ripgrep-in-debian.html` - ripgrep Fast Search Tool
-18. `packages/install-latest-fd-in-debian.html` - fd Fast Find Alternative
 
 ---
 
