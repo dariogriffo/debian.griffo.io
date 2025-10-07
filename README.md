@@ -1,7 +1,7 @@
 <h1>
    <p align="center">
-     <a href="https://github.com/dariogriffo/"><img src="https://github.com/dariogriffo/debian.griffo.io/blob/main/logo.png" alt="Logo" width="128" style="margin-right: 20px"></a>
-     <a href="https://www.debian.org/"><img src="https://github.com/dariogriffo/debian.griffo.io/blob/main/debian-logo.png" alt="Debian Logo" width="104" style="margin-left: 20px"></a>
+     <a href="https://github.com/dariogriffo/"><img src="https://github.com/dariogriffo/debian.griffo.io/blob/main/logo.webp" alt="Logo" width="128" style="margin-right: 20px"></a>
+     <a href="https://www.debian.org/"><img src="https://github.com/dariogriffo/debian.griffo.io/blob/main/debian-logo.webp" alt="Debian Logo" width="104" style="margin-left: 20px"></a>
      <br>Unoffical Debian packages hosted by me.
    </p>
 </h1>
