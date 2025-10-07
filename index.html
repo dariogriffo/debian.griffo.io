@@ -260,6 +260,52 @@
             border-left: 4px solid #f39c12;
         }
 
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .install-section {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.2em;
@@ -276,6 +322,15 @@
             .supported-distros {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tab-button {
+                padding: 10px 16px;
             }
         }
     </style>
@@ -297,7 +352,79 @@
         <div class="highlight-box">
             <strong>🚀 Always Up-to-Date:</strong> This repository provides the most current versions of popular development tools as Debian packages, updated regularly to ensure you have access to the latest features and security fixes.
         </div>
+    </header>
 
+    <section>
+        <h2>⚡ Quick Installation</h2>
+        <p>Add this repository to your Debian system and start installing the latest versions of your favorite development tools:</p>
+
+        <div class="install-section">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="installation-code">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="installation-code">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-section">
+            <h3>Step 2: Install Packages</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="installation-code">
+# Install your favorite packages
+sudo apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="installation-code">
+# Install your favorite packages
+apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>📅 Important Notice:</strong> Public key was updated on March 4th, 2025. Please run the installation commands above to update your system with the new key.
+        </div>
+
+        <h3>📋 Package Installation Examples</h3>
+        <div class="installation-code">
+# Install specific packages
+sudo apt install zig zls          # Zig language and LSP
+sudo apt install ghostty          # Modern terminal emulator
+sudo apt install lazygit lazydocker  # Git and Docker TUIs
+sudo apt install yazi eza         # File managers and ls replacement
+sudo apt install uv fzf zoxide    # Python manager, fuzzy finder, smart cd
+sudo apt install ulauncher        # Application launcher
+sudo apt install bun             # JavaScript runtime and toolkit
+        </div>
+    </section>
+
+    <header>
+        <h2 style="margin-top: 40px;">📦 Available Packages</h2>
         <div class="packages-grid">
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Zig Programming Language</div>
@@ -454,42 +581,9 @@
             <span class="distro-badge">Debian Sid (unstable)</span>
         </div>
 
-        <p style="text-align: center; margin-top: 20px; font-style: italic;">
+        <p style="vetext-align: center; margin-top: 20px; font-style: italic;">
             This is an unofficial community project providing packages not available in official Debian repositories.
         </p>
-    </section>
-
-    <section>
-        <h2>⚡ Quick Installation</h2>
-        <p>Add this repository to your Debian system and start installing the latest versions of your favorite development tools:</p>
-
-        <div class="installation-code">
-# Add repository GPG key
-curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
-
-# Add repository to sources
-echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
-
-# Update package list and install packages
-sudo apt update
-sudo apt install zig ghostty lazygit yazi eza uv fzf zoxide ruff eza
-        </div>
-
-        <div class="notice-box">
-            <strong>📅 Important Notice:</strong> Public key was updated on March 4th, 2025. Please run the installation commands above to update your system with the new key.
-        </div>
-
-        <h3>📋 Package Installation Examples</h3>
-        <div class="installation-code">
-# Install specific packages
-sudo apt install zig zls          # Zig language and LSP
-sudo apt install ghostty          # Modern terminal emulator
-sudo apt install lazygit lazydocker  # Git and Docker TUIs
-sudo apt install yazi eza         # File managers and ls replacement
-sudo apt install uv fzf zoxide    # Python manager, fuzzy finder, smart cd
-sudo apt install ulauncher        # Application launcher
-sudo apt install bun             # JavaScript runtime and toolkit
-        </div>
     </section>
 
     <section>
@@ -568,6 +662,22 @@ sudo apt install bun             # JavaScript runtime and toolkit
   gtag('js', new Date());
 
   gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-section');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
 </script>
 
 </body>
