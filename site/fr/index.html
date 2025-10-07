@@ -788,6 +788,20 @@ apt installer zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
         document.getElementById(tabId).classList.add('active');
         event.target.classList.add('active');
     }
+
+    function toggleLanguageMenu() {
+        const menu = document.getElementById('languageMenu');
+        menu.classList.toggle('active');
+    }
+
+    // Close language menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.querySelector('.language-dropdown');
+        const menu = document.getElementById('languageMenu');
+        if (dropdown && !dropdown.contains(event.target)) {
+            menu.classList.remove('active');
+        }
+    });
 </script>
 
 </body>
