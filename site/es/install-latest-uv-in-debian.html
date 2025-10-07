@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar la última versión de uv Python Package Manager en Debian | debian.griffo.io</title>
+    <meta name="description" content="Install the latest uv (v0.8.8+) en Debian - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from debian.griffo.io.">
+    <meta name="keywords" content="uv debian, install uv debian, python package manager, fast pip replacement, rust python tools, debian packages, bookworm, trixie, sid, astral-sh">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/es/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-uv-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/es/install-latest-uv-in-debian.html">
+    <meta property="og:title" content="Instalar la última versión de uv Python Package Manager en Debian">
+    <meta property="og:description" content="Obtenga los más actualizados uv Python package manager for Debian. 10-100x faster than pip with comprehensive project management and Python version handling.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .performance-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .benchmark-box {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🐍 Instalar la última versión de uv en Debian</h1>
+        <p class="subtitle">Extremely fast Python package and project manager</p>
+        <div class="version-badge">Latest Version: 0.8.8+ (August 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+        
+        <h2>¿Qué es uv?</h2>
+        <p>uv is an <strong>extremely fast Python package and project manager</strong> written in Rust by Astral (creators of Ruff). It's designed as a single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more, providing <strong>10-100x faster performance</strong> than traditional Python tooling.</p>
+
+        <div class="benchmark-box">
+            <strong>⚡ Performance Benchmarks:</strong>
+            <ul>
+                <li><strong>10-100x faster</strong> than pip for package installation</li>
+                <li><strong>Resolves dependencies</strong> in milliseconds vs seconds</li>
+                <li><strong>Global cache</strong> for disk-space efficient dependency deduplication</li>
+                <li><strong>Parallel downloads</strong> and installations</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> uv is rapidly evolving with frequent releases containing major performance improvements, new features, and enhanced Python ecosystem compatibility. The latest versions include project management features, Python version management, and significant workflow improvements.
+        </div>
+
+        <h3>⚡ Key Features of uv</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Blazing Fast</h4>
+                <p>10-100x faster than pip with Rust-powered performance. Parallel downloads, efficient caching, and optimized dependency resolution.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🗂️ Project Management</h4>
+                <p>Comprehensive project management with universal lockfiles, workspace support, and dependency tracking similar to Poetry.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🐍 Python Version Management</h4>
+                <p>Install and manage multiple Python versions. Download Python versions as needed, switch between them effortlessly.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🛠️ Tool Management</h4>
+                <p>Run and install Python tools with uvx (like pipx). Execute tools in ephemeral environments or install them globally.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📜 Script Support</h4>
+                <p>Run single-file scripts with inline dependency metadata. Automatic environment creation and dependency management.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔩 pip Compatible</h4>
+                <p>Drop-in replacement for pip, pip-tools, and virtualenv with familiar CLI and advanced features like platform-independent resolutions.</p>
+            </div>
+        </div>
+
+        <h3>🆕 Novedades en uv 0.8.8+</h3>
+        <ul>
+            <li><strong>Enhanced Project Management:</strong> Improved workspace support and dependency resolution</li>
+            <li><strong>Python Version Handling:</strong> Better Python installation and version switching</li>
+            <li><strong>Script Improvements:</strong> Enhanced inline dependency metadata support</li>
+            <li><strong>Performance Optimizations:</strong> Even faster package installation and resolution</li>
+            <li><strong>Tool Management:</strong> Improved uvx tool execution and installation</li>
+            <li><strong>Cross-Platform Support:</strong> Better Windows, macOS, and Linux compatibility</li>
+        </ul>
+
+        <h2>📦 Instalación desde debian.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar uv</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest uv
+sudo apt install uv
+
+# Verificar instalación
+uv --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest uv
+apt install uv
+
+# Verificar instalación
+uv --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Ejemplos de uso básico</h3>
+        
+        <p><strong>Project management:</strong></p>
+        <div class="code-block">
+# Create new Python project
+uv init my-project
+cd my-project
+
+# Add dependencies
+uv add requests pandas
+
+# Run project
+uv run python main.py
+
+# Sync dependencies
+uv sync
+        </div>
+
+        <p><strong>Replace pip commands:</strong></p>
+        <div class="code-block">
+# Create virtual environment
+uv venv
+
+# Install packages (much faster than pip)
+uv pip install requests numpy pandas
+
+# Compile requirements
+uv pip compile requirements.in
+
+# Sync requirements
+uv pip sync requirements.txt
+        </div>
+
+        <p><strong>Python version management:</strong></p>
+        <div class="code-block">
+# Install Python versions
+uv python install 3.11 3.12 3.13
+
+# Use specific Python version
+uv python pin 3.12
+
+# Run with specific Python
+uv run --python 3.11 python script.py
+        </div>
+
+        <p><strong>Tool management:</strong></p>
+        <div class="code-block">
+# Run tool in ephemeral environment
+uvx black .
+uvx ruff check
+
+# Install tool globally
+uv tool install black
+uv tool install ruff
+
+# List installed tools
+uv tool list
+        </div>
+
+        <h2>🚀 ¿Por qué elegir debian.griffo.io?</h2>
+        
+        <div class="performance-box">
+            <strong>📊 Installation Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> Often outdated versions missing latest features</li>
+                <li><strong>pip install:</strong> Slower, requires Python already installed</li>
+                <li><strong>Curl installer:</strong> Manual updates, no package management</li>
+                <li><strong>debian.griffo.io:</strong> Latest version (0.8.8+) with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Performance:</strong> Get newest speed improvements and optimizations</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>No Manual Setup:</strong> Pre-built binaries, no Rust compilation needed</li>
+            <li>✅ <strong>Proper Integration:</strong> Correctly packaged with system dependencies</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <div class="benchmark-box">
+            <h4>🏆 Why uv is Revolutionary</h4>
+            <ul>
+                <li><strong>Speed:</strong> Rust implementation provides 10-100x performance improvement</li>
+                <li><strong>Unified Tool:</strong> Replaces multiple Python tools with single binary</li>
+                <li><strong>Modern Features:</strong> Lockfiles, workspaces, and advanced dependency resolution</li>
+                <li><strong>Compatibility:</strong> Drop-in replacement for existing workflows</li>
+                <li><strong>Reliability:</strong> Deterministic builds and reproducible environments</li>
+            </ul>
+        </div>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Debian se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/uv-debian" target="_blank" rel="noopener">🐍 uv-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde debian.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-zig-in-debian.html">Zig Programming Language</a> - Modern systems programming</li>
+            <li><a href="/es/install-latest-ghostty-in-debian.html">Ghostty Terminal</a> - Fast terminal for development</li>
+            <li><a href="/es/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Enhanced command searching</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Python developers who want faster package management, teams needing reproducible environments, anyone frustrated with slow pip operations, and projects requiring modern Python tooling with performance.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar la última versión de uv Python Package Manager en Debian",
+    "description": "Complete guide to installing the latest uv Python package manager en Debian using debian.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "uv",
+        "applicationCategory": "Package Manager",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "0.8.8+",
+        "description": "Administrador de paquetes y proyectos Python extremadamente rápido escrito en Rust, 10-100x faster than pip"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>debian.griffo.io - 现代开发工具的最新 Debian 软件包 | Zig、Ghostty、TigerBeetle、lazygit、yazi 等</title>
+    <meta name="description" content="获取最新的 Debian 软件包，包括 Zig、ZLS、Ghostty 终端、lazygit、lazydocker、yazi 文件管理器、eza、fzf、uv Python 管理器、ulauncher、bun 运行时、TigerBeetle 数据库等热门开发工具。支持 Bookworm、Trixie 和 Sid 的非官方仓库。">
+    <meta name="keywords" content="debian 软件包, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, ulauncher debian, bun debian, tigerbeetle debian, 开发工具, 最新版本, 非官方仓库, bookworm, trixie, sid">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/cn/">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/">
+    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://debian.griffo.io/cn/">
+    <meta property="og:title" content="debian.griffo.io - 开发工具的最新 Debian 软件包">
+    <meta property="og:description" content="提供 Zig、Ghostty、lazygit、yazi、eza、ulauncher、bun、TigerBeetle 等现代开发工具最新 Debian 软件包的非官方仓库。">
+    <meta property="og:image" content="https://debian.griffo.io/logo.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://debian.griffo.io/cn/">
+    <meta property="twitter:title" content="debian.griffo.io - 开发工具的最新 Debian 软件包">
+    <meta property="twitter:description" content="提供 Zig、Ghostty、lazygit、yazi、eza、ulauncher、bun、TigerBeetle 等现代开发工具最新 Debian 软件包的非官方仓库。">
+    <meta property="twitter:image" content="https://debian.griffo.io/logo.webp">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            vertical-align: middle;
+            transition: transform 0.3s ease;
+        }
+
+        header img:hover {
+            transform: scale(1.05);
+        }
+
+        header h1 {
+            margin: 20px 0 10px 0;
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .package-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .package-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .package-emoji {
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        .package-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .package-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .package-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            font-size: 2.2em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        section h3 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        section ul li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        section ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .installation-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .supported-distros {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .distro-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .language-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .language-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-button:hover {
+            background: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .language-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+        .language-menu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .language-option .flag {
+            font-size: 1.5em;
+        }
+
+        .language-option .lang-name {
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .notice-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .install-section {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .supported-distros {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tab-button {
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="language-selector">
+    <div class="language-dropdown">
+        <button class="language-button" onclick="toggleLanguageMenu()" aria-label="Select Language">
+            <span class="flag">🌐</span>
+            <span>中文</span>
+        </button>
+        <div class="language-menu" id="languageMenu">
+            <a href="/" class="language-option">
+                <span class="flag">🇬🇧</span>
+                <span class="lang-name">English</span>
+            </a>
+            <a href="/cn/" class="language-option">
+                <span class="flag">🇨🇳</span>
+                <span class="lang-name">中文</span>
+            </a>
+            <a href="/de/" class="language-option">
+                <span class="flag">🇩🇪</span>
+                <span class="lang-name">Deutsch</span>
+            </a>
+            <a href="/es/" class="language-option">
+                <span class="flag">🇪🇸</span>
+                <span class="lang-name">Español</span>
+            </a>
+            <a href="/fr/" class="language-option">
+                <span class="flag">🇫🇷</span>
+                <span class="lang-name">Français</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <div>
+            <a href="https://github.com/dariogriffo/" title="Dario Griffo 的 GitHub 主页" aria-label="访问 Dario Griffo 的 GitHub">
+                <img src="/logo.webp" alt="Dario Griffo Logo" width="128" style="margin-right: 20px">
+            </a>
+            <a href="https://www.debian.org/" title="Debian 官方网站" aria-label="访问 Debian 官方网站">
+                <img src="/debian-logo.webp" alt="Debian Logo" width="104" style="margin-left: 20px">
+            </a>
+        </div>
+        <h1>debian.griffo.io</h1>
+        <p class="subtitle">最新开发工具的非官方仓库</p>
+
+        <div class="highlight-box">
+            <strong>🚀 始终保持最新：</strong>本仓库提供最新版本的热门开发工具 Debian 软件包，定期更新以确保您能够使用最新功能和安全修复。
+        </div>
+    </header>
+
+    <section>
+        <h2>⚡ 快速安装</h2>
+        <p>将此仓库添加到您的 Debian 系统，开始安装您喜爱的开发工具的最新版本：</p>
+
+        <div class="install-section">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="installation-code">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="installation-code">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-section">
+            <h3>步骤 2：安装软件包</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="installation-code">
+sudo apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="installation-code">
+apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>📅 重要通知：</strong>公钥已于 2025 年 3 月 4 日更新。请运行上述安装命令以使用新密钥更新您的系统。
+        </div>
+
+        <h3>📋 软件包安装示例</h3>
+        <div class="installation-code">
+# 安装特定软件包
+sudo apt install zig zls          # Zig 语言和 LSP
+sudo apt install ghostty          # 现代终端模拟器
+sudo apt install lazygit lazydocker  # Git 和 Docker TUI
+sudo apt install yazi eza         # 文件管理器和 ls 替代品
+sudo apt install uv fzf zoxide    # Python 管理器、模糊查找器、智能 cd
+sudo apt install ulauncher        # 应用启动器
+sudo apt install bun             # JavaScript 运行时和工具包
+        </div>
+    </section>
+
+    <header>
+        <h2 style="margin-top: 40px;">📦 可用软件包</h2>
+        <div class="packages-grid">
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>Zig 编程语言</div>
+                <div class="package-description">通用编程语言和工具链，用于维护健壮、优化和可重用的软件。提供稳定版和每夜构建版。</div>
+                <a href="/cn/install-latest-zig-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>ZLS 语言服务器</div>
+                <div class="package-description">Zig 的语言服务器协议实现，提供自动完成、跳转到定义和错误检查等 IDE 功能。提供稳定版和每夜构建版。</div>
+                <a href="/cn/install-latest-zls-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">👻</span>Ghostty 终端</div>
+                <div class="package-description">快速、功能丰富的跨平台终端模拟器，具有平台原生 UI 和 GPU 加速，性能卓越。</div>
+                <a href="/cn/install-latest-ghostty-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐋</span>lazydocker</div>
+                <div class="package-description">简单的 Docker 和 docker-compose 管理终端 UI，用 Go 编写，具有直观的容器操作界面。</div>
+                <a href="/cn/install-latest-lazydocker-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐢</span>lazygit</div>
+                <div class="package-description">简单的 git 命令终端 UI，使版本控制操作更加可视化和用户友好。</div>
+                <a href="/cn/install-latest-lazygit-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📁</span>eza</div>
+                <div class="package-description">'ls' 命令的现代替代品，具有改进的功能、更好的颜色和增强的文件列表功能。</div>
+                <a href="/cn/install-latest-eza-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🎼</span>lowfi</div>
+                <div class="package-description">用于播放 lofi 音乐的极简 Rust 应用程序 - 没有专辑、没有广告，只有纯粹的 lofi 背景音乐用于编程。</div>
+                <a href="/cn/install-latest-lowfi-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🦆</span>Yazi 文件管理器</div>
+                <div class="package-description">用 Rust 编写的终端文件管理器，具有非阻塞异步 I/O，提供高效且可定制的文件管理。</div>
+                <a href="/cn/install-latest-yazi-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐍</span>uv Python 管理器</div>
+                <div class="package-description">用 Rust 编写的极快 Python 包和项目管理器，为 Python 开发工作流程提供卓越性能。</div>
+                <a href="/cn/install-latest-uv-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🔍</span>fzf 模糊查找器</div>
+                <div class="package-description">用 Go 编写的命令行模糊查找器，实现快速直观的文件和命令搜索。</div>
+                <a href="/cn/install-latest-fzf-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📂</span>zoxide</div>
+                <div class="package-description">更智能的终端 cd 命令，学习您的习惯以帮助您更高效地导航目录。</div>
+                <a href="/cn/install-latest-zoxide-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🎵</span>termusic</div>
+                <div class="package-description">基于终端的音乐和播客播放器，既自由又免费。</div>
+                <a href="/cn/install-latest-termusic-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📠</span>unregistry</div>
+                <div class="package-description">轻量级容器镜像仓库，直接从 Docker 守护进程的存储中存储和提供镜像。</div>
+                <a href="/cn/install-latest-unregistry-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📡</span>docker-pussh</div>
+                <div class="package-description">通过 SSH 将 Docker 镜像推送到远程服务器，仅传输缺失的层以实现快速高效的部署。</div>
+                <a href="/cn/install-latest-unregistry-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🌬️</span>uncloud</div>
+                <div class="package-description">轻量级集群和容器编排工具，用于在云虚拟机和裸机上部署 Web 应用，开销最小。</div>
+                <a href="/cn/install-latest-uncloud-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🚀</span>Ulauncher</div>
+                <div class="package-description">Linux 应用启动器，具有可扩展的插件系统、模糊搜索和可自定义主题，提高生产力。</div>
+                <a href="/cn/install-latest-ulauncher-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🥟</span>Bun 运行时</div>
+                <div class="package-description">快速的一体化 JavaScript 运行时，内置打包器、测试运行器和包管理器，从头开始构建以追求速度和性能。</div>
+                <a href="/cn/install-latest-bun-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐯</span>TigerBeetle</div>
+                <div class="package-description">分布式金融交易数据库，专为关键任务安全性和 1000 倍更快的 OLTP 性能而设计，具有严格的可串行化。</div>
+                <a href="/cn/install-latest-tigerbeetle-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <h2>🚀 为什么选择 debian.griffo.io？</h2>
+        <p>这个非官方仓库专门提供<strong>最新版本</strong>的热门开发工具，作为正确打包的 Debian 软件包。虽然官方 Debian 仓库通常落后于上游发布，但我们确保您获得：</p>
+
+        <ul style="font-size: 1.1em; margin: 20px 0;">
+            <li><strong>最新稳定版本</strong> - 上游发布后数小时内更新</li>
+            <li><strong>每夜构建</strong> - 用于尖端功能（Zig、ZLS）</li>
+            <li><strong>正确的 Debian 打包</strong> - 具有正确的依赖关系</li>
+            <li><strong>多发行版支持</strong> - Bookworm、Trixie、Forky、Sid</li>
+            <li><strong>自动更新</strong> - 确保持续可用性</li>
+            <li><strong>社区驱动</strong> - 开源且透明</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🐧 支持的 Debian 发行版</h2>
+        <div class="supported-distros">
+            <span class="distro-badge">Debian Bookworm（旧稳定版）</span>
+            <span class="distro-badge">Debian Trixie（稳定版）</span>
+            <span class="distro-badge">Debian Forky（测试版）</span>
+            <span class="distro-badge">Debian Sid（不稳定版）</span>
+        </div>
+
+        <p style="text-align: center; margin-top: 20px; font-style: italic;">
+            这是一个非官方社区项目，提供官方 Debian 仓库中不可用的软件包。
+        </p>
+    </section>
+
+    <section>
+        <h2>⚠️ 重要信息</h2>
+        <p><strong>范围：</strong>本仓库专注于<em>非官方 Debian 打包</em>。有关工具本身的问题，请联系相应的上游项目。</p>
+
+        <p><strong>更新：</strong>当上游发布新版本时，软件包会自动更新，确保您始终可以访问最新功能和安全补丁。</p>
+
+        <p><strong>社区：</strong>这是一个社区驱动的项目，旨在弥合快速发展的开发工具和 Debian 稳定打包周期之间的差距。</p>
+    </section>
+
+    <section style="text-align: center; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; margin-top: 30px;">
+        <h2 style="color: white; margin-bottom: 20px;">💝 支持此项目</h2>
+        <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1em; margin-bottom: 25px;">
+            如果这个仓库为您节省了时间和精力，请考虑支持它！
+        </p>
+
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+            <a href="https://github.com/dariogriffo/debian.griffo.io"
+               style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+               onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                ⭐ 在 GitHub 上加星
+            </a>
+
+            <a href="https://github.com/sponsors/dariogriffo"
+               style="display: inline-flex; align-items: center; gap: 8px; background: #ea4aaa; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(234,74,170,0.3);"
+               onmouseover="this.style.background='#ff5ec0'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='#ea4aaa'; this.style.transform='translateY(0)'">
+                💖 成为赞助者
+            </a>
+        </div>
+
+        <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95em;">
+            🔗 <strong>源代码：</strong> <a href="https://github.com/dariogriffo/debian.griffo.io" style="color: rgba(255, 255, 255, 0.9); text-decoration: underline;">查看仓库源代码</a>
+        </p>
+    </section>
+
+    <section>
+        <h2>🔧 构建仓库</h2>
+        <p>每个软件包都通过专用的 GitHub 仓库和自动化 CI/CD 构建：</p>
+        <div style="column-count: 2; column-gap: 20px; margin-top: 20px;">
+            <a href="https://github.com/dariogriffo/zig-debian" title="Zig - 最新 Debian 软件包">🇿 zig-debian</a><br>
+            <a href="https://github.com/dariogriffo/zig-master-debian" title="Zig Master - 每夜构建">🇿 zig-master-debian</a><br>
+            <a href="https://github.com/dariogriffo/zls-debian" title="ZLS - 最新 Debian 软件包">🇿 zls-debian</a><br>
+            <a href="https://github.com/dariogriffo/zls-master-debian" title="ZLS Master - 每夜构建">🇿 zls-master-debian</a><br>
+            <a href="https://github.com/dariogriffo/ghostty-debian" title="Ghostty - 最新 Debian 软件包">👻 ghostty-debian</a><br>
+            <a href="https://github.com/dariogriffo/lazygit-debian" title="lazygit - 最新 Debian 软件包">🐢 lazygit-debian</a><br>
+            <a href="https://github.com/dariogriffo/lazydocker-debian" title="lazydocker - 最新 Debian 软件包">🐋 lazydocker-debian</a><br>
+            <a href="https://github.com/dariogriffo/eza-debian" title="eza - 最新 Debian 软件包">📁 eza-debian</a><br>
+            <a href="https://github.com/dariogriffo/yazi-debian" title="yazi - 最新 Debian 软件包">🦆 yazi-debian</a><br>
+            <a href="https://github.com/dariogriffo/uv-debian" title="uv - 最新 Debian 软件包">🐍 uv-debian</a><br>
+            <a href="https://github.com/dariogriffo/fzf-debian" title="fzf - 最新 Debian 软件包">🔍 fzf-debian</a><br>
+            <a href="https://github.com/dariogriffo/zoxide-debian" title="zoxide - 最新 Debian 软件包">📂 zoxide-debian</a><br>
+            <a href="https://github.com/dariogriffo/lowfi-debian" title="lowfi - 最新 Debian 软件包">🎼 lowfi-debian</a><br>
+            <a href="https://github.com/dariogriffo/termusic-debian" title="termusic - 最新 Debian 软件包">🎵 termusic-debian</a><br>
+            <a href="https://github.com/dariogriffo/unregistry-debian" title="unregistry - 最新 Debian 软件包">📠 unregistry-debian</a><br>
+            <a href="https://github.com/dariogriffo/uncloud-debian" title="uncloud - 最新 Debian 软件包">🌬️ uncloud-debian</a><br>
+            <a href="https://github.com/dariogriffo/bun-debian" title="bun - 最新 Debian 软件包">🥟 bun-debian</a><br>
+            <a href="https://github.com/dariogriffo/ulauncher-debian" title="Ulauncher - 最新 Debian 软件包">🚀 ulauncher-debian</a><br>
+            <a href="https://github.com/dariogriffo/tigerbeetle-debian" title="TigerBeetle - 最新 Debian 软件包">🐯 tigerbeetle-debian</a><br>
+        </div>
+    </section>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo" style="color: rgba(255,255,255,0.8);">GitHub</a></p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "debian.griffo.io - 最新 Debian 软件包仓库",
+    "description": "提供 Zig、Ghostty、lazygit、yazi 等现代开发工具最新版本的非官方 Debian 软件包仓库",
+    "url": "https://debian.griffo.io/cn/",
+    "inLanguage": "zh-CN",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "keywords": "debian 软件包, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, ulauncher debian, bun debian, tigerbeetle debian, 开发工具, 最新版本, 非官方仓库",
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "debian.griffo.io 仓库",
+        "applicationCategory": "软件包仓库",
+        "operatingSystem": "Debian Linux",
+        "description": "提供最新版本开发工具的非官方仓库，作为 Debian 软件包",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-section');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
+
+
