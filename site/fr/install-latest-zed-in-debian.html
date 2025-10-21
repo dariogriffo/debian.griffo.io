@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Installer la dernière version de lazygit Terminal UI for Git sur Debian | debian.griffo.io</title>
-    <meta name="description" content="Installez le dernier lazygit (v0.54.1+) sur Debian - a interface utilisateur de terminal simple pour les commandes git. Get up-to-date packages with interactive rebasing, staging, and Git workflow improvements from debian.griffo.io.">
-    <meta name="keywords" content="lazygit debian, installer lazygit debian, git terminal UI, git TUI, interactive git, paquets debian, bookworm, trixie, sid, jesse duffield">
+    <title>Installer la dernière version de l'éditeur de code Zed sur Debian | debian.griffo.io</title>
+    <meta name="description" content="Installez le dernier éditeur de code Zed sur Debian Bookworm, Trixie et Sid. Obtenez l'éditeur de code haute performance et multijoueur des créateurs d'Atom et Tree-sitter avec les dernières fonctionnalités depuis debian.griffo.io.">
+    <meta name="keywords" content="zed debian, installer zed debian, éditeur zed, éditeur de code zed, éditeur multijoueur, paquets debian, bookworm, trixie, sid">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/fr/install-latest-lazygit-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-lazygit-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-lazygit-in-debian.html">
-    
+    <link rel="canonical" href="https://debian.griffo.io/fr/install-latest-zed-in-debian.html">
+
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/fr/install-latest-lazygit-in-debian.html">
-    <meta property="og:title" content="Installer la dernière version de lazygit Terminal UI for Git sur Debian">
-    <meta property="og:description" content="Obtenez les plus récents lazygit paquets pour Debian. Simple terminal UI for git commands with interactive features and workflow improvements.">
+    <meta property="og:url" content="https://debian.griffo.io/fr/install-latest-zed-in-debian.html">
+    <meta property="og:title" content="Installer la dernière version de l'éditeur de code Zed sur Debian">
+    <meta property="og:description" content="Obtenez les paquets les plus récents de l'éditeur de code Zed pour Debian. Édition haute performance et multijoueur avec intégration IA.">
     <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
 
     <style>
@@ -116,7 +114,7 @@
             white-space: pre-wrap;
         }
         
-        .installer-steps {
+        .install-steps {
             background: #e8f5e8;
             border: 1px solid #4caf50;
             padding: 20px;
@@ -124,13 +122,26 @@
             margin: 20px 0;
         }
         
-        .pain-point-box {
-            background: #ffe6e6;
-            border: 1px solid #ff6b6b;
-            padding: 20px;
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
             border-radius: 10px;
             margin: 20px 0;
-            border-left: 4px solid #ff6b6b;
+            border-left: 4px solid #f39c12;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
         }
         
         .back-link {
@@ -148,24 +159,14 @@
             background: #764ba2;
             text-decoration: none;
         }
-        
-        h2 {
-            color: #333;
-            font-size: 2em;
-            margin-top: 0;
-        }
-        
-        h3 {
-            color: #667eea;
-            font-size: 1.4em;
-            margin: 25px 0 15px 0;
-        }        .tabs {
+
+        .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             border-bottom: 2px solid #e2e8f0;
         }
-        
+
         .tab-button {
             background: transparent;
             border: none;
@@ -178,27 +179,25 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-        
+
         .tab-button:hover {
             color: #667eea;
             background: rgba(102, 126, 234, 0.05);
         }
-        
+
         .tab-button.active {
             color: #667eea;
             border-bottom-color: #667eea;
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
 
-        
         @media (max-width: 768px) {
             .header h1 { font-size: 2.2em; }
             .feature-grid { grid-template-columns: 1fr; }
@@ -211,73 +210,64 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🐢 Installer la dernière version de lazygit sur Debian</h1>
-        <p class="subtitle">Simple terminal UI for git commands</p>
-        <div class="version-badge">Latest Version: 0.54.1+ (August 2025)</div>
+        <h1>⚡ Installer la dernière version de Zed sur Debian</h1>
+        <p class="subtitle">Obtenez l'éditeur de code haute performance et multijoueur</p>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://www.buymeacoffee.com/dariogriffo">
+                <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dariogriffo&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" />
+            </a>
+        </div>
     </div>
 
     <div class="content">
         <a href="/fr/" class="back-link">← Retour à l'accueil</a>
-        
-        <h2>Qu\'est-ce que lazygit ?</h2>
-        <p>lazygit is a <strong>interface utilisateur de terminal simple pour les commandes git</strong> created by Jesse Duffield. It transforms complex Git operations into intuitive visual interactions, making version control accessible and efficient for developers of all skill levels. With over 63k GitHub stars, it's become the go-to Git TUI for developers worldwide.</p>
 
-        <div class="pain-point-box">
-            <strong>😤 Git Pain Points Solved:</strong> Tired of editing TODO files for interactive rebasing? Frustrated with arcane patch files for staging? Fed up with complex command-line Git workflows? lazygit makes Git operations visual, intuitive, and actually enjoyable to use.
-        </div>
+        <h2>Qu'est-ce que Zed ?</h2>
+        <p>Zed est un <strong>éditeur de code de nouvelle génération</strong> conçu pour une collaboration haute performance avec les humains et l'IA. Créé par les développeurs d'<strong>Atom</strong> et de <strong>Tree-sitter</strong>, Zed est écrit de zéro en Rust pour exploiter efficacement plusieurs cœurs de processeur et votre GPU, offrant une expérience d'édition incroyablement rapide et réactive.</p>
 
         <div class="highlight-box">
-            <strong>🚀 Pourquoi les dernières versions sont importantes :</strong> lazygit is actively developed with frequent releases containing new features, performance improvements, and workflow enhancements. The dernière versions include improved interactive rebasing, better conflict resolution, enhanced custom commands, and critical bug fixes.
+            <strong>🚀 Pourquoi les dernières versions sont importantes :</strong> Zed évolue rapidement avec de nouvelles fonctionnalités comme le support de débogage natif, l'édition agentique, l'intégration Git et des améliorations de performance à chaque version. Restez à jour pour obtenir la meilleure expérience d'édition.
         </div>
 
-        <h3>⚡ Key Features of lazygit</h3>
+        <h3>🔥 Fonctionnalités principales de Zed</h3>
         <div class="feature-grid">
             <div class="feature-card">
-                <h4>📝 Visual Staging</h4>
-                <p>Stage individual lines or hunks with simple keystrokes. No more complex patch editing - just press space to stage what you want.</p>
+                <h4>⚡ Extrêmement rapide</h4>
+                <p>Écrit de zéro en Rust pour exploiter efficacement plusieurs cœurs de processeur et votre GPU. Profitez d'un démarrage instantané et d'un défilement fluide à 120fps.</p>
             </div>
-            
+
             <div class="feature-card">
-                <h4>🔄 Interactive Rebasing</h4>
-                <p>Squash, fixup, drop, edit, and reorder commits with intuitive keyboard shortcuts. No TODO file editing required.</p>
+                <h4>🤝 Édition multijoueur</h4>
+                <p>Collaboration en temps réel intégrée. Discutez avec vos coéquipiers, écrivez des notes ensemble et partagez votre écran et votre projet de manière transparente.</p>
             </div>
-            
+
             <div class="feature-card">
-                <h4>🍒 Cherry-picking</h4>
-                <p>Copy and paste commits between branches with shift+c and shift+v. Visual commit selection and application.</p>
+                <h4>🤖 Intégration IA</h4>
+                <p>Intégrez des LLM dans votre flux de travail avec l'édition agentique, l'assistant en ligne et la prédiction d'édition alimentée par le modèle Zeta.</p>
             </div>
-            
+
             <div class="feature-card">
-                <h4>🔍 Git Bisect</h4>
-                <p>Visual git bisect interface to find problematic commits quickly. Mark commits as good/bad with simple keystrokes.</p>
+                <h4>🐛 Débogage natif</h4>
+                <p>Construit sur le protocole d'adaptateur de débogage (DAP) avec support natif pour le débogage dans plusieurs langages de programmation.</p>
             </div>
-            
+
             <div class="feature-card">
-                <h4>🌳 Worktrees</h4>
-                <p>Create and manage Git worktrees to work on multiple branches simultaneously without stashing or WIP commits.</p>
+                <h4>🔧 Compatible Vim</h4>
+                <p>Édition modale de première classe via les raccourcis Vim, incluant des fonctionnalités comme les objets texte, les marques et tous vos mouvements préférés.</p>
             </div>
-            
+
             <div class="feature-card">
-                <h4>⚙️ Custom Commands</h4>
-                <p>Extensible custom command system to add your own Git workflows and shortcuts directly into the interface.</p>
+                <h4>🌐 Développement à distance</h4>
+                <p>Votre machine exécute uniquement l'interface Zed, tandis que le code réel s'exécute sur un serveur distant pour un développement cloud puissant.</p>
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans lazygit 0.54.1+</h3>
-        <ul>
-            <li><strong>Enhanced Rebase Magic:</strong> Custom patches for advanced commit manipulation</li>
-            <li><strong>Improved Conflict Resolution:</strong> Better merge conflict handling and visualization</li>
-            <li><strong>Undo/Redo System:</strong> Press 'z' to undo and 'ctrl+z' to redo Git operations</li>
-            <li><strong>Commit Graph Visualization:</strong> Visual commit history with author colors and relationships</li>
-            <li><strong>Diff Mode:</strong> Compare any two commits, branches, or refs visually</li>
-            <li><strong>Filter Views:</strong> Press '/' to filter branches, commits, and files</li>
-        </ul>
-
         <h2>📦 Installation depuis debian.griffo.io</h2>
-        
-        <div class="installer-steps">
+
+        <div class="install-steps">
             <h3>Étape 1 : Ajouter le dépôt</h3>
-            
+
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installer avec sudo</button>
                 <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installer avec root</button>
@@ -300,9 +290,9 @@ apt update
             </div>
         </div>
 
-        <div class="installer-steps">
-            <h3>Étape 2 : Installer lazygit</h3>
-            
+        <div class="install-steps">
+            <h3>Étape 2 : Installer Zed</h3>
+
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installer avec sudo</button>
                 <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installer avec root</button>
@@ -310,117 +300,92 @@ apt update
 
             <div id="sudo-tab-2" class="tab-content active">
                 <div class="code-block">
-# Install latest lazygit
-sudo apt installer lazygit
-
-# Vérifier l'installeration
-lazygit --version
+sudo apt install zed
                 </div>
             </div>
 
             <div id="root-tab-2" class="tab-content">
                 <div class="code-block">
-# Install latest lazygit
-apt installer lazygit
-
-# Vérifier l'installeration
-lazygit --version
+apt install zed
                 </div>
             </div>
         </div>
 
-        <h3>🎯 Exemples d'utilisation de base</h3>
-        
-        <p><strong>Launch lazygit:</strong></p>
+        <h3>🎯 Premiers pas avec Zed</h3>
+
+        <p><strong>Lancer Zed :</strong></p>
         <div class="code-block">
-# Start lazygit in current Git repository
-lazygit
+# Lancer depuis le terminal
+zed
 
-# Create alias for convenience
-echo "alias lg='lazygit'" >> ~/.bashrc
-source ~/.bashrc
+# Ouvrir un fichier spécifique
+zed myfile.rs
 
-# Now use the alias
-lg
+# Ouvrir un répertoire
+zed /chemin/vers/projet
+
+# Ouvrir depuis la ligne de commande et installer CLI
+zed --install-cli
         </div>
 
-        <p><strong>Essential keybindings:</strong></p>
+        <p><strong>Raccourcis clavier de base :</strong></p>
         <div class="code-block">
-# Navigation
-j/k or ↑/↓    - Move up/down
-h/l or ←/→    - Switch between panels
-tab           - Next panel
-shift+tab     - Previous panel
+# Palette de commandes
+Ctrl+Shift+P (ou Cmd+Shift+P sur macOS)
 
-# Staging
-space         - Stage/unstage file or hunk
-a             - Stage all changes in file
-v             - Start visual selection
+# Recherche rapide de fichiers
+Ctrl+P (ou Cmd+P sur macOS)
 
-# Commits
-c             - Commit staged changes
-shift+c       - Copy commit (cherry-pick)
-shift+v       - Paste commit
+# Recherche dans tout le projet
+Ctrl+Shift+F (ou Cmd+Shift+F sur macOS)
 
-# Rebasing
-i             - Start interactive rebase
-s             - Squash commit
-f             - Fixup commit
-d             - Drop commit
+# Basculer le terminal
+Ctrl+` (ou Cmd+` sur macOS)
+
+# Édition multi-curseur
+Alt+Clic (ou Option+Clic sur macOS)
         </div>
 
-        <p><strong>Advanced workflows:</strong></p>
+        <p><strong>Activer le mode Vim :</strong></p>
         <div class="code-block">
-# Undo/Redo
-z             - Undo last action
-ctrl+z        - Redo last undone action
-
-# Worktrees
-w             - Create worktree from branch
-
-# Filtering
-/             - Filter current view
-
-# Custom commands
-:             - Open custom command prompt
+# Ouvrir les paramètres avec Ctrl+, (ou Cmd+, sur macOS)
+# Ajouter à votre settings.json :
+{
+    "vim_mode": true
+}
         </div>
 
         <h2>🚀 Pourquoi choisir debian.griffo.io ?</h2>
-        
-        <div class="pain-point-box">
-            <strong>📊 Version Comparison:</strong>
-            <ul>
-                <li><strong>Official Debian Trixie/Sid:</strong> Available but often outdated</li>
-                <li><strong>Debian Bookworm:</strong> Not available in official repositories</li>
-                <li><strong>debian.griffo.io:</strong> Latest version (0.54.1+) available immediately</li>
-            </ul>
+
+        <div class="warning-box">
+            <strong>⚠️ Retard de Debian officiel :</strong> Les dépôts Debian officiels n'incluent souvent pas Zed ou contiennent des versions obsolètes, manquant de fonctionnalités critiques, d'améliorations de performance et des dernières capacités IA.
         </div>
 
         <ul>
-            <li>✅ <strong>Latest Features:</strong> Get newest lazygit features and workflow improvements</li>
-            <li>✅ <strong>All Distributions:</strong> Works on Bookworm, Trixie, and Sid</li>
-            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
-            <li>✅ <strong>No Manual Compilation:</strong> Pre-built Go binaries, no toolchain needed</li>
-            <li>✅ <strong>Proper Dependencies:</strong> Correctly packaged with Git and terminal dependencies</li>
-            <li>✅ <strong>Easy Maintenance:</strong> Simple apt commands for updates</li>
+            <li>✅ <strong>Toujours à jour :</strong> Obtenez les dernières versions de Zed immédiatement, pas des mois plus tard</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> Paquets mis à jour dans les heures suivant les versions en amont</li>
+            <li>✅ <strong>Dépendances correctes :</strong> Correctement empaqueté avec toutes les dépendances requises</li>
+            <li>✅ <strong>Multi-distribution :</strong> Fonctionne sur Bookworm, Trixie et Sid</li>
+            <li>✅ <strong>Sans tracas :</strong> Aucune compilation manuelle ou configuration complexe requise</li>
+            <li>✅ <strong>Multi-architecture :</strong> Disponible pour amd64 et arm64</li>
         </ul>
 
         <h3>📦 Dépôt de construction de paquets</h3>
         <p>Les paquets Debian sont automatiquement construits et maintenus dans ce dépôt GitHub :</p>
         <ul>
-            <li><a href="https://github.com/dariogriffo/lazygit-debian" target="_blank" rel="noopener">🐢 lazygit-debian</a> - Latest release builds</li>
+            <li><a href="https://github.com/dariogriffo/zed-debian" target="_blank" rel="noopener">⚡ zed-debian</a> - Dernières versions</li>
         </ul>
 
         <h3>🔗 Paquets associés</h3>
-        <p>Également disponible depuis debian.griffo.io :</p>
+        <p>Également disponibles depuis debian.griffo.io :</p>
         <ul>
-            <li><a href="/fr/install-latest-lazydocker-in-debian.html">lazydocker</a> - Terminal UI for Docker (same author)</li>
-            <li><a href="/fr/installer-latest-ghostty-in-debian.html">Ghostty Terminal</a> - Modern terminal emulator</li>
-            <li><a href="/fr/installer-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Enhanced command searching</li>
+            <li><a href="/fr/install-latest-zig-in-debian.html">Langage de programmation Zig</a> - Programmation système moderne</li>
+            <li><a href="/fr/install-latest-zls-in-debian.html">Serveur de langage ZLS</a> - Support IDE pour Zig</li>
+            <li><a href="/fr/install-latest-ghostty-in-debian.html">Terminal Ghostty</a> - Émulateur de terminal rapide</li>
         </ul>
 
         <div class="highlight-box">
-            <strong>🎯 Parfait pour :</strong> Developers who want to make Git operations visual and intuitive, teams looking to improve Git workflows, anyone frustrated with complex Git command-line operations, and users who prefer TUI applications.
+            <strong>🎯 Parfait pour :</strong> Le développement logiciel moderne, le codage collaboratif, la programmation assistée par IA et tous ceux qui souhaitent une alternative ultra-rapide à VS Code avec de meilleures performances et un support multijoueur natif.
         </div>
     </div>
 </div>
@@ -430,26 +395,25 @@ w             - Create worktree from branch
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "inLanguage": "fr",
-    "headline": "Installer la dernière version de lazygit Terminal UI for Git sur Debian",
-    "description": "Complete guide to installering the latest lazygit terminal UI sur Debian using debian.griffo.io repository for up-to-date packages.",
+    "headline": "Installer la dernière version de l'éditeur de code Zed sur Debian",
+    "description": "Guide complet pour installer le dernier éditeur de code Zed sur Debian en utilisant le dépôt debian.griffo.io pour des paquets à jour.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
         "url": "https://github.com/dariogriffo"
     },
-    "datePublished": "2025-10-01",
-    "dateModified": "2025-10-01",
+    "datePublished": "2025-10-20",
+    "dateModified": "2025-10-20",
     "publisher": {
         "@type": "Organization",
         "name": "debian.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",
-        "name": "lazygit",
-        "applicationCategory": "Development Tool",
+        "name": "Éditeur de code Zed",
+        "applicationCategory": "Éditeur de code",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.54.1+",
-        "description": "Simple terminal UI for git commands with interactive features and visual Git operations"
+        "description": "Éditeur de code haute performance et multijoueur des créateurs d'Atom et Tree-sitter"
     }
 }
 </script>
@@ -466,7 +430,7 @@ w             - Create worktree from branch
 
 <script>
     function switchTab(event, tabId) {
-        const container = event.target.closest('.installer-steps');
+        const container = event.target.closest('.install-steps');
         const tabContents = container.querySelectorAll('.tab-content');
         tabContents.forEach(content => {
             content.classList.remove('active');
@@ -481,3 +445,4 @@ w             - Create worktree from branch
 </script>
 </body>
 </html>
+
