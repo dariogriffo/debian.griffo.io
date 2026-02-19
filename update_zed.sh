@@ -4,7 +4,7 @@ BUILD_VERSION=${2:-1}
 PACKAGE_NAME=zed
 ARCHITECTURES="amd64,arm64"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
-./generate_index.sh
+./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 
 
