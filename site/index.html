@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>debian.griffo.io - Latest Debian Packages for Modern Development Tools | Zig, Ghostty, TigerBeetle, lazygit, yazi & More</title>
-    <meta name="description" content="Get the most up-to-date Debian packages for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, ulauncher, bun runtime, TigerBeetle database, and more. Unofficial repository with latest versions for Bookworm, Trixie, and Sid.">
-    <meta name="keywords" content="debian packages, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, ulauncher debian, bun debian, tigerbeetle debian, development tools, latest versions, unofficial repository, bookworm, trixie, sid">
+    <title>debian.griffo.io - Latest Debian & Ubuntu Packages for Modern Development Tools | Zig, Ghostty, TigerBeetle, lazygit, yazi & More</title>
+    <meta name="description" content="Get the most up-to-date Debian and Ubuntu packages for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, ulauncher, bun runtime, TigerBeetle database, and more. Unofficial repository with latest versions for Bookworm, Trixie, Sid, Jammy, and Noble.">
+    <meta name="keywords" content="debian packages, ubuntu packages, zig debian, zig ubuntu, ghostty debian, ghostty ubuntu, lazygit debian, lazygit ubuntu, yazi debian, yazi ubuntu, eza debian, eza ubuntu, ulauncher debian, ulauncher ubuntu, bun debian, bun ubuntu, tigerbeetle debian, tigerbeetle ubuntu, development tools, latest versions, unofficial repository, bookworm, trixie, sid, jammy, noble">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://debian.griffo.io">
@@ -15,15 +15,15 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://debian.griffo.io">
-    <meta property="og:title" content="debian.griffo.io - Latest Debian Packages for Development Tools">
-    <meta property="og:description" content="Unofficial repository providing the most up-to-date Debian packages for Zig, Ghostty, lazygit, yazi, eza, ulauncher, bun, TigerBeetle and other modern development tools.">
+    <meta property="og:title" content="debian.griffo.io - Latest Debian & Ubuntu Packages for Development Tools">
+    <meta property="og:description" content="Unofficial repository providing the most up-to-date Debian and Ubuntu packages for Zig, Ghostty, lazygit, yazi, eza, ulauncher, bun, TigerBeetle and other modern development tools.">
     <meta property="og:image" content="https://debian.griffo.io/logo.webp">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://debian.griffo.io">
-    <meta property="twitter:title" content="debian.griffo.io - Latest Debian Packages for Development Tools">
-    <meta property="twitter:description" content="Unofficial repository providing the most up-to-date Debian packages for Zig, Ghostty, lazygit, yazi, eza, ulauncher, bun, TigerBeetle and other modern development tools.">
+    <meta property="twitter:title" content="debian.griffo.io - Latest Debian & Ubuntu Packages for Development Tools">
+    <meta property="twitter:description" content="Unofficial repository providing the most up-to-date Debian and Ubuntu packages for Zig, Ghostty, lazygit, yazi, eza, ulauncher, bun, TigerBeetle and other modern development tools.">
     <meta property="twitter:image" content="https://debian.griffo.io/logo.webp">
     <style>
         * {
@@ -153,6 +153,23 @@
             text-decoration: none;
         }
 
+        .package-link-ubuntu {
+            background: linear-gradient(135deg, #E95420, #f7934c);
+            box-shadow: 0 4px 15px rgba(233, 84, 32, 0.3);
+        }
+
+        .package-link-ubuntu:hover {
+            background: linear-gradient(135deg, #f7934c, #E95420);
+            box-shadow: 0 6px 20px rgba(233, 84, 32, 0.4);
+        }
+
+        .package-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
         section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -230,6 +247,15 @@
             border-radius: 25px;
             font-weight: 500;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .distro-badge-ubuntu {
+            background: linear-gradient(135deg, #E95420, #f7934c);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(233, 84, 32, 0.3);
         }
 
         .language-selector {
@@ -428,6 +454,19 @@
     </style>
 </head>
 <body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ This repository is maintained by <u>one person</u>, in their spare time, with <u>no funding, no team, and zero external support</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Every package and update is built and published for free. If these packages save you time, please consider supporting the project.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
 <div class="language-selector">
     <div class="language-dropdown">
         <button class="language-button" onclick="toggleLanguageMenu()" aria-label="Select Language">
@@ -468,12 +507,15 @@
             <a href="https://www.debian.org/" title="Debian Official Website" aria-label="Visit Debian Official Website">
                 <img src="/debian-logo.webp" alt="Debian Logo" width="104" style="margin-left: 20px">
             </a>
+            <a href="https://ubuntu.com/" title="Ubuntu Official Website" aria-label="Visit Ubuntu Official Website">
+                <img src="/ubuntu-logo.webp" alt="Ubuntu Logo" width="104" style="margin-left: 20px">
+            </a>
         </div>
         <h1>debian.griffo.io</h1>
-        <p class="subtitle">Unofficial Repository for Latest Development Tools</p>
+        <p class="subtitle">Unofficial Repository for Latest Development Tools — Debian &amp; Ubuntu</p>
 
         <div class="highlight-box">
-            <strong>🚀 Always Up-to-Date:</strong> This repository provides the most current versions of popular development tools as Debian packages, updated regularly to ensure you have access to the latest features and security fixes.
+            <strong>🚀 Always Up-to-Date:</strong> This repository provides the most current versions of popular development tools as Debian and Ubuntu packages, updated regularly to ensure you have access to the latest features and security fixes. Supports Debian (Bookworm, Trixie, Forky, Sid) and Ubuntu (Jammy, Noble).
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
@@ -485,7 +527,7 @@
 
     <section>
         <h2>⚡ Quick Installation</h2>
-        <p>Add this repository to your Debian system and start installing the latest versions of your favorite development tools:</p>
+        <p>Add this repository to your Debian or Ubuntu system and start installing the latest versions of your favorite development tools:</p>
 
         <div class="install-section">
             <h3>Step 1: Add Repository</h3>
@@ -550,115 +592,172 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">👻</span>Ghostty Terminal</div>
                 <div class="package-description">Fast, feature-rich, cross-platform terminal emulator with platform-native UI and GPU acceleration for superior performance.</div>
-                <a href="/install-latest-ghostty-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-ghostty-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-ghostty-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Zig Programming Language</div>
                 <div class="package-description">General-purpose programming language and toolchain for maintaining robust, optimal and reusable software. Available in both stable and nightly builds.</div>
-                <a href="/install-latest-zig-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-zig-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zig-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Zed editor</div>
                 <div class="package-description">A high-performance, multiplayer code editor from the creators of Atom Tree-Sitter</div>
-                <a href="/install-latest-zed-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-zed-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zed-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>ZLS Language Server</div>
                 <div class="package-description">Language Server Protocol implementation for Zig, providing IDE features like autocomplete, go-to-definition, and error checking. Stable and nightly builds available.</div>
-                <a href="/install-latest-zls-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-zls-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zls-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐋</span>lazydocker</div>
                 <div class="package-description">Simple terminal UI for Docker and docker-compose management, written in Go with an intuitive interface for container operations.</div>
-                <a href="/install-latest-lazydocker-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-lazydocker-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lazydocker-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐢</span>lazygit</div>
                 <div class="package-description">Simple terminal UI for git commands, making version control operations more visual and user-friendly.</div>
-                <a href="/install-latest-lazygit-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-lazygit-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lazygit-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">📁</span>eza</div>
                 <div class="package-description">Modern replacement for 'ls' command with improved features, better colors, and enhanced file listing capabilities.</div>
-                <a href="/install-latest-eza-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-eza-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-eza-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🎼</span>lowfi</div>
                 <div class="package-description">Minimalist Rust application for playing lofi music - no albums, no ads, just pure lofi background music for coding.</div>
-                <a href="/install-latest-lowfi-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-lowfi-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lowfi-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🦆</span>Yazi File Manager</div>
                 <div class="package-description">Terminal file manager written in Rust with non-blocking async I/O, providing efficient and customizable file management.</div>
-                <a href="/install-latest-yazi-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-yazi-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-yazi-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐍</span>uv Python Manager</div>
                 <div class="package-description">Extremely fast Python package and project manager written in Rust, offering superior performance for Python development workflows.</div>
-                <a href="/install-latest-uv-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-uv-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-uv-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🔍</span>fzf Fuzzy Finder</div>
                 <div class="package-description">Command-line fuzzy finder written in Go, enabling fast and intuitive file and command searching.</div>
-                <a href="/install-latest-fzf-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-fzf-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-fzf-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">📂</span>zoxide</div>
                 <div class="package-description">Smarter cd command for your terminal, learning your habits to help you navigate directories more efficiently.</div>
-                <a href="/install-latest-zoxide-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-zoxide-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zoxide-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🎵</span>termusic</div>
                 <div class="package-description">Terminal-based music and podcast player that's both free as in freedom and free of charge.</div>
-                <a href="/install-latest-termusic-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-termusic-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-termusic-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">📠</span>unregistry</div>
                 <div class="package-description">Lightweight container image registry that stores and serves images directly from your Docker daemon's storage.</div>
-                <a href="/install-latest-unregistry-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-unregistry-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-unregistry-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">📡</span>docker-pussh</div>
                 <div class="package-description">Push Docker images to remote servers over SSH, transferring only missing layers for fast and efficient deployment.</div>
-                <a href="/install-latest-unregistry-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-unregistry-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-unregistry-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🌬️</span>uncloud</div>
                 <div class="package-description">Lightweight clustering and container orchestration tool for deploying web apps across cloud VMs and bare metal with minimal overhead.</div>
-                <a href="/install-latest-uncloud-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-uncloud-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-uncloud-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🚀</span>Ulauncher</div>
                 <div class="package-description">Application launcher for Linux with extensible plugin system, fuzzy search, and customizable themes for enhanced productivity.</div>
-                <a href="/install-latest-ulauncher-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-ulauncher-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-ulauncher-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🥟</span>Bun Runtime</div>
                 <div class="package-description">Fast all-in-one JavaScript runtime with bundler, test runner, and package manager built from scratch for speed and performance.</div>
-                <a href="/install-latest-bun-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-bun-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-bun-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐯</span>TigerBeetle</div>
                 <div class="package-description">Distributed financial transactions database designed for mission-critical safety and 1000x faster OLTP performance with strict serializability.</div>
-                <a href="/install-latest-tigerbeetle-in-debian.html" class="package-link">📖 Installation Guide</a>
+                <div class="package-links">
+                    <a href="/install-latest-tigerbeetle-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-tigerbeetle-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
             </div>
         </div>
     </header>
@@ -670,7 +769,7 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
             <li>✅ <strong>Latest stable releases</strong> within hours of upstream publication</li>
             <li>✅ <strong>Nightly builds</strong> for cutting-edge features (Zig, ZLS)</li>
             <li>✅ <strong>Proper Debian packaging</strong> with correct dependencies</li>
-            <li>✅ <strong>Multiple distribution support</strong> (Bookworm, Trixie, Forky, Sid)</li>
+            <li>✅ <strong>Multiple distribution support</strong> — Debian (Bookworm, Trixie, Forky, Sid) &amp; Ubuntu (Jammy, Noble)</li>
             <li>✅ <strong>Automated updates</strong> ensuring continuous availability</li>
         </ul>
 
@@ -700,12 +799,18 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
             <a href="https://github.com/dariogriffo/tigerbeetle-debian" title="TigerBeetle - Latest Debian Packages">🐯 tigerbeetle-debian</a>
         </div>
 
-        <h3>🐧 Supported Debian Distributions</h3>
+        <h3>🐧 Supported Distributions</h3>
+        <h4 style="color: #667eea; margin: 15px 0 10px;">Debian</h4>
         <div class="supported-distros">
-            <span class="distro-badge">Debian Bookworm (12)</span>
-            <span class="distro-badge">Debian Trixie (13)</span>
-            <span class="distro-badge">Debian Forky (testing)</span>
-            <span class="distro-badge">Debian Sid (unstable)</span>
+            <span class="distro-badge">Bookworm (12)</span>
+            <span class="distro-badge">Trixie (13)</span>
+            <span class="distro-badge">Forky (testing)</span>
+            <span class="distro-badge">Sid (unstable)</span>
+        </div>
+        <h4 style="color: #E95420; margin: 15px 0 10px;">Ubuntu</h4>
+        <div class="supported-distros">
+            <span class="distro-badge-ubuntu">Jammy (22.04 LTS)</span>
+            <span class="distro-badge-ubuntu">Noble (24.04 LTS)</span>
         </div>
 
         <p style="vetext-align: center; margin-top: 20px; font-style: italic;">
@@ -760,7 +865,7 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "debian.griffo.io - Latest Debian Packages Repository",
-    "description": "Unofficial Debian repository providing the most up-to-date packages for Zig, Ghostty, lazygit, lazydocker, yazi, eza, uv, fzf, zoxide, ulauncher, bun and other modern development tools. Always current versions for Bookworm, Trixie, and Sid.",
+    "description": "Unofficial Debian and Ubuntu repository providing the most up-to-date packages for Zig, Ghostty, lazygit, lazydocker, yazi, eza, uv, fzf, zoxide, ulauncher, bun and other modern development tools. Always current versions for Bookworm, Trixie, Sid, Jammy, and Noble.",
     "url": "https://debian.griffo.io",
     "author": {
         "@type": "Person",
@@ -772,8 +877,8 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
         "@type": "SoftwareApplication",
         "name": "debian.griffo.io Repository",
         "applicationCategory": "Package Repository",
-        "operatingSystem": "Debian Linux",
-        "description": "Unofficial repository providing latest versions of development tools as Debian packages",
+        "operatingSystem": "Debian Linux, Ubuntu Linux",
+        "description": "Unofficial repository providing latest versions of development tools as Debian and Ubuntu packages",
         "offers": {
             "@type": "Offer",
             "price": "0",
