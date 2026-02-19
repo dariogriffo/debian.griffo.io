@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安装最新的 ZLS Zig Language Server 在 Ubuntu 上 | debian.griffo.io</title>
+    <meta name="description" content="Install the latest ZLS (v0.14.0+) 在 Ubuntu 上 - Zig 的语言服务器协议实现. Get up-to-date packages with autocomplete, goto definition, and IDE features from debian.griffo.io.">
+    <meta name="keywords" content="zls ubuntu, install zls ubuntu, zig language server, zig IDE, zig autocomplete, ubuntu packages, jammy, noble, zigtools">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/cn/packages/install-latest-zls-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/packages/install-latest-zls-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/packages/install-latest-zls-in-ubuntu.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/cn/packages/install-latest-zls-in-ubuntu.html">
+    <meta property="og:title" content="安装最新的 ZLS Zig Language Server 在 Ubuntu 上">
+    <meta property="og:description" content="获取最新的 ZLS Language Server for Ubuntu. IDE features for Zig including autocomplete, goto definition, and semantic analysis.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .ide-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🇿 安装最新的 ZLS 在 Ubuntu 上</h1>
+        <p class="subtitle">Zig Language Server for IDE features and development productivity</p>
+        <div class="version-badge">Latest Version: 0.14.0+ (March 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+        
+        <h2>什么是 ZLS？</h2>
+        <p>ZLS (Zig Language Server) is a <strong>Zig 的语言服务器协议实现</strong> written in Zig by the zigtools community. It provides developers with modern IDE features like autocomplete, goto definition, hover information, and semantic analysis in their favorite editors. With over 4k GitHub stars, it's the essential tool for productive Zig development.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> ZLS is rapidly evolving alongside Zig itself, with frequent releases containing new language feature support, performance improvements, and enhanced IDE capabilities. The latest versions include better semantic analysis, improved completions, and compatibility with Zig 0.14+.
+        </div>
+
+        <h3>⚡ Key Features of ZLS</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>💡 Smart Completions</h4>
+                <p>Intelligent autocomplete for functions, variables, types, and imports. Context-aware suggestions based on current scope and available symbols.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔍 Navigation Features</h4>
+                <p>Goto definition/declaration, find references, and document symbols. Navigate large Zig codebases with ease and precision.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📝 Code Intelligence</h4>
+                <p>Hover information, semantic token highlighting, and inlay hints. Understand code structure and types without manual lookup.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🛠️ Development Tools</h4>
+                <p>Automatic formatting with zig fmt, code actions, selection ranges, and folding regions for better code organization.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔄 Symbol Operations</h4>
+                <p>Rename symbols across entire codebase, find all references, and document symbol outline for project navigation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📦 Package Support</h4>
+                <p>Custom package resolution, cImport support, and namespace handling for complex Zig projects and dependencies.</p>
+            </div>
+        </div>
+
+        <div class="ide-box">
+            <h4>🎯 Supported Editors & IDEs</h4>
+            <ul>
+                <li><strong>VS Code:</strong> Official Zig extension with ZLS integration</li>
+                <li><strong>Neovim/Vim:</strong> Native LSP support and dedicated plugins</li>
+                <li><strong>Emacs:</strong> lsp-mode and eglot compatibility</li>
+                <li><strong>Sublime Text:</strong> LSP package integration</li>
+                <li><strong>Kate/KDevelop:</strong> Built-in LSP support</li>
+                <li><strong>Any LSP-compatible editor:</strong> Universal Language Server Protocol support</li>
+            </ul>
+        </div>
+
+        <h3>🆕 What's New in ZLS 0.14.0+</h3>
+        <ul>
+            <li><strong>Zig 0.14 Compatibility:</strong> Full support for latest Zig language features</li>
+            <li><strong>Enhanced Semantic Analysis:</strong> Better type resolution and error detection</li>
+            <li><strong>Improved Completions:</strong> More accurate and context-aware suggestions</li>
+            <li><strong>Performance Optimizations:</strong> Faster analysis and reduced memory usage</li>
+            <li><strong>Better Error Handling:</strong> More robust handling of incomplete or invalid code</li>
+            <li><strong>Enhanced Debugging:</strong> Better integration with debugging workflows</li>
+        </ul>
+
+        <h2>📦 从 debian.griffo.io 安装</h2>
+        
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 ZLS</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest stable ZLS
+sudo apt install zls
+
+# Or install nightly builds for cutting-edge features
+sudo apt install zls-master
+
+# Verify installation
+zls --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest stable ZLS
+apt install zls
+
+# Or install nightly builds for cutting-edge features
+apt install zls-master
+
+# Verify installation
+zls --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Editor Setup Examples</h3>
+        
+        <p><strong>VS Code setup:</strong></p>
+        <div class="code-block">
+# Install Zig extension from marketplace
+# Extension automatically detects ZLS if installed in PATH
+
+# Or configure custom ZLS path in settings.json:
+{
+    "zig.zls.path": "/usr/bin/zls"
+}
+        </div>
+
+        <p><strong>Neovim setup (with nvim-lspconfig):</strong></p>
+        <div class="code-block">
+-- In your init.lua
+require('lspconfig').zls.setup{
+    cmd = { "zls" },
+    filetypes = { "zig" },
+    root_dir = require('lspconfig.util').root_pattern("build.zig", ".git"),
+}
+        </div>
+
+        <p><strong>Basic ZLS configuration:</strong></p>
+        <div class="code-block">
+# Create ZLS config file
+mkdir -p ~/.config/zls
+cat > ~/.config/zls/zls.json << 'EOF'
+{
+    "enable_semantic_tokens": true,
+    "enable_inlay_hints": true,
+    "enable_snippets": true,
+    "warn_style": true,
+    "highlight_global_var_declarations": true
+}
+EOF
+        </div>
+
+        <h2>🚀 为什么选择 debian.griffo.io？</h2>
+        
+        <div class="ide-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> ZLS not available in official repositories</li>
+                <li><strong>Manual Compilation:</strong> Requires Zig master and complex build process</li>
+                <li><strong>Binary Downloads:</strong> Manual updates and no package management</li>
+                <li><strong>debian.griffo.io:</strong> Latest version (0.14.0+) with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Language Support:</strong> Get newest Zig language feature support immediately</li>
+            <li>✅ <strong>No Manual Compilation:</strong> Pre-built binaries, no Zig master required</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Stable & Nightly:</strong> Both stable and cutting-edge versions available</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在这些 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zls-debian" target="_blank" rel="noopener">🇿 zls-debian (stable)</a> - Stable release builds</li>
+            <li><a href="https://github.com/dariogriffo/zls-master-debian" target="_blank" rel="noopener">🇿 zls-master-debian (nightly)</a> - Nightly development builds</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 debian.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-zig-in-ubuntu.html">Zig Programming Language</a> - Required for ZLS development</li>
+            <li><a href="/cn/install-latest-ghostty-in-ubuntu.html">Ghostty Terminal</a> - Modern terminal for development</li>
+            <li><a href="/cn/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Enhanced file navigation</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Zig developers who want modern IDE features, teams working on large Zig projects, anyone wanting autocomplete and navigation in their editor, and developers who appreciate productive development environments.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 ZLS Zig Language Server 在 Ubuntu 上",
+    "description": "Complete guide to installing the latest ZLS Language Server 在 Ubuntu 上 using debian.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ZLS",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "0.14.0+",
+        "description": "Zig 的语言服务器协议实现 providing IDE features like autocomplete and goto definition"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

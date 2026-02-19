@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Latest Bun JavaScript Runtime on Ubuntu | debian.griffo.io</title>
+    <meta name="description" content="Install the latest Bun JavaScript runtime (v1.2+) on Ubuntu Jammy and Noble. Get up-to-date Bun packages with bundler, test runner, and package manager from debian.griffo.io.">
+    <meta name="keywords" content="bun ubuntu, install bun ubuntu, latest bun version, bun javascript runtime, bun bundler, ubuntu packages, jammy, noble">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/install-latest-bun-in-ubuntu.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/install-latest-bun-in-ubuntu.html">
+    <meta property="og:title" content="Install Latest Bun JavaScript Runtime on Ubuntu">
+    <meta property="og:description" content="Get the most up-to-date Bun JavaScript runtime packages for Ubuntu. Latest version with bundler, test runner, and package manager built-in.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            margin: 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        
+        .install-steps {
+            margin: 30px 0;
+        }
+        
+        .install-steps h3 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .package-variants {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .variant-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .variant-title {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .alternatives-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .content { padding: 20px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FKYKE1SD5C');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥟 Install Latest Bun on Ubuntu</h1>
+            <p>Fast all-in-one JavaScript runtime with bundler, test runner, and package manager</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="https://www.buymeacoffee.com/dariogriffo">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dariogriffo&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" />
+                </a>
+            </div>
+        </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+        
+        <h2>What is Bun?</h2>
+        <p>Bun is a <strong>fast all-in-one JavaScript runtime</strong> built from scratch to serve the modern JavaScript ecosystem. It's designed as a drop-in replacement for Node.js with significantly better performance, featuring a built-in bundler, test runner, and package manager all in a single executable.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> Bun is rapidly evolving with major performance improvements, new JavaScript/TypeScript features, and enhanced compatibility in each release. The latest versions include critical bug fixes, improved Node.js compatibility, and significant speed improvements for package management and bundling.
+        </div>
+
+        <h3>🔥 Key Features of Bun</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Blazing Fast</h4>
+                <p>Up to 4x faster than Node.js for many workloads, with optimized JavaScript engine and native code compilation.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Built-in Package Manager</h4>
+                <p>Install packages up to 25x faster than npm with built-in package management and lockfile compatibility.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Bundler Included</h4>
+                <p>Native bundler with tree-shaking, code splitting, and hot reloading - no webpack or rollup needed.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Test Runner</h4>
+                <p>Built-in test runner compatible with Jest API, with parallel execution and watch mode.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔄 Node.js Compatible</h4>
+                <p>Drop-in replacement for Node.js with excellent compatibility for existing npm packages and APIs.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 TypeScript Native</h4>
+                <p>Run TypeScript files directly without compilation step, with built-in transpilation.</p>
+            </div>
+        </div>
+
+        <h2>📦 Installation from debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="package-variants">
+            <h3>📋 Available Bun Packages</h3>
+            <p>debian.griffo.io provides three different Bun packages to suit different needs:</p>
+            
+            <div class="variant-card">
+                <div class="variant-title">🥟 bun (Recommended)</div>
+                <p><strong>Metapackage</strong> that automatically installs the latest stable bun-one. This is the recommended choice for most users as it ensures you always get the latest stable release.</p>
+                <div class="code-block">sudo apt install bun</div>
+            </div>
+            
+            <div class="variant-card">
+                <div class="variant-title">🚀 bun-one</div>
+                <p><strong>Latest stable release</strong> of Bun runtime. This package contains the production-ready version with optimizations for performance and stability.</p>
+                <div class="code-block">sudo apt install bun-one</div>
+            </div>
+            
+            <div class="variant-card">
+                <div class="variant-title">🔍 bun-profile</div>
+                <p><strong>Profiling-enabled build</strong> of Bun with debugging symbols and profiling capabilities. Ideal for development, debugging, and performance analysis. Slightly larger binary with additional debugging information.</p>
+                <div class="code-block">sudo apt install bun-profile</div>
+            </div>
+        </div>
+
+        <div class="alternatives-box">
+            <h3>🔄 Managing Multiple Bun Versions</h3>
+            <p>You can install both <code>bun-one</code> and <code>bun-profile</code> simultaneously and switch between them using Debian's update-alternatives system:</p>
+            
+            <h4>Install both versions:</h4>
+            <div class="code-block">
+sudo apt install bun-one bun-profile
+            </div>
+            
+            <h4>Configure alternatives (done automatically during package installation):</h4>
+            <div class="code-block">
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-one 100
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-profile 90
+            </div>
+            
+            <h4>Switch between versions interactively:</h4>
+            <div class="code-block">
+sudo update-alternatives --config bun
+            </div>
+            
+            <h4>Check current version:</h4>
+            <div class="code-block">
+bun --version
+which bun
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install Bun</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install bun
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install bun
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Verify Installation</h3>
+            <div class="code-block">
+bun --version
+bun --help
+            </div>
+        </div>
+
+        <h2>🚀 Quick Start Examples</h2>
+        
+        <h3>Create a new project:</h3>
+        <div class="code-block">
+mkdir my-bun-app && cd my-bun-app
+bun init
+        </div>
+        
+        <h3>Install packages (faster than npm):</h3>
+        <div class="code-block">
+bun install express
+bun add -d @types/express
+        </div>
+        
+        <h3>Run TypeScript directly:</h3>
+        <div class="code-block">
+echo 'console.log("Hello from Bun!")' > app.ts
+bun run app.ts
+        </div>
+        
+        <h3>Bundle for production:</h3>
+        <div class="code-block">
+bun build ./app.ts --outdir ./dist --minify
+        </div>
+        
+        <h3>Run tests:</h3>
+        <div class="code-block">
+bun test
+        </div>
+
+        <h2>🔧 Configuration</h2>
+        <p>Bun can be configured using a <code>bunfig.toml</code> file in your project root or home directory:</p>
+        <div class="code-block">
+# bunfig.toml
+[install]
+# Configure package manager behavior
+cache = "~/.bun/install/cache"
+registry = "https://registry.npmjs.org"
+
+[run]
+# Configure script runner
+shell = "bash"
+
+[test]
+# Configure test runner
+preload = ["./setup.ts"]
+        </div>
+
+        <h2>⚡ Performance Benefits</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Package Installation</h4>
+                <p>Up to 25x faster than npm, 4x faster than pnpm for installing dependencies.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🏃 Runtime Performance</h4>
+                <p>4x faster than Node.js for many JavaScript workloads with optimized engine.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Bundling Speed</h4>
+                <p>Native bundler significantly faster than webpack, rollup, or esbuild.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Test Execution</h4>
+                <p>Parallel test execution with built-in runner, faster than Jest or Vitest.</p>
+            </div>
+        </div>
+
+        <h2>📦 Package Build Repository</h2>
+        <p>The Ubuntu packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/bun-debian" target="_blank" rel="noopener">🥟 bun-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h2>🔗 Related Packages</h2>
+        <p>Enhance your development workflow with these complementary tools from debian.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-zig-in-ubuntu.html">Zig Programming Language</a> - Systems programming language</li>
+            <li><a href="/install-latest-uv-in-ubuntu.html">uv Python Manager</a> - Fast Python package manager</li>
+            <li><a href="/install-latest-ghostty-in-ubuntu.html">Ghostty Terminal</a> - Fast terminal emulator</li>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Terminal UI for git</li>
+        </ul>
+
+        <h2>📚 Additional Resources</h2>
+        <ul>
+            <li><a href="https://bun.com/" target="_blank" rel="noopener">Official Bun Website</a></li>
+            <li><a href="https://bun.com/docs" target="_blank" rel="noopener">Bun Documentation</a></li>
+            <li><a href="https://github.com/oven-sh/bun" target="_blank" rel="noopener">Bun GitHub Repository</a></li>
+            <li><a href="https://bun.com/guides" target="_blank" rel="noopener">Bun Guides and Tutorials</a></li>
+        </ul>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+
+                <a href="https://www.buymeacoffee.com/dariogriffo">
+                    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=dariogriffo&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee" />
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Install Latest Bun JavaScript Runtime on Ubuntu",
+        "description": "Complete guide to installing the latest Bun JavaScript runtime on Ubuntu Linux with bundler, test runner, and package manager included.",
+        "author": {
+            "@type": "Person",
+            "name": "Dario Griffo"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-01-01",
+        "publisher": {
+            "@type": "Organization",
+            "name": "debian.griffo.io"
+        },
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Bun",
+            "applicationCategory": "JavaScript Runtime",
+            "operatingSystem": "Ubuntu Linux",
+            "description": "Fast all-in-one JavaScript runtime with bundler, test runner, and package manager"
+        }
+    }
+    </script>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Get the parent install-steps container
+            const container = event.target.closest('.install-steps');
+
+            // Hide all tab contents in this container
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons in this container
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
