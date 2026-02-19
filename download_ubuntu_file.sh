@@ -4,7 +4,7 @@ BUILD_VERSION=$3
 PACKAGE_NAME=$4
 ARCHITECTURES=${5:-"amd64"}
 PWD=`pwd`
-declare -a arr=("jammy" "noble")
+declare -a arr=("jammy" "noble" "questing")
 declare -a architectures=(${ARCHITECTURES//,/ })
 for i in "${arr[@]}"
 do
