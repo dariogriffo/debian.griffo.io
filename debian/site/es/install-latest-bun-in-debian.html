@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar la última versión de Bun JavaScript Runtime en Debian | debian.griffo.io</title>
+    <meta name="description" content="Instale el último runtime JavaScript Bun (v1.2+) en Debian Bookworm, Trixie, Forky y Sid. Obtenga paquetes Bun actualizados con empaquetador, ejecutor de pruebas y gestor de paquetes desde debian.griffo.io.">
+    <meta name="keywords" content="bun debian, instalar bun debian, última versión bun, bun javascript runtime, bun empaquetador, paquetes debian, bookworm, trixie, sid">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/es/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-bun-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/es/install-latest-bun-in-debian.html">
+    <meta property="og:title" content="Instalar la última versión de Bun JavaScript Runtime en Debian">
+    <meta property="og:description" content="Obtenga los paquetes más actualizados de Bun JavaScript runtime para Debian. Última versión con empaquetador, ejecutor de pruebas y gestor de paquetes integrados.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            margin: 0;
+        }
+        
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        
+        .install-steps {
+            margin: 30px 0;
+        }
+        
+        .install-steps h3 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .package-variants {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .variant-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .variant-title {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .alternatives-box {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .content { padding: 20px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FKYKE1SD5C');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥟 Instalar la última versión de Bun en Debian</h1>
+            <p>Runtime JavaScript todo en uno rápido con empaquetador, ejecutor de pruebas y administrador de paquetes</p>
+        </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+        
+        <h2>¿Qué es Bun?</h2>
+        <p>Bun es un <strong>runtime JavaScript todo en uno rápido</strong> construido desde cero para servir al ecosistema JavaScript moderno. Está diseñado como un reemplazo directo para Node.js con un rendimiento significativamente mejor, con empaquetador, ejecutor de pruebas y gestor de paquetes integrados, todo en un único ejecutable.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> Bun está evolucionando rápidamente con mejoras importantes de rendimiento, nuevas características de JavaScript/TypeScript y compatibilidad mejorada en cada lanzamiento. Las últimas versiones incluyen correcciones de errores críticos, mejor compatibilidad con Node.js y mejoras significativas de velocidad para la gestión de paquetes y el empaquetado.
+        </div>
+
+        <h3>🔥 Características principales de Bun</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Extremadamente Rápido</h4>
+                <p>Hasta 4 veces más rápido que Node.js para muchas cargas de trabajo, con motor JavaScript optimizado y compilación de código nativo.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Gestor de Paquetes Integrado</h4>
+                <p>Instale paquetes hasta 25 veces más rápido que npm con gestión de paquetes integrada y compatibilidad con archivos de bloqueo.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Empaquetador Incluido</h4>
+                <p>Empaquetador nativo con tree-shaking, división de código y recarga en caliente - no se necesita webpack ni rollup.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Ejecutor de Pruebas</h4>
+                <p>Ejecutor de pruebas integrado compatible con la API de Jest, con ejecución paralela y modo de observación.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔄 Compatible con Node.js</h4>
+                <p>Reemplazo directo para Node.js con excelente compatibilidad para paquetes npm y APIs existentes.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 TypeScript Nativo</h4>
+                <p>Ejecute archivos TypeScript directamente sin paso de compilación, con transpilación integrada.</p>
+            </div>
+        </div>
+
+        <h2>📦 Instalación desde debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="package-variants">
+            <h3>📋 Paquetes Bun Disponibles</h3>
+            <p>debian.griffo.io proporciona tres paquetes Bun diferentes para adaptarse a diferentes necesidades:</p>
+
+            <div class="variant-card">
+                <div class="variant-title">🥟 bun (Recomendado)</div>
+                <p><strong>Metapaquete</strong> que instala automáticamente el último bun-one estable. Esta es la opción recomendada para la mayoría de los usuarios, ya que garantiza que siempre obtenga la última versión estable.</p>
+                <div class="code-block">sudo apt install bun</div>
+            </div>
+
+            <div class="variant-card">
+                <div class="variant-title">🚀 bun-one</div>
+                <p><strong>Última versión estable</strong> del runtime Bun. Este paquete contiene la versión lista para producción con optimizaciones para rendimiento y estabilidad.</p>
+                <div class="code-block">sudo apt install bun-one</div>
+            </div>
+
+            <div class="variant-card">
+                <div class="variant-title">🔍 bun-profile</div>
+                <p><strong>Compilación con perfilado habilitado</strong> de Bun con símbolos de depuración y capacidades de perfilado. Ideal para desarrollo, depuración y análisis de rendimiento. Binario ligeramente más grande con información de depuración adicional.</p>
+                <div class="code-block">sudo apt install bun-profile</div>
+            </div>
+        </div>
+
+        <div class="alternatives-box">
+            <h3>🔄 Gestión de Múltiples Versiones de Bun</h3>
+            <p>Puede instalar tanto <code>bun-one</code> como <code>bun-profile</code> simultáneamente y cambiar entre ellos usando el sistema update-alternatives de Debian:</p>
+
+            <h4>Instalar ambas versiones:</h4>
+            <div class="code-block">
+sudo apt install bun-one bun-profile
+            </div>
+
+            <h4>Configurar alternativas (se hace automáticamente durante la instalación del paquete):</h4>
+            <div class="code-block">
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-one 100
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-profile 90
+            </div>
+
+            <h4>Cambiar entre versiones interactivamente:</h4>
+            <div class="code-block">
+sudo update-alternatives --config bun
+            </div>
+
+            <h4>Verificar la versión actual:</h4>
+            <div class="code-block">
+bun --version
+which bun
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar Bun</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install bun
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install bun
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 3: Verificar la Instalación</h3>
+            <div class="code-block">
+bun --version
+bun --help
+            </div>
+        </div>
+
+        <h2>🚀 Ejemplos de Inicio Rápido</h2>
+
+        <h3>Crear un nuevo proyecto:</h3>
+        <div class="code-block">
+mkdir my-bun-app && cd my-bun-app
+bun init
+        </div>
+
+        <h3>Instalar paquetes (más rápido que npm):</h3>
+        <div class="code-block">
+bun install express
+bun add -d @types/express
+        </div>
+
+        <h3>Ejecutar TypeScript directamente:</h3>
+        <div class="code-block">
+echo 'console.log("Hello from Bun!")' > app.ts
+bun run app.ts
+        </div>
+
+        <h3>Empaquetar para producción:</h3>
+        <div class="code-block">
+bun build ./app.ts --outdir ./dist --minify
+        </div>
+
+        <h3>Ejecutar pruebas:</h3>
+        <div class="code-block">
+bun test
+        </div>
+
+        <h2>🔧 Configuración</h2>
+        <p>Bun se puede configurar usando un archivo <code>bunfig.toml</code> en la raíz de su proyecto o directorio home:</p>
+        <div class="code-block">
+# bunfig.toml
+[install]
+# Configurar comportamiento del gestor de paquetes
+cache = "~/.bun/install/cache"
+registry = "https://registry.npmjs.org"
+
+[run]
+# Configurar ejecutor de scripts
+shell = "bash"
+
+[test]
+# Configurar ejecutor de pruebas
+preload = ["./setup.ts"]
+        </div>
+
+        <h2>⚡ Beneficios de Rendimiento</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Instalación de Paquetes</h4>
+                <p>Hasta 25 veces más rápido que npm, 4 veces más rápido que pnpm para instalar dependencias.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🏃 Rendimiento de Ejecución</h4>
+                <p>4 veces más rápido que Node.js para muchas cargas de trabajo JavaScript con motor optimizado.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Velocidad de Empaquetado</h4>
+                <p>Empaquetador nativo significativamente más rápido que webpack, rollup o esbuild.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Ejecución de Pruebas</h4>
+                <p>Ejecución paralela de pruebas con ejecutor integrado, más rápido que Jest o Vitest.</p>
+            </div>
+        </div>
+
+        <h2>📦 Repositorio de Construcción de Paquetes</h2>
+        <p>Los paquetes de Debian se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/bun-debian" target="_blank" rel="noopener">🥟 bun-debian</a> - Compilaciones de la última versión</li>
+        </ul>
+
+        <h2>🔗 Paquetes Relacionados</h2>
+        <p>Mejore su flujo de trabajo de desarrollo con estas herramientas complementarias de debian.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-zig-in-debian.html">Lenguaje de Programación Zig</a> - Lenguaje de programación de sistemas</li>
+            <li><a href="/es/install-latest-uv-in-debian.html">Gestor Python uv</a> - Gestor de paquetes Python rápido</li>
+            <li><a href="/es/install-latest-ghostty-in-debian.html">Terminal Ghostty</a> - Emulador de terminal rápido</li>
+            <li><a href="/es/install-latest-lazygit-in-debian.html">lazygit</a> - Interfaz de terminal para git</li>
+        </ul>
+
+        <h2>📚 Recursos Adicionales</h2>
+        <ul>
+            <li><a href="https://bun.com/" target="_blank" rel="noopener">Sitio Web Oficial de Bun</a></li>
+            <li><a href="https://bun.com/docs" target="_blank" rel="noopener">Documentación de Bun</a></li>
+            <li><a href="https://github.com/oven-sh/bun" target="_blank" rel="noopener">Repositorio GitHub de Bun</a></li>
+            <li><a href="https://bun.com/guides" target="_blank" rel="noopener">Guías y Tutoriales de Bun</a></li>
+        </ul>
+    </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+    "inLanguage": "es",
+        "headline": "Instalar la última versión de Bun JavaScript Runtime en Debian",
+        "description": "Guía completa para instalar el último runtime JavaScript Bun en Debian Linux con empaquetador, ejecutor de pruebas y gestor de paquetes incluidos.",
+        "author": {
+            "@type": "Person",
+            "name": "Dario Griffo"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-01-01",
+        "publisher": {
+            "@type": "Organization",
+            "name": "debian.griffo.io"
+        },
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Bun",
+            "applicationCategory": "JavaScript Runtime",
+            "operatingSystem": "Debian Linux",
+            "description": "Runtime JavaScript todo en uno rápido con empaquetador, ejecutor de pruebas y administrador de paquetes"
+        }
+    }
+    </script>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Get the parent install-steps container
+            const container = event.target.closest('.install-steps');
+
+            // Hide all tab contents in this container
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons in this container
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
