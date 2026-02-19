@@ -8,10 +8,9 @@ PACKAGE_NAME=bun-one
 PACKAGE_NAME=bun-profile
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 
+PACKAGE_NAME=bun
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 PACKAGE_NAME=bun-one
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 PACKAGE_NAME=bun-profile
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
-
-
