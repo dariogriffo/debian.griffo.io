@@ -1,4 +1,3 @@
-cd debian
 current=`pwd`
 reprepro=$current/reprepro
 cd apt
