@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установить последнюю версию языка программирования Zig в Debian | debian.griffo.io</title>
+    <meta name="description" content="Установите последнюю версию языка программирования Zig (v0.14.1) в Debian Bookworm, Trixie и Sid. Получите актуальные пакеты Zig с новейшими функциями, улучшениями производительности и исправлениями безопасности от debian.griffo.io.">
+    <meta name="keywords" content="zig debian, установить zig debian, последняя версия zig, zig 0.14, язык программирования zig, пакеты debian, bookworm, trixie, sid">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-zig-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-zig-in-debian.html">
+    <meta property="og:title" content="Установить последнюю версию языка программирования Zig в Debian">
+    <meta property="og:description" content="Получите самые актуальные пакеты языка программирования Zig для Debian. Последняя версия 0.14.1 со всеми новыми функциями и улучшениями производительности.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Этот репозиторий поддерживается <u>одним человеком</u>, в свободное время, без <u>финансирования, команды или внешней поддержки</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Каждый пакет и обновление собирается и публикуется бесплатно. Если эти пакеты экономят вам время, рассмотрите возможность поддержки проекта.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🇿 Установить последнюю версию Zig в Debian</h1>
+        <p class="subtitle">Получите самые актуальные пакеты языка программирования Zig</p>
+        <div class="version-badge">Последняя версия: 0.14.1 (Выпущена в марте 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← Вернуться на главную</a>
+
+        <h2>Что такое Zig?</h2>
+        <p>Zig — это <strong>универсальный язык программирования и набор инструментов</strong>, разработанный для создания <strong>надёжного</strong>, <strong>оптимального</strong> и <strong>многократно используемого</strong> программного обеспечения. Созданный Эндрю Келли, Zig стремится стать лучшей альтернативой C, предлагая современные языковые возможности при сохранении простоты и производительности, необходимых системным программистам.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> Zig стремительно развивается со значительными улучшениями производительности, новыми языковыми функциями и критическими исправлениями ошибок в каждом выпуске. Последняя версия 0.14.1 включает крупные улучшения, такие как улучшенная кросс-компиляция, более быстрое время компиляции и расширенные возможности отладки.
+        </div>
+
+        <h3>🔥 Основные возможности Zig</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Простота и скорость</h4>
+                <p>Никакого скрытого потока управления, никаких скрытых выделений памяти, никакого препроцессора. Сосредоточьтесь на отладке вашего приложения, а не на знании языка.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Comptime магия</h4>
+                <p>Выполнение кода во время компиляции и ленивые вычисления. Вызывайте любую функцию во время компиляции и манипулируйте типами как значениями без накладных расходов во время выполнения.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Кросс-компиляция</h4>
+                <p>Встроенная поддержка кросс-компиляции для десятков целевых платформ. Большинство платформ не требуют внешних зависимостей.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Взаимодействие с C/C++</h4>
+                <p>Используйте Zig как замену компилятора C/C++ с улучшенной кросс-компиляцией. Постепенно внедряйте Zig в существующие кодовые базы.</p>
+            </div>
+        </div>
+
+        <h3>🆕 Что нового в Zig 0.14.1</h3>
+        <ul>
+            <li><strong>Именованные switch-выражения:</strong> Новый поток управления для конечных автоматов и критичного к производительности кода</li>
+            <li><strong>Улучшенный бэкенд x86:</strong> 98% совместимость с тестовым набором при значительно более быстрой компиляции</li>
+            <li><strong>Инкрементальная компиляция:</strong> Экспериментальная поддержка более быстрых циклов редактирование-компиляция-отладка</li>
+            <li><strong>Отслеживание файловой системы:</strong> Автоматическая пересборка при изменении исходных файлов</li>
+            <li><strong>Улучшенная поддержка целевых платформ:</strong> Лучшая поддержка архитектур ARM, MIPS, PowerPC и RISC-V</li>
+            <li><strong>Улучшенная система сборки:</strong> Более гибкая система модулей и лучшее управление зависимостями</li>
+        </ul>
+
+        <h2>📦 Установка из debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить Zig</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Установить последнюю стабильную версию Zig
+sudo apt install zig
+
+# Или установить ночные сборки для передовых функций
+sudo apt install zig-master
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Установить последнюю стабильную версию Zig
+apt install zig
+
+# Или установить ночные сборки для передовых функций
+apt install zig-master
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Создать новый проект:</strong></p>
+        <div class="code-block">
+# Создать и перейти в каталог проекта
+mkdir my-zig-project && cd my-zig-project
+
+# Инициализировать новый проект Zig
+zig init
+
+# Собрать и запустить
+zig build run
+        </div>
+
+        <p><strong>Скомпилировать один файл:</strong></p>
+        <div class="code-block">
+# Создать hello.zig
+echo 'const std = @import("std");
+pub fn main() void {
+    std.debug.print("Hello, Zig!\n", .{});
+}' > hello.zig
+
+# Скомпилировать и запустить
+zig run hello.zig
+        </div>
+
+        <p><strong>Использовать как компилятор C:</strong></p>
+        <div class="code-block">
+# Скомпилировать код C с помощью Zig
+zig cc -o program program.c
+
+# Кросс-компиляция для других платформ
+zig cc -target x86_64-windows -o program.exe program.c
+        </div>
+
+        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+
+        <div class="warning-box">
+            <strong>⚠️ Отставание официального Debian:</strong> Официальные репозитории Debian часто содержат устаревшие версии Zig, которые могут отставать от последнего выпуска на месяцы или даже годы, упуская критические функции и улучшения производительности.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Всегда актуально:</strong> Получите Zig 0.14.1 немедленно, а не через месяцы</li>
+            <li>✅ <strong>Ночные сборки:</strong> Доступ к передовым функциям с пакетом zig-master</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выпуска upstream</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упаковано со всеми необходимыми зависимостями</li>
+            <li>✅ <strong>Несколько дистрибутивов:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Без сложностей:</strong> Никакой ручной компиляции или сложной настройки не требуется</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этих репозиториях GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zig-debian" target="_blank" rel="noopener">🇿 zig-debian (stable)</a> - Стабильные сборки выпусков</li>
+            <li><a href="https://github.com/dariogriffo/zig-master-debian" target="_blank" rel="noopener">🇿 zig-master-debian (nightly)</a> - Ночные сборки разработки</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступно из debian.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zls-in-debian.html">Языковой сервер ZLS</a> - Поддержка IDE для Zig</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> - Быстрый эмулятор терминала</li>
+            <li><a href="/ru/install-latest-yazi-in-debian.html">Файловый менеджер Yazi</a> - Терминальный файловый менеджер</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Системного программирования, разработки игр, встраиваемых систем, критичных к производительности приложений и всех, кто хочет современную альтернативу C с лучшей безопасностью и инструментарием.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить последнюю версию языка программирования Zig в Debian",
+    "description": "Полное руководство по установке последней версии языка программирования Zig в Debian с использованием репозитория debian.griffo.io для актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zig Programming Language",
+        "applicationCategory": "Programming Language",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "0.14.1",
+        "description": "Универсальный язык программирования и набор инструментов для надёжного, оптимального и многократно используемого программного обеспечения"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

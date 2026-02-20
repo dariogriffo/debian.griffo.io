@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка последней версии fzf Fuzzy Finder в Ubuntu | debian.griffo.io</title>
+    <meta name="description" content="Установите последнюю версию fzf (v0.65.1+) в Ubuntu — нечёткий поиск для командной строки, написанный на Go. Получайте актуальные пакеты с интеграцией оболочки, плагином Vim и расширенной фильтрацией от debian.griffo.io.">
+    <meta name="keywords" content="fzf ubuntu, установить fzf ubuntu, нечёткий поиск, поиск в командной строке, нечёткий поиск go, пакеты ubuntu, jammy, noble, junegunn">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-fzf-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-fzf-in-ubuntu.html">
+    <meta property="og:title" content="Установка последней версии fzf Fuzzy Finder в Ubuntu">
+    <meta property="og:description" content="Получайте актуальные пакеты fzf fuzzy finder для Ubuntu. Нечёткий поиск для командной строки с интеграцией оболочки и расширенными возможностями фильтрации.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .integration-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Этот репозиторий поддерживается <u>одним человеком</u>, в свободное время, без <u>финансирования, команды или внешней поддержки</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Каждый пакет и обновление собирается и публикуется бесплатно. Если эти пакеты экономят вам время, рассмотрите возможность поддержки проекта.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🔍 Установка последней версии fzf в Ubuntu</h1>
+        <p class="subtitle">Нечёткий поиск для командной строки, написанный на Go</p>
+        <div class="version-badge">Последняя версия: 0.65.1+ (август 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое fzf?</h2>
+        <p>fzf — это <strong>универсальный нечёткий поиск для командной строки</strong>, написанный на Go Джуне Чоем. Это интерактивная программа-фильтр для любого вида списков — файлов, истории команд, процессов, хостов, закладок, коммитов Git и многого другого. Набрав более 72 тысяч звёзд на GitHub, он стал незаменимым инструментом для продуктивной работы в командной строке.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> fzf активно развивается с частыми релизами, содержащими улучшения производительности, новые функции и расширенные интеграции. Последние версии включают улучшенные возможности предпросмотра, лучшую интеграцию с оболочками, поддержку tmux и расширенные параметры настройки.
+        </div>
+
+        <h3>⚡ Ключевые возможности fzf</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Портабельный и быстрый</h4>
+                <p>Дистрибутив в виде единого бинарного файла с молниеносной производительностью. Мгновенно обрабатывает миллионы элементов с оптимизированной реализацией на Go.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Чрезвычайно универсальный</h4>
+                <p>Полностью настраиваемый через механизм привязки событий к действиям. Работает с любым видом ввода списков — файлами, процессами, командами и т.д.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔋 Интеграция с оболочкой</h4>
+                <p>Встроенная интеграция с bash, zsh и fish. Включает привязки клавиш для поиска файлов (Ctrl-T), истории команд (Ctrl-R) и навигации по директориям (Alt-C).</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Окно предпросмотра</h4>
+                <p>Предпросмотр файлов, изображений и содержимого в реальном времени. Поддерживает подсветку синтаксиса, отображение изображений и пользовательские команды предпросмотра.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Широкая настройка</h4>
+                <p>Несколько режимов отображения, цветовые схемы, параметры макета и предустановки стилей. Доступна интерактивная площадка для настройки тем.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Интеграция с редакторами</h4>
+                <p>Доступны плагины для Vim и Neovim. Бесшовная интеграция с популярными редакторами и рабочими процессами разработки.</p>
+            </div>
+        </div>
+
+        <h3>🆕 Что нового в fzf 0.65.1+</h3>
+        <ul>
+            <li><strong>Улучшенный предпросмотр:</strong> Улучшенный предпросмотр изображений с поддержкой нескольких протоколов</li>
+            <li><strong>Интеграция с tmux:</strong> Встроенная поддержка всплывающих окон tmux с гибким позиционированием</li>
+            <li><strong>Предустановки стилей:</strong> Стандартные, полные и минималистичные предустановки для быстрой настройки</li>
+            <li><strong>Расширенные схемы:</strong> Специализированные схемы для путей, истории и различных типов ввода</li>
+            <li><strong>Улучшение производительности:</strong> Оптимизированные алгоритмы для работы с большими наборами данных</li>
+            <li><strong>Улучшенные привязки:</strong> Более гибкая система привязки клавиш с механизмом событий-действий</li>
+        </ul>
+
+        <h2>📦 Установка из debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить fzf</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest fzf
+sudo apt install fzf
+
+# Проверить установку
+fzf --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest fzf
+apt install fzf
+
+# Проверить установку
+fzf --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 3: Настроить интеграцию с оболочкой</h3>
+            <div class="code-block">
+# Для пользователей bash
+echo 'eval "$(fzf --bash)"' >> ~/.bashrc
+
+# Для пользователей zsh
+echo 'source <(fzf --zsh)' >> ~/.zshrc
+
+# Для пользователей fish
+echo 'fzf --fish | source' >> ~/.config/fish/config.fish
+
+# Перезагрузить оболочку
+source ~/.bashrc  # или ~/.zshrc
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Интерактивный поиск файлов:</strong></p>
+        <div class="code-block">
+# Find and edit files
+vim $(fzf)
+
+# Find files with preview
+fzf --preview 'cat {}'
+
+# Find files with syntax highlighting
+fzf --preview 'bat --color=always {}'
+        </div>
+
+        <p><strong>Сочетания клавиш интеграции с оболочкой:</strong></p>
+        <div class="code-block">
+# Ctrl-T: Find files and directories
+# Type any command, then press Ctrl-T to insert selected files
+
+# Ctrl-R: Search command history
+# Press Ctrl-R to search and select from command history
+
+# Alt-C: Change directory
+# Press Alt-C to fuzzy find and cd into directories
+        </div>
+
+        <p><strong>Расширенное использование:</strong></p>
+        <div class="code-block">
+# Search processes and kill
+ps aux | fzf | awk '{print $2}' | xargs kill
+
+# Search git commits
+git log --oneline | fzf | awk '{print $1}' | xargs git show
+
+# Interactive ripgrep
+rg --color=always --line-number . | fzf --ansi
+
+# Multi-select mode
+find . -type f | fzf -m
+        </div>
+
+        <div class="integration-box">
+            <h4>🔧 Интеграции с инструментами</h4>
+            <p>fzf отлично работает с другими современными инструментами командной строки:</p>
+            <ul>
+                <li><strong>fd:</strong> Использование в качестве источника файлов с соблюдением .gitignore</li>
+                <li><strong>ripgrep:</strong> Интерактивный grep с живой перезагрузкой</li>
+                <li><strong>bat:</strong> Предпросмотр файлов с подсветкой синтаксиса</li>
+                <li><strong>eza:</strong> Улучшенное отображение файлов с фильтрацией fzf</li>
+                <li><strong>zoxide:</strong> Умные прыжки по директориям с нечётким поиском</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> Доступен, но часто устаревшие версии</li>
+                <li><strong>Ручная установка:</strong> Требует цепочки инструментов Go или ручного управления бинарными файлами</li>
+                <li><strong>debian.griffo.io:</strong> Последняя версия (0.65.1+) с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие функции fzf и улучшения производительности</li>
+            <li>✅ <strong>Без ручной настройки:</strong> Готовые бинарные файлы, компиляция Go не нужна</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выхода апстрима</li>
+            <li>✅ <strong>Полный пакет:</strong> Включает скрипты интеграции с оболочками и документацию</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fzf-debian" target="_blank" rel="noopener">🔍 fzf-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из debian.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-eza-in-ubuntu.html">eza</a> — современная замена ls (отлично работает с fzf)</li>
+            <li><a href="/ru/install-latest-yazi-in-ubuntu.html">Yazi File Manager</a> — интегрируется с fzf для поиска файлов</li>
+            <li><a href="/ru/install-latest-zoxide-in-ubuntu.html">zoxide</a> — умная команда cd (работает с fzf)</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> опытных пользователей командной строки, разработчиков, желающих более быстрого поиска файлов и команд, тех, кто хочет улучшить продуктивность в терминале, и пользователей, ценящих нечёткое совпадение при навигации.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка последней версии fzf Fuzzy Finder в Ubuntu",
+    "description": "Полное руководство по установке последней версии нечёткого поиска fzf для командной строки в Ubuntu с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "fzf",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "0.65.1+",
+        "description": "Универсальный нечёткий поиск для командной строки с интеграцией оболочки и расширенными возможностями фильтрации"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

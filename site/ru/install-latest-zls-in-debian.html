@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка последней версии ZLS Zig Language Server в Debian | debian.griffo.io</title>
+    <meta name="description" content="Установите последнюю версию ZLS (v0.14.0+) в Debian — реализация протокола языкового сервера для Zig. Получайте актуальные пакеты с автодополнением, переходом к определению и возможностями IDE от debian.griffo.io.">
+    <meta name="keywords" content="zls debian, установить zls debian, языковой сервер zig, ide для zig, автодополнение zig, пакеты debian, bookworm, trixie, sid, zigtools">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-zls-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-zls-in-debian.html">
+    <meta property="og:title" content="Установка последней версии ZLS Zig Language Server в Debian">
+    <meta property="og:description" content="Получайте актуальные пакеты ZLS Language Server для Debian. Возможности IDE для Zig, включая автодополнение, переход к определению и семантический анализ.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .ide-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Этот репозиторий поддерживается <u>одним человеком</u>, в свободное время, без <u>финансирования, команды или внешней поддержки</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Каждый пакет и обновление собирается и публикуется бесплатно. Если эти пакеты экономят вам время, рассмотрите возможность поддержки проекта.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🇿 Установка последней версии ZLS в Debian</h1>
+        <p class="subtitle">Zig Language Server для возможностей IDE и продуктивной разработки</p>
+        <div class="version-badge">Последняя версия: 0.14.0+ (март 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое ZLS?</h2>
+        <p>ZLS (Zig Language Server) — это <strong>реализация протокола языкового сервера для Zig</strong>, написанная на Zig сообществом zigtools. Он предоставляет разработчикам современные возможности IDE, такие как автодополнение, переход к определению, отображение справки при наведении и семантический анализ в их любимых редакторах. Набравший более 4 тысяч звёзд на GitHub, это незаменимый инструмент для продуктивной разработки на Zig.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> ZLS активно развивается вместе с самим Zig, с частыми релизами, содержащими поддержку новых языковых функций, улучшения производительности и расширенные возможности IDE. Последние версии включают улучшенный семантический анализ, более точные подсказки и совместимость с Zig 0.14+.
+        </div>
+
+        <h3>⚡ Ключевые возможности ZLS</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>💡 Умное автодополнение</h4>
+                <p>Интеллектуальное автодополнение функций, переменных, типов и импортов. Контекстно-зависимые подсказки на основе текущей области видимости и доступных символов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Навигация по коду</h4>
+                <p>Переход к определению/объявлению, поиск ссылок и символов документа. Навигация по большим кодовым базам Zig с лёгкостью и точностью.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Анализ кода</h4>
+                <p>Справка при наведении, выделение семантических токенов и встроенные подсказки. Понимание структуры кода и типов без ручного поиска.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Инструменты разработки</h4>
+                <p>Автоматическое форматирование с zig fmt, действия с кодом, диапазоны выделения и области свёртки для лучшей организации кода.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Операции с символами</h4>
+                <p>Переименование символов по всей кодовой базе, поиск всех ссылок и схема символов документа для навигации по проекту.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Поддержка пакетов</h4>
+                <p>Разрешение пользовательских пакетов, поддержка cImport и обработка пространств имён для сложных проектов и зависимостей Zig.</p>
+            </div>
+        </div>
+
+        <div class="ide-box">
+            <h4>🎯 Поддерживаемые редакторы и IDE</h4>
+            <ul>
+                <li><strong>VS Code:</strong> Официальное расширение Zig с интеграцией ZLS</li>
+                <li><strong>Neovim/Vim:</strong> Встроенная поддержка LSP и специальные плагины</li>
+                <li><strong>Emacs:</strong> Совместимость с lsp-mode и eglot</li>
+                <li><strong>Sublime Text:</strong> Интеграция пакета LSP</li>
+                <li><strong>Kate/KDevelop:</strong> Встроенная поддержка LSP</li>
+                <li><strong>Любой редактор с LSP:</strong> Универсальная поддержка протокола языкового сервера</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Что нового в ZLS 0.14.0+</h3>
+        <ul>
+            <li><strong>Совместимость с Zig 0.14:</strong> Полная поддержка новейших языковых функций Zig</li>
+            <li><strong>Улучшенный семантический анализ:</strong> Лучшее разрешение типов и обнаружение ошибок</li>
+            <li><strong>Улучшенное автодополнение:</strong> Более точные и контекстно-зависимые подсказки</li>
+            <li><strong>Оптимизация производительности:</strong> Более быстрый анализ и снижение использования памяти</li>
+            <li><strong>Улучшенная обработка ошибок:</strong> Более устойчивая обработка неполного или некорректного кода</li>
+            <li><strong>Расширенная отладка:</strong> Улучшенная интеграция с процессами отладки</li>
+        </ul>
+
+        <h2>📦 Установка из debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить ZLS</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Установить последнюю стабильную версию ZLS
+sudo apt install zls
+
+# Или установить ночные сборки для новейших функций
+sudo apt install zls-master
+
+# Проверить установку
+zls --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Установить последнюю стабильную версию ZLS
+apt install zls
+
+# Или установить ночные сборки для новейших функций
+apt install zls-master
+
+# Проверить установку
+zls --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры настройки редакторов</h3>
+
+        <p><strong>Настройка VS Code:</strong></p>
+        <div class="code-block">
+# Install Zig extension from marketplace
+# Extension automatically detects ZLS if installed in PATH
+
+# Or configure custom ZLS path in settings.json:
+{
+    "zig.zls.path": "/usr/bin/zls"
+}
+        </div>
+
+        <p><strong>Настройка Neovim (с nvim-lspconfig):</strong></p>
+        <div class="code-block">
+-- In your init.lua
+require('lspconfig').zls.setup{
+    cmd = { "zls" },
+    filetypes = { "zig" },
+    root_dir = require('lspconfig.util').root_pattern("build.zig", ".git"),
+}
+        </div>
+
+        <p><strong>Базовая конфигурация ZLS:</strong></p>
+        <div class="code-block">
+# Create ZLS config file
+mkdir -p ~/.config/zls
+cat > ~/.config/zls/zls.json << 'EOF'
+{
+    "enable_semantic_tokens": true,
+    "enable_inlay_hints": true,
+    "enable_snippets": true,
+    "warn_style": true,
+    "highlight_global_var_declarations": true
+}
+EOF
+        </div>
+
+        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+
+        <div class="ide-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> ZLS не доступен в официальных репозиториях</li>
+                <li><strong>Ручная компиляция:</strong> Требует Zig master и сложного процесса сборки</li>
+                <li><strong>Загрузка бинарных файлов:</strong> Ручные обновления без управления пакетами</li>
+                <li><strong>debian.griffo.io:</strong> Последняя версия (0.14.0+) с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последняя поддержка языка:</strong> Получайте поддержку новейших функций Zig немедленно</li>
+            <li>✅ <strong>Без ручной компиляции:</strong> Готовые бинарные файлы, Zig master не требуется</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выхода апстрима</li>
+            <li>✅ <strong>Стабильные и ночные сборки:</strong> Доступны как стабильные, так и передовые версии</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этих репозиториях GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zls-debian" target="_blank" rel="noopener">🇿 zls-debian (стабильный)</a> — сборки стабильных релизов</li>
+            <li><a href="https://github.com/dariogriffo/zls-master-debian" target="_blank" rel="noopener">🇿 zls-master-debian (ночные)</a> — ночные сборки для разработки</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из debian.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zig-in-debian.html">Язык программирования Zig</a> — необходим для разработки с ZLS</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — современный терминал для разработки</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> — улучшенная навигация по файлам</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Zig-разработчиков, которым нужны современные возможности IDE, команд, работающих над большими Zig-проектами, всех, кто хочет автодополнение и навигацию в своём редакторе, и разработчиков, ценящих продуктивные среды разработки.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка последней версии ZLS Zig Language Server в Debian",
+    "description": "Полное руководство по установке последней версии ZLS Language Server в Debian с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ZLS",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "0.14.0+",
+        "description": "Реализация протокола языкового сервера для Zig, предоставляющая возможности IDE, такие как автодополнение и переход к определению"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

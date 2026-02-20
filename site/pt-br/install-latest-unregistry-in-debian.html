@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar a última versão do unregistry Ferramenta de Transferência de Imagens Docker no Debian | debian.griffo.io</title>
+    <meta name="description" content="Instale o último unregistry (v0.2.1+) no Debian - envie imagens Docker diretamente para servidores remotos sem registro externo. Obtenha pacotes atualizados com transferência SSH e deduplicação eficiente de camadas do debian.griffo.io.">
+    <meta name="keywords" content="unregistry debian, instalar unregistry debian, docker pussh, transferência de imagem docker, implantação de containers, pacotes debian, bookworm, trixie, sid, psviderski">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-unregistry-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-unregistry-in-debian.html">
+    <meta property="og:title" content="Instalar a última versão do unregistry Ferramenta de Transferência de Imagens Docker no Debian">
+    <meta property="og:description" content="Obtenha os pacotes mais atualizados do unregistry para Debian. Envie imagens Docker diretamente para servidores remotos sem registro externo usando transferência SSH.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .problem-box {
+            background: #ffe6e6;
+            border: 1px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .solution-box {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Este repositório é mantido por <u>uma única pessoa</u>, em seu tempo livre, sem <u>financiamento, equipe ou suporte externo</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Cada pacote e atualização é construído e publicado gratuitamente. Se estes pacotes economizam seu tempo, considere apoiar o projeto.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐳 Instalar a última versão do unregistry no Debian</h1>
+        <p class="subtitle">Envie imagens Docker diretamente para servidores remotos sem registro externo</p>
+        <div class="version-badge">Última Versão: 0.2.1+ (julho de 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o unregistry?</h2>
+        <p>unregistry é um <strong>registro leve de imagens de containers</strong> criado por Pasha Sviderski que armazena e serve imagens diretamente do armazenamento do daemon Docker. O comando <code>docker pussh</code> incluído permite enviar imagens diretamente para servidores Docker remotos via SSH, transferindo apenas as camadas ausentes para máxima eficiência.</p>
+
+        <div class="problem-box">
+            <strong>😤 Problemas na Implantação com Docker:</strong>
+            <ul>
+                <li><strong>Docker Hub/GHCR:</strong> Seu código fica público ou você paga por repositórios privados</li>
+                <li><strong>Registro auto-hospedado:</strong> Mais um serviço para manter, proteger e pagar</li>
+                <li><strong>Save/Load:</strong> Transfere a imagem inteira mesmo que 90% já exista no servidor</li>
+                <li><strong>Rebuild remoto:</strong> Desperdiça tempo e recursos do servidor, depurando builds de produção</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <strong>✅ A Solução unregistry:</strong> <code>docker pussh myapp:latest user@server</code> - É só isso! Sua imagem está no servidor remoto sem configuração de registro, sem assinatura, sem armazenamento intermediário, apenas transferência direta das camadas ausentes via SSH.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as últimas versões são importantes:</strong> o unregistry está em desenvolvimento ativo com lançamentos frequentes contendo melhorias de desempenho, tratamento SSH aprimorado, melhor integração com containerd e novos recursos de implantação. As versões mais recentes incluem deduplicação de camadas aprimorada e melhor suporte multi-plataforma.
+        </div>
+
+        <h3>⚡ Principais Recursos do unregistry</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Transferência Direta</h4>
+                <p>Envie imagens diretamente para servidores remotos via SSH. Sem registro intermediário, sem portas expostas, apenas transferência eficiente ponto a ponto.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Deduplicação de Camadas</h4>
+                <p>Transfere apenas as camadas ausentes, como rsync para imagens Docker. Se 90% da sua imagem já existe remotamente, apenas 10% é transferido.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Seguro por Design</h4>
+                <p>Usa SSH para autenticação e transporte. Sem portas de registro expostas, sem configuração de segurança adicional necessária.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Configuração Zero</h4>
+                <p>Sem infraestrutura de registro para manter. Funciona com qualquer servidor que tenha Docker e acesso SSH.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🏗️ Pronto para CI/CD</h4>
+                <p>Perfeito para pipelines de implantação. Construa localmente ou no CI, envie diretamente para servidores de produção sem a complexidade de um registro.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Multi-Plataforma</h4>
+                <p>Suporta imagens multi-plataforma com o armazenamento de imagens containerd. Implante imagens ARM e x86 de forma eficiente.</p>
+            </div>
+        </div>
+
+        <h3>🆕 Novidades no unregistry 0.2.1+</h3>
+        <ul>
+            <li><strong>Tratamento SSH Aprimorado:</strong> Melhor gerenciamento de conexão SSH e tratamento de erros</li>
+            <li><strong>Desempenho Melhorado:</strong> Transferência de camadas mais rápida e overhead reduzido</li>
+            <li><strong>Integração com Containerd:</strong> Melhor suporte e configuração para armazenamento de imagens containerd</li>
+            <li><strong>Suporte Multi-Plataforma:</strong> Suporte aprimorado para arquiteturas ARM e x86</li>
+            <li><strong>Recuperação de Erros:</strong> Melhor tratamento de interrupções de rede e falhas de transferência</li>
+            <li><strong>Documentação:</strong> Guias de configuração e informações de solução de problemas melhorados</li>
+        </ul>
+
+        <h2>📦 Instalação a partir do debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar unregistry</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install unregistry and docker-pussh
+sudo apt install unregistry docker-pussh
+
+# Verificar instalação
+docker pussh --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install unregistry and docker-pussh
+apt install unregistry docker-pussh
+
+# Verificar instalação
+docker pussh --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Envio simples de imagem:</strong></p>
+        <div class="code-block">
+# Build image locally
+docker build -t myapp:latest .
+
+# Push directly to remote server
+docker pussh myapp:latest user@server.example.com
+
+# That's it! Image is now available on remote server
+        </div>
+
+        <p><strong>Uso avançado:</strong></p>
+        <div class="code-block">
+# Push with SSH key
+docker pussh myapp:latest ubuntu@192.168.1.100 -i ~/.ssh/id_rsa
+
+# Custom SSH port
+docker pussh myapp:latest user@server:2222
+
+# Specific platform for multi-arch images
+docker pussh myapp:latest user@server --platform linux/amd64
+
+# Use in deployment script
+docker pussh myapp:$VERSION deploy@prod-server
+ssh deploy@prod-server docker run -d myapp:$VERSION
+        </div>
+
+        <p><strong>Integração com CI/CD:</strong></p>
+        <div class="code-block">
+# GitHub Actions example
+- name: Build and deploy
+  run: |
+    docker build -t myapp:${{ github.sha }} .
+    docker pussh myapp:${{ github.sha }} deploy@staging-server
+        </div>
+
+        <h2>🚀 Por que escolher o debian.griffo.io?</h2>
+
+        <div class="solution-box">
+            <strong>📊 Comparação de Instalação:</strong>
+            <ul>
+                <li><strong>Debian Oficial:</strong> Não disponível nos repositórios oficiais</li>
+                <li><strong>Script Manual:</strong> Requer atualizações manuais e gerenciamento de dependências</li>
+                <li><strong>Homebrew:</strong> Limitado a plataformas específicas</li>
+                <li><strong>debian.griffo.io:</strong> Última versão (0.2.1+) com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Últimos Recursos:</strong> Obtenha as mais novas melhorias de integração Docker e SSH</li>
+            <li>✅ <strong>Pacote Completo:</strong> unregistry e docker-pussh incluídos</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Pacotes atualizados em horas após lançamentos upstream</li>
+            <li>✅ <strong>Integração Correta:</strong> Configurado corretamente como plugin da CLI Docker</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Bookworm, Trixie e Sid</li>
+            <li>✅ <strong>Fácil Manutenção:</strong> Comandos apt padrão para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes do Debian são construídos e mantidos automaticamente nestes repositórios do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/unregistry-debian" target="_blank" rel="noopener">📠 unregistry-debian</a> - Latest release builds</li>
+            <li><a href="https://github.com/dariogriffo/docker-pussh-debian" target="_blank" rel="noopener">📡 docker-pussh-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no debian.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-lazydocker-in-debian.html">lazydocker</a> - Interface de terminal para gerenciamento Docker</li>
+            <li><a href="/pt-br/install-latest-uncloud-in-debian.html">uncloud</a> - Implantação de containers em múltiplos servidores</li>
+            <li><a href="/pt-br/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Busca aprimorada de comandos</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Engenheiros DevOps que implantam containers, desenvolvedores que querem distribuição simples de imagens, equipes que evitam a complexidade de registros, entusiastas de homelab e qualquer pessoa que precise de transferências eficientes de imagens Docker.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do unregistry Ferramenta de Transferência de Imagens Docker no Debian",
+    "description": "Guia completo para instalar a última versão da ferramenta unregistry no Debian usando o repositório debian.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "unregistry",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "0.2.1+",
+        "description": "Registro leve de imagens de containers para envio de imagens Docker diretamente para servidores remotos via SSH"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

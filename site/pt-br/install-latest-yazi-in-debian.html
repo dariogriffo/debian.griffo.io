@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Debian | debian.griffo.io</title>
+    <meta name="description" content="Instale o último Yazi (v25.5.31+) no Debian - gerenciador de arquivos de terminal extremamente rápido escrito em Rust com I/O assíncrono. Obtenha pacotes atualizados com visualização de imagens, plugins e recursos avançados do debian.griffo.io.">
+    <meta name="keywords" content="yazi debian, instalar yazi debian, gerenciador de arquivos de terminal, gerenciador de arquivos rust, gerenciador de arquivos assíncrono, pacotes debian, bookworm, trixie, sid">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-yazi-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-yazi-in-debian.html">
+    <meta property="og:title" content="Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Debian">
+    <meta property="og:description" content="Obtenha os pacotes mais atualizados do Yazi gerenciador de arquivos para Debian. Gerenciador de arquivos de terminal extremamente rápido com I/O assíncrono, visualização de imagens e sistema de plugins.">
+    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .performance-box {
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4facfe;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Este repositório é mantido por <u>uma única pessoa</u>, em seu tempo livre, sem <u>financiamento, equipe ou suporte externo</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Cada pacote e atualização é construído e publicado gratuitamente. Se estes pacotes economizam seu tempo, considere apoiar o projeto.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🦆 Instalar a última versão do Yazi no Debian</h1>
+        <p class="subtitle">Gerenciador de arquivos de terminal ultrarrápido escrito em Rust</p>
+        <div class="version-badge">Última Versão: 25.5.31+ (maio de 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o Yazi?</h2>
+        <p>Yazi (significa "pato" 🦆) é um <strong>gerenciador de arquivos de terminal extremamente rápido</strong> escrito em Rust, baseado em I/O assíncrono não bloqueante. Ele visa proporcionar uma experiência de gerenciamento de arquivos eficiente, amigável ao usuário e personalizável que supera os gerenciadores de arquivos tradicionais através de arquitetura moderna e recursos inovadores.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as últimas versões são importantes:</strong> o Yazi está evoluindo rapidamente com lançamentos frequentes contendo otimizações de desempenho, novos plugins, suporte aprimorado de visualização de imagens e melhorias de fluxo de trabalho. As versões mais recentes incluem grandes melhorias arquiteturais e novos recursos que melhoram significativamente a experiência do usuário.
+        </div>
+
+        <h3>⚡ Principais Recursos do Yazi</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Suporte Assíncrono Completo</h4>
+                <p>Todas as operações de I/O são assíncronas, tarefas de CPU distribuídas em múltiplas threads, aproveitando ao máximo os recursos disponíveis para desempenho extremamente rápido.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Visualização de Imagens</h4>
+                <p>Suporte integrado para múltiplos protocolos de imagem incluindo Kitty, iTerm2, Sixel e mais. Visualize imagens, vídeos, PDFs e código diretamente no terminal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Sistema de Plugins</h4>
+                <p>Sistema de plugins Lua concorrente com plugins de UI, plugins funcionais, visualizadores personalizados e um gerenciador de pacotes integrado.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📡 Distribuição de Dados</h4>
+                <p>Arquitetura cliente-servidor com modelo publish-subscribe baseado em Lua para comunicação entre instâncias e persistência de estado.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 Integração de Ferramentas</h4>
+                <p>Integração perfeita com ripgrep, fd, fzf, zoxide e outras ferramentas modernas de linha de comando para fluxos de trabalho aprimorados.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Personalização</h4>
+                <p>Sistema de temas, layouts personalizados, atalhos de teclado estilo Vim, suporte a mouse e amplas opções de configuração.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🏆 Por que o Yazi é Rápido</h4>
+            <ul>
+                <li><strong>I/O Assíncrono:</strong> Operações não bloqueantes evitam travamentos da UI</li>
+                <li><strong>Multithreading:</strong> Tarefas de CPU distribuídas entre threads</li>
+                <li><strong>Cache Inteligente:</strong> Mecanismos de pré-carregamento e armazenamento em cache</li>
+                <li><strong>Desempenho Rust:</strong> Linguagem de programação de sistemas com segurança de memória</li>
+                <li><strong>Renderização Otimizada:</strong> Algoritmos eficientes de renderização de terminal</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Novidades no Yazi 25.5.31+</h3>
+        <ul>
+            <li><strong>Sistema de Plugins Aprimorado:</strong> Arquitetura de plugins Lua melhorada com melhor desempenho</li>
+            <li><strong>Visualização de Imagens Avançada:</strong> Suporte para mais terminais e formatos de imagem</li>
+            <li><strong>Gerenciador de Pacotes:</strong> Instale e gerencie plugins com um comando</li>
+            <li><strong>Integração com Git:</strong> Exibição de status Git integrada e operações</li>
+            <li><strong>Operações em Massa:</strong> Renomeação em massa aprimorada e operações de arquivos</li>
+            <li><strong>Sistema de Arquivos Virtual:</strong> Suporte para arquivos compactados e sistemas de arquivos remotos</li>
+        </ul>
+
+        <h2>📦 Instalação a partir do debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar Yazi</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Yazi
+sudo apt install yazi
+
+# Verificar instalação
+yazi --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Yazi
+apt install yazi
+
+# Verificar instalação
+yazi --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Iniciar o Yazi:</strong></p>
+        <div class="code-block">
+# Start Yazi in current directory
+yazi
+
+# Start in specific directory
+yazi /path/to/directory
+
+# File chooser mode (returns selected file)
+yazi --chooser-file=/tmp/chosen
+        </div>
+
+        <p><strong>Atalhos de teclado essenciais:</strong></p>
+        <div class="code-block">
+# Navigation
+j/k or ↑/↓    - Move up/down
+h/l or ←/→    - Enter/exit directory
+g/G           - Go to top/bottom
+/             - Search files
+
+# File operations
+y             - Copy (yank)
+x             - Cut
+p             - Paste
+d             - Delete
+r             - Rename
+c             - Create file/directory
+
+# Views
+t             - New tab
+1-9           - Switch to tab
+z             - Toggle hidden files
+        </div>
+
+        <p><strong>Recursos avançados:</strong></p>
+        <div class="code-block">
+# Bulk operations
+space         - Select/deselect file
+v             - Visual mode selection
+ctrl+a        - Select all
+
+# Plugin management
+:             - Command mode
+:plugin       - Plugin operations
+
+# Integration
+:zoxide       - Jump with zoxide
+:fzf          - Fuzzy find files
+        </div>
+
+        <h2>🚀 Por que escolher o debian.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Comparação de Repositórios:</strong>
+            <ul>
+                <li><strong>Debian Oficial:</strong> Frequentemente versões desatualizadas sem os últimos recursos</li>
+                <li><strong>Cargo Install:</strong> Requer toolchain Rust e tempo de compilação</li>
+                <li><strong>debian.griffo.io:</strong> Última versão (25.5.31+) disponível imediatamente</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Últimos Recursos:</strong> Obtenha os mais novos recursos e melhorias de desempenho do Yazi</li>
+            <li>✅ <strong>Sem Compilação Rust:</strong> Binários pré-compilados, sem toolchain necessário</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Pacotes atualizados em horas após lançamentos upstream</li>
+            <li>✅ <strong>Dependências Corretas:</strong> Corretamente empacotado com todas as bibliotecas necessárias</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Bookworm, Trixie e Sid</li>
+            <li>✅ <strong>Pronto para Plugins:</strong> Inclui todas as dependências para o sistema de plugins</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes do Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/yazi-debian" target="_blank" rel="noopener">🦆 yazi-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no debian.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-eza-in-debian.html">eza</a> - Substituto moderno do ls (companheiro perfeito)</li>
+            <li><a href="/pt-br/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Integra com Yazi para busca de arquivos</li>
+            <li><a href="/pt-br/install-latest-zoxide-in-debian.html">zoxide</a> - Navegação inteligente de diretórios (integração Yazi)</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Usuários avançados que precisam de gerenciamento de arquivos rápido, desenvolvedores trabalhando com grandes bases de código, qualquer pessoa que queira gerenciamento moderno de arquivos de terminal com visualização de imagens e usuários que apreciam atalhos de teclado estilo Vim.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Debian",
+    "description": "Guia completo para instalar o último gerenciador de arquivos Yazi no Debian usando o repositório debian.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Yazi",
+        "applicationCategory": "File Manager",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "25.5.31+",
+        "description": "Gerenciador de arquivos de terminal ultrarrápido escrito em Rust com I/O assíncrono, visualização de imagens e sistema de plugins"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

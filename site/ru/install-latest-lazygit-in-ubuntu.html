@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка последней версии lazygit Terminal UI for Git в Ubuntu | debian.griffo.io</title>
+    <meta name="description" content="Установите последнюю версию lazygit (v0.54.1+) в Ubuntu — простой терминальный интерфейс для команд git. Получайте актуальные пакеты с интерактивным ребейзом, индексированием и улучшением рабочих процессов Git от debian.griffo.io.">
+    <meta name="keywords" content="lazygit ubuntu, установить lazygit ubuntu, терминальный интерфейс git, git tui, интерактивный git, пакеты ubuntu, jammy, noble, jesse duffield">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-lazygit-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-lazygit-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-lazygit-in-ubuntu.html">
+    <meta property="og:title" content="Установка последней версии lazygit Terminal UI for Git в Ubuntu">
+    <meta property="og:description" content="Получайте актуальные пакеты lazygit для Ubuntu. Простой терминальный интерфейс для команд git с интерактивными функциями и улучшениями рабочего процесса.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+
+        .install-steps {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .pain-point-box {
+            background: #ffe6e6;
+            border: 1px solid #ff6b6b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #667eea;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-button:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .tabs { flex-direction: column; gap: 5px; }
+            .tab-button { padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Этот репозиторий поддерживается <u>одним человеком</u>, в свободное время, без <u>финансирования, команды или внешней поддержки</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Каждый пакет и обновление собирается и публикуется бесплатно. Если эти пакеты экономят вам время, рассмотрите возможность поддержки проекта.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐢 Установка последней версии lazygit в Ubuntu</h1>
+        <p class="subtitle">Простой терминальный интерфейс для команд git</p>
+        <div class="version-badge">Последняя версия: 0.54.1+ (август 2025)</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое lazygit?</h2>
+        <p>lazygit — это <strong>простой терминальный интерфейс для команд git</strong>, созданный Джесси Даффилдом. Он превращает сложные операции Git в интуитивные визуальные взаимодействия, делая контроль версий доступным и эффективным для разработчиков любого уровня. Набрав более 63 тысяч звёзд на GitHub, он стал основным Git TUI для разработчиков по всему миру.</p>
+
+        <div class="pain-point-box">
+            <strong>😤 Решение проблем Git:</strong> Устали редактировать TODO-файлы для интерактивного ребейза? Раздражают непонятные файлы патчей для индексирования? Надоели сложные рабочие процессы Git в командной строке? lazygit делает операции Git визуальными, интуитивными и действительно приятными в использовании.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> lazygit активно развивается с частыми релизами, содержащими новые функции, улучшения производительности и улучшения рабочих процессов. Последние версии включают улучшенный интерактивный ребейз, лучшее разрешение конфликтов, расширенные пользовательские команды и критические исправления ошибок.
+        </div>
+
+        <h3>⚡ Ключевые возможности lazygit</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📝 Визуальное индексирование</h4>
+                <p>Индексируйте отдельные строки или куски простыми нажатиями клавиш. Никакого сложного редактирования патчей — просто нажмите пробел, чтобы проиндексировать нужное.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Интерактивный ребейз</h4>
+                <p>Сквошите, fixup, дропайте, редактируйте и переупорядочивайте коммиты с интуитивными сочетаниями клавиш. Редактирование TODO-файлов не требуется.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🍒 Cherry-picking</h4>
+                <p>Копируйте и вставляйте коммиты между ветками с помощью shift+c и shift+v. Визуальный выбор и применение коммитов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Git Bisect</h4>
+                <p>Визуальный интерфейс git bisect для быстрого нахождения проблемных коммитов. Помечайте коммиты как хорошие/плохие простыми нажатиями клавиш.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌳 Worktree</h4>
+                <p>Создавайте и управляйте Git worktree для одновременной работы с несколькими ветками без stash или WIP-коммитов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Пользовательские команды</h4>
+                <p>Расширяемая система пользовательских команд для добавления собственных рабочих процессов Git и сочетаний клавиш прямо в интерфейс.</p>
+            </div>
+        </div>
+
+        <h3>🆕 Что нового в lazygit 0.54.1+</h3>
+        <ul>
+            <li><strong>Улучшенная магия ребейза:</strong> Пользовательские патчи для расширенной манипуляции коммитами</li>
+            <li><strong>Улучшенное разрешение конфликтов:</strong> Лучшая обработка и визуализация конфликтов слияния</li>
+            <li><strong>Система отмены/повтора:</strong> Нажмите 'z' для отмены и 'ctrl+z' для повтора операций Git</li>
+            <li><strong>Визуализация графа коммитов:</strong> Визуальная история коммитов с цветами авторов и связями</li>
+            <li><strong>Режим Diff:</strong> Визуальное сравнение любых двух коммитов, веток или ссылок</li>
+            <li><strong>Фильтрация представлений:</strong> Нажмите '/' для фильтрации веток, коммитов и файлов</li>
+        </ul>
+
+        <h2>📦 Установка из debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить lazygit</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest lazygit
+sudo apt install lazygit
+
+# Проверить установку
+lazygit --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest lazygit
+apt install lazygit
+
+# Проверить установку
+lazygit --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Запуск lazygit:</strong></p>
+        <div class="code-block">
+# Start lazygit in current Git repository
+lazygit
+
+# Create alias for convenience
+echo "alias lg='lazygit'" >> ~/.bashrc
+source ~/.bashrc
+
+# Now use the alias
+lg
+        </div>
+
+        <p><strong>Основные сочетания клавиш:</strong></p>
+        <div class="code-block">
+# Навигация
+j/k или ↑/↓    - Вверх/вниз
+h/l или ←/→    - Переключение между панелями
+tab            - Следующая панель
+shift+tab      - Предыдущая панель
+
+# Индексирование
+space          - Проиндексировать/снять индексацию файла или куска
+a              - Проиндексировать все изменения в файле
+v              - Начать визуальное выделение
+
+# Коммиты
+c              - Зафиксировать проиндексированные изменения
+shift+c        - Скопировать коммит (cherry-pick)
+shift+v        - Вставить коммит
+
+# Ребейз
+i              - Начать интерактивный ребейз
+s              - Сквошить коммит
+f              - Fixup-коммит
+d              - Дропнуть коммит
+        </div>
+
+        <p><strong>Расширенные рабочие процессы:</strong></p>
+        <div class="code-block">
+# Отмена/повтор
+z              - Отменить последнее действие
+ctrl+z         - Повторить последнее отменённое действие
+
+# Worktrees
+w              - Создать worktree из ветки
+
+# Фильтрация
+/              - Фильтровать текущее представление
+
+# Пользовательские команды
+:              - Открыть командную строку
+        </div>
+
+        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+
+        <div class="pain-point-box">
+            <strong>📊 Сравнение версий:</strong>
+            <ul>
+                <li><strong>Официальный Debian Trixie/Sid:</strong> Доступен, но часто устаревший</li>
+                <li><strong>Debian Bookworm:</strong> Не доступен в официальных репозиториях</li>
+                <li><strong>debian.griffo.io:</strong> Последняя версия (0.54.1+) доступна немедленно</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие функции lazygit и улучшения рабочих процессов</li>
+            <li>✅ <strong>Все дистрибутивы:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выхода апстрима</li>
+            <li>✅ <strong>Без ручной компиляции:</strong> Готовые бинарные файлы Go, цепочка инструментов не нужна</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упакован с Git и зависимостями терминала</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Простые команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lazygit-debian" target="_blank" rel="noopener">🐢 lazygit-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из debian.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> — терминальный интерфейс для Docker (тот же автор)</li>
+            <li><a href="/ru/install-latest-ghostty-in-ubuntu.html">Терминал Ghostty</a> — современный эмулятор терминала</li>
+            <li><a href="/ru/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> — улучшенный поиск по командам</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> разработчиков, которые хотят сделать операции Git визуальными и интуитивными, команд, желающих улучшить рабочие процессы Git, тех, кого раздражают сложные операции Git в командной строке, и пользователей, предпочитающих TUI-приложения.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка последней версии lazygit Terminal UI for Git в Ubuntu",
+    "description": "Полное руководство по установке последней версии терминального интерфейса lazygit в Ubuntu с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "lazygit",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "0.54.1+",
+        "description": "Простой терминальный интерфейс для команд git с интерактивными функциями и визуальными операциями Git"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

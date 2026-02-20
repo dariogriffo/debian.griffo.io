@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar a última versão do Ghostty Terminal Emulator no Ubuntu | debian.griffo.io</title>
+    <meta name="description" content="Instale o emulador de terminal Ghostty (v1.0+) mais recente no Ubuntu. Terminal rápido e acelerado por GPU com interface nativa e recursos modernos. Obtenha pacotes atualizados no debian.griffo.io para Jammy e Noble.">
+    <meta name="keywords" content="ghostty ubuntu, instalar ghostty ubuntu, última versão ghostty, emulador terminal GPU, terminal rápido, pacotes ubuntu, jammy, noble">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-ghostty-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-ghostty-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-ghostty-in-ubuntu.html">
+    <meta property="og:title" content="Instalar a última versão do Ghostty Terminal Emulator no Ubuntu">
+    <meta property="og:description" content="Obtenha os pacotes do emulador de terminal Ghostty mais atualizados para Ubuntu. Desempenho acelerado por GPU com interface nativa e recursos de terminal modernos.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { text-align: center; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 40px 20px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); margin-bottom: 30px; }
+        .header h1 { font-size: 2.8em; margin: 0 0 10px 0; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2em; color: #666; margin-bottom: 20px; }
+        .version-badge { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px 20px; border-radius: 25px; font-weight: 600; display: inline-block; margin: 10px 0; }
+        .content { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); margin-bottom: 30px; }
+        .highlight-box { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; font-weight: 500; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .feature-card { background: #f8f9fa; padding: 20px; border-radius: 15px; border-left: 4px solid #667eea; }
+        .code-block { background: #2d3748; color: #e2e8f0; padding: 20px; border-radius: 10px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; overflow-x: auto; margin: 20px 0; white-space: pre-wrap; }
+        .install-steps { background: #e8f5e8; border: 1px solid #4caf50; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .performance-box { background: #f0f8ff; border: 1px solid #4facfe; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #4facfe; }
+        .back-link { display: inline-block; background: #667eea; color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none; margin-bottom: 20px; transition: background 0.3s ease; }
+        .back-link:hover { background: #764ba2; text-decoration: none; }
+        h2 { color: #333; font-size: 2em; margin-top: 0; }
+        h3 { color: #667eea; font-size: 1.4em; margin: 25px 0 15px 0; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; }
+        .tab-button { background: transparent; border: none; padding: 12px 24px; font-size: 1em; font-weight: 500; color: #666; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s ease; font-family: inherit; }
+        .tab-button:hover { color: #667eea; background: rgba(102, 126, 234, 0.05); }
+        .tab-button.active { color: #667eea; border-bottom-color: #667eea; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        @media (max-width: 768px) { .header h1 { font-size: 2.2em; } .feature-grid { grid-template-columns: 1fr; } .content { padding: 20px; } .tabs { flex-direction: column; gap: 5px; } .tab-button { padding: 10px 16px; } }
+    </style>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%); padding: 20px 24px; text-align: center; border-bottom: 4px solid #e55a2b; box-shadow: 0 4px 20px rgba(255, 107, 53, 0.5);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p style="margin: 0 0 6px 0; font-size: 1.1em; font-weight: 800; color: #1a0800; letter-spacing: 0.3px;">
+            ⚠️ Este repositório é mantido por <u>uma única pessoa</u>, em seu tempo livre, sem <u>financiamento, equipe ou suporte externo</u>.
+        </p>
+        <p style="margin: 0 0 14px 0; font-size: 0.95em; color: #2d1500; font-weight: 500;">
+            Cada pacote e atualização é construído e publicado gratuitamente. Se estes pacotes economizam seu tempo, considere apoiar o projeto.
+        </p>
+        <a href="https://www.buymeacoffee.com/dariogriffo">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=dariogriffo&button_colour=1a0800&font_colour=ffffff&font_family=Cookie&outline_colour=1a0800&coffee_colour=FFDD00" alt="Buy me a coffee" />
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>👻 Instalar a última versão do Ghostty Terminal no Ubuntu</h1>
+        <p class="subtitle">Emulador de terminal rápido e acelerado por GPU com interface nativa</p>
+        <div class="version-badge">Última Versão: 1.0+ (Lançado em dezembro de 2024)</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o Ghostty?</h2>
+        <p>O Ghostty é um <strong>emulador de terminal rápido, rico em recursos e multiplataforma</strong> que usa interface nativa da plataforma e aceleração por GPU. Criado por Mitchell Hashimoto (fundador da HashiCorp), o Ghostty se diferencia por oferecer velocidade, recursos e experiência nativa sem forçar você a escolher entre eles.</p>
+
+        <div class="highlight-box">
+            <strong>As atualizações do Ghostty estarão disponíveis apenas no Trixie e versões mais recentes do Debian.</strong>
+            <strong>O Bookworm não será atualizado além da versão 1.1.3</strong>
+        </div>
+
+        <h3>⚡ Principais Recursos do Ghostty</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎮 Aceleração por GPU</h4>
+                <p>Usa OpenGL no Linux e Metal no macOS para renderização acelerada por hardware. Mantém 60fps sob carga pesada com desempenho superior.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Interface Nativa</h4>
+                <p>Experiência verdadeiramente nativa da plataforma. SwiftUI no macOS, GTK no Linux. Janelas reais, barras de menu e painéis de configurações nativos.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Conforme com Padrões</h4>
+                <p>Um dos emuladores de terminal mais conformes disponíveis. Compatibilidade abrangente com xterm e inovações modernas de terminal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Recursos Avançados</h4>
+                <p>Suporte a múltiplas janelas, abas, divisões, ligaduras e opções extensas de personalização sem sacrificar o desempenho.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🏆 Benchmarks de Desempenho</h4>
+            <ul>
+                <li><strong>4x mais rápido</strong> que iTerm e Kitty para renderização de texto grande</li>
+                <li><strong>2x mais rápido</strong> que Terminal.app para operações de IO</li>
+                <li><strong>Competitivo com Alacritty</strong> enquanto oferece recursos muito mais ricos</li>
+                <li><strong>Renderização a 60fps</strong> mantida sob carga pesada</li>
+                <li><strong>IO com baixa latência</strong> com thread de IO dedicada</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Novidades no Ghostty 1.0+</h3>
+        <ul>
+            <li><strong>Lançamento Estável:</strong> Pronto para produção após 2+ anos de desenvolvimento</li>
+            <li><strong>Arquitetura Multi-Renderizador:</strong> OpenGL no Linux, Metal no macOS</li>
+            <li><strong>Janelas Avançadas:</strong> Suporte a múltiplas janelas, abas e divisões</li>
+            <li><strong>libghostty:</strong> Biblioteca de terminal incorporável para outras aplicações</li>
+            <li><strong>Relatório de Falhas Integrado:</strong> Detecção e relatório automático de falhas</li>
+            <li><strong>Multiplataforma:</strong> Experiência consistente entre Linux e macOS</li>
+        </ul>
+
+        <h2>📦 Instalação a partir do debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o Ghostty</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Instalar a última versão do Ghostty
+sudo apt install ghostty
+
+# Verificar instalação
+ghostty --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Instalar a última versão do Ghostty
+apt install ghostty
+
+# Verificar instalação
+ghostty --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Iniciar o Ghostty:</strong></p>
+        <div class="code-block">
+# Iniciar o terminal Ghostty
+ghostty
+
+# Iniciar com configuração específica
+ghostty --config-file ~/.config/ghostty/config
+
+# Abrir nova janela
+ghostty --new-window
+        </div>
+
+        <p><strong>Exemplo de Configuração:</strong></p>
+        <div class="code-block">
+# Criar diretório de configuração
+mkdir -p ~/.config/ghostty
+
+# Configuração básica (~/.config/ghostty/config)
+font-family = "JetBrains Mono"
+font-size = 12
+theme = "dark"
+window-padding-x = 10
+window-padding-y = 10
+        </div>
+
+        <h2>🚀 Por que escolher o debian.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>⚠️ Status no Ubuntu Oficial:</strong> O Ghostty é um projeto muito novo (1.0 lançado em dezembro de 2024) e ainda não está disponível nos repositórios oficiais do Ubuntu. O debian.griffo.io fornece acesso imediato às últimas versões estáveis.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Acesso Imediato:</strong> Obtenha o Ghostty 1.0+ agora mesmo, sem esperar pelo empacotamento oficial</li>
+            <li>✅ <strong>Últimos Recursos:</strong> Acesse as mais recentes melhorias de desempenho e recursos</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Pacotes atualizados em horas após os lançamentos upstream</li>
+            <li>✅ <strong>Dependências Corretas:</strong> Corretamente empacotado com dependências GTK e gráficas</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Sem Compilação:</strong> Binários pré-compilados, sem necessidade de compilar a partir do código-fonte</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ghostty-debian" target="_blank" rel="noopener">👻 ghostty-debian</a> - Compilações da última versão</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no debian.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-zig-in-ubuntu.html">Linguagem de Programação Zig</a> - O Ghostty é escrito em Zig</li>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Gerenciador de Arquivos Yazi</a> - Companheiro perfeito para fluxos de trabalho no terminal</li>
+            <li><a href="/pt-br/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Navegação aprimorada no terminal</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Desenvolvedores que desejam a experiência de terminal mais rápida, usuários migrando do iTerm/Kitty/Alacritty, qualquer pessoa que precise de desempenho acelerado por GPU com integração nativa da plataforma.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Ghostty Terminal Emulator no Ubuntu",
+    "description": "Guia completo para instalar o emulador de terminal Ghostty mais recente no Ubuntu usando o repositório debian.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Ghostty Terminal Emulator",
+        "applicationCategory": "Terminal Emulator",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "1.0+",
+        "description": "Emulador de terminal rápido, rico em recursos e multiplataforma com aceleração por GPU e interface nativa"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>
