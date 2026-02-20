@@ -552,6 +552,34 @@ apt installer zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
 
     </section>
 
+    <section>
+        <h2>🔍 Parcourir le dépôt de paquets</h2>
+        <p>Vous pouvez parcourir le dépôt de paquets directement sur <a href="https://debian.griffo.io/apt/dists/" target="_blank" rel="noopener">https://debian.griffo.io/apt/dists/</a>. Cela vous permet d'explorer les distributions disponibles, les composants et les fichiers de paquets individuels sans avoir à ajouter le dépôt au préalable.</p>
+
+        <h3>Structure des répertoires</h3>
+        <p>Le dépôt suit la disposition standard des dépôts Debian :</p>
+        <div class="installation-code">
+https://debian.griffo.io/apt/dists/           ← index des distributions
+https://debian.griffo.io/apt/dists/bookworm/  ← Debian Bookworm (12)
+https://debian.griffo.io/apt/dists/trixie/    ← Debian Trixie (13)
+https://debian.griffo.io/apt/dists/forky/     ← Debian Forky (testing)
+https://debian.griffo.io/apt/dists/sid/       ← Debian Sid (unstable)
+https://debian.griffo.io/apt/dists/jammy/     ← Ubuntu Jammy (22.04 LTS)
+https://debian.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</div>
+
+        <h3>Rechercher des paquets après l'ajout du dépôt</h3>
+        <p>Une fois le dépôt ajouté, vous pouvez utiliser les outils <code>apt</code> standard pour explorer les paquets disponibles :</p>
+        <div class="installation-code">
+# Lister tous les paquets fournis par ce dépôt
+apt-cache search --names-only '' | grep -v '^lib'
+
+# Afficher les détails d'un paquet spécifique
+apt-cache show zig
+
+# Vérifier quelle version sera installée et depuis quelle source
+apt-cache policy zig</div>
+    </section>
+
     <header>
         <h2 style="margin-top: 40px;">📦 Available Packages</h2>
         <div class="packages-grid">

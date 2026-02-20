@@ -552,6 +552,34 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle
 
     </section>
 
+    <section>
+        <h2>🔍 Explorar el repositorio de paquetes</h2>
+        <p>Puede explorar el repositorio de paquetes directamente en <a href="https://debian.griffo.io/apt/dists/" target="_blank" rel="noopener">https://debian.griffo.io/apt/dists/</a>. Esto le permite ver las distribuciones disponibles, los componentes y los archivos de paquetes individuales sin necesidad de agregar el repositorio primero.</p>
+
+        <h3>Estructura de directorios</h3>
+        <p>El repositorio sigue el diseño estándar de repositorios Debian:</p>
+        <div class="installation-code">
+https://debian.griffo.io/apt/dists/           ← índice de distribuciones
+https://debian.griffo.io/apt/dists/bookworm/  ← Debian Bookworm (12)
+https://debian.griffo.io/apt/dists/trixie/    ← Debian Trixie (13)
+https://debian.griffo.io/apt/dists/forky/     ← Debian Forky (testing)
+https://debian.griffo.io/apt/dists/sid/       ← Debian Sid (unstable)
+https://debian.griffo.io/apt/dists/jammy/     ← Ubuntu Jammy (22.04 LTS)
+https://debian.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</div>
+
+        <h3>Buscar paquetes tras agregar el repositorio</h3>
+        <p>Una vez agregado el repositorio, puede usar las herramientas estándar de <code>apt</code> para explorar los paquetes disponibles:</p>
+        <div class="installation-code">
+# Listar todos los paquetes de este repositorio
+apt-cache search --names-only '' | grep -v '^lib'
+
+# Mostrar detalles de un paquete específico
+apt-cache show zig
+
+# Verificar qué versión se instalará y desde qué fuente
+apt-cache policy zig</div>
+    </section>
+
     <header>
         <h2 style="margin-top: 40px;">📦 Paquetes Disponibles</h2>
         <div class="packages-grid">

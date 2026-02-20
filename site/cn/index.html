@@ -554,6 +554,34 @@ sudo apt install bun             # JavaScript 运行时和工具包
         </div>
     </section>
 
+    <section>
+        <h2>🔍 浏览软件包池</h2>
+        <p>您可以直接在 <a href="https://debian.griffo.io/apt/dists/" target="_blank" rel="noopener">https://debian.griffo.io/apt/dists/</a> 浏览软件包池。这让您无需先添加仓库，即可探索可用的发行版、组件和单个软件包文件。</p>
+
+        <h3>目录结构</h3>
+        <p>该仓库遵循标准 Debian 仓库布局：</p>
+        <div class="installation-code">
+https://debian.griffo.io/apt/dists/           ← 发行版索引
+https://debian.griffo.io/apt/dists/bookworm/  ← Debian Bookworm (12)
+https://debian.griffo.io/apt/dists/trixie/    ← Debian Trixie (13)
+https://debian.griffo.io/apt/dists/forky/     ← Debian Forky (testing)
+https://debian.griffo.io/apt/dists/sid/       ← Debian Sid (unstable)
+https://debian.griffo.io/apt/dists/jammy/     ← Ubuntu Jammy (22.04 LTS)
+https://debian.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</div>
+
+        <h3>添加仓库后搜索软件包</h3>
+        <p>添加仓库后，您可以使用标准 <code>apt</code> 工具探索可用软件包：</p>
+        <div class="installation-code">
+# 列出此仓库提供的所有软件包
+apt-cache search --names-only '' | grep -v '^lib'
+
+# 显示特定软件包的详细信息
+apt-cache show zig
+
+# 检查将安装哪个版本以及来自哪个源
+apt-cache policy zig</div>
+    </section>
+
     <header>
         <h2 style="margin-top: 40px;">📦 可用软件包</h2>
         <div class="packages-grid">
