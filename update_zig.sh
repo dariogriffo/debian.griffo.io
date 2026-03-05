@@ -1,11 +1,12 @@
 REPO=zig-debian
 PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
-ARCHITECTURES="amd64,arm64,armel,armhf,ppc64el,s390x,riscv64,i386"
+ARCHITECTURES="amd64,arm64,armel,ppc64el,s390x,riscv64,i386,loong64"
+
+PACKAGE_NAME=zig-zero
+find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
 PACKAGE_NAME=zig
-find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
-PACKAGE_NAME=zig-zero
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
 PACKAGE_NAME=zig
