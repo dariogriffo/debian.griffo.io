@@ -12,3 +12,5 @@ cd ${PWD}
 
 ARCHITECTURES="amd64,arm64,armhf,ppc64el,s390x,riscv64"
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+

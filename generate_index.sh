@@ -26,4 +26,7 @@ cd -
 cd dists/noble
 cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
 cd -
+cd dists/questing
+cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
+cd -
 cd $current
