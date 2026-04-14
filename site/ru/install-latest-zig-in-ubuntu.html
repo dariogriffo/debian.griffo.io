@@ -305,7 +305,25 @@ apt update
             </div>
         </div>
 
-        <div class="install-steps">
+                <div class="warning-box" style="border-left-color: #e74c3c; background: #fdf2f2;">
+            <strong>⚠️ Breaking Change — New Package Structure</strong><br><br>
+            This repository uses <a href="https://salsa.debian.org/brlink/reprepro" target="_blank" rel="noopener">reprepro</a>,
+            which is configured to keep only the <strong>latest version</strong> of each package.
+            This means older builds are replaced when a new release ships — you cannot
+            pin a specific version with <code>apt install zig=0.15.2</code> after 0.16.0 has been published.<br><br>
+            To let users keep a previous release installed alongside the current one, packages are now
+            named by <strong>stability tier</strong>:
+            <ul style="margin: 10px 0 0 0;">
+                <li><code>zig</code> — meta-package, always pulls in <code>zig-stable</code></li>
+                <li><code>zig-stable</code> — current stable release (e.g. 0.16.0)</li>
+                <li><code>zig-oldstable</code> — previous stable release (e.g. 0.15.2), installable alongside <code>zig-stable</code></li>
+                <li><code>zig-0</code> — <strong>deprecated</strong>, install <code>zig-stable</code> instead</li>
+            </ul>
+            <code>zig-stable</code> and <code>zig-oldstable</code> register with <code>update-alternatives</code>
+            so you can switch the active <code>/usr/bin/zig</code> at any time.
+        </div>
+
+<div class="install-steps">
             <h3>Шаг 2: Установить Zig</h3>
 
             <div class="tabs">

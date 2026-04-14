@@ -35,7 +35,7 @@ Since Debian has a freeze and slow release policy, this repository provides **th
 
 Each package is built through dedicated GitHub repositories with automated CI/CD:
 
-- [zig-debian](https://github.com/dariogriffo/zig-debian) - Zig stable releases
+- [zig-debian](https://github.com/dariogriffo/zig-debian) - Zig stable & oldstable releases
 - [zig-master-debian](https://github.com/dariogriffo/zig-master-debian) - Zig nightly builds
 - [zls-debian](https://github.com/dariogriffo/zls-debian) - ZLS stable releases
 - [zls-master-debian](https://github.com/dariogriffo/zls-master-debian) - ZLS nightly builds
@@ -84,10 +84,11 @@ sudo apt update
 
 ```bash
 # Programming Languages & Tools
-sudo apt install -y zig          # Latest stable Zig
-sudo apt install -y zig-master   # Nightly Zig builds
-sudo apt install -y zls          # Zig Language Server (stable)
-sudo apt install -y zls-master   # Zig Language Server (nightly)
+sudo apt install -y zig             # Current stable Zig (meta-package → zig-stable)
+sudo apt install -y zig-oldstable   # Previous stable Zig (installable alongside zig-stable)
+sudo apt install -y zig-master      # Nightly Zig builds
+sudo apt install -y zls             # Zig Language Server (stable)
+sudo apt install -y zls-master      # Zig Language Server (nightly)
 
 # Terminal & File Management
 sudo apt install -y ghostty      # Modern terminal emulator
@@ -120,7 +121,7 @@ sudo apt install -y bun-profile  # Bun with profile support
 sudo apt install -y tigerbeetle  # Financial transactions database
 
 # Install everything at once
-sudo apt install -y zig ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle
 ```
 
 ## ⚠️ Important Information
@@ -136,6 +137,25 @@ This repository focuses exclusively on **unofficial Debian packaging**. For issu
 
 ### Important Notice
 📅 **March 4th, 2025** - Public key was updated. Please run the setup commands above to update your system with the new GPG key.
+
+### ⚠️ Breaking Change — Zig Package Restructure
+
+This repository is powered by [reprepro](https://salsa.debian.org/brlink/reprepro), configured to keep only the **latest version** of each package. Older builds are replaced when a new release is published — `apt install zig=0.15.2` will not work once 0.16.0 has shipped.
+
+To allow installing multiple versions side by side, Zig packages are now named by **stability tier**:
+
+| Package | Description |
+|---|---|
+| `zig` | Meta-package — always installs `zig-stable` |
+| `zig-stable` | Current stable release (e.g. 0.16.0) |
+| `zig-oldstable` | Previous stable release (e.g. 0.15.2), co-installable with `zig-stable` |
+| `zig-0` | **Deprecated** — install `zig-stable` instead |
+
+When both `zig-stable` and `zig-oldstable` are installed, `update-alternatives` controls which one `/usr/bin/zig` points to (`zig-stable` wins by default). Switch with:
+
+```bash
+sudo update-alternatives --config zig
+```
 
 ---
 
