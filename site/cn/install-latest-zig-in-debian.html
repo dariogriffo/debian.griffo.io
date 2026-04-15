@@ -263,14 +263,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in Zig 0.15.2</h3>
+        <h3>🆕 Zig 0.16.0 新特性</h3>
         <ul>
-            <li><strong>Labeled Switch Statements:</strong> New control flow for finite state machines and performance-critical code</li>
-            <li><strong>Enhanced x86 Backend:</strong> 98% test suite compatibility with dramatically faster compilation</li>
-            <li><strong>Incremental Compilation:</strong> Experimental support for faster edit-compile-debug cycles</li>
-            <li><strong>File System Watching:</strong> Automatic rebuilds when source files change</li>
-            <li><strong>Improved Target Support:</strong> Better support for ARM, MIPS, PowerPC, and RISC-V architectures</li>
-            <li><strong>Enhanced Build System:</strong> More flexible module system and better dependency management</li>
+            <li><strong>I/O 作为接口：</strong>所有 I/O 现在需要传入 <code>Io</code> 实例，支持线程、事件驱动和异步后端</li>
+            <li><strong>异步与取消：</strong>内置任务并发（Futures 和 Groups），以及跨所有 I/O 操作的标准化取消机制</li>
+            <li><strong>新元编程内置函数：</strong><code>@Type</code> 被专用内置函数替代（<code>@Int</code>、<code>@Struct</code>、<code>@Union</code>、<code>@Enum</code> 等），泛型代码更简洁</li>
+            <li><strong>原生 Deflate 压缩：</strong>内置 deflate 压缩，性能与 zlib 相当，解压 API 更简洁</li>
+            <li><strong>更好的堆栈追踪：</strong>几乎所有平台均支持安全的栈展开，调试信息更完整，支持内联调用者</li>
+            <li><strong>扩展目标平台支持：</strong>CI 新增 8+ 架构，包括 aarch64-freebsd、loongarch64、powerpc64le 和 s390x</li>
         </ul>
 
         <h2>📦 从 debian.griffo.io 安装</h2>
