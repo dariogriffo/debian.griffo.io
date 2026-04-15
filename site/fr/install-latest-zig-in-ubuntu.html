@@ -300,6 +300,28 @@ apt update
             </div>
         </div>
 
+        <div class="warning-box" style="border-left-color: #e74c3c; background: #fdf2f2;">
+            <strong>⚠️ Breaking Change — Nouvelle structure de paquets</strong><br><br>
+            Ce dépôt utilise <a href="https://salsa.debian.org/brlink/reprepro" target="_blank" rel="noopener">reprepro</a>,
+            configuré pour ne conserver que la <strong>dernière version</strong> de chaque paquet.
+            Les anciennes versions sont remplacées lors d'une nouvelle publication — vous ne pouvez pas
+            épingler une version spécifique avec <code>apt install zig=0.15.2</code> après la publication de 0.16.0.<br><br>
+            Pour permettre aux utilisateurs de garder une version précédente installée en parallèle, les paquets sont désormais
+            nommés par <strong>niveau de stabilité</strong> :
+            <ul style="margin: 10px 0 0 0;">
+                <li><code>zig</code> — méta-paquet, installe toujours <code>zig-stable</code></li>
+                <li><code>zig-stable</code> — version stable actuelle (ex. 0.16.0)</li>
+                <li><code>zig-oldstable</code> — version stable précédente (ex. 0.15.2), installable en parallèle avec <code>zig-stable</code></li>
+                <li><code>zig-0</code> — <strong>obsolète</strong>, installez <code>zig-stable</code> à la place</li>
+            </ul>
+            <code>zig-stable</code> et <code>zig-oldstable</code> s'enregistrent avec <code>update-alternatives</code>
+            pour vous permettre de basculer le <code>/usr/bin/zig</code> actif à tout moment.<br><br>
+            <strong>⬆️ Mise à niveau vers 0.16.0 :</strong> Si vous avez <code>zig-0</code> installé depuis l'ancienne structure de paquets, vous devez d'abord le supprimer :<br>
+            <div class="code-block">apt update &amp;&amp; apt remove zig zig-0 &amp;&amp; apt install zig</div>
+            Pour installer également la version stable précédente (0.15.2) en parallèle avec 0.16.0 :<br>
+            <div class="code-block">apt install zig-oldstable</div>
+        </div>
+
         <div class="installer-steps">
             <h3>Étape 2 : Installer Zig</h3>
 

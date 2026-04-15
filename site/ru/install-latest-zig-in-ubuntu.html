@@ -320,7 +320,11 @@ apt update
                 <li><code>zig-0</code> — <strong>deprecated</strong>, install <code>zig-stable</code> instead</li>
             </ul>
             <code>zig-stable</code> and <code>zig-oldstable</code> register with <code>update-alternatives</code>
-            so you can switch the active <code>/usr/bin/zig</code> at any time.
+            so you can switch the active <code>/usr/bin/zig</code> at any time.<br><br>
+            <strong>⬆️ Обновление до 0.16.0:</strong> Если у вас установлен <code>zig-0</code> из старой структуры пакетов, сначала удалите его:<br>
+            <div class="code-block">apt update &amp;&amp; apt remove zig zig-0 &amp;&amp; apt install zig</div>
+            Чтобы также установить предыдущую стабильную версию (0.15.2) рядом с 0.16.0:<br>
+            <div class="code-block">apt install zig-oldstable</div>
         </div>
 
 <div class="install-steps">
