@@ -8,6 +8,7 @@ BUILD_VERSION=${2:-1}
 # `libghostty-vt0_*` does NOT match `libghostty-vt0-tip_*`.
 find deb/ -mindepth 2 -type f \( \
     -name "ghostty_*.deb" \
+    -o -name "ghostty-dbgsym_*.deb" \
     -o -name "libghostty-vt0_*.deb" \
     -o -name "libghostty-vt-dev_*.deb" \
   \) -delete
