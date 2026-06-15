@@ -1,46 +1,35 @@
-current=`pwd`
-reprepro=$current/reprepro
-cd apt
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb bookworm $current/deb/bookworm/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb trixie $current/deb/trixie/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb forky $current/deb/forky/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb sid $current/deb/sid/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb jammy $current/deb/jammy/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb noble $current/deb/noble/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb questing $current/deb/questing/*deb
-reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedeb resolute $current/deb/resolute/*deb
+#!/bin/bash
+set -e
 
-for DIST in bookworm trixie forky sid jammy noble questing resolute; do
-    DSC_FILES=$(ls $current/src/*~${DIST}.dsc 2>/dev/null)
-    if [ -n "$DSC_FILES" ]; then
-        for DSC in $DSC_FILES; do
-            reprepro --dbdir $reprepro/db --confdir $reprepro/conf -C main includedsc $DIST $DSC
-        done
+current=$(pwd)
+reprepro_dir="$current/reprepro"
+GPG_KEY="EA0F721D231FDD3A0A17B9AC7808B4DD62C41256"
+
+DISTS=("bookworm" "trixie" "forky" "sid" "jammy" "noble" "questing" "resolute")
+
+cd apt
+
+for dist in "${DISTS[@]}"; do
+    echo "Processing distribution: $dist"
+
+    if ls "$current/deb/$dist/"*deb >/dev/null 2>&1; then
+        reprepro --dbdir "$reprepro_dir/db" --confdir "$reprepro_dir/conf" -C main includedeb "$dist" "$current/deb/$dist/"*deb
+    else
+        echo "  No .deb files for $dist, skipping."
     fi
+
+    if ls "$current/src/"*~${dist}.dsc >/dev/null 2>&1; then
+        for dsc in "$current/src/"*~${dist}.dsc; do
+            reprepro --dbdir "$reprepro_dir/db" --confdir "$reprepro_dir/conf" -C main includedsc "$dist" "$dsc"
+        done
+    else
+        echo "  No .dsc files for $dist, skipping."
+    fi
+
+    cd "dists/$dist"
+    cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
+    cd - > /dev/null
 done
 
-cd dists/bookworm
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/forky
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/trixie
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/sid
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/jammy
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/noble
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/questing
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd dists/resolute
-cat Release | gpg -s --default-key EA0F721D231FDD3A0A17B9AC7808B4DD62C41256 -abs > Release.gpg
-cd -
-cd $current
+cd "$current"
+echo "Done."

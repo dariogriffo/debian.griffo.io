@@ -13,6 +13,7 @@ find deb/ -mindepth 2 -type f \( \
     -o -name "libghostty-vt-dev_*.deb" \
   \) -delete
 
-for PKG in ghostty libghostty-vt0 libghostty-vt-dev; do
+for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
   ./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
 done
+
