@@ -16,3 +16,7 @@ PACKAGE_NAME=uncloud
 PACKAGE_NAME=uncloudd
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
+cd ${PWD}
+
+find src/ -type f -name "*uncloud*" -delete 2>/dev/null || true
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} uncloud

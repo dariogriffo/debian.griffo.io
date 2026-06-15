@@ -16,3 +16,9 @@ PACKAGE_NAME=bun-one
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 PACKAGE_NAME=bun-profile
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
+
+PACKAGE_NAME=bun
+cd ${PWD}
+
+find src/ -type f -name "*${PACKAGE_NAME}*" -delete 2>/dev/null || true
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}

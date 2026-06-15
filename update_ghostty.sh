@@ -17,3 +17,7 @@ for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
   ./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
 done
 
+cd ${PWD}
+
+find src/ -type f -name "*ghostty*" -delete 2>/dev/null || true
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ghostty

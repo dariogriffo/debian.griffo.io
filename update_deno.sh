@@ -16,3 +16,8 @@ PACKAGE_NAME=deno
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 PACKAGE_NAME=denort
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+
+cd ${PWD}
+
+find src/ -type f -name "*deno*" -delete 2>/dev/null || true
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} deno

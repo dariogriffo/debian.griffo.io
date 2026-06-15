@@ -17,3 +17,9 @@ PACKAGE_NAME=zig
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 PACKAGE_NAME=zig-stable
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+
+cd ${PWD}
+
+PACKAGE_NAME=zig-stable
+find src/ -type f -name "*${PACKAGE_NAME}*" -delete 2>/dev/null || true
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
