@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>debian.griffo.io - Latest Debian & Ubuntu Packages for Modern Development Tools | Zig, Ghostty, TigerBeetle, lazygit, yazi, Forgejo & More</title>
-    <meta name="description" content="Get the most up-to-date Debian and Ubuntu packages for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, bun runtime, TigerBeetle database, , and more. Unofficial repository with latest versions for Bookworm, Trixie, Sid, Jammy, and Noble.">
-    <meta name="keywords" content="debian packages, ubuntu packages, zig debian, zig ubuntu, ghostty debian, lazygit debian, lazygit ubuntu, yazi debian, yazi ubuntu, eza debian, eza ubuntu, bun debian, bun ubuntu, tigerbeetle debian, tigerbeetle ubuntu, deno debian, deno ubuntu, denort debian, denort ubuntu, apt deno, forgejo debian, forgejo ubuntu, self-hosted git, apt forgejo, development tools, latest versions, unofficial repository, bookworm, trixie, sid, jammy, noble, apt uv, apt lazydocker, apt lazygit, apt bun, apt ghostty, apt yazi">
+    <meta name="description" content="Get the most up-to-date Debian and Ubuntu packages for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, bun runtime, TigerBeetle database, and more. Source packages (.dsc) also available. Unofficial repository with latest versions for Bookworm, Trixie, Sid, Jammy, Noble, and Questing.">
+    <meta name="keywords" content="debian packages, ubuntu packages, debian source packages, deb-src, apt-get source, dpkg-buildpackage, zig debian, zig ubuntu, ghostty debian, lazygit debian, lazygit ubuntu, yazi debian, yazi ubuntu, eza debian, eza ubuntu, bun debian, bun ubuntu, tigerbeetle debian, tigerbeetle ubuntu, deno debian, deno ubuntu, denort debian, denort ubuntu, apt deno, forgejo debian, forgejo ubuntu, self-hosted git, apt forgejo, development tools, latest versions, unofficial repository, bookworm, trixie, sid, jammy, noble, questing, apt uv, apt lazydocker, apt lazygit, apt bun, apt ghostty, apt yazi">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://debian.griffo.io">
@@ -523,7 +523,7 @@
         <p class="subtitle">Unofficial Repository for Latest Development Tools — Debian &amp; Ubuntu</p>
 
         <div class="highlight-box">
-            <strong>🚀 Always Up-to-Date:</strong> This repository provides the most current versions of popular development tools as Debian and Ubuntu packages, updated regularly to ensure you have access to the latest features and security fixes. Supports Debian (Bookworm, Trixie, Forky, Sid) and Ubuntu (Jammy, Noble).
+            <strong>🚀 Always Up-to-Date:</strong> This repository provides the most current versions of popular development tools as Debian and Ubuntu packages, updated regularly to ensure you have access to the latest features and security fixes. Supports Debian (Bookworm, Trixie, Forky, Sid) and Ubuntu (Jammy, Noble, Questing). <strong>Source packages (.dsc) are also available</strong> — build from source or inspect the packaging on any supported distribution.
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
@@ -533,7 +533,7 @@
         </div>
     </header>
 
-    <section>
+    <section id="quick-install">
         <h2>⚡ Quick Installation</h2>
         <p>Add this repository to your Debian or Ubuntu system and start installing the latest versions of your favorite development tools:</p>
 
@@ -587,6 +587,32 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle deno forg
             </div>
         </div>
 
+        <div class="install-section">
+            <h3>Optional: Enable Source Packages</h3>
+            <p style="margin-bottom: 15px; color: #555;">Add the <code>deb-src</code> line to your sources list if you want to download and build packages from source using <code>apt-get source</code>.</p>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-src')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-src')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-src" class="tab-content active">
+                <div class="installation-code">
+echo "deb-src https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee -a /etc/apt/sources.list.d/debian.griffo.io.list
+
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-src" class="tab-content">
+                <div class="installation-code">
+echo "deb-src https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee -a /etc/apt/sources.list.d/debian.griffo.io.list
+
+apt update
+                </div>
+            </div>
+        </div>
+
         <div class="notice-box">
             <strong>📅 Important Notice:</strong> Public key was updated on March 4th, 2025. Please run the installation commands above to update your system with the new key.
         </div>
@@ -600,13 +626,16 @@ apt install zig ghostty lazygit yazi eza uv fzf zoxide bun tigerbeetle deno forg
         <h3>Directory Structure</h3>
         <p>The repository follows the standard Debian repository layout:</p>
         <div class="installation-code">
-https://debian.griffo.io/apt/dists/           ← distribution index
-https://debian.griffo.io/apt/dists/bookworm/  ← Debian Bookworm (12)
-https://debian.griffo.io/apt/dists/trixie/    ← Debian Trixie (13)
-https://debian.griffo.io/apt/dists/forky/     ← Debian Forky (testing)
-https://debian.griffo.io/apt/dists/sid/       ← Debian Sid (unstable)
-https://debian.griffo.io/apt/dists/jammy/     ← Ubuntu Jammy (22.04 LTS)
-https://debian.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</div>
+https://debian.griffo.io/apt/dists/                         ← distribution index
+https://debian.griffo.io/apt/dists/bookworm/                ← Debian Bookworm (12)
+https://debian.griffo.io/apt/dists/bookworm/main/binary-amd64/Packages  ← binary index
+https://debian.griffo.io/apt/dists/bookworm/main/source/Sources          ← source index
+https://debian.griffo.io/apt/dists/trixie/                  ← Debian Trixie (13)
+https://debian.griffo.io/apt/dists/forky/                   ← Debian Forky (testing)
+https://debian.griffo.io/apt/dists/sid/                     ← Debian Sid (unstable)
+https://debian.griffo.io/apt/dists/jammy/                   ← Ubuntu Jammy (22.04 LTS)
+https://debian.griffo.io/apt/dists/noble/                   ← Ubuntu Noble (24.04 LTS)
+https://debian.griffo.io/apt/dists/questing/                ← Ubuntu Questing (25.04)</div>
 
         <h3>Search Packages After Adding the Repository</h3>
         <p>Once the repository is added, you can use standard <code>apt</code> tools to explore available packages:</p>
@@ -619,6 +648,58 @@ apt-cache show zig
 
 # Check which version will be installed and from which source
 apt-cache policy zig</div>
+    </section>
+
+    <section>
+        <h2>📦 Source Packages</h2>
+        <p>In addition to binary <code>.deb</code> packages, this repository also provides <strong>Debian source packages</strong> for all supported tools. Source packages let you inspect the packaging, rebuild binaries locally, or apply custom patches — all using standard Debian tooling.</p>
+
+        <p>A source package consists of three files:</p>
+        <ul style="margin: 10px 0 20px 0; color: #555;">
+            <li><code>.dsc</code> — description file with checksums and metadata</li>
+            <li><code>.orig.tar.gz</code> — unmodified upstream source tarball</li>
+            <li><code>.debian.tar.xz</code> — Debian-specific packaging overlay (<code>debian/</code> directory)</li>
+        </ul>
+
+        <h3>Step 1: Enable Source Packages</h3>
+        <p>If you haven't already, add the <code>deb-src</code> line (see <a href="#quick-install">Quick Installation</a> above). Then update:</p>
+        <div class="installation-code">
+echo "deb-src https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee -a /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update</div>
+
+        <h3>Step 2: Download a Source Package</h3>
+        <div class="installation-code">
+# Download source for a package (creates a directory in the current folder)
+apt-get source zig
+
+# Or download without unpacking — just the raw .dsc + tarballs
+apt-get source --download-only zig</div>
+
+        <h3>Step 3: Build from Source</h3>
+        <div class="installation-code">
+# Enter the unpacked source directory (version number will vary)
+cd zig-stable-0.14.0
+
+# Build a binary .deb without signing (suitable for local use)
+dpkg-buildpackage -b --no-sign
+
+# The resulting .deb appears one level up
+ls ../zig-stable_*.deb</div>
+
+        <h3>Alternative: Build Dependencies Only</h3>
+        <div class="installation-code">
+# Install all build dependencies for a package automatically
+sudo apt-get build-dep zig
+
+# Then build with dpkg-buildpackage or debuild
+debuild -b --no-sign</div>
+
+        <h3>Browse Source Packages Directly</h3>
+        <p>Source package index files are published alongside the binary package indexes:</p>
+        <div class="installation-code">
+https://debian.griffo.io/apt/dists/bookworm/main/source/Sources
+https://debian.griffo.io/apt/dists/trixie/main/source/Sources
+https://debian.griffo.io/apt/dists/noble/main/source/Sources</div>
     </section>
 
     <header>
@@ -813,7 +894,8 @@ apt-cache policy zig</div>
             <li>✅ <strong>Latest stable releases</strong> within hours of upstream publication</li>
             <li>✅ <strong>Nightly builds</strong> for cutting-edge features (Zig, ZLS)</li>
             <li>✅ <strong>Proper Debian packaging</strong> with correct dependencies</li>
-            <li>✅ <strong>Multiple distribution support</strong> — Debian (Bookworm, Trixie, Forky, Sid) &amp; Ubuntu (Jammy, Noble)</li>
+            <li>✅ <strong>Multiple distribution support</strong> — Debian (Bookworm, Trixie, Forky, Sid) &amp; Ubuntu (Jammy, Noble, Questing)</li>
+            <li>✅ <strong>Source packages</strong> — download, inspect, and rebuild any package locally with <code>apt-get source</code></li>
             <li>✅ <strong>Automated updates</strong> ensuring continuous availability</li>
         </ul>
 
@@ -856,6 +938,7 @@ apt-cache policy zig</div>
         <div class="supported-distros">
             <span class="distro-badge-ubuntu">Jammy (22.04 LTS)</span>
             <span class="distro-badge-ubuntu">Noble (24.04 LTS)</span>
+            <span class="distro-badge-ubuntu">Questing (25.04)</span>
         </div>
 
         <p style="vetext-align: center; margin-top: 20px; font-style: italic;">
