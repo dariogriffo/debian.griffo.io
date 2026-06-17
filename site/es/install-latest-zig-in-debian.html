@@ -285,41 +285,21 @@
 
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
-curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
-echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
 
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
-curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
-echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
-        </div>
-
-                <div class="warning-box" style="border-left-color: #e74c3c; background: #fdf2f2;">
-            <strong>⚠️ Breaking Change — New Package Structure</strong><br><br>
-            This repository uses <a href="https://salsa.debian.org/brlink/reprepro" target="_blank" rel="noopener">reprepro</a>,
-            which is configured to keep only the <strong>latest version</strong> of each package.
-            This means older builds are replaced when a new release ships — you cannot
-            pin a specific version with <code>apt install zig=0.15.2</code> after 0.16.0 has been published.<br><br>
-            To let users keep a previous release installed alongside the current one, packages are now
-            named by <strong>stability tier</strong>:
-            <ul style="margin: 10px 0 0 0;">
-                <li><code>zig</code> — meta-package, always pulls in <code>zig-stable</code></li>
-                <li><code>zig-stable</code> — current stable release (e.g. 0.16.0)</li>
-                <li><code>zig-oldstable</code> — previous stable release (e.g. 0.15.2), installable alongside <code>zig-stable</code></li>
-                <li><code>zig-0</code> — <strong>deprecated</strong>, install <code>zig-stable</code> instead</li>
-            </ul>
-            <code>zig-stable</code> and <code>zig-oldstable</code> register with <code>update-alternatives</code>
-            so you can switch the active <code>/usr/bin/zig</code> at any time.<br><br>
-            <strong>⬆️ Actualización a 0.16.0:</strong> Si tiene <code>zig-0</code> instalado de la estructura de paquetes anterior, debe eliminarlo primero:<br>
-            <div class="code-block">apt update &amp;&amp; apt remove zig zig-0 &amp;&amp; apt install zig</div>
-            Para instalar también la versión estable anterior (0.15.2) junto con 0.16.0:<br>
-            <div class="code-block">apt install zig-oldstable</div>
         </div>
 
 <div class="install-steps">
