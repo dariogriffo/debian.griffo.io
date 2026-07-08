@@ -9,8 +9,4 @@ cd ${PWD}
 
 PACKAGE_NAME=zls
 find src/ -type f -name "*${PACKAGE_NAME}*" -delete 2>/dev/null || true
-./download_src_file.sh ${REPO} ${1} ${3} ${PACKAGE_NAME}
-./generate_index.sh
-
-
-
+./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
