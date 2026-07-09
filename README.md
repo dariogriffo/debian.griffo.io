@@ -28,7 +28,6 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Ulauncher](https://ulauncher.io/) - Application launcher for Linux
 - [Bun](https://bun.sh/) - Fast all-in-one JavaScript runtime
 - [TigerBeetle](https://tigerbeetle.com/) - Distributed financial transactions database
-- [Ollama](https://ollama.com/) - Run large language models locally
 - [Helix](https://helix-editor.com/) - Post-modern modal text editor
 - [Forgejo Runner](https://forgejo.org/docs/latest/admin/actions/) - CI/CD runner for Forgejo Actions
 - [Headscale](https://headscale.net/) - Self-hosted implementation of the Tailscale control server
@@ -65,7 +64,6 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [ulauncher-debian](https://github.com/dariogriffo/ulauncher-debian) - Application launcher
 - [bun-debian](https://github.com/dariogriffo/bun-debian) - JavaScript runtime
 - [tigerbeetle-debian](https://github.com/dariogriffo/tigerbeetle-debian) - Financial database
-- [ollama-debian](https://github.com/dariogriffo/ollama-debian) - Local LLM runner
 - [helix-debian](https://github.com/dariogriffo/helix-debian) - Modal text editor
 - [forgejo-runner-debian](https://github.com/dariogriffo/forgejo-runner-debian) - Forgejo Actions runner
 - [headscale-debian](https://github.com/dariogriffo/headscale-debian) - Tailscale control server
@@ -139,7 +137,6 @@ sudo apt install -y bun-profile  # Bun with profile support
 sudo apt install -y tigerbeetle  # Financial transactions database
 
 # AI, Infrastructure & Ops Tools
-sudo apt install -y ollama          # Run large language models locally
 sudo apt install -y helix           # Post-modern modal text editor
 sudo apt install -y forgejo-runner  # CI/CD runner for Forgejo Actions
 sudo apt install -y headscale       # Self-hosted Tailscale control server
@@ -151,7 +148,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle ollama helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin
 ```
 
 ## ⚠️ Important Information

@@ -177,7 +177,7 @@
             font-weight: 600;
         }
 
-        .installeration-code {
+        .installation-code {
             background: #2d3748;
             color: #e2e8f0;
             padding: 20px;
@@ -519,7 +519,7 @@
             </div>
 
             <div id="sudo-tab-1" class="tab-content active">
-                <div class="installeration-code">
+                <div class="installation-code">
 sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
 echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
@@ -528,7 +528,7 @@ sudo apt update
             </div>
 
             <div id="root-tab-1" class="tab-content">
-                <div class="installeration-code">
+                <div class="installation-code">
 install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
 echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
@@ -546,14 +546,14 @@ apt update
             </div>
 
             <div id="sudo-tab-2" class="tab-content active">
-                <div class="installeration-code">
-sudo apt installer zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo
+                <div class="installation-code">
+sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage
                 </div>
             </div>
 
             <div id="root-tab-2" class="tab-content">
-                <div class="installeration-code">
-apt installer zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo
+                <div class="installation-code">
+apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage
                 </div>
             </div>
         </div>
@@ -714,6 +714,87 @@ apt-cache policy zig</div>
                     <a href="/fr/install-latest-forgejo-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
                 </div>
             </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">⚙️</span>Forgejo Runner</div>
+                <div class="package-description">Exécuteur CI pour Forgejo Actions. Exécutez des pipelines CI/CD auto-hébergés, compatibles GitHub Actions, sur votre propre infrastructure via Docker, LXC ou directement sur l'hôte.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-forgejo-runner-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-forgejo-runner-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">✏️</span>Helix Editor</div>
+                <div class="package-description">Éditeur de texte modal post-moderne écrit en Rust, avec coloration syntaxique tree-sitter et prise en charge du Language Server intégrées — aucun plugin requis. La commande est hx.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-helix-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-helix-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🥋</span>Jujutsu</div>
+                <div class="package-description">Un système de contrôle de version compatible Git avec un modèle plus simple et plus puissant — annulation universelle et gestion native des conflits, tout en utilisant vos dépôts distants Git existants. Utilise la commande jj.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-jujutsu-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-jujutsu-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🪟</span>Zellij</div>
+                <div class="package-description">Un espace de travail et multiplexeur de terminal écrit en Rust, avec panneaux, onglets, mises en page reproductibles et un système de plugins WebAssembly. Une alternative moderne et conviviale à tmux.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-zellij-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-zellij-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🚀</span>Starship</div>
+                <div class="package-description">Une invite de commande rapide et personnalisable, compatible avec plusieurs shells, écrite en Rust. Fonctionne avec Bash, Zsh, Fish, PowerShell et bien d'autres, affichant le contexte git et langage via un seul fichier de configuration.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-starship-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-starship-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">⌨️</span>Atuin</div>
+                <div class="package-description">Synchronisation, recherche et statistiques de l'historique du shell. Remplace votre historique shell par une base de données SQLite consultable, avec synchronisation chiffrée de bout en bout optionnelle entre machines.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-atuin-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-atuin-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐕</span>k9s</div>
+                <div class="package-description">Interface terminal pour gérer les clusters Kubernetes en temps réel. Naviguez dans les ressources, suivez les logs en direct, exécutez des commandes dans les pods et appliquez des changements sans longues commandes kubectl.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-k9s-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-k9s-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🕸️</span>Headscale</div>
+                <div class="package-description">Implémentation auto-hébergée du serveur de contrôle Tailscale. Exécutez votre propre serveur de coordination pour un réseau maillé WireGuard privé, en utilisant les clients Tailscale standards.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-headscale-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-headscale-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🗄️</span>Garage</div>
+                <div class="package-description">Stockage d'objets distribué, léger et compatible S3, conçu pour fonctionner sur plusieurs nœuds géographiquement distribués. Une alternative auto-hébergée pour les sauvegardes, les sites statiques et les données d'applications.</div>
+                <div class="package-links">
+                    <a href="/fr/install-latest-garage-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/fr/install-latest-garage-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
         </div>
     </header>
     <section>
@@ -754,6 +835,15 @@ apt-cache policy zig</div>
             <a href="https://github.com/dariogriffo/tigerbeetle-debian" title="TigerBeetle - Latest Debian Packages">🐯 tigerbeetle-debian</a>
             <a href="https://github.com/dariogriffo/deno-debian" title="deno - Latest Debian Packages">🦕 deno-debian</a>
             <a href="https://github.com/dariogriffo/forgejo-debian" title="Forgejo - Latest Debian Packages">⚒️ forgejo-debian</a>
+            <a href="https://github.com/dariogriffo/forgejo-runner-debian" title="Forgejo Runner - Latest Debian Packages">⚙️ forgejo-runner-debian</a>
+            <a href="https://github.com/dariogriffo/helix-debian" title="Helix Editor - Latest Debian Packages">✏️ helix-debian</a>
+            <a href="https://github.com/dariogriffo/jujutsu-debian" title="Jujutsu - Latest Debian Packages">🥋 jujutsu-debian</a>
+            <a href="https://github.com/dariogriffo/zellij-debian" title="Zellij - Latest Debian Packages">🪟 zellij-debian</a>
+            <a href="https://github.com/dariogriffo/starship-debian" title="Starship - Latest Debian Packages">🚀 starship-debian</a>
+            <a href="https://github.com/dariogriffo/atuin-debian" title="Atuin - Latest Debian Packages">⌨️ atuin-debian</a>
+            <a href="https://github.com/dariogriffo/k9s-debian" title="k9s - Latest Debian Packages">🐕 k9s-debian</a>
+            <a href="https://github.com/dariogriffo/headscale-debian" title="Headscale - Latest Debian Packages">🕸️ headscale-debian</a>
+            <a href="https://github.com/dariogriffo/garage-debian" title="Garage - Latest Debian Packages">🗄️ garage-debian</a>
         </div>
 
         <h3>🐧 Supported Debian Distributions</h3>
