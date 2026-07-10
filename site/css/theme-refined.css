@@ -1,0 +1,838 @@
+/*
+ * theme-refined.css
+ * Evolution of the original look: same #667eea -> #764ba2 purple accent,
+ * but on a neutral light page background instead of a full-page gradient.
+ * Backdrop blur and shadow depth are reduced. Includes an automatic dark
+ * mode via prefers-color-scheme with proper contrast.
+ * Structural rules (grid/flex/spacing/media queries) are unchanged from
+ * theme-original.css.
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+    background: #f4f5fb;
+    margin: 0;
+    padding: 20px;
+    color: #2d2d34;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ---------- shared layout ---------- */
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    background: #ffffff;
+    backdrop-filter: blur(6px);
+    padding: 40px 20px;
+    border-radius: 20px;
+    box-shadow: 0 11px 22px rgba(45, 45, 60, 0.06);
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.8em;
+    margin: 0 0 10px 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header p {
+    color: #5b5f6b;
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #5b5f6b;
+    margin-bottom: 20px;
+}
+
+.version-badge {
+    background: linear-gradient(135deg, #4facfe 0%, #00d2fe 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.content {
+    background: #ffffff;
+    backdrop-filter: blur(6px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 11px 22px rgba(45, 45, 60, 0.06);
+    margin-bottom: 30px;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, #4facfe 0%, #00d2fe 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    font-weight: 500;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.feature-card {
+    background: #f7f7fb;
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 4px solid #667eea;
+}
+
+.code-block {
+    background: #282a3a;
+    color: #eef0f8;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'SF Mono', 'Menlo', 'Ubuntu Mono', Consolas, monospace;
+    font-size: 0.9em;
+    overflow-x: auto;
+    margin: 20px 0;
+    white-space: pre-wrap;
+}
+
+.install-steps,
+.installer-steps,
+.install-section,
+.installer-section,
+.benchmark-box,
+.freedom-box,
+.solution-box {
+    background: #e9f9ef;
+    border: 1px solid #22a55d;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.install-steps h3,
+.installer-steps h3 {
+    border-bottom: 2px solid #667eea;
+    color: #667eea;
+    padding-bottom: 10px;
+}
+
+.comparison-box,
+.performance-box,
+.ide-box,
+.integration-box,
+.philosophy-box,
+.productivity-box {
+    background: #eef6ff;
+    border: 1px solid #4facfe;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #4facfe;
+}
+
+.pain-point-box,
+.problem-box {
+    background: #ffeeee;
+    border: 1px solid #ff6b6b;
+    border-left: 4px solid #ff6b6b;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.alternatives-box {
+    background: #eaf5fd;
+    border-left: 4px solid #3498db;
+    border-radius: 15px;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.package-variants {
+    background: #f7f7fb;
+    border-left: 4px solid #f39c12;
+    border-radius: 15px;
+    margin: 25px 0;
+    padding: 25px;
+}
+
+.variant-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(45, 45, 60, 0.06);
+    margin: 15px 0;
+    padding: 20px;
+}
+
+.variant-title {
+    color: #667eea;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.controls-table {
+    background: #f7f7fb;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.controls-table table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.controls-table th {
+    background: #667eea;
+    color: white;
+}
+
+.controls-table th,
+.controls-table td {
+    border-bottom: 1px solid #e2e2ea;
+    padding: 10px;
+    text-align: left;
+}
+
+.warning-box,
+.notice-box {
+    background: #fff8e6;
+    border: 1px solid #ffe4a3;
+    color: #7a4d02;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #f39c12;
+}
+
+.back-link {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+}
+
+.back-link:hover {
+    background: #764ba2;
+    text-decoration: none;
+}
+
+h2 {
+    color: #2d2d34;
+    font-size: 2em;
+    margin-top: 0;
+}
+
+h3 {
+    color: #667eea;
+    font-size: 1.4em;
+    margin: 25px 0 15px 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e4e4ee;
+}
+
+.tab-button {
+    background: transparent;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: 500;
+    color: #5b5f6b;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.tab-button:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.04);
+}
+
+.tab-button.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+a {
+    color: #5b63d3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #43348f;
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #6b6f7b;
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .header h1 { font-size: 2.2em; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .content { padding: 20px; }
+    .tabs { flex-direction: column; gap: 5px; }
+    .tab-button { padding: 10px 16px; }
+}
+
+/* ============================================================
+   Index-page-only rules and overrides
+   (index pages are identified by containing a .package-card
+   element, unique to the 7 index.html home pages)
+   ============================================================ */
+
+body:has(.package-card) {
+    padding: 0;
+}
+
+body:has(.package-card) .container {
+    max-width: 1200px;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    background: #ffffff;
+    backdrop-filter: blur(6px);
+    padding: 40px 20px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    box-shadow: 0 11px 22px rgba(45, 45, 60, 0.06);
+}
+
+header img {
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+header img:hover {
+    transform: scale(1.05);
+}
+
+header h1 {
+    margin: 20px 0 10px 0;
+    font-size: 3em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body:has(.package-card) .subtitle {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+body:has(.package-card) .highlight-box {
+    box-shadow: 0 6px 16px rgba(79, 172, 254, 0.18);
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.package-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 16px rgba(45, 45, 60, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.package-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 11px 22px rgba(45, 45, 60, 0.09);
+}
+
+.package-emoji {
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+.package-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #2d2d34;
+    margin-bottom: 10px;
+}
+
+.package-description {
+    color: #5b5f6b;
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.package-link {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.18);
+}
+
+.package-link:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 11px rgba(102, 126, 234, 0.24);
+    color: white;
+    text-decoration: none;
+}
+
+.package-link-ubuntu {
+    background: linear-gradient(135deg, #E95420, #f7934c);
+    box-shadow: 0 2px 8px rgba(233, 84, 32, 0.18);
+}
+
+.package-link-ubuntu:hover {
+    background: linear-gradient(135deg, #f7934c, #E95420);
+    box-shadow: 0 3px 11px rgba(233, 84, 32, 0.24);
+}
+
+.package-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+section {
+    background: #ffffff;
+    backdrop-filter: blur(6px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 11px 22px rgba(45, 45, 60, 0.06);
+    margin-bottom: 30px;
+}
+
+body:has(.package-card) h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+body:has(.package-card) h3 {
+    font-size: 1.5em;
+    margin: 30px 0 15px 0;
+    font-weight: 600;
+}
+
+/* Only used on the zh (cn) index page's feature list; harmless elsewhere
+   since it only applies inside a plain <section><ul> that other index
+   translations don't have. */
+section h2 {
+    color: #2d2d34;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+section h3 {
+    color: #667eea;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    margin-top: 30px;
+}
+
+section ul {
+    list-style: none;
+    padding: 0;
+}
+
+section ul li {
+    padding-left: 30px;
+    padding: 8px 0;
+    position: relative;
+}
+
+section ul li:before {
+    color: #22a55d;
+    content: "✓";
+    font-size: 1.2em;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+}
+
+.installation-code {
+    background: #282a3a;
+    color: #eef0f8;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'SF Mono', 'Menlo', 'Ubuntu Mono', Consolas, monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    overflow-x: auto;
+    margin: 20px 0;
+    box-shadow: 0 6px 16px rgba(45, 45, 60, 0.12);
+    white-space: pre-wrap;
+}
+
+.repo-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.repo-link {
+    display: block;
+    background: #f7f7fb;
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #2d2d34;
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.repo-link:hover {
+    background: #ececf5;
+    transform: translateX(5px);
+    text-decoration: none;
+}
+
+.supported-distros {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.distro-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    box-shadow: 0 3px 8px rgba(102, 126, 234, 0.18);
+}
+
+.distro-badge-ubuntu {
+    background: linear-gradient(135deg, #E95420, #f7934c);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    box-shadow: 0 3px 8px rgba(233, 84, 32, 0.18);
+}
+
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.language-button {
+    background: #ffffff;
+    border: 2px solid rgba(102, 126, 234, 0.18);
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(45, 45, 60, 0.06);
+}
+
+.language-button:hover {
+    background: #ffffff;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 11px rgba(102, 126, 234, 0.18);
+}
+
+.language-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 22px rgba(45, 45, 60, 0.09);
+    min-width: 200px;
+    overflow: hidden;
+    z-index: 1001;
+}
+
+.language-menu.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.language-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #2d2d34;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #ececf3;
+}
+
+.language-option:last-child {
+    border-bottom: none;
+}
+
+.language-option:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.language-option .flag {
+    font-size: 1.5em;
+}
+
+.language-option .lang-name {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    header h1 { font-size: 2.2em; }
+    .packages-grid { grid-template-columns: 1fr; }
+    section { padding: 20px; }
+    .supported-distros { flex-direction: column; align-items: center; }
+}
+
+/* ============================================================
+   apt/HEADER.html — .repo-header rules
+   ============================================================ */
+
+.repo-header {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    color: #2d2d34;
+    line-height: 1.6;
+}
+.repo-header .card {
+    background: #ffffff;
+    border-radius: 15px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 6px 16px rgba(45, 45, 60, 0.06);
+    padding: 20px 25px;
+    margin-bottom: 20px;
+}
+.repo-header h1 {
+    font-size: 1.8em;
+    margin: 0 0 5px 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.repo-header .subtitle { color: #5b5f6b; margin: 0 0 15px 0; }
+.repo-header pre {
+    background: #282a3a;
+    color: #eef0f8;
+    border-radius: 10px;
+    padding: 15px;
+    overflow-x: auto;
+    font-size: 0.85em;
+}
+.repo-header code { font-family: 'SF Mono', Consolas, Menlo, monospace; }
+.repo-header a { color: #5b63d3; font-weight: 600; text-decoration: none; }
+.repo-header a:hover { text-decoration: underline; }
+.repo-header .dists span {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 20px;
+    padding: 2px 12px;
+    margin: 2px;
+    font-size: 0.85em;
+}
+.repo-header .muted { color: #7a7f8c; font-size: 0.9em; }
+
+/* ============================================================
+   Apache mod_autoindex directory listing (/apt/*)
+   The HEADER.html fragment is injected as body content directly
+   before the autoindex-generated table, so scope everything with
+   a sibling combinator to guarantee it can never leak into the
+   normal site pages (which never place a table right after
+   .repo-header).
+   ============================================================ */
+
+.repo-header ~ table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(45, 45, 60, 0.06);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 0.95em;
+}
+
+.repo-header ~ table th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-align: left;
+    padding: 10px 15px;
+    font-weight: 600;
+}
+
+.repo-header ~ table td {
+    padding: 8px 15px;
+    border-top: 1px solid #ececed;
+    color: #2d2d34;
+}
+
+.repo-header ~ table tr:hover td {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.repo-header ~ table a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.repo-header ~ table a:hover {
+    text-decoration: underline;
+}
+
+.repo-header ~ hr {
+    border: none;
+    border-top: 1px solid #e4e4ee;
+    max-width: 900px;
+    margin: 10px auto;
+}
+
+.repo-header ~ address {
+    max-width: 900px;
+    margin: 10px auto 30px auto;
+    color: #6b6f7b;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #16161d;
+        color: #e7e7ee;
+    }
+
+    body:has(.package-card) .container { }
+
+    .header, .content, section,
+    header, .package-card, .repo-header .card,
+    .repo-header ~ table, .variant-card, .language-menu {
+        background: #1e1e29;
+        color: #e7e7ee;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+        border: 1px solid #2c2c3a;
+    }
+
+    .feature-card, .repo-link, .controls-table, .package-variants {
+        background: #23232f;
+        color: #e7e7ee;
+    }
+
+    .code-block, .installation-code, .repo-header pre {
+        background: #14141c;
+        color: #eef0f8;
+    }
+
+    h2, h3, .subtitle, .package-name, .variant-title,
+    .repo-header .subtitle, .package-description {
+        color: #e7e7ee;
+    }
+
+    .subtitle, .package-description, footer, .footer, .muted, .repo-header .muted {
+        color: #a9a9ba;
+    }
+
+    a { color: #9aa4ff; }
+    a:hover { color: #c2c9ff; }
+    .repo-header a { color: #9aa4ff; }
+
+    .tabs { border-bottom-color: #2c2c3a; }
+    .tab-button { color: #a9a9ba; }
+    .tab-button:hover { color: #9aa4ff; background: rgba(102, 126, 234, 0.12); }
+    .tab-button.active { color: #9aa4ff; border-bottom-color: #9aa4ff; }
+
+    .repo-header ~ table th { background: linear-gradient(135deg, #565fc4, #5c3f86); }
+    .repo-header ~ table td { border-top-color: #2c2c3a; color: #e7e7ee; }
+    .repo-header ~ table tr:hover td { background: rgba(102, 126, 234, 0.10); }
+    .repo-header ~ hr { border-top-color: #2c2c3a; }
+    .repo-header ~ address { color: #a9a9ba; }
+}
