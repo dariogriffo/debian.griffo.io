@@ -1,28 +1,11 @@
 /*
- * theme-original.css
- *
- * Extracted & merged from the inline STYLE blocks that used to live in
- * every page of debian.griffo.io (406 site pages + apt/HEADER.html).
- *
- * MERGE NOTES (see final report for full detail):
- *  - Two page types share this stylesheet: "guide" pages (the 57
- *    install-latest-*.html pages per language) and "index" pages (the 7
- *    index.html home pages, one per language). Index pages are uniquely
- *    identified by containing a `.package-card` element, so index-only
- *    overrides are scoped with `body:has(.package-card) ...`.
- *  - A handful of selectors (.comparison-box, .warning-box, .performance-box,
- *    .highlight-box color, .feature-grid gutter, .back-link style,
- *    .install-steps / .installer-steps) had per-guide-page inconsistencies
- *    unrelated to page type (different install guides were generated with
- *    slightly different template revisions over time). These were resolved
- *    by taking the majority (most common) declaration site-wide, since there
- *    is no reliable structural hook to scope them by content topic.
- *  - Per-language font-family differences (CJK fallback fonts for zh, plus
- *    Oxygen/Ubuntu/Cantarell on index pages) were merged into one combined
- *    font stack used everywhere; extra fallback font names are harmless.
- *  - .repo-header rules come from apt/HEADER.html.
- *  - A new section styles the Apache mod_autoindex directory listing table
- *    that Apache injects after the HEADER.html fragment on /apt/ pages.
+ * theme-debian-classic.css
+ * Debian-official feel: oxblood (#A80030, Debian's brand red) as the
+ * accent, warm off-white (#f7f5f3) background, slate (#2d2d2d) text.
+ * Sober, institutional styling with minimal decoration -- no blur, light
+ * shadows only.
+ * Structural rules (grid/flex/spacing/media queries) are unchanged from
+ * theme-original.css.
  */
 
 * {
@@ -30,11 +13,11 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Liberation Sans', 'DejaVu Sans', Arial, 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+    background: #f7f5f3;
     margin: 0;
     padding: 20px;
-    color: #333;
+    color: #2d2d2d;
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -48,37 +31,36 @@ body {
 
 .header {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #fffdfb;
     padding: 40px 20px;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(45, 45, 45, 0.05);
     margin-bottom: 30px;
 }
 
 .header h1 {
     font-size: 2.8em;
     margin: 0 0 10px 0;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .header p {
-    color: #666;
+    color: #565656;
     font-size: 1.2em;
     margin: 0;
 }
 
 .subtitle {
     font-size: 1.2em;
-    color: #666;
+    color: #565656;
     margin-bottom: 20px;
 }
 
 .version-badge {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #3b6ea5 0%, #5b8ec0 100%);
     color: white;
     padding: 10px 20px;
     border-radius: 25px;
@@ -88,16 +70,15 @@ body {
 }
 
 .content {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #fffdfb;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(45, 45, 45, 0.05);
     margin-bottom: 30px;
 }
 
 .highlight-box {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #3b6ea5 0%, #5b8ec0 100%);
     color: white;
     padding: 20px;
     border-radius: 15px;
@@ -113,18 +94,18 @@ body {
 }
 
 .feature-card {
-    background: #f8f9fa;
+    background: #efece6;
     padding: 20px;
     border-radius: 15px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #A80030;
 }
 
 .code-block {
-    background: #2d3748;
-    color: #e2e8f0;
+    background: #2d2d2d;
+    color: #f2efe9;
     padding: 20px;
     border-radius: 10px;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-family: 'Liberation Mono', 'DejaVu Sans Mono', Consolas, monospace;
     font-size: 0.9em;
     overflow-x: auto;
     margin: 20px 0;
@@ -138,8 +119,8 @@ body {
 .benchmark-box,
 .freedom-box,
 .solution-box {
-    background: #e8f5e8;
-    border: 1px solid #4caf50;
+    background: #eef4ee;
+    border: 1px solid #4a7c59;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
@@ -147,8 +128,8 @@ body {
 
 .install-steps h3,
 .installer-steps h3 {
-    border-bottom: 2px solid #667eea;
-    color: #667eea;
+    border-bottom: 2px solid #A80030;
+    color: #A80030;
     padding-bottom: 10px;
 }
 
@@ -158,57 +139,57 @@ body {
 .integration-box,
 .philosophy-box,
 .productivity-box {
-    background: #f0f8ff;
-    border: 1px solid #4facfe;
+    background: #eaf1f7;
+    border: 1px solid #3b6ea5;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
-    border-left: 4px solid #4facfe;
+    border-left: 4px solid #3b6ea5;
 }
 
 .pain-point-box,
 .problem-box {
-    background: #ffe6e6;
-    border: 1px solid #ff6b6b;
-    border-left: 4px solid #ff6b6b;
+    background: #f7e8e8;
+    border: 1px solid #a83232;
+    border-left: 4px solid #a83232;
     border-radius: 10px;
     margin: 20px 0;
     padding: 20px;
 }
 
 .alternatives-box {
-    background: #e8f4fd;
-    border-left: 4px solid #3498db;
+    background: #eaf1f7;
+    border-left: 4px solid #3b6ea5;
     border-radius: 15px;
     margin: 20px 0;
     padding: 20px;
 }
 
 .package-variants {
-    background: #f8f9fa;
-    border-left: 4px solid #f39c12;
+    background: #efece6;
+    border-left: 4px solid #b8860b;
     border-radius: 15px;
     margin: 25px 0;
     padding: 25px;
 }
 
 .variant-card {
-    background: white;
+    background: #fffdfb;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(45, 45, 45, 0.05);
     margin: 15px 0;
     padding: 20px;
 }
 
 .variant-title {
-    color: #667eea;
+    color: #A80030;
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .controls-table {
-    background: #f8f9fa;
+    background: #efece6;
     border-radius: 10px;
     margin: 20px 0;
     padding: 20px;
@@ -220,31 +201,31 @@ body {
 }
 
 .controls-table th {
-    background: #667eea;
+    background: #A80030;
     color: white;
 }
 
 .controls-table th,
 .controls-table td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd6ce;
     padding: 10px;
     text-align: left;
 }
 
 .warning-box,
 .notice-box {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    color: #856404;
+    background: #faf3e0;
+    border: 1px solid #e6d3a3;
+    color: #6b4e04;
     padding: 15px;
     border-radius: 10px;
     margin: 20px 0;
-    border-left: 4px solid #f39c12;
+    border-left: 4px solid #b8860b;
 }
 
 .back-link {
     display: inline-block;
-    background: #667eea;
+    background: #A80030;
     color: white;
     padding: 10px 20px;
     border-radius: 25px;
@@ -254,18 +235,18 @@ body {
 }
 
 .back-link:hover {
-    background: #764ba2;
+    background: #7a0224;
     text-decoration: none;
 }
 
 h2 {
-    color: #333;
+    color: #2d2d2d;
     font-size: 2em;
     margin-top: 0;
 }
 
 h3 {
-    color: #667eea;
+    color: #A80030;
     font-size: 1.4em;
     margin: 25px 0 15px 0;
 }
@@ -274,7 +255,7 @@ h3 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid #ddd6ce;
 }
 
 .tab-button {
@@ -283,7 +264,7 @@ h3 {
     padding: 12px 24px;
     font-size: 1em;
     font-weight: 500;
-    color: #666;
+    color: #565656;
     cursor: pointer;
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
@@ -291,13 +272,13 @@ h3 {
 }
 
 .tab-button:hover {
-    color: #667eea;
-    background: rgba(102, 126, 234, 0.05);
+    color: #A80030;
+    background: rgba(168, 0, 48, 0.04);
 }
 
 .tab-button.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    color: #A80030;
+    border-bottom-color: #A80030;
 }
 
 .tab-content {
@@ -309,13 +290,13 @@ h3 {
 }
 
 a {
-    color: #667eea;
+    color: #A80030;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #764ba2;
+    color: #7a0224;
     text-decoration: underline;
 }
 
@@ -323,7 +304,7 @@ footer {
     text-align: center;
     margin-top: 40px;
     padding: 20px;
-    color: rgba(255, 255, 255, 0.8);
+    color: #6b6b6b;
     font-size: 0.9em;
 }
 
@@ -352,12 +333,11 @@ body:has(.package-card) .container {
 
 header {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #fffdfb;
     padding: 40px 20px;
     margin-bottom: 30px;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(45, 45, 45, 0.05);
 }
 
 header img {
@@ -373,7 +353,7 @@ header h1 {
     margin: 20px 0 10px 0;
     font-size: 3em;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -386,7 +366,7 @@ body:has(.package-card) .subtitle {
 }
 
 body:has(.package-card) .highlight-box {
-    box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+    box-shadow: 0 4px 12px rgba(59, 110, 165, 0.15);
 }
 
 .packages-grid {
@@ -397,17 +377,17 @@ body:has(.package-card) .highlight-box {
 }
 
 .package-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: #fffdfb;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(45, 45, 45, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #A80030;
 }
 
 .package-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 16px rgba(45, 45, 45, 0.07);
 }
 
 .package-emoji {
@@ -418,12 +398,12 @@ body:has(.package-card) .highlight-box {
 .package-name {
     font-size: 1.2em;
     font-weight: 600;
-    color: #333;
+    color: #2d2d2d;
     margin-bottom: 10px;
 }
 
 .package-description {
-    color: #666;
+    color: #565656;
     font-size: 0.95em;
     line-height: 1.5;
     margin-bottom: 15px;
@@ -431,7 +411,7 @@ body:has(.package-card) .highlight-box {
 
 .package-link {
     display: inline-block;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     color: white;
     padding: 8px 16px;
     border-radius: 20px;
@@ -439,25 +419,25 @@ body:has(.package-card) .highlight-box {
     font-size: 0.85em;
     font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 6px rgba(168, 0, 48, 0.12);
 }
 
 .package-link:hover {
-    background: linear-gradient(135deg, #764ba2, #667eea);
+    background: linear-gradient(135deg, #7a0224, #A80030);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 2px 8px rgba(168, 0, 48, 0.16);
     color: white;
     text-decoration: none;
 }
 
 .package-link-ubuntu {
     background: linear-gradient(135deg, #E95420, #f7934c);
-    box-shadow: 0 4px 15px rgba(233, 84, 32, 0.3);
+    box-shadow: 0 2px 6px rgba(233, 84, 32, 0.14);
 }
 
 .package-link-ubuntu:hover {
     background: linear-gradient(135deg, #f7934c, #E95420);
-    box-shadow: 0 6px 20px rgba(233, 84, 32, 0.4);
+    box-shadow: 0 2px 8px rgba(233, 84, 32, 0.18);
 }
 
 .package-links {
@@ -468,11 +448,10 @@ body:has(.package-card) .highlight-box {
 }
 
 section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #fffdfb;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(45, 45, 45, 0.05);
     margin-bottom: 30px;
 }
 
@@ -492,14 +471,14 @@ body:has(.package-card) h3 {
    since it only applies inside a plain <section><ul> that other index
    translations don't have. */
 section h2 {
-    color: #333;
+    color: #2d2d2d;
     font-size: 2.2em;
     margin-bottom: 20px;
     margin-top: 0;
 }
 
 section h3 {
-    color: #667eea;
+    color: #A80030;
     font-size: 1.5em;
     margin-bottom: 15px;
     margin-top: 30px;
@@ -517,7 +496,7 @@ section ul li {
 }
 
 section ul li:before {
-    color: #4caf50;
+    color: #4a7c59;
     content: "✓";
     font-size: 1.2em;
     font-weight: bold;
@@ -526,16 +505,16 @@ section ul li:before {
 }
 
 .installation-code {
-    background: #2d3748;
-    color: #e2e8f0;
+    background: #2d2d2d;
+    color: #f2efe9;
     padding: 20px;
     border-radius: 10px;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-family: 'Liberation Mono', 'DejaVu Sans Mono', Consolas, monospace;
     font-size: 0.9em;
     line-height: 1.4;
     overflow-x: auto;
     margin: 20px 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(45, 45, 45, 0.09);
     white-space: pre-wrap;
 }
 
@@ -548,17 +527,17 @@ section ul li:before {
 
 .repo-link {
     display: block;
-    background: #f8f9fa;
+    background: #efece6;
     padding: 15px;
     border-radius: 10px;
     text-decoration: none;
-    color: #333;
+    color: #2d2d2d;
     transition: all 0.3s ease;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #A80030;
 }
 
 .repo-link:hover {
-    background: #e9ecef;
+    background: #e5e0d8;
     transform: translateX(5px);
     text-decoration: none;
 }
@@ -572,12 +551,12 @@ section ul li:before {
 }
 
 .distro-badge {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     color: white;
     padding: 10px 20px;
     border-radius: 25px;
     font-weight: 500;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 6px rgba(168, 0, 48, 0.12);
 }
 
 .distro-badge-ubuntu {
@@ -586,7 +565,7 @@ section ul li:before {
     padding: 10px 20px;
     border-radius: 25px;
     font-weight: 500;
-    box-shadow: 0 5px 15px rgba(233, 84, 32, 0.3);
+    box-shadow: 0 2px 6px rgba(233, 84, 32, 0.14);
 }
 
 .language-selector {
@@ -602,8 +581,8 @@ section ul li:before {
 }
 
 .language-button {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(102, 126, 234, 0.3);
+    background: #fffdfb;
+    border: 2px solid rgba(168, 0, 48, 0.12);
     padding: 10px 15px;
     border-radius: 25px;
     cursor: pointer;
@@ -612,14 +591,14 @@ section ul li:before {
     align-items: center;
     gap: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(45, 45, 45, 0.05);
 }
 
 .language-button:hover {
-    background: white;
-    border-color: #667eea;
+    background: #fffdfb;
+    border-color: #A80030;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(168, 0, 48, 0.12);
 }
 
 .language-menu {
@@ -628,9 +607,9 @@ section ul li:before {
     top: 100%;
     right: 0;
     margin-top: 10px;
-    background: white;
+    background: #fffdfb;
     border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px rgba(45, 45, 45, 0.07);
     min-width: 200px;
     overflow: hidden;
     z-index: 1001;
@@ -657,10 +636,10 @@ section ul li:before {
     align-items: center;
     gap: 12px;
     padding: 12px 20px;
-    color: #333;
+    color: #2d2d2d;
     text-decoration: none;
     transition: all 0.2s ease;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #ddd6ce;
 }
 
 .language-option:last-child {
@@ -668,7 +647,7 @@ section ul li:before {
 }
 
 .language-option:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #A80030 0%, #7a0224 100%);
     color: white;
 }
 
@@ -692,50 +671,50 @@ section ul li:before {
    ============================================================ */
 
 .repo-header {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif;
     max-width: 900px;
     margin: 20px auto;
-    color: #333;
+    color: #2d2d2d;
     line-height: 1.6;
 }
 .repo-header .card {
-    background: rgba(255, 255, 255, 0.97);
+    background: #fffdfb;
     border-radius: 15px;
-    border-left: 4px solid #667eea;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #A80030;
+    box-shadow: 0 4px 12px rgba(45, 45, 45, 0.05);
     padding: 20px 25px;
     margin-bottom: 20px;
 }
 .repo-header h1 {
     font-size: 1.8em;
     margin: 0 0 5px 0;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-.repo-header .subtitle { color: #666; margin: 0 0 15px 0; }
+.repo-header .subtitle { color: #565656; margin: 0 0 15px 0; }
 .repo-header pre {
-    background: #2d2d44;
-    color: #e0e0f0;
+    background: #2d2d2d;
+    color: #f2efe9;
     border-radius: 10px;
     padding: 15px;
     overflow-x: auto;
     font-size: 0.85em;
 }
-.repo-header code { font-family: 'SF Mono', Consolas, Menlo, monospace; }
-.repo-header a { color: #667eea; font-weight: 600; text-decoration: none; }
+.repo-header code { font-family: 'Liberation Mono', 'DejaVu Sans Mono', Consolas, monospace; }
+.repo-header a { color: #A80030; font-weight: 600; text-decoration: none; }
 .repo-header a:hover { text-decoration: underline; }
 .repo-header .dists span {
     display: inline-block;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     color: white;
     border-radius: 20px;
     padding: 2px 12px;
     margin: 2px;
     font-size: 0.85em;
 }
-.repo-header .muted { color: #777; font-size: 0.9em; }
+.repo-header .muted { color: #7a7a7a; font-size: 0.9em; }
 
 /* ============================================================
    Apache mod_autoindex directory listing (/apt/*)
@@ -751,16 +730,16 @@ section ul li:before {
     max-width: 900px;
     margin: 0 auto 40px auto;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.97);
+    background: #fffdfb;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    box-shadow: 0 4px 12px rgba(45, 45, 45, 0.05);
+    font-family: 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif;
     font-size: 0.95em;
 }
 
 .repo-header ~ table th {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #A80030, #7a0224);
     color: white;
     text-align: left;
     padding: 10px 15px;
@@ -769,16 +748,16 @@ section ul li:before {
 
 .repo-header ~ table td {
     padding: 8px 15px;
-    border-top: 1px solid #eee;
-    color: #333;
+    border-top: 1px solid #ddd6ce;
+    color: #2d2d2d;
 }
 
 .repo-header ~ table tr:hover td {
-    background: rgba(102, 126, 234, 0.06);
+    background: rgba(168, 0, 48, 0.05);
 }
 
 .repo-header ~ table a {
-    color: #667eea;
+    color: #A80030;
     text-decoration: none;
     font-weight: 500;
 }
@@ -789,7 +768,7 @@ section ul li:before {
 
 .repo-header ~ hr {
     border: none;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid #ddd6ce;
     max-width: 900px;
     margin: 10px auto;
 }
@@ -797,7 +776,7 @@ section ul li:before {
 .repo-header ~ address {
     max-width: 900px;
     margin: 10px auto 30px auto;
-    color: rgba(255, 255, 255, 0.85);
+    color: #6b6b6b;
     font-size: 0.85em;
     text-align: center;
 }
