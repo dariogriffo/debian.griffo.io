@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar a versão mais recente de Zig no Debian</title>
-    <meta name="description" content="Instale o Zig mais recente (v0.15.2) no Debian - linguagem de programação de sistemas moderna e conjunto de ferramentas. Obtenha pacotes atualizados com compilação nativa, gerenciamento de dependências e mais de debian.griffo.io.">
+    <meta name="description" content="Instale o Zig mais recente (v0.15.2) no Debian - linguagem de programação de sistemas moderna e conjunto de ferramentas. Obtenha pacotes atualizados com compilação nativa, gerenciamento de dependências e mais de deb.griffo.io.">
     <meta name="keywords" content="zig debian, instalar zig debian, linguagem zig, programação de sistemas, pacotes debian, bookworm, trixie, sid, apt zig">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-zig-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-zig-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zig-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zig-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-zig-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-zig-in-debian.html">
     <meta property="og:title" content="Instalar a versão mais recente de Zig no Debian">
     <meta property="og:description" content="Obtenha os pacotes Zig mais atualizados para Debian. Linguagem de programação de sistemas moderna com compilação nativa e gerenciamento de dependências.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -103,7 +103,7 @@
             <li><strong>Suporte Expandido a Plataformas:</strong> 8+ novas arquiteturas na CI incluindo aarch64-freebsd, loongarch64, powerpc64le e s390x</li>
         </ul>
 
-        <h2>📦 Instalação a partir de debian.griffo.io</h2>
+        <h2>📦 Instalação a partir de deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Passo 1: Adicionar repositório</h3>
@@ -114,16 +114,16 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -190,7 +190,7 @@ zig build-exe main.zig -target aarch64-macos
 zig targets
         </div>
 
-        <h2>🚀 Por que escolher debian.griffo.io?</h2>
+        <h2>🚀 Por que escolher deb.griffo.io?</h2>
         <ul>
             <li>✅ <strong>Sempre Atualizado:</strong> Obtenha os lançamentos mais recentes de Zig imediatamente</li>
             <li>✅ <strong>Estável e Noturno:</strong> Ambas as versões estável e de ponta disponíveis</li>
@@ -208,7 +208,7 @@ zig targets
         </ul>
 
         <h3>🔗 Pacotes relacionados</h3>
-        <p>Também disponível em debian.griffo.io:</p>
+        <p>Também disponível em deb.griffo.io:</p>
         <ul>
             <li><a href="/pt-br/install-latest-zls-in-debian.html">ZLS Language Server</a> - Suporte IDE para Zig</li>
             <li><a href="/pt-br/install-latest-ghostty-in-debian.html">Terminal Ghostty</a> - Terminal moderno para desenvolvimento</li>
@@ -227,7 +227,7 @@ zig targets
     "@type": "TechArticle",
     "inLanguage": "pt-BR",
     "headline": "Instalar a versão mais recente de Zig no Debian",
-    "description": "Guia completo para instalar o Zig mais recente no Debian usando o repositório debian.griffo.io para pacotes atualizados.",
+    "description": "Guia completo para instalar o Zig mais recente no Debian usando o repositório deb.griffo.io para pacotes atualizados.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -237,7 +237,7 @@ zig targets
     "dateModified": "2025-01-01",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

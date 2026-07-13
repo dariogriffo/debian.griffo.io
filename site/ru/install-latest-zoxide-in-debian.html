@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка последней версии zoxide Smart cd Command в Debian</title>
-    <meta name="description" content="Установите последнюю версию zoxide (v0.9.8+) в Debian — умная команда cd, написанная на Rust. Получайте актуальные пакеты с интеллектуальным переходом по директориям и интеграцией с оболочкой от debian.griffo.io.">
+    <meta name="description" content="Установите последнюю версию zoxide (v0.9.8+) в Debian — умная команда cd, написанная на Rust. Получайте актуальные пакеты с интеллектуальным переходом по директориям и интеграцией с оболочкой от deb.griffo.io.">
     <meta name="keywords" content="zoxide debian, установить zoxide debian, умная команда cd, переход по директориям, замена cd на rust, пакеты debian, bookworm, trixie, sid, ajeetdsouza, apt zoxide">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-zoxide-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-zoxide-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zoxide-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-zoxide-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-zoxide-in-debian.html">
     <meta property="og:title" content="Установка последней версии zoxide Smart cd Command в Debian">
     <meta property="og:description" content="Получайте актуальные пакеты zoxide для Debian. Умная команда cd, изучающая ваши привычки и обеспечивающая интеллектуальную навигацию по директориям.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -123,7 +123,7 @@
             <li><strong>Кросс-платформенность:</strong> Улучшенная совместимость с Windows, macOS и Linux</li>
         </ul>
 
-        <h2>📦 Установка из debian.griffo.io</h2>
+        <h2>📦 Установка из deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Шаг 1: Добавить репозиторий</h3>
@@ -136,8 +136,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -145,8 +145,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -260,7 +260,7 @@ export _ZO_ECHO=1
 export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
         </div>
 
-        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
 
         <div class="productivity-box">
             <strong>📊 Сравнение репозиториев:</strong>
@@ -268,7 +268,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
                 <li><strong>Официальный Debian:</strong> Доступен, но часто устаревшие версии</li>
                 <li><strong>Cargo Install:</strong> Требует цепочки инструментов Rust и компиляции</li>
                 <li><strong>Скрипт установки:</strong> Ручные обновления без управления пакетами</li>
-                <li><strong>debian.griffo.io:</strong> Последняя версия (0.9.8+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.9.8+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -288,7 +288,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
         </ul>
 
         <h3>🔗 Связанные пакеты</h3>
-        <p>Также доступны из debian.griffo.io:</p>
+        <p>Также доступны из deb.griffo.io:</p>
         <ul>
             <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> — идеальный компаньон для интерактивного выбора с zoxide</li>
             <li><a href="/ru/install-latest-eza-in-debian.html">eza</a> — современная замена ls для лучшего отображения директорий</li>
@@ -307,7 +307,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
     "@type": "TechArticle",
     "inLanguage": "ru",
     "headline": "Установка последней версии zoxide Smart cd Command в Debian",
-    "description": "Полное руководство по установке последней версии инструмента умной навигации по директориям zoxide в Debian с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "description": "Полное руководство по установке последней версии инструмента умной навигации по директориям zoxide в Debian с использованием репозитория deb.griffo.io для получения актуальных пакетов.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -317,7 +317,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
     "dateModified": "2025-10-01",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

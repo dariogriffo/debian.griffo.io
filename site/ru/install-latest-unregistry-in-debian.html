@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установить последнюю версию unregistry  в Debian</title>
-    <meta name="description" content="Установите последнюю версию unregistry (v0.2.1+) в Debian - передача образов Docker прямо на удалённые серверы без внешнего реестра. Получите актуальные пакеты с передачей по SSH и эффективной дедупликацией слоёв с debian.griffo.io.">
+    <meta name="description" content="Установите последнюю версию unregistry (v0.2.1+) в Debian - передача образов Docker прямо на удалённые серверы без внешнего реестра. Получите актуальные пакеты с передачей по SSH и эффективной дедупликацией слоёв с deb.griffo.io.">
     <meta name="keywords" content="unregistry debian, install unregistry debian, docker pussh, docker image transfer, container deployment, debian packages, bookworm, trixie, sid, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-unregistry-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-unregistry-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-unregistry-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-unregistry-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-unregistry-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-unregistry-in-debian.html">
     <meta property="og:title" content="Установить последнюю версию unregistry  в Debian">
     <meta property="og:description" content="Получите самые актуальные пакеты unregistry для Debian. Передача образов Docker прямо на удалённые серверы без внешнего реестра с использованием SSH.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -122,7 +122,7 @@
             <li><strong>Documentation:</strong> Улучшенные руководства по настройке и информация по устранению неполадок</li>
         </ul>
 
-        <h2>📦 Установка из debian.griffo.io</h2>
+        <h2>📦 Установка из deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Шаг 1: Добавить репозиторий</h3>
@@ -135,8 +135,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -144,8 +144,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -218,7 +218,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
     docker pussh myapp:${{ github.sha }} deploy@staging-server
         </div>
 
-        <h2>🚀 Почему выбирают debian.griffo.io?</h2>
+        <h2>🚀 Почему выбирают deb.griffo.io?</h2>
 
         <div class="solution-box">
             <strong>📊 Сравнение установки:</strong>
@@ -226,7 +226,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Официальный Debian:</strong> Недоступен в официальных репозиториях</li>
                 <li><strong>Ручной скрипт:</strong> Требует ручных обновлений и управления зависимостями</li>
                 <li><strong>Homebrew:</strong> Ограничен определёнными платформами</li>
-                <li><strong>debian.griffo.io:</strong> Последняя версия (0.2.1+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.2.1+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -247,7 +247,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         </ul>
 
         <h3>🔗 Связанные пакеты</h3>
-        <p>Также доступно из debian.griffo.io:</p>
+        <p>Также доступно из deb.griffo.io:</p>
         <ul>
             <li><a href="/ru/install-latest-lazydocker-in-debian.html">lazydocker</a> - Терминальный интерфейс для управления Docker</li>
             <li><a href="/ru/install-latest-uncloud-in-debian.html">uncloud</a> - Многосерверное развёртывание контейнеров</li>
@@ -266,7 +266,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
     "@type": "TechArticle",
     "inLanguage": "ru",
     "headline": "Установить последнюю версию unregistry  в Debian",
-    "description": "Полное руководство по установке последней версии unregistry tool в Debian с использованием репозитория debian.griffo.io для актуальных пакетов.",
+    "description": "Полное руководство по установке последней версии unregistry tool в Debian с использованием репозитория deb.griffo.io для актуальных пакетов.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -276,7 +276,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
     "dateModified": "2025-10-01",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

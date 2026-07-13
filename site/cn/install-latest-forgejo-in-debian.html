@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在 Debian 上安装最新的 Forgejo 自托管 Git 代码托管平台</title>
-    <meta name="description" content="在 Debian 上安装最新的 Forgejo (v15.0.2+) - 轻量级自托管软件代码托管平台。托管您自己的 git 仓库、问题追踪器和 CI/CD 平台。从 debian.griffo.io 获取最新软件包。">
+    <meta name="description" content="在 Debian 上安装最新的 Forgejo (v15.0.2+) - 轻量级自托管软件代码托管平台。托管您自己的 git 仓库、问题追踪器和 CI/CD 平台。从 deb.griffo.io 获取最新软件包。">
     <meta name="keywords" content="forgejo debian, 安装 forgejo debian, 自托管 git, gitea fork, git 代码托管, debian 软件包, bookworm, trixie, sid, apt forgejo, 自托管 github">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/cn/install-latest-forgejo-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-forgejo-in-debian.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/install-latest-forgejo-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-forgejo-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-forgejo-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-forgejo-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/cn/install-latest-forgejo-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-forgejo-in-debian.html">
     <meta property="og:title" content="在 Debian 上安装最新的 Forgejo 自托管 Git 代码托管平台">
     <meta property="og:description" content="获取最新的 Debian 版 Forgejo。具有 git 托管、问题追踪、Pull Request 和 Forgejo Actions CI/CD 的自托管轻量级软件代码托管平台。">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -112,7 +112,7 @@
             <li><strong>联邦功能：</strong>改进的 ActivityPub 联邦支持</li>
         </ul>
 
-        <h2>📦 从 debian.griffo.io 安装</h2>
+        <h2>📦 从 deb.griffo.io 安装</h2>
 
         <div class="install-steps">
             <h3>步骤 1：添加仓库</h3>
@@ -125,8 +125,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -134,8 +134,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -215,14 +215,14 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user creat
 sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks
         </div>
 
-        <h2>🚀 为什么选择 debian.griffo.io？</h2>
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
 
         <div class="performance-box">
             <strong>📊 仓库对比：</strong>
             <ul>
                 <li><strong>官方 Debian：</strong>官方仓库中没有 Forgejo 软件包</li>
                 <li><strong>手动安装：</strong>需要手动下载并部署二进制文件</li>
-                <li><strong>debian.griffo.io：</strong>最新版本（15.0.2+），提供正规打包、安装后自动配置和 apt 更新支持</li>
+                <li><strong>deb.griffo.io：</strong>最新版本（15.0.2+），提供正规打包、安装后自动配置和 apt 更新支持</li>
             </ul>
         </div>
 
@@ -242,7 +242,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
         </ul>
 
         <h3>🔗 相关软件包</h3>
-        <p>也可从 debian.griffo.io 获取：</p>
+        <p>也可从 deb.griffo.io 获取：</p>
         <ul>
             <li><a href="/cn/install-latest-lazygit-in-debian.html">lazygit</a> - Terminal UI for Git（git 工作流的绝佳伴侣）</li>
             <li><a href="/cn/install-latest-lazydocker-in-debian.html">lazydocker</a> - Terminal UI for Docker（在容器中运行 Forgejo 时很有用）</li>
@@ -267,7 +267,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
                     ⭐ 在 GitHub 上加星
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -284,7 +284,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
     "@type": "TechArticle",
     "inLanguage": "zh-CN",
     "headline": "在 Debian 上安装最新的 Forgejo 自托管 Git 代码托管平台",
-    "description": "使用 debian.griffo.io 仓库在 Debian 上安装最新 Forgejo 的完整指南，获取最新软件包。",
+    "description": "使用 deb.griffo.io 仓库在 Debian 上安装最新 Forgejo 的完整指南，获取最新软件包。",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -294,7 +294,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
     "dateModified": "2025-05-27",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

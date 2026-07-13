@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在 Ubuntu 上安装最新的 Headscale 自托管 Tailscale 控制服务器</title>
-    <meta name="description" content="在 Ubuntu 上安装最新的 Headscale — 自托管的 Tailscale 控制服务器实现。从 debian.griffo.io 获取最新的预构建软件包。">
+    <meta name="description" content="在 Ubuntu 上安装最新的 Headscale — 自托管的 Tailscale 控制服务器实现。从 deb.griffo.io 获取最新的预构建软件包。">
     <meta name="keywords" content="headscale ubuntu, 安装 headscale ubuntu, headscale, tailscale 控制服务器, 自托管 vpn, wireguard mesh 网络, tailscale 协调服务器, ubuntu 软件包, jammy, noble, apt headscale">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-headscale-in-ubuntu.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-headscale-in-ubuntu.html">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-headscale-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-headscale-in-ubuntu.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-headscale-in-ubuntu.html">
     <meta property="og:title" content="在 Ubuntu 上安装最新的 Headscale 自托管 Tailscale 控制服务器">
     <meta property="og:description" content="获取最新的 Ubuntu 版 Headscale 软件包。自托管的 Tailscale 控制服务器实现。">
-    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -106,7 +106,7 @@
             <li><strong>多用户：</strong>使用命名空间分隔设备和用户</li>
         </ul>
 
-        <h2>📦 从 debian.griffo.io 安装</h2>
+        <h2>📦 从 deb.griffo.io 安装</h2>
 
         <div class="install-steps">
             <h3>步骤 1：添加仓库</h3>
@@ -119,8 +119,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -128,8 +128,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -182,13 +182,13 @@ headscale nodes list
 headscale serve
         </div>
 
-        <h2>🚀 为什么选择 debian.griffo.io？</h2>
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
 
         <div class="comparison-box">
             <strong>📊 仓库对比：</strong>
             <ul>
                 <li><strong>官方 Ubuntu：</strong>通常落后数月，缺少最新功能</li>
-                <li><strong>debian.griffo.io：</strong>发布后数小时内即可获取最新版本</li>
+                <li><strong>deb.griffo.io：</strong>发布后数小时内即可获取最新版本</li>
                 <li><strong>手动安装：</strong>需要手动下载并配置 PATH</li>
                 <li><strong>我们的仓库：</strong>预构建、开箱即用的软件包</li>
             </ul>
@@ -210,7 +210,7 @@ headscale serve
         </ul>
 
         <h3>🔗 相关软件包</h3>
-        <p>也可从 debian.griffo.io 获取：</p>
+        <p>也可从 deb.griffo.io 获取：</p>
         <ul>
             <li><a href="/cn/install-latest-garage-in-ubuntu.html">Garage</a> - 兼容 S3 的分布式对象存储</li>
             <li><a href="/cn/install-latest-forgejo-in-ubuntu.html">Forgejo</a> - 自托管轻量级软件代码托管平台</li>
@@ -235,7 +235,7 @@ headscale serve
                     ⭐ 在 GitHub 上加星
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -254,7 +254,7 @@ headscale serve
     "@type": "TechArticle",
     "inLanguage": "zh-CN",
     "headline": "在 Ubuntu 上安装最新的 Headscale 自托管 Tailscale 控制服务器",
-    "description": "使用 debian.griffo.io 仓库在 Ubuntu 上安装最新 Headscale 的完整指南，获取最新软件包。",
+    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新 Headscale 的完整指南，获取最新软件包。",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -264,7 +264,7 @@ headscale serve
     "dateModified": "2026-07-09",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

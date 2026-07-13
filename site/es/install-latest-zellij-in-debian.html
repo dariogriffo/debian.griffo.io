@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar la última versión de Zellij en Debian</title>
-    <meta name="description" content="Instala la última versión de Zellij en Debian — un espacio de trabajo y multiplexor de terminal. Obtén paquetes preconstruidos y actualizados desde debian.griffo.io.">
+    <meta name="description" content="Instala la última versión de Zellij en Debian — un espacio de trabajo y multiplexor de terminal. Obtén paquetes preconstruidos y actualizados desde deb.griffo.io.">
     <meta name="keywords" content="zellij debian, instalar zellij debian, zellij, multiplexor de terminal, alternativa a tmux, espacio de trabajo de terminal, multiplexor en rust, paquetes debian, bookworm, trixie, sid, apt zellij">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/es/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-zellij-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-zellij-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/es/install-latest-zellij-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-zellij-in-debian.html">
     <meta property="og:title" content="Instalar la última versión de Zellij en Debian">
     <meta property="og:description" content="Obtén los paquetes de Zellij más actualizados para Debian. Un espacio de trabajo y multiplexor de terminal.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -106,7 +106,7 @@
             <li><strong>Plugins:</strong> Extensibilidad basada en WASM</li>
         </ul>
 
-        <h2>📦 Instalación desde debian.griffo.io</h2>
+        <h2>📦 Instalación desde deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Paso 1: Agregar repositorio</h3>
@@ -119,8 +119,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -128,8 +128,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -182,13 +182,13 @@ zellij list-sessions
 zellij attach work
         </div>
 
-        <h2>🚀 ¿Por qué elegir debian.griffo.io?</h2>
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
 
         <div class="comparison-box">
             <strong>📊 Comparación de repositorios:</strong>
             <ul>
                 <li><strong>Debian oficial:</strong> A menudo meses de retraso, sin las últimas funciones</li>
-                <li><strong>debian.griffo.io:</strong> Última versión a horas de su lanzamiento</li>
+                <li><strong>deb.griffo.io:</strong> Última versión a horas de su lanzamiento</li>
                 <li><strong>Instalación manual:</strong> Requiere descargas manuales y configuración del PATH</li>
                 <li><strong>Nuestro repositorio:</strong> Paquetes preconstruidos y listos para usar</li>
             </ul>
@@ -210,7 +210,7 @@ zellij attach work
         </ul>
 
         <h3>🔗 Paquetes relacionados</h3>
-        <p>También disponible desde debian.griffo.io:</p>
+        <p>También disponible desde deb.griffo.io:</p>
         <ul>
             <li><a href="/es/install-latest-starship-in-debian.html">Starship</a> - Prompt rápido y personalizable para cualquier shell</li>
             <li><a href="/es/install-latest-atuin-in-debian.html">Atuin</a> - Sincronización, búsqueda y estadísticas del historial de shell</li>
@@ -235,7 +235,7 @@ zellij attach work
                     ⭐ Dar estrella en GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -254,7 +254,7 @@ zellij attach work
     "@type": "TechArticle",
     "inLanguage": "es",
     "headline": "Instalar la última versión de Zellij en Debian",
-    "description": "Guía completa para instalar la última versión de Zellij en Debian usando el repositorio debian.griffo.io para paquetes siempre actualizados.",
+    "description": "Guía completa para instalar la última versión de Zellij en Debian usando el repositorio deb.griffo.io para paquetes siempre actualizados.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -264,7 +264,7 @@ zellij attach work
     "dateModified": "2026-07-09",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

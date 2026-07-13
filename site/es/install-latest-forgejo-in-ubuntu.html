@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar la última versión de  en Ubuntu</title>
-    <meta name="description" content="Instala la última versión de Forgejo (v15.0.2+) en Ubuntu - una forja de software ligera y autoalojada. Aloja tus propios repositorios git, rastreador de problemas y plataforma CI/CD. Obtén paquetes actualizados desde debian.griffo.io.">
+    <meta name="description" content="Instala la última versión de Forgejo (v15.0.2+) en Ubuntu - una forja de software ligera y autoalojada. Aloja tus propios repositorios git, rastreador de problemas y plataforma CI/CD. Obtén paquetes actualizados desde deb.griffo.io.">
     <meta name="keywords" content="forgejo ubuntu, instalar forgejo ubuntu, git autoalojado, fork gitea, forja git, paquetes ubuntu, jammy, noble, apt forgejo, github autoalojado">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-forgejo-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
     <meta property="og:title" content="Instalar la última versión de  en Ubuntu">
     <meta property="og:description" content="Obtenga la versión más actualizada de Forgejo para Ubuntu. Forja de software ligera y autoalojada con alojamiento git, seguimiento de problemas, pull requests y CI/CD con Forgejo Actions.">
-    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -112,7 +112,7 @@
             <li><strong>Federación:</strong> Soporte mejorado de federación ActivityPub</li>
         </ul>
 
-        <h2>📦 Instalación desde debian.griffo.io</h2>
+        <h2>📦 Instalación desde deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Paso 1: Agregar repositorio</h3>
@@ -125,8 +125,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -134,8 +134,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -215,14 +215,14 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user creat
 sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks
         </div>
 
-        <h2>🚀 ¿Por qué elegir debian.griffo.io?</h2>
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
 
         <div class="performance-box">
             <strong>📊 Comparación de repositorios:</strong>
             <ul>
                 <li><strong>Ubuntu oficial:</strong> No hay paquete de Forgejo disponible en los repositorios oficiales</li>
                 <li><strong>Instalación manual:</strong> Requiere descargar y colocar el binario manualmente</li>
-                <li><strong>debian.griffo.io:</strong> Última versión (15.0.2+) con empaquetado adecuado, configuración postinst y soporte para apt update</li>
+                <li><strong>deb.griffo.io:</strong> Última versión (15.0.2+) con empaquetado adecuado, configuración postinst y soporte para apt update</li>
             </ul>
         </div>
 
@@ -242,7 +242,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
         </ul>
 
         <h3>🔗 Paquetes relacionados</h3>
-        <p>También disponible desde debian.griffo.io:</p>
+        <p>También disponible desde deb.griffo.io:</p>
         <ul>
             <li><a href="/es/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Terminal UI para Git (gran complemento para flujos de trabajo con git)</li>
             <li><a href="/es/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Terminal UI para Docker (útil si ejecutas Forgejo en contenedores)</li>
@@ -267,7 +267,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
                     ⭐ Dar estrella en GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Echa%20un%20vistazo%20a%20debian.griffo.io%20-%20obt%C3%A9n%20las%20%C3%BAltimas%20versiones%20de%20Zig%2C%20Ghostty%2C%20lazygit%20y%20otras%20herramientas%20de%20desarrollo%20modernas%20como%20paquetes%20Debian!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Echa%20un%20vistazo%20a%20deb.griffo.io%20-%20obt%C3%A9n%20las%20%C3%BAltimas%20versiones%20de%20Zig%2C%20Ghostty%2C%20lazygit%20y%20otras%20herramientas%20de%20desarrollo%20modernas%20como%20paquetes%20Debian!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -284,7 +284,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
     "@type": "TechArticle",
     "inLanguage": "es",
     "headline": "Instalar la última versión de  en Ubuntu",
-    "description": "Guía completa para instalar la última versión de Forgejo en Ubuntu usando el repositorio debian.griffo.io para paquetes siempre actualizados.",
+    "description": "Guía completa para instalar la última versión de Forgejo en Ubuntu usando el repositorio deb.griffo.io para paquetes siempre actualizados.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -294,7 +294,7 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
     "dateModified": "2025-05-27",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

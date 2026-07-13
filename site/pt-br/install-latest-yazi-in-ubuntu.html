@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Ubuntu</title>
-    <meta name="description" content="Instale o último Yazi (v25.5.31+) no Ubuntu - gerenciador de arquivos de terminal extremamente rápido escrito em Rust com I/O assíncrono. Obtenha pacotes atualizados com visualização de imagens, plugins e recursos avançados do debian.griffo.io.">
+    <meta name="description" content="Instale o último Yazi (v25.5.31+) no Ubuntu - gerenciador de arquivos de terminal extremamente rápido escrito em Rust com I/O assíncrono. Obtenha pacotes atualizados com visualização de imagens, plugins e recursos avançados do deb.griffo.io.">
     <meta name="keywords" content="yazi ubuntu, instalar yazi ubuntu, gerenciador de arquivos de terminal, gerenciador de arquivos rust, gerenciador de arquivos assíncrono, pacotes ubuntu, jammy, noble, apt yazi">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-yazi-in-ubuntu.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-yazi-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-yazi-in-ubuntu.html">
     <meta property="og:title" content="Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Ubuntu">
     <meta property="og:description" content="Obtenha os pacotes mais atualizados do Yazi gerenciador de arquivos para Ubuntu. Gerenciador de arquivos de terminal extremamente rápido com I/O assíncrono, visualização de imagens e sistema de plugins.">
-    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -119,7 +119,7 @@
             <li><strong>Sistema de Arquivos Virtual:</strong> Suporte para arquivos compactados e sistemas de arquivos remotos</li>
         </ul>
 
-        <h2>📦 Instalação a partir do debian.griffo.io</h2>
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Passo 1: Adicionar repositório</h3>
@@ -132,8 +132,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -141,8 +141,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -229,14 +229,14 @@ ctrl+a        - Select all
 :fzf          - Fuzzy find files
         </div>
 
-        <h2>🚀 Por que escolher o debian.griffo.io?</h2>
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
 
         <div class="performance-box">
             <strong>📊 Comparação de Repositórios:</strong>
             <ul>
                 <li><strong>Ubuntu Oficial:</strong> Frequentemente versões desatualizadas sem os últimos recursos</li>
                 <li><strong>Cargo Install:</strong> Requer toolchain Rust e tempo de compilação</li>
-                <li><strong>debian.griffo.io:</strong> Última versão (25.5.31+) disponível imediatamente</li>
+                <li><strong>deb.griffo.io:</strong> Última versão (25.5.31+) disponível imediatamente</li>
             </ul>
         </div>
 
@@ -256,7 +256,7 @@ ctrl+a        - Select all
         </ul>
 
         <h3>🔗 Pacotes relacionados</h3>
-        <p>Também disponível no debian.griffo.io:</p>
+        <p>Também disponível no deb.griffo.io:</p>
         <ul>
             <li><a href="/pt-br/install-latest-eza-in-ubuntu.html">eza</a> - Substituto moderno do ls (companheiro perfeito)</li>
             <li><a href="/pt-br/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Integra com Yazi para busca de arquivos</li>
@@ -275,7 +275,7 @@ ctrl+a        - Select all
     "@type": "TechArticle",
     "inLanguage": "pt-BR",
     "headline": "Instalar a última versão do Yazi Gerenciador de Arquivos de Terminal no Ubuntu",
-    "description": "Guia completo para instalar o último gerenciador de arquivos Yazi no Ubuntu usando o repositório debian.griffo.io para pacotes atualizados.",
+    "description": "Guia completo para instalar o último gerenciador de arquivos Yazi no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -285,7 +285,7 @@ ctrl+a        - Select all
     "dateModified": "2025-10-01",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

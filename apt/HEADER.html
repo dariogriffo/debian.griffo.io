@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="/css/theme.css">
 <div class="repo-header">
   <div class="card">
-    <h1>debian.griffo.io &mdash; apt repository</h1>
+    <h1>deb.griffo.io &mdash; apt repository</h1>
     <p class="subtitle">Unofficial Debian &amp; Ubuntu packages with the <strong>latest versions</strong> of modern development tools: Zig, Ghostty, Helix, lazygit, yazi, eza, uv, bun, fzf, zoxide, jujutsu, k9s, starship, atuin and many more.</p>
-    <p>You are browsing the raw repository. <a href="dists/">dists/</a> holds the signed metadata for each distribution; <a href="pool/">pool/</a> holds the package files themselves. Full package list, install guides and news: <a href="https://debian.griffo.io/">debian.griffo.io</a> &middot; <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a></p>
+    <p>You are browsing the raw repository. <a href="dists/">dists/</a> holds the signed metadata for each distribution; <a href="pool/">pool/</a> holds the package files themselves. Full package list, install guides and news: <a href="https://deb.griffo.io/">deb.griffo.io</a> &middot; <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a></p>
     <p class="dists">
       <span>bookworm</span><span>trixie</span><span>forky</span><span>sid</span>
       <span>jammy</span><span>noble</span><span>questing</span><span>resolute</span>
@@ -15,7 +15,7 @@
     <p><strong>How to get access:</strong></p>
     <ol>
       <li><strong>&#x1F511; <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01">Get your yearly subscription</a></strong> &mdash; one payment gives you uninterrupted access for a full year and directly supports keeping this project alive. Thank you! &#x1F64F;</li>
-      <li>Save the credentials you receive to <code>/etc/apt/auth.conf.d/debian.griffo.io.conf</code> &mdash; exact commands in the quick setup below.</li>
+      <li>Save the credentials you receive to <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> &mdash; exact commands in the quick setup below.</li>
       <li>That is it &mdash; <code>apt</code> keeps working exactly as before.</li>
     </ol>
     <p>&#x1F4AC; <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy">Discord community</a> &mdash; the best place to get help and connect with other users.<br>
@@ -24,21 +24,21 @@
   <div class="card">
     <strong>Quick setup</strong>
     <pre><code>sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
-  | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" \
-  | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
+  | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" \
+  | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
 
 # From 1 October 2026, package downloads require a subscription:
 # get yours at https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01
 # then store your credentials (never put them in the sources.list line):
-sudo tee /etc/apt/auth.conf.d/debian.griffo.io.conf > /dev/null &lt;&lt;'EOF'
-machine debian.griffo.io
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf > /dev/null &lt;&lt;'EOF'
+machine deb.griffo.io
 login your-email@example.com
 password your-subscription-password
 EOF
-sudo chmod 600 /etc/apt/auth.conf.d/debian.griffo.io.conf</code></pre>
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf</code></pre>
     <p class="muted">All packages are signed with GPG key <a href="/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc"><code>EA0F 721D 231F DD3A 0A17&nbsp;&nbsp;B9AC 7808 B4DD 62C4 1256</code></a>. This repository keeps only the latest build of each package &mdash; older versions are replaced when upstream releases a new one. Packaging issues: <a href="https://github.com/dariogriffo/debian.griffo.io/issues">open an issue</a>. Tool issues: contact the upstream project.</p>
   </div>
 </div>

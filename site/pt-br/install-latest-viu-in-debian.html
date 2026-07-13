@@ -8,22 +8,22 @@
     <meta name="keywords" content="viu debian, install viu debian, terminal image viewer, rust image viewer, kitty protocol, sixel debian, debian packages, bookworm, trixie, sid, apt viu">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/pt-br/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-viu-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-viu-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-viu-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/pt-br/install-latest-viu-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-viu-in-debian.html">
     <meta property="og:title" content="Instalar o último visualizador de imagens viu no Debian">
     <meta property="og:description" content="Obtenha o visualizador de imagens viu mais atualizado para Debian. Exiba imagens diretamente no terminal com os protocolos Kitty, iTerm2, Sixel.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -103,7 +103,7 @@
             </ul>
         </div>
 
-        <h2>📦 Installation from debian.griffo.io</h2>
+        <h2>📦 Installation from deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Passo 1: Adicionar repositório</h3>
@@ -114,16 +114,16 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -192,14 +192,14 @@ for f in ~/Pictures/*.jpg; do viu -w 40 "$f"; done
 find . -name "*.png" | fzf --preview "viu -w 60 {}"
         </div>
 
-        <h2>🚀 Por que escolher debian.griffo.io?</h2>
+        <h2>🚀 Por que escolher deb.griffo.io?</h2>
 
         <div class="performance-box">
             <strong>📊 Repository Comparison:</strong>
             <ul>
                 <li><strong>Debian oficial: viu não está empacotado nos repositórios oficiais do Debian</strong></li>
                 <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation time</li>
-                <li><strong>debian.griffo.io:</strong> Latest version (1.6.1+) available immediately via <code>apt</code></li>
+                <li><strong>deb.griffo.io:</strong> Latest version (1.6.1+) available immediately via <code>apt</code></li>
             </ul>
         </div>
 
@@ -218,7 +218,7 @@ find . -name "*.png" | fzf --preview "viu -w 60 {}"
         </ul>
 
         <h3>🔗 Pacotes relacionados</h3>
-        <p>Também disponível em debian.griffo.io:</p>
+        <p>Também disponível em deb.griffo.io:</p>
         <ul>
             <li><a href="/pt-br/install-latest-yazi-in-debian.html">Gerenciador de Arquivos Yazi</a> - Gerenciador de arquivos de terminal com previsualização de imagens integrada</li>
             <li><a href="/pt-br/install-latest-eza-in-debian.html">eza</a> - Substituto moderno do ls</li>
@@ -241,7 +241,7 @@ find . -name "*.png" | fzf --preview "viu -w 60 {}"
                    onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
                     ⭐ Star on GitHub
                 </a>
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -268,7 +268,7 @@ find . -name "*.png" | fzf --preview "viu -w 60 {}"
     "dateModified": "2026-06-15",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

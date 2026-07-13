@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка последней версии uv Python Package Manager в Debian</title>
-    <meta name="description" content="Установите последнюю версию uv (v0.8.8+) в Debian — чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust. Получайте актуальные пакеты с производительностью в 10-100 раз выше pip от debian.griffo.io.">
+    <meta name="description" content="Установите последнюю версию uv (v0.8.8+) в Debian — чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust. Получайте актуальные пакеты с производительностью в 10-100 раз выше pip от deb.griffo.io.">
     <meta name="keywords" content="uv debian, установить uv debian, менеджер пакетов python, быстрая замена pip, инструменты python на rust, пакеты debian, bookworm, trixie, sid, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-uv-in-debian.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-uv-in-debian.html">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-uv-in-debian.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-uv-in-debian.html">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
     <meta property="og:title" content="Установка последней версии uv Python Package Manager в Debian">
     <meta property="og:description" content="Получайте актуальные пакеты uv Python package manager для Debian. В 10-100 раз быстрее pip с полноценным управлением проектами и версиями Python.">
-    <meta property="og:image" content="https://debian.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -118,7 +118,7 @@
             <li><strong>Кросс-платформенная поддержка:</strong> Улучшенная совместимость с Windows, macOS и Linux</li>
         </ul>
 
-        <h2>📦 Установка из debian.griffo.io</h2>
+        <h2>📦 Установка из deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Шаг 1: Добавить репозиторий</h3>
@@ -131,8 +131,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -140,8 +140,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -235,7 +235,7 @@ uv tool install ruff
 uv tool list
         </div>
 
-        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
 
         <div class="performance-box">
             <strong>📊 Сравнение методов установки:</strong>
@@ -243,7 +243,7 @@ uv tool list
                 <li><strong>Официальный Debian:</strong> Часто устаревшие версии без новейших функций</li>
                 <li><strong>pip install:</strong> Медленнее, требует предустановленного Python</li>
                 <li><strong>Curl-установщик:</strong> Ручные обновления, без управления пакетами</li>
-                <li><strong>debian.griffo.io:</strong> Последняя версия (0.8.8+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.8.8+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -274,7 +274,7 @@ uv tool list
         </ul>
 
         <h3>🔗 Связанные пакеты</h3>
-        <p>Также доступны из debian.griffo.io:</p>
+        <p>Также доступны из deb.griffo.io:</p>
         <ul>
             <li><a href="/ru/install-latest-zig-in-debian.html">Язык программирования Zig</a> — современное системное программирование</li>
             <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — быстрый терминал для разработки</li>
@@ -293,7 +293,7 @@ uv tool list
     "@type": "TechArticle",
     "inLanguage": "ru",
     "headline": "Установка последней версии uv Python Package Manager в Debian",
-    "description": "Полное руководство по установке последней версии менеджера пакетов Python uv в Debian с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "description": "Полное руководство по установке последней версии менеджера пакетов Python uv в Debian с использованием репозитория deb.griffo.io для получения актуальных пакетов.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -303,7 +303,7 @@ uv tool list
     "dateModified": "2025-10-01",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",

@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка последней версии Jujutsu в Ubuntu</title>
-    <meta name="description" content="Установите последнюю версию Jujutsu в Ubuntu — Git-совместимая система контроля версий. Получайте актуальные, готовые пакеты от debian.griffo.io.">
+    <meta name="description" content="Установите последнюю версию Jujutsu в Ubuntu — Git-совместимая система контроля версий. Получайте актуальные, готовые пакеты от deb.griffo.io.">
     <meta name="keywords" content="jujutsu ubuntu, установить jujutsu ubuntu, jujutsu vcs, jj система контроля версий, git-совместимая vcs, jj vcs, jujutsu git, пакеты ubuntu, jammy, noble, apt jujutsu">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://debian.griffo.io/cn/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
     <meta property="og:title" content="Установка последней версии Jujutsu в Ubuntu">
     <meta property="og:description" content="Получайте самые актуальные пакеты Jujutsu для Ubuntu. Git-совместимая система контроля версий.">
-    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -106,7 +106,7 @@
             <li><strong>Движок Git:</strong> Взаимодействует с существующими удалёнными репозиториями Git</li>
         </ul>
 
-        <h2>📦 Установка из debian.griffo.io</h2>
+        <h2>📦 Установка из deb.griffo.io</h2>
 
         <div class="install-steps">
             <h3>Шаг 1: Добавить репозиторий</h3>
@@ -119,8 +119,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -128,8 +128,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -185,13 +185,13 @@ jj describe -m "My change"
 jj undo
         </div>
 
-        <h2>🚀 Почему стоит выбрать debian.griffo.io?</h2>
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
 
         <div class="comparison-box">
             <strong>📊 Сравнение репозиториев:</strong>
             <ul>
                 <li><strong>Официальный Ubuntu:</strong> Часто отстаёт на месяцы, отсутствуют новейшие функции</li>
-                <li><strong>debian.griffo.io:</strong> Последняя версия в течение нескольких часов после релиза</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия в течение нескольких часов после релиза</li>
                 <li><strong>Ручная установка:</strong> Требуется ручная загрузка и настройка PATH</li>
                 <li><strong>Наш репозиторий:</strong> Готовые к использованию собранные пакеты</li>
             </ul>
@@ -213,7 +213,7 @@ jj undo
         </ul>
 
         <h3>🔗 Связанные пакеты</h3>
-        <p>Также доступны из debian.griffo.io:</p>
+        <p>Также доступны из deb.griffo.io:</p>
         <ul>
             <li><a href="/ru/install-latest-lazygit-in-ubuntu.html">lazygit</a> — простой терминальный интерфейс для команд git</li>
             <li><a href="/ru/install-latest-helix-in-ubuntu.html">Helix Editor</a> — постмодернистский модальный текстовый редактор</li>
@@ -238,7 +238,7 @@ jj undo
                     ⭐ Поставить звезду на GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20debian.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://debian.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -257,7 +257,7 @@ jj undo
     "@type": "TechArticle",
     "inLanguage": "ru",
     "headline": "Установка последней версии Jujutsu в Ubuntu",
-    "description": "Полное руководство по установке последней версии Jujutsu в Ubuntu с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "description": "Полное руководство по установке последней версии Jujutsu в Ubuntu с использованием репозитория deb.griffo.io для получения актуальных пакетов.",
     "author": {
         "@type": "Person",
         "name": "Dario Griffo",
@@ -267,7 +267,7 @@ jj undo
     "dateModified": "2026-07-09",
     "publisher": {
         "@type": "Organization",
-        "name": "debian.griffo.io"
+        "name": "deb.griffo.io"
     },
     "mainEntity": {
         "@type": "SoftwareApplication",
