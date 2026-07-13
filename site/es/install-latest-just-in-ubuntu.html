@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar la última versión de just Command Runner en Ubuntu</title>
+    <meta name="description" content="Instale el último just (v1.56.0+) en Ubuntu - a handy command runner written in Rust. Get up-to-date packages with shell completions and man page from debian.griffo.io.">
+    <meta name="keywords" content="just ubuntu, install just ubuntu, command runner, justfile, make alternative, rust task runner, ubuntu packages, jammy, noble, casey rodarmor, apt just">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/es/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-just-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/es/install-latest-just-in-ubuntu.html">
+    <meta property="og:title" content="Instalar la última versión de just Command Runner en Ubuntu">
+    <meta property="og:description" content="Obtenga los más actualizados just paquetes para Ubuntu. Handy command runner that saves and runs project-specific commands from a justfile.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Actualización importante — el acceso cambia el 1 de octubre de 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            A partir del <strong>1 de octubre de 2026 al mediodía (hora del Reino Unido)</strong>, este espejo requerirá autenticación para que <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> siga funcionando.<br>
+            Una <strong>suscripción anual</strong> te da acceso ininterrumpido y apoya directamente la continuidad del proyecto. ¡Gracias! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Obtener suscripción anual
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>¿Preguntas, problemas o cualquier cosa sobre este repositorio?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda y conectar con otros usuarios.<br>
+            ☕ <strong>¿Apoyaste anteriormente a través de Buy Me a Coffee?</strong> ¡Eres increíble! Pásate por nuestro <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> y te gestionaremos una <strong>suscripción vitalicia gratuita</strong>. 💜
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🤖 Instalar la última versión de just en Ubuntu</h1>
+        <p class="subtitle">A práctico ejecutor de comandos para los comandos específicos de tu proyecto</p>
+        <div class="version-badge">Latest Version: 1.56.0+ (July 2026)</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+
+        <h2>¿Qué es just?</h2>
+        <p>just is a <strong>handy command runner</strong> written in Rust by Casey Rodarmor. It saves and runs project-specific commands, called <em>recipes</em>, stored in a file named <code>justfile</code> with a syntax inspired by make. Unlike make, just is not a build system: recipes are simply commands to run, so there are no phony targets and no dependency on file modification times. With over 25k GitHub stars, it has become the go-to task runner for modern projects.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Traditional make Pain Points:</strong> Tired of <code>.PHONY</code> declarations everywhere? Fed up with tab-versus-space errors and implicit build rules that fire when you least expect them? just keeps the familiar recipe feel of a Makefile but drops the build-system baggage — every recipe is just a command.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> just is actively developed with frequent releases containing new attributes, expression functions, shell integrations, and quality-of-life improvements. The latest versions include enhanced completion scripts, new built-in functions, better error messages, and expanded cross-platform support.
+        </div>
+
+        <h3>⚡ Key Features of just</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📝 Make-Inspired Syntax</h4>
+                <p>Write recipes in a familiar, readable justfile. If you know Makefiles, you already know most of just — minus the quirks.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Recipe Parameters</h4>
+                <p>Recipes accept arguments and have default values, so a single recipe can adapt to many invocations without extra scripting.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Any Shell or Language</h4>
+                <p>Write recipes in sh, bash, Python, Node, or anything else with a shebang line. just runs each recipe with the interpreter you choose.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📋 List &amp; Discover</h4>
+                <p>Run <code>just --list</code> to see every recipe with its documentation comment. Newcomers can explore a project's tasks instantly.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 .env &amp; Variables</h4>
+                <p>Load environment files, define variables, and interpolate them into recipes. Keep configuration tidy and out of your commands.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌍 Cross-Platform</h4>
+                <p>A single static binary that works the same on Linux, macOS, and Windows — no runtime, no interpreter, no quirks.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Productivity Benefits</h4>
+            <ul>
+                <li><strong>Save Time:</strong> Run any project task with <code>just &lt;recipe&gt;</code> instead of remembering long commands</li>
+                <li><strong>Self-Documenting:</strong> <code>just --list</code> shows every task and its description</li>
+                <li><strong>Consistent:</strong> The whole team runs the same commands the same way</li>
+                <li><strong>No Build Quirks:</strong> Recipes are commands, not targets — no stale-timestamp surprises</li>
+                <li><strong>Portable:</strong> One justfile works across Linux, macOS, and Windows</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Novedades en just 1.56.0+</h3>
+        <ul>
+            <li><strong>New Functions:</strong> Additional built-in expression functions for paths, strings, and the environment</li>
+            <li><strong>Recipe Attributes:</strong> More attributes for controlling how and when recipes run</li>
+            <li><strong>Better Completions:</strong> Improved bash, zsh, and fish completion scripts</li>
+            <li><strong>Clearer Errors:</strong> More helpful parse and runtime error messages</li>
+            <li><strong>Cross-Platform:</strong> Continued improvements for Windows and shell handling</li>
+            <li><strong>Man Page:</strong> Up-to-date <code>just.1</code> man page shipped with the package</li>
+        </ul>
+
+        <h2>📦 Instalación desde debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar just</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest just
+sudo apt install just
+
+# Verificar instalación
+just --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest just
+apt install just
+
+# Verificar instalación
+just --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Create Your First justfile</h3>
+            <div class="code-block">
+# Create a justfile in your project
+cat > justfile <<'EOF'
+# Build the project
+build:
+    cargo build --release
+
+# Run the tests
+test:
+    cargo test
+
+# Say hello to someone
+hello name='world':
+    echo "Hello, {{name}}!"
+EOF
+
+# List available recipes
+just --list
+
+# Run a recipe
+just build
+just hello just
+            </div>
+        </div>
+
+        <h3>🎯 Ejemplos de uso básico</h3>
+
+        <p><strong>Running recipes:</strong></p>
+        <div class="code-block">
+# Run the first recipe in the justfile (the default)
+just
+
+# Run a specific recipe
+just test
+
+# Pass an argument to a recipe
+just hello Dario
+
+# List every recipe with its documentation
+just --list
+        </div>
+
+        <p><strong>Working with justfiles:</strong></p>
+        <div class="code-block">
+# Show the resolved value of a variable
+just --evaluate
+
+# Print a recipe without running it
+just --show build
+
+# Use a justfile in another directory
+just --justfile ~/project/justfile --working-directory ~/project build
+
+# Choose a recipe interactively (needs a chooser like fzf)
+just --choose
+        </div>
+
+        <p><strong>Shell completions:</strong></p>
+        <div class="code-block">
+# Completions for bash, fish and zsh are installed with the package.
+# Generate them manually for any shell if you need to:
+just --completions bash
+just --completions zsh
+just --completions fish
+        </div>
+
+        <h2>🚀 ¿Por qué elegir debian.griffo.io?</h2>
+
+        <div class="productivity-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> Available but often outdated versions</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation</li>
+                <li><strong>Install Script:</strong> Manual updates and no package management</li>
+                <li><strong>debian.griffo.io:</strong> Latest version (1.56.0+) with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get the newest recipe attributes and functions</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built binaries, no toolchain needed</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Complete Package:</strong> Includes shell completions and the man page</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Ubuntu se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/just-debian" target="_blank" rel="noopener">🤖 just-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde debian.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Powers <code>just --choose</code> for interactive recipe selection</li>
+            <li><a href="/es/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a> - A modern, Git-compatible version control system</li>
+            <li><a href="/es/install-latest-helix-in-ubuntu.html">Helix Editor</a> - A post-modern modal editor for editing your justfiles</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Developers who juggle many project commands, teams that want a single consistent task runner, anyone who likes Makefiles but not make's quirks, and power users who value a fast, portable, self-documenting workflow.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar la última versión de just Command Runner en Ubuntu",
+    "description": "Complete guide to installing the latest just command runner en Ubuntu using debian.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "just",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "1.56.0+",
+        "description": "Handy command runner that saves and runs project-specific commands from a justfile"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function IsEven(n) {
+        return !IsOdd(n);
+    }
+
+    function IsOdd(n) {
+        return !IsEven(n);
+    }
+
+</script>
+</body>
+</html>

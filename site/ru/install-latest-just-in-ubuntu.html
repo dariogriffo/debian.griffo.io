@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установить последнюю версию just Command Runner в Ubuntu</title>
+    <meta name="description" content="Установите последнюю версию just (v1.56.0+) в Ubuntu — удобный исполнитель команд, написанный на Rust. Получайте актуальные пакеты с автодополнением оболочки и man-страницей от debian.griffo.io.">
+    <meta name="keywords" content="just ubuntu, install just ubuntu, command runner, justfile, make alternative, rust task runner, ubuntu packages, jammy, noble, casey rodarmor, apt just">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://debian.griffo.io/ru/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://debian.griffo.io/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://debian.griffo.io/cn/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://debian.griffo.io/de/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://debian.griffo.io/es/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://debian.griffo.io/fr/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://debian.griffo.io/ru/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://debian.griffo.io/pt-br/install-latest-just-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://debian.griffo.io/ru/install-latest-just-in-ubuntu.html">
+    <meta property="og:title" content="Установить последнюю версию just Command Runner в Ubuntu">
+    <meta property="og:description" content="Получайте актуальные пакеты just для Ubuntu. Удобный исполнитель команд, который сохраняет и запускает ваши специфичные для проекта команды из justfile.">
+    <meta property="og:image" content="https://debian.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Важное обновление — доступ меняется с 1 октября 2026 года
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            С <strong>1 октября 2026 года в полдень (по времени Великобритании)</strong> этот зеркальный репозиторий потребует аутентификации для работы <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            <strong>Годовая подписка</strong> обеспечивает бесперебойный доступ и напрямую поддерживает проект. Спасибо! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Оформить годовую подписку
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Вопросы, проблемы или что-то связанное с этим репозиторием?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">сообществу в Discord</a> — лучшее место для получения помощи и общения с другими пользователями.<br>
+            ☕ <strong>Ранее поддерживали через Buy Me a Coffee?</strong> Вы замечательны! Загляните на наш <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>, и мы оформим для вас <strong>бесплатную пожизненную подписку</strong>. 💜
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🤖 Установить последнюю версию just в Ubuntu</h1>
+        <p class="subtitle">Удобный исполнитель команд для ваших проектных задач</p>
+        <div class="version-badge">Последняя версия: 1.56.0+ (июль 2026)</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое just?</h2>
+        <p>just — это <strong>удобный исполнитель команд</strong>, написанный на Rust Кейси Родармором. Он сохраняет и запускает специфичные для проекта команды, называемые <em>рецептами</em>, которые хранятся в файле с именем <code>justfile</code> с синтаксисом, вдохновлённым make. В отличие от make, just не является системой сборки: рецепты — это просто команды для выполнения, поэтому здесь нет фиктивных целей (phony) и зависимости от времени изменения файлов. Набрав более 25 тысяч звёзд на GitHub, он стал предпочтительным инструментом запуска задач для современных проектов.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Проблемы традиционного make:</strong> Устали от объявлений <code>.PHONY</code> повсюду? Надоели ошибки табуляции против пробелов и неявные правила сборки, которые срабатывают, когда вы меньше всего этого ожидаете? just сохраняет привычное ощущение рецептов Makefile, но избавляется от груза системы сборки — каждый рецепт это просто команда.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> just активно развивается с частыми релизами, содержащими новые атрибуты, функции выражений, интеграции с оболочками и улучшения удобства использования. Последние версии включают улучшенные скрипты автодополнения, новые встроенные функции, более понятные сообщения об ошибках и расширенную кроссплатформенную поддержку.
+        </div>
+
+        <h3>⚡ Ключевые возможности just</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📝 Синтаксис в стиле make</h4>
+                <p>Пишите рецепты в знакомом, читаемом justfile. Если вы знаете Makefile, вы уже знаете большую часть just — без причуд.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Параметры рецептов</h4>
+                <p>Рецепты принимают аргументы и имеют значения по умолчанию, поэтому один рецепт может адаптироваться ко многим вызовам без дополнительных скриптов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Любая оболочка или язык</h4>
+                <p>Пишите рецепты на sh, bash, Python, Node или чём-либо ещё с помощью строки shebang. just запускает каждый рецепт с выбранным вами интерпретатором.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📋 Список и обнаружение</h4>
+                <p>Запустите <code>just --list</code>, чтобы увидеть каждый рецепт с его комментарием-документацией. Новички могут мгновенно изучить задачи проекта.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 .env и переменные</h4>
+                <p>Загружайте файлы окружения, определяйте переменные и подставляйте их в рецепты. Держите конфигурацию в порядке и вне ваших команд.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌍 Кроссплатформенность</h4>
+                <p>Единый статический бинарный файл, который одинаково работает на Linux, macOS и Windows — без среды выполнения, без интерпретатора, без причуд.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Преимущества для производительности</h4>
+            <ul>
+                <li><strong>Экономия времени:</strong> Запускайте любую задачу проекта с помощью <code>just &lt;recipe&gt;</code> вместо запоминания длинных команд</li>
+                <li><strong>Самодокументирование:</strong> <code>just --list</code> показывает каждую задачу и её описание</li>
+                <li><strong>Единообразие:</strong> Вся команда запускает одни и те же команды одинаково</li>
+                <li><strong>Без причуд сборки:</strong> Рецепты — это команды, а не цели — никаких сюрпризов с устаревшими метками времени</li>
+                <li><strong>Переносимость:</strong> Один justfile работает на Linux, macOS и Windows</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Что нового в just 1.56.0+</h3>
+        <ul>
+            <li><strong>Новые функции:</strong> Дополнительные встроенные функции выражений для путей, строк и окружения</li>
+            <li><strong>Атрибуты рецептов:</strong> Больше атрибутов для управления тем, как и когда запускаются рецепты</li>
+            <li><strong>Улучшенное автодополнение:</strong> Улучшенные скрипты автодополнения для bash, zsh и fish</li>
+            <li><strong>Более понятные ошибки:</strong> Более полезные сообщения об ошибках разбора и выполнения</li>
+            <li><strong>Кроссплатформенность:</strong> Продолжающиеся улучшения для Windows и обработки оболочек</li>
+            <li><strong>Man-страница:</strong> Актуальная man-страница <code>just.1</code>, поставляемая с пакетом</li>
+        </ul>
+
+        <h2>📦 Установка из debian.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/debian.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить just</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest just
+sudo apt install just
+
+# Проверить установку
+just --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest just
+apt install just
+
+# Проверить установку
+just --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 3: Создать ваш первый justfile</h3>
+            <div class="code-block">
+# Create a justfile in your project
+cat > justfile <<'EOF'
+# Build the project
+build:
+    cargo build --release
+
+# Run the tests
+test:
+    cargo test
+
+# Say hello to someone
+hello name='world':
+    echo "Hello, {{name}}!"
+EOF
+
+# List available recipes
+just --list
+
+# Run a recipe
+just build
+just hello just
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Запуск рецептов:</strong></p>
+        <div class="code-block">
+# Run the first recipe in the justfile (the default)
+just
+
+# Run a specific recipe
+just test
+
+# Pass an argument to a recipe
+just hello Dario
+
+# List every recipe with its documentation
+just --list
+        </div>
+
+        <p><strong>Работа с justfile:</strong></p>
+        <div class="code-block">
+# Show the resolved value of a variable
+just --evaluate
+
+# Print a recipe without running it
+just --show build
+
+# Use a justfile in another directory
+just --justfile ~/project/justfile --working-directory ~/project build
+
+# Choose a recipe interactively (needs a chooser like fzf)
+just --choose
+        </div>
+
+        <p><strong>Автодополнение оболочки:</strong></p>
+        <div class="code-block">
+# Completions for bash, fish and zsh are installed with the package.
+# Generate them manually for any shell if you need to:
+just --completions bash
+just --completions zsh
+just --completions fish
+        </div>
+
+        <h2>🚀 Почему выбрать debian.griffo.io?</h2>
+
+        <div class="productivity-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> Доступен, но часто устаревшие версии</li>
+                <li><strong>Cargo Install:</strong> Требует цепочки инструментов Rust и компиляции</li>
+                <li><strong>Скрипт установки:</strong> Ручные обновления без управления пакетами</li>
+                <li><strong>debian.griffo.io:</strong> Последняя версия (1.56.0+) с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние возможности:</strong> Получайте новейшие атрибуты и функции рецептов</li>
+            <li>✅ <strong>Без компиляции Rust:</strong> Готовые бинарные файлы, цепочка инструментов не нужна</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выхода апстрима</li>
+            <li>✅ <strong>Полный пакет:</strong> Включает автодополнение оболочки и man-страницу</li>
+            <li>✅ <strong>Мультидистрибутив:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu автоматически собираются и поддерживаются в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/just-debian" target="_blank" rel="noopener">🤖 just-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступно из debian.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Обеспечивает работу <code>just --choose</code> для интерактивного выбора рецептов</li>
+            <li><a href="/ru/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a> - Современная, совместимая с Git система контроля версий</li>
+            <li><a href="/ru/install-latest-helix-in-ubuntu.html">Helix Editor</a> - Постмодернистский модальный редактор для редактирования ваших justfile</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Разработчиков, которые жонглируют множеством проектных команд, команд, которым нужен единый согласованный инструмент запуска задач, всех, кто любит Makefile, но не причуды make, и опытных пользователей, ценящих быстрый, переносимый и самодокументируемый рабочий процесс.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить последнюю версию just Command Runner в Ubuntu",
+    "description": "Полное руководство по установке последней версии инструмента запуска команд just в Ubuntu с использованием репозитория debian.griffo.io для получения актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "debian.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "just",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "1.56.0+",
+        "description": "Удобный исполнитель команд, который сохраняет и запускает специфичные для проекта команды из justfile"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function IsEven(n) {
+        return !IsOdd(n);
+    }
+
+    function IsOdd(n) {
+        return !IsEven(n);
+    }
+
+</script>
+</body>
+</html>
