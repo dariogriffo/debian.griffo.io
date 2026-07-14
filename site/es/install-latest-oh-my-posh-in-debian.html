@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar la última versión de Oh My Posh Prompt Engine en Debian</title>
+    <meta name="description" content="Instale el último Oh My Posh en Debian con apt — un motor de temas para el prompt de cualquier shell, con los más de 125 temas integrados incluidos en el paquete. Paquetes actualizados para Bookworm, Trixie, Forky y Sid desde deb.griffo.io.">
+    <meta name="keywords" content="oh my posh debian, instalar oh-my-posh debian, oh-my-posh apt, motor de temas de prompt, prompt shell debian, temas oh my posh, jandedobbeleer, paquetes debian, bookworm, trixie, sid, apt oh-my-posh">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-oh-my-posh-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-oh-my-posh-in-debian.html">
+    <meta property="og:title" content="Instalar la última versión de Oh My Posh Prompt Engine en Debian">
+    <meta property="og:description" content="Obtenga los paquetes más actualizados de Oh My Posh para Debian — el motor de temas de prompt multi-shell, con todos los temas integrados empaquetados y listos para usar.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Actualización importante — el acceso cambia el 1 de octubre de 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            A partir del <strong>1 de octubre de 2026 al mediodía (hora del Reino Unido)</strong>, este espejo requerirá autenticación para que <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> siga funcionando.<br>
+            Una <strong>suscripción anual</strong> te da acceso ininterrumpido y apoya directamente la continuidad del proyecto. ¡Gracias! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Obtener suscripción anual
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>¿Preguntas, problemas o cualquier cosa sobre este repositorio?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda y conectar con otros usuarios.<br>
+            ☕ <strong>¿Apoyaste anteriormente a través de Buy Me a Coffee?</strong> ¡Eres increíble! Pásate por nuestro <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> y te gestionaremos una <strong>suscripción vitalicia gratuita</strong>. 💜
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>💠 Instalar la última versión de Oh My Posh en Debian</h1>
+        <p class="subtitle">Un motor de temas para el prompt de cualquier shell</p>
+        <div class="version-badge">Latest version: empaquetada en cuestión de horas desde upstream</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+
+        <h2>¿Qué es Oh My Posh?</h2>
+        <p>Oh My Posh es un <strong>motor de temas para el prompt de cualquier shell</strong>, creado por Jan De Dobbeleer y escrito en Go. Un solo motor, un solo formato de temas — el mismo prompt hermoso y rico en información en bash, zsh, fish, PowerShell, Nushell, elvish, xonsh y cmd. Con decenas de miles de estrellas en GitHub y un enorme ecosistema de temas, se ha convertido en la forma de referencia para tener un prompt consistente en todas las máquinas y shells que usas.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Dolores de cabeza del prompt:</strong> ¿Escribiendo códigos de escape de <code>PS1</code> a mano? ¿Atado a un framework de prompt que solo funciona en una shell? ¿Reconstruyendo tu prompt desde cero cada vez que cambias entre zsh en casa y bash en los servidores? Oh My Posh te da una única configuración que te sigue a todas partes.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes al publicar cada versión — este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene siempre en la última versión.
+        </div>
+
+        <h3>⚡ Características principales de Oh My Posh</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🐚 Cualquier shell, una sola configuración</h4>
+                <p>El mismo prompt en bash, zsh, fish, PowerShell, Nushell, elvish, xonsh y cmd. Configura una vez, úsalo en todas partes — incluso por SSH.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Más de 125 temas incluidos</h4>
+                <p>Este paquete incluye todos los temas integrados en <code>/usr/share/oh-my-posh/themes/</code> — listos para previsualizar y usar sin conexión, sin descargas adicionales.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Segmentos completos</h4>
+                <p>Estado de git, códigos de salida, tiempo de ejecución, batería, contexto de kubernetes, cuentas cloud y versiones de lenguajes (Go, Python, Node, Rust y docenas más) — mostrados solo cuando son relevantes.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Tu tema, tu formato</h4>
+                <p>Escribe temas personalizados en JSON, YAML o TOML con un esquema documentado. Parte de cualquier tema integrado y hazlo tuyo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✨ Transient y tooltips</h4>
+                <p>Los prompts transitorios mantienen limpio el scrollback, los tooltips reaccionan a lo que escribes, y los segmentos alineados a la derecha aprovechan todo el ancho del terminal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Rápido por diseño</h4>
+                <p>Un único binario en Go con renderizado concurrente de segmentos — el prompt sigue siendo instantáneo incluso con muchos segmentos activados.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 ¿Por qué instalarlo con apt?</h4>
+            <ul>
+                <li><strong>Sin curl-pipe-bash:</strong> un repositorio firmado con GPG en lugar de canalizar scripts de instalación a tu shell</li>
+                <li><strong>Temas incluidos:</strong> todos los temas integrados se instalan en <code>/usr/share/oh-my-posh/themes/</code>, con la misma versión que el binario</li>
+                <li><strong>Actualizaciones automáticas:</strong> las nuevas versiones upstream llegan con tu <code>apt upgrade</code> habitual</li>
+                <li><strong>Desinstalación limpia:</strong> <code>apt remove</code> se lleva todo consigo — sin binarios sueltos en <code>~/bin</code></li>
+                <li><strong>Multi-arch:</strong> amd64, arm64 y armhf — la misma configuración en tu escritorio y en tu Raspberry Pi</li>
+            </ul>
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar Oh My Posh</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y oh-my-posh
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y oh-my-posh
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Configura tu shell</h2>
+        <p>Elige un tema de <code>/usr/share/oh-my-posh/themes/</code> e inicializa tu shell. Para bash, agrega esto a <code>~/.bashrc</code>:</p>
+        <div class="code-block">
+eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json)"
+        </div>
+        <p>Para zsh, agrega la misma línea con <code>zsh</code> a <code>~/.zshrc</code>; para fish, agrega <code>oh-my-posh init fish --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json | source</code> a <code>~/.config/fish/config.fish</code>. La mayoría de los temas se ven mejor con una <a href="https://www.nerdfonts.com/" target="_blank" rel="noopener">Nerd Font</a> — o ejecuta <code>oh-my-posh font install</code>.</p>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Debian se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/oh-my-posh-debian" target="_blank" rel="noopener">📂 oh-my-posh-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde deb.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-starship-in-debian.html">Starship</a> - Otro prompt multi-shell popular, por si quieres comparar</li>
+            <li><a href="/es/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Filtrado interactivo para tu nuevo y hermoso terminal</li>
+            <li><a href="/es/install-latest-zoxide-in-debian.html">zoxide</a> - Un cd inteligente que combina perfectamente con un prompt rápido</li>
+            <li><a href="/es/install-latest-atuin-in-debian.html">Atuin</a> - Historial de shell mágico para completar la configuración</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Desarrolladores que trabajan con varias shells y máquinas, entusiastas de la personalización del terminal, cualquiera que quiera ver el estado de git y el contexto de un vistazo, y equipos que quieren una configuración de prompt consistente que se instala con un solo comando apt.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoya este proyecto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Si este repositorio te ahorra tiempo y esfuerzo, ¡considera apoyarlo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dale una estrella en GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Oh%20My%20Posh,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartir en Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar la última versión de Oh My Posh Prompt Engine en Debian",
+    "description": "Guía completa para instalar la última versión de Oh My Posh, el motor de temas de prompt, en Debian usando el repositorio deb.griffo.io, con todos los temas integrados incluidos.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Oh My Posh",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Un motor de temas para el prompt de cualquier shell con segmentos completos y más de 125 temas integrados"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>
