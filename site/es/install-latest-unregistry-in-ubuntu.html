@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar la última versión de unregistry  en Ubuntu</title>
-    <meta name="description" content="Instale el último unregistry (v0.4.3+) en Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
+    <meta name="description" content="Instale el último unregistry en Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
     <meta name="keywords" content="unregistry ubuntu, install unregistry ubuntu, docker pussh, docker image transfer, container deployment, ubuntu packages, jammy, noble, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🐳 Instalar la última versión de unregistry en Ubuntu</h1>
         <p class="subtitle">Push Docker images directly to remote servers without external registry</p>
-        <div class="version-badge">Latest Version: 0.4.3+ (July 2026)</div>
+        <div class="version-badge">Última versión: 0.4.3 · actualizado 2026-07-14</div>
     </div>
 
     <div class="content">
@@ -107,15 +107,9 @@
             </div>
         </div>
 
-        <h3>🆕 Novedades en unregistry 0.4.3+</h3>
-        <ul>
-            <li><strong>Detección Automática del Binario de Docker:</strong> <code>docker pussh</code> ahora localiza el binario de Docker en más ubicaciones (instalaciones snap, Homebrew/linuxbrew, rutas personalizadas), con las variables <code>REMOTE_DOCKER_PATH</code> y <code>REMOTE_CONTAINERD_SOCKET</code> para forzar la ruta cuando falla la detección automática</li>
-            <li><strong>Subida Fiable de Capas Grandes:</strong> Se corrigió el envío de capas grandes (cientos de MB) que antes podía fallar al agotar los reintentos</li>
-            <li><strong>Compatibilidad con macOS:</strong> Se añadió un proxy a la VM de Docker para Rancher Desktop/Docker Desktop/Colima, además de una detección correcta del socket de containerd para OrbStack en máquinas macOS remotas</li>
-            <li><strong>Configuración SSH Personalizada:</strong> Nuevo indicador <code>-F</code>/<code>--ssh-config</code> para especificar una ruta de configuración SSH personalizada</li>
-            <li><strong>Omitir Verificación de Host Key:</strong> Opción <code>--no-host-key-check</code> para omitir la verificación de la clave del host SSH</li>
-            <li><strong>Soporte de Puerto en el Registro:</strong> Se añadió soporte para imágenes con <code>:port</code> en la dirección del registro</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes al publicar cada versión — este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene siempre en la última versión.
+        </div>
 
         <h2>📦 Instalación desde deb.griffo.io</h2>
         
@@ -221,7 +215,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Manual Script:</strong> Requires manual updates and dependency management</li>
                 <li><strong>Homebrew:</strong> Limited to specific platforms</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.4.3+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -278,7 +272,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.4.3+",
+        "softwareVersion": "latest",
         "description": "Registro de imágenes de contenedores ligero for pushing Docker images directly to remote servers over SSH"
     }
 }

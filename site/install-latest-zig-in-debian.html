@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest Zig Programming Language on Debian</title>
-    <meta name="description" content="Install the latest Zig programming language (v0.16.0) on Debian Bookworm, Trixie, and Sid. Get up-to-date Zig packages with latest features, performance improvements, and security fixes from deb.griffo.io.">
+    <meta name="description" content="Install the latest Zig programming language on Debian Bookworm, Trixie, and Sid. Get up-to-date Zig packages with latest features, performance improvements, and security fixes from deb.griffo.io.">
     <meta name="keywords" content="zig debian, install zig debian, latest zig version, zig 0.15, zig programming language, debian packages, bookworm, trixie, sid, apt zig">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -49,6 +49,8 @@
 
     <div class="content">
         <a href="/" class="back-link">← Back to home</a>
+
+        <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-zig-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-zig-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-zig-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-zig-on-debian-sid.html">Debian Sid</a></div>
         
         <h2>What is Zig?</h2>
         <p>Zig is a <strong>general-purpose programming language and toolchain</strong> designed for maintaining <strong>robust</strong>, <strong>optimal</strong>, and <strong>reusable</strong> software. Created by Andrew Kelley, Zig aims to be a better alternative to C, offering modern language features while maintaining the simplicity and performance that systems programmers need.</p>
@@ -80,15 +82,9 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in Zig 0.16.0</h3>
-        <ul>
-            <li><strong>I/O as an Interface:</strong> All I/O now requires an <code>Io</code> instance, enabling threaded, evented, and async backends</li>
-            <li><strong>Async &amp; Cancellation:</strong> Built-in task concurrency with Futures and Groups, plus standardized cancellation across all I/O operations</li>
-            <li><strong>New Metaprogramming Builtins:</strong> <code>@Type</code> replaced with targeted builtins (<code>@Int</code>, <code>@Struct</code>, <code>@Union</code>, <code>@Enum</code>, etc.) for cleaner generic code</li>
-            <li><strong>Native Deflate Compression:</strong> Built-in deflate compression with zlib-comparable performance and simplified decompression APIs</li>
-            <li><strong>Better Stack Traces:</strong> Safe stack unwinding across nearly all platforms with improved debug info and inline caller support</li>
-            <li><strong>Expanded Target Support:</strong> 8+ new architectures in CI including aarch64-freebsd, loongarch64, powerpc64le, and s390x</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+        </div>
 
         <h2>📦 Installation from deb.griffo.io</h2>
         
@@ -266,7 +262,7 @@ zig cc -target x86_64-windows -o program.exe program.c
         "name": "Zig Programming Language",
         "applicationCategory": "Programming Language",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.16.0",
+        "softwareVersion": "latest",
         "description": "General-purpose programming language and toolchain for robust, optimal, and reusable software"
     }
 }

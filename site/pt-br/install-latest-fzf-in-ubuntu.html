@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar a última versão do fzf Fuzzy Finder no Ubuntu</title>
-    <meta name="description" content="Instale a última versão do fzf (v0.74.0+) no Ubuntu - buscador fuzzy de linha de comando escrito em Go. Obtenha pacotes atualizados com integração de shell, plugin Vim e filtragem avançada no deb.griffo.io.">
+    <meta name="description" content="Instale a última versão do fzf no Ubuntu - buscador fuzzy de linha de comando escrito em Go. Obtenha pacotes atualizados com integração de shell, plugin Vim e filtragem avançada no deb.griffo.io.">
     <meta name="keywords" content="fzf ubuntu, instalar fzf ubuntu, fuzzy finder, busca linha de comando, go fuzzy finder, pacotes ubuntu, jammy, noble, junegunn, apt fzf">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,11 +52,13 @@
     <div class="header">
         <h1>🔍 Instalar a última versão do fzf no Ubuntu</h1>
         <p class="subtitle">Buscador fuzzy de linha de comando escrito em Go</p>
-        <div class="version-badge">Última Versão: 0.74.0+ (julho de 2026)</div>
+        <div class="version-badge">Última versão: 0.74.0 · atualizado em 2026-07-14</div>
     </div>
 
     <div class="content">
         <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-fzf-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-fzf-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-fzf-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-fzf-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
 
         <h2>O que é o fzf?</h2>
         <p>O fzf é um <strong>buscador fuzzy de linha de comando de uso geral</strong> escrito em Go por Junegunn Choi. É um programa de filtro interativo para qualquer tipo de lista - arquivos, histórico de comandos, processos, hostnames, favoritos, commits do git e muito mais. Com mais de 72 mil estrelas no GitHub, tornou-se uma ferramenta essencial para produtividade na linha de comando.</p>
@@ -98,15 +100,9 @@
             </div>
         </div>
 
-        <h3>🆕 Novidades no fzf 0.74.0+</h3>
-        <ul>
-            <li><strong>Popup Flutuante:</strong> No tmux 3.7+, --popup agora abre o fzf em um painel flutuante móvel e redimensionável, com suporte a mouse e zoom em tela cheia, em vez de um popup modal</li>
-            <li><strong>Borda Nativa no Zellij:</strong> --popup no Zellij agora usa uma borda nativa por padrão, proporcionando o mesmo comportamento móvel/redimensionável</li>
-            <li><strong>Evento result-final:</strong> Novo evento disparado apenas uma vez quando o fluxo de entrada é fechado, ideal para ações únicas por consulta</li>
-            <li><strong>Ação wait:</strong> Bloqueia ações subsequentes até que a busca seja concluída, útil para encadear ações que alteram a consulta com ações de movimento</li>
-            <li><strong>Nova Navegação por Palavras:</strong> Alt-Left e Alt-Right agora são vinculados por padrão a backward-word/forward-word</li>
-            <li><strong>Correções de Bugs:</strong> Ignora a exportação de valores $FZF_CURRENT_ITEM muito grandes para evitar erros de visualização, corrige a rolagem horizontal do mouse que era tratada incorretamente como vertical, e corrige a resolução de links simbólicos do Alt-C no zsh</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
 
         <h2>📦 Instalação a partir do deb.griffo.io</h2>
 
@@ -243,7 +239,7 @@ find . -type f | fzf -m
             <ul>
                 <li><strong>Ubuntu Oficial:</strong> Disponível, mas geralmente com versões desatualizadas</li>
                 <li><strong>Instalação Manual:</strong> Requer toolchain Go ou gerenciamento manual de binários</li>
-                <li><strong>deb.griffo.io:</strong> Última versão (0.74.0+) com atualizações automáticas</li>
+                <li><strong>deb.griffo.io:</strong> Última versão com atualizações automáticas</li>
             </ul>
         </div>
 
@@ -299,7 +295,7 @@ find . -type f | fzf -m
         "name": "fzf",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.74.0+",
+        "softwareVersion": "latest",
         "description": "Buscador fuzzy de linha de comando de uso geral com integração de shell e capacidades de filtragem avançada"
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest uncloud on Debian</title>
-    <meta name="description" content="Install the latest uncloud (v0.20.0+) on Debian - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
+    <meta name="description" content="Install the latest uncloud on Debian - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
     <meta name="keywords" content="uncloud debian, install uncloud debian, container orchestration, docker clustering, multi-machine deployment, debian packages, bookworm, trixie, sid, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -98,15 +98,9 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in uncloud 0.20.0+</h3>
-        <ul>
-            <li><strong>Secrets Support:</strong> Define secrets with the new x-command Compose extension and reference them via secret://&lt;name&gt; in a service's environment, keeping sensitive data like passwords and API tokens out of the Compose file and git</li>
-            <li><strong>uc proxy Command:</strong> Forwards a service port to your local machine over the cluster network, similar to kubectl port-forward, for reaching an internal database or admin UI from your laptop</li>
-            <li><strong>Richer uc machine ls:</strong> Now shows OS, kernel, architecture, Docker version, and daemon version for each machine, making it easy to spot version drift and outdated daemons</li>
-            <li><strong>Prometheus Metrics:</strong> Each daemon serves metrics on port 51090 for cluster monitoring</li>
-            <li><strong>Daemon Self-Upgrade:</strong> uc machine init and uc machine add now automatically upgrade the installed daemon binary</li>
-            <li><strong>Other Improvements:</strong> WireGuard MTU auto-detection with a --wg-mtu override flag, shell completion for the uc and ucind CLIs, and rootless Docker support when pushing images</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+        </div>
 
         <h2>📦 Installation from deb.griffo.io</h2>
         
@@ -218,7 +212,7 @@ uc machine rm server2
                 <li><strong>Official Debian:</strong> Not available in official repositories</li>
                 <li><strong>Install Script:</strong> Manual updates and dependency management</li>
                 <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.20.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -298,7 +292,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.20.0+",
+        "softwareVersion": "latest",
         "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
     }
 }

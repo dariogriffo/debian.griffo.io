@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar la última versión de uv Python Package Manager en Ubuntu</title>
-    <meta name="description" content="Install the latest uv (v0.11.28+) en Ubuntu - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
+    <meta name="description" content="Install the latest uv en Ubuntu - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
     <meta name="keywords" content="uv ubuntu, install uv ubuntu, python package manager, fast pip replacement, rust python tools, ubuntu packages, jammy, noble, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,11 +47,13 @@
     <div class="header">
         <h1>🐍 Instalar la última versión de uv en Ubuntu</h1>
         <p class="subtitle">Extremely fast Python package and project manager</p>
-        <div class="version-badge">Latest Version: 0.11.28+ (August 2025)</div>
+        <div class="version-badge">Última versión: 0.11.28 · actualizado 2026-07-14</div>
     </div>
 
     <div class="content">
         <a href="/es/" class="back-link">← Volver al inicio</a>
+
+        <div class="notice-box"><strong>📌 ¿Instalando en una versión específica?</strong> <a href="/install-uv-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-uv-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-uv-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-uv-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
         
         <h2>¿Qué es uv?</h2>
         <p>uv is an <strong>extremely fast Python package and project manager</strong> written in Rust by Astral (creators of Ruff). It's designed as a single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more, providing <strong>10-100x faster performance</strong> than traditional Python tooling.</p>
@@ -103,15 +105,9 @@
             </div>
         </div>
 
-        <h3>🆕 Novedades en uv 0.11.28+</h3>
-        <ul>
-            <li><strong>Python 3.14 por defecto:</strong> uv ahora instala Python 3.14 como versión predeterminada cuando no hay ninguna fijada, y las compilaciones free-threaded 3.14+ ya no requieren activación explícita</li>
-            <li><strong>Actualizaciones de Python estabilizadas:</strong> uv python upgrade y las actualizaciones automáticas de versión de parche en entornos virtuales ya son estables</li>
-            <li><strong>Pila TLS modernizada:</strong> La red ahora usa rustls-platform-verifier y aws-lc para una validación de certificados más consistente y nativa del sistema operativo; --native-tls queda obsoleto en favor de --system-certs</li>
-            <li><strong>Comandos de workspace estabilizados:</strong> uv workspace dir y uv workspace list, junto con los ajustes add-bounds y extra-build-dependencies, ya son estables</li>
-            <li><strong>Manejo de archivos ZIP reforzado:</strong> Las dependencias de análisis de ZIP actualizadas corrigen vulnerabilidades de tipo parser-differential en la extracción de archivos</li>
-            <li><strong>Mejoras de rendimiento y fiabilidad:</strong> Menos asignaciones de memoria en el resolver y en las comprobaciones de compatibilidad de tags, además de correcciones para un desbordamiento de antigüedad en la caché HTTP y compatibilidad de uv tree en proyectos que solo usan grupos de dependencias</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes al publicar cada versión — este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene siempre en la última versión.
+        </div>
 
         <h2>📦 Instalación desde deb.griffo.io</h2>
         
@@ -238,7 +234,7 @@ uv tool list
                 <li><strong>Official Ubuntu:</strong> Often outdated versions missing latest features</li>
                 <li><strong>pip install:</strong> Slower, requires Python already installed</li>
                 <li><strong>Curl installer:</strong> Manual updates, no package management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.11.28+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -304,7 +300,7 @@ uv tool list
         "name": "uv",
         "applicationCategory": "Package Manager",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.11.28+",
+        "softwareVersion": "latest",
         "description": "Administrador de paquetes y proyectos Python extremadamente rápido escrito en Rust, 10-100x faster than pip"
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neueste unregistry  auf Ubuntu installieren</title>
-    <meta name="description" content="Installieren Sie das neueste unregistry (v0.4.3+) auf Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
+    <meta name="description" content="Installieren Sie das neueste unregistry auf Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
     <meta name="keywords" content="unregistry ubuntu, install unregistry ubuntu, docker pussh, docker image transfer, container deployment, ubuntu packages, jammy, noble, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🐳 Neueste installieren unregistry auf Ubuntu</h1>
         <p class="subtitle">Push Docker images directly to remote servers without external registry</p>
-        <div class="version-badge">Latest Version: 0.4.3+ (July 2026)</div>
+        <div class="version-badge">Neueste Version: 0.4.3 · aktualisiert 2026-07-14</div>
     </div>
 
     <div class="content">
@@ -107,15 +107,9 @@
             </div>
         </div>
 
-        <h3>🆕 Neu in unregistry 0.4.3+</h3>
-        <ul>
-            <li><strong>Automatische Docker-Erkennung:</strong> <code>docker pussh</code> findet die Docker-Binärdatei jetzt an mehr Orten (Snap-Installationen, Homebrew/Linuxbrew, benutzerdefinierte Pfade); über <code>REMOTE_DOCKER_PATH</code> und <code>REMOTE_CONTAINERD_SOCKET</code> lassen sich die Pfade bei fehlgeschlagener Erkennung manuell festlegen</li>
-            <li><strong>Zuverlässige Übertragung großer Layer:</strong> Fehler beim Push großer Layer (mehrere hundert MB) durch erschöpfte Wiederholungsversuche behoben</li>
-            <li><strong>macOS-Kompatibilität:</strong> Proxy zur Docker-VM für Rancher Desktop/Docker Desktop/Colima hinzugefügt sowie korrekte Containerd-Socket-Erkennung für OrbStack auf entfernten macOS-Rechnern</li>
-            <li><strong>Benutzerdefinierte SSH-Konfiguration:</strong> Neue Option <code>-F</code>/<code>--ssh-config</code> zur Angabe einer benutzerdefinierten SSH-Konfigurationsdatei</li>
-            <li><strong>Host-Key-Prüfung überspringen:</strong> Option <code>--no-host-key-check</code> zum Überspringen der SSH-Host-Key-Prüfung</li>
-            <li><strong>Unterstützung für Registry-Ports:</strong> Unterstützung für Images mit <code>:port</code> in der Registry-Adresse hinzugefügt</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Immer aktueller als die offiziellen Archive:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository veröffentlicht neue Upstream-Versionen in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält Sie immer auf der neuesten Version.
+        </div>
 
         <h2>📦 Installation von deb.griffo.io</h2>
         
@@ -221,7 +215,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Manual Script:</strong> Requires manual updates and dependency management</li>
                 <li><strong>Homebrew:</strong> Limited to specific platforms</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.4.3+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -278,7 +272,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.4.3+",
+        "softwareVersion": "latest",
         "description": "Leichtgewichtige Container-Image-Registry for pushing Docker images directly to remote servers over SSH"
     }
 }

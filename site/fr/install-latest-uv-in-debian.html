@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer la dernière version de uv Python Package Manager sur Debian</title>
-    <meta name="description" content="Install the latest uv (v0.11.28+) sur Debian - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
+    <meta name="description" content="Install the latest uv sur Debian - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
     <meta name="keywords" content="uv debian, installer uv debian, python package manager, fast pip replacement, rust python tools, paquets debian, bookworm, trixie, sid, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,11 +47,13 @@
     <div class="header">
         <h1>🐍 Installer la dernière version de uv sur Debian</h1>
         <p class="subtitle">Extremely fast Python package and project manager</p>
-        <div class="version-badge">Latest Version: 0.11.28+ (August 2025)</div>
+        <div class="version-badge">Dernière version : 0.11.28 · mis à jour le 2026-07-14</div>
     </div>
 
     <div class="content">
         <a href="/fr/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-uv-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-uv-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-uv-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-uv-on-debian-sid.html">Debian Sid</a></div>
         
         <h2>Qu\'est-ce que uv ?</h2>
         <p>uv is an <strong>extremely fast Python package and project manager</strong> written in Rust by Astral (creators of Ruff). It's designed as a single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more, providing <strong>10-100x faster performance</strong> than traditional Python tooling.</p>
@@ -103,15 +105,9 @@
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans uv 0.11.28+</h3>
-        <ul>
-            <li><strong>Python 3.14 par défaut :</strong> uv installe désormais Python 3.14 par défaut lorsqu'aucune version n'est épinglée ; les builds free-threaded 3.14+ ne nécessitent plus d'activation explicite</li>
-            <li><strong>Mises à niveau Python stabilisées :</strong> uv python upgrade et les mises à niveau automatiques de version mineure dans les environnements virtuels sont désormais stables</li>
-            <li><strong>Pile TLS modernisée :</strong> Le réseau utilise désormais rustls-platform-verifier et aws-lc pour une validation des certificats plus cohérente et native au système ; --native-tls est déprécié au profit de --system-certs</li>
-            <li><strong>Commandes workspace stabilisées :</strong> uv workspace dir et uv workspace list, ainsi que les réglages add-bounds et extra-build-dependencies, sont désormais stables</li>
-            <li><strong>Gestion des archives renforcée :</strong> Les dépendances de parsing ZIP mises à jour corrigent des vulnérabilités de type parser-differential lors de l'extraction d'archives</li>
-            <li><strong>Corrections de performance et de fiabilité :</strong> Réduction des allocations dans le resolver et les vérifications de compatibilité des tags, ainsi que des correctifs pour un dépassement d'âge du cache HTTP et la prise en charge de uv tree dans les projets composés uniquement de groupes de dépendances</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les archives officielles :</strong> Debian et Ubuntu figent les versions des paquets à chaque publication — ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous garde toujours à la dernière version.
+        </div>
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
         
@@ -238,7 +234,7 @@ uv tool list
                 <li><strong>Official Debian:</strong> Often outdated versions missing latest features</li>
                 <li><strong>pip installer:</strong> Slower, requires Python already installered</li>
                 <li><strong>Curl installerer:</strong> Manual updates, no package management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.11.28+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -305,7 +301,7 @@ uv tool list
         "name": "uv",
         "applicationCategory": "Package Manager",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.11.28+",
+        "softwareVersion": "latest",
         "description": "Gestionnaire de paquets et projets Python extrêmement rapide écrit en Rust, 10-100x faster than pip"
     }
 }

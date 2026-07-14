@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>安装最新的 uncloud 在 Debian 上</title>
-    <meta name="description" content="安装最新的 uncloud (v0.20.0+) 在 Debian 上 - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
+    <meta name="description" content="安装最新的 uncloud 在 Debian 上 - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
     <meta name="keywords" content="uncloud debian, install uncloud debian, container orchestration, docker clustering, multi-machine deployment, debian packages, bookworm, trixie, sid, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>☁️ 安装最新的 uncloud 在 Debian 上</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Latest Version: 0.20.0+ (August 2025)</div>
+        <div class="version-badge">最新版本：0.20.0 · 更新于 2026-07-14</div>
     </div>
 
     <div class="content">
@@ -101,15 +101,9 @@
             </div>
         </div>
 
-        <h3>🆕 uncloud 0.20.0+ 新特性</h3>
-        <ul>
-            <li><strong>密钥（Secrets）支持：</strong>通过新的 x-command Compose 扩展定义密钥，并在服务环境变量中使用 secret://&lt;名称&gt; 引用，从而将密码、API 令牌等敏感数据排除在 Compose 文件和 git 之外</li>
-            <li><strong>uc proxy 命令：</strong>通过集群网络将服务端口转发到本地机器，类似于 kubectl port-forward，方便从笔记本电脑访问内部数据库或管理界面</li>
-            <li><strong>更丰富的 uc machine ls：</strong>现在会显示每台机器的操作系统、内核、架构、Docker 版本和守护进程版本，便于发现版本差异和过时的守护进程</li>
-            <li><strong>Prometheus 指标：</strong>每个守护进程现在都在 51090 端口提供指标，便于集群监控</li>
-            <li><strong>守护进程自动升级：</strong>uc machine init 和 uc machine add 现在会自动升级已安装的守护进程二进制文件</li>
-            <li><strong>其他改进：</strong>WireGuard MTU 自动检测（可通过 --wg-mtu 覆盖）、uc 和 ucind CLI 的 Shell 补全，以及推送镜像时对 rootless Docker 的支持</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本仓库通常在上游发布后数小时内即发布新版本。只需 <code>apt upgrade</code> 即可始终保持最新版本。
+        </div>
 
         <h2>📦 从 deb.griffo.io 安装</h2>
         
@@ -221,7 +215,7 @@ uc machine rm server2
                 <li><strong>Official Debian:</strong> Not available in official repositories</li>
                 <li><strong>Install Script:</strong> Manual updates and dependency management</li>
                 <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.20.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -277,7 +271,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.20.0+",
+        "softwareVersion": "latest",
         "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
     }
 }

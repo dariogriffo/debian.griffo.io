@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer la dernière version de fzf Fuzzy Finder sur Debian</title>
-    <meta name="description" content="Install the latest fzf (v0.74.0+) sur Debian - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
+    <meta name="description" content="Install the latest fzf sur Debian - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
     <meta name="keywords" content="fzf debian, installer fzf debian, fuzzy finder, command line search, go fuzzy finder, paquets debian, bookworm, trixie, sid, junegunn, apt fzf">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,11 +47,13 @@
     <div class="header">
         <h1>🔍 Installer la dernière version de fzf sur Debian</h1>
         <p class="subtitle">Command-line fuzzy finder written in Go</p>
-        <div class="version-badge">Latest Version: 0.74.0+ (juillet 2026)</div>
+        <div class="version-badge">Dernière version : 0.74.0 · mis à jour le 2026-07-14</div>
     </div>
 
     <div class="content">
         <a href="/fr/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-fzf-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-fzf-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-fzf-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-fzf-on-debian-sid.html">Debian Sid</a></div>
         
         <h2>Qu\'est-ce que fzf ?</h2>
         <p>fzf is a <strong>general-purpose command-line fuzzy finder</strong> written in Go by Junegunn Choi. It's an interactive filter program for any kind of list - files, command history, processes, hostnames, bookmarks, git commits, and more. With over 72k GitHub stars, it has become an essential tool for command-line productivity.</p>
@@ -93,15 +95,9 @@
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans fzf 0.74.0+</h3>
-        <ul>
-            <li><strong>Fenêtre flottante :</strong> Sur tmux 3.7+, --popup ouvre désormais fzf dans un panneau flottant déplaçable et redimensionnable, avec prise en charge de la souris et zoom plein écran, au lieu d'une fenêtre modale</li>
-            <li><strong>Bordure native sous Zellij :</strong> --popup utilise désormais une bordure native par défaut sous Zellij, offrant le même comportement déplaçable/redimensionnable</li>
-            <li><strong>Événement result-final :</strong> Nouvel événement déclenché une seule fois à la fermeture du flux d'entrée, idéal pour les actions ponctuelles par requête</li>
-            <li><strong>Action wait :</strong> Bloque les actions suivantes jusqu'à la fin de la recherche, utile pour enchaîner des actions modifiant la requête avec des actions de déplacement</li>
-            <li><strong>Nouvelle navigation par mot :</strong> Alt-Left et Alt-Right sont désormais liés par défaut à backward-word/forward-word</li>
-            <li><strong>Corrections de bugs :</strong> L'export des valeurs $FZF_CURRENT_ITEM trop volumineuses est ignoré pour éviter les erreurs d'aperçu, le défilement horizontal de la molette n'est plus interprété comme vertical, et la résolution des liens symboliques par Alt-C dans zsh a été corrigée</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les archives officielles :</strong> Debian et Ubuntu figent les versions des paquets à chaque publication — ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous garde toujours à la dernière version.
+        </div>
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
         
@@ -238,7 +234,7 @@ find . -type f | fzf -m
             <ul>
                 <li><strong>Official Debian:</strong> Available but often outdated versions</li>
                 <li><strong>Manual Installation:</strong> Requires Go toolchain or manual binary management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.74.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
             </ul>
         </div>
 
@@ -294,7 +290,7 @@ find . -type f | fzf -m
         "name": "fzf",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.74.0+",
+        "softwareVersion": "latest",
         "description": "General-purpose command-line fuzzy finder with shell integration and advanced filtering capabilities"
     }
 }

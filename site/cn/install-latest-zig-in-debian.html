@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>安装最新的 Zig Programming Language 在 Debian 上</title>
-    <meta name="description" content="安装最新的 Zig 编程语言 (v0.16.0) 在 Debian 上 Bookworm, Trixie, and Sid. Get up-to-date Zig packages with latest features, performance improvements, and security fixes from deb.griffo.io.">
+    <meta name="description" content="安装最新的 Zig 编程语言 在 Debian 上 Bookworm, Trixie, and Sid. Get up-to-date Zig packages with latest features, performance improvements, and security fixes from deb.griffo.io.">
     <meta name="keywords" content="zig debian, install zig debian, latest zig version, zig 0.15, zig programming language, debian packages, bookworm, trixie, sid, apt zig">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,11 +47,13 @@
     <div class="header">
         <h1>🇿 安装最新的 Zig 在 Debian 上</h1>
         <p class="subtitle">获取最新的 Zig programming language packages</p>
-        <div class="version-badge">Latest Version: 0.16.0 (Released March 2025)</div>
+        <div class="version-badge">最新版本：0.16.0 · 更新于 2026-07-14</div>
     </div>
 
     <div class="content">
         <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 在特定发行版本上安装？</strong> <a href="/install-zig-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-zig-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-zig-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-zig-on-debian-sid.html">Debian Sid</a></div>
         
         <h2>什么是 Zig？</h2>
         <p>Zig is a <strong>general-purpose programming language and toolchain</strong> designed for maintaining <strong>robust</strong>, <strong>optimal</strong>, and <strong>reusable</strong> software. Created by Andrew Kelley, Zig aims to be a better alternative to C, offering modern language features while maintaining the simplicity and performance that systems programmers need.</p>
@@ -83,15 +85,9 @@
             </div>
         </div>
 
-        <h3>🆕 Zig 0.16.0 新特性</h3>
-        <ul>
-            <li><strong>I/O 作为接口：</strong>所有 I/O 现在需要传入 <code>Io</code> 实例，支持线程、事件驱动和异步后端</li>
-            <li><strong>异步与取消：</strong>内置任务并发（Futures 和 Groups），以及跨所有 I/O 操作的标准化取消机制</li>
-            <li><strong>新元编程内置函数：</strong><code>@Type</code> 被专用内置函数替代（<code>@Int</code>、<code>@Struct</code>、<code>@Union</code>、<code>@Enum</code> 等），泛型代码更简洁</li>
-            <li><strong>原生 Deflate 压缩：</strong>内置 deflate 压缩，性能与 zlib 相当，解压 API 更简洁</li>
-            <li><strong>更好的堆栈追踪：</strong>几乎所有平台均支持安全的栈展开，调试信息更完整，支持内联调用者</li>
-            <li><strong>扩展目标平台支持：</strong>CI 新增 8+ 架构，包括 aarch64-freebsd、loongarch64、powerpc64le 和 s390x</li>
-        </ul>
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本仓库通常在上游发布后数小时内即发布新版本。只需 <code>apt upgrade</code> 即可始终保持最新版本。
+        </div>
 
         <h2>📦 从 deb.griffo.io 安装</h2>
         
@@ -245,7 +241,7 @@ zig cc -target x86_64-windows -o program.exe program.c
         "name": "Zig Programming Language",
         "applicationCategory": "Programming Language",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.16.0",
+        "softwareVersion": "latest",
         "description": "General-purpose programming language and toolchain for robust, optimal, and reusable software"
     }
 }
