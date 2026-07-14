@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Yazi on Ubuntu 25.10 (questing) — 26.5.6 via apt</title>
+    <meta name="description" content="Install Yazi 26.5.6 on Ubuntu 25.10 “Questing Quokka” with apt. The deb.griffo.io repository currently serves yazi 26.5.6-2+questing for questing, updated 2026-07-14. Step-by-step instructions, updates and removal.">
+    <meta name="keywords" content="yazi questing, install yazi Ubuntu 25.10, yazi Ubuntu 25.10, apt yazi questing, yazi deb questing, latest yazi Ubuntu 25.10">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-yazi-on-ubuntu-25-10-questing.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-yazi-on-ubuntu-25-10-questing.html">
+    <meta property="og:title" content="Install Yazi on Ubuntu 25.10 (questing) — 26.5.6 via apt">
+    <meta property="og:description" content="Latest Yazi packages for Ubuntu 25.10 “Questing Quokka” from the deb.griffo.io apt repository. Currently serving 26.5.6-2+questing.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Important update — access is changing on 1 October 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Starting <strong>1 October 2026 at noon (UK time)</strong>, this mirror will require authentication to keep <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> working.<br>
+            A <strong>yearly subscription</strong> gives you uninterrupted access and directly supports keeping this project alive. Thank you! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Get Your Yearly Subscription
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.<br>
+            ☕ <strong>Previously supported via Buy Me a Coffee?</strong> You are wonderful! Head over to our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> and we will sort out a <strong>free lifetime subscription</strong> for you. 💜
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📁 Install Yazi on Ubuntu 25.10 “Questing Quokka”</h1>
+        <p class="subtitle">A blazing-fast terminal file manager written in Rust, with async I/O and image preview</p>
+    </div>
+
+    <div class="content">
+        <a href="/install-latest-yazi-in-ubuntu.html" class="back-link">← Yazi overview &amp; all releases</a>
+
+        <div class="highlight-box">
+            <strong>📦 Currently serving:</strong> <code>yazi 26.5.6-2+questing</code> for <strong>questing</strong>
+            (updated 2026-07-14) — architectures: amd64, arm64. This page is regenerated automatically from the
+            repository metadata, so the version above is exactly what <code>apt install yazi</code> gives you today.
+        </div>
+
+        <p>Ubuntu 25.10 “Questing Quokka” is the current interim Ubuntu release. Yazi is not shipped at its latest version by the official Ubuntu archives,
+        so this repository builds current upstream releases as native <code>.deb</code> packages targeted
+        specifically at <strong>questing</strong>, with dependencies matching what Ubuntu 25.10 actually ships.</p>
+
+        <h2>🚀 Install Yazi on questing</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add the deb.griffo.io repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt questing main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt questing main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+
+            <p>The sources line above pins the <strong>questing</strong> suite explicitly, so it keeps working
+            in containers and images where <code>lsb_release</code> is unavailable.</p>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install Yazi</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y yazi
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y yazi
+                </div>
+            </div>
+        </div>
+
+        <h3>🔄 Updating</h3>
+        <p>Updates arrive through normal system maintenance — new upstream releases are usually packaged within hours:</p>
+        <div class="code-block">
+sudo apt update &amp;&amp; sudo apt install --only-upgrade yazi
+        </div>
+
+        <h3>🗑️ Uninstalling</h3>
+        <div class="code-block">
+sudo apt remove yazi
+# optionally remove the repository as well:
+sudo rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gpg
+        </div>
+
+        <h2>📋 Yazi versions across Debian &amp; Ubuntu releases</h2>
+        <p>The same repository serves every supported release — this table is generated from the live
+        repository metadata:</p>
+        <table class="controls-table">
+            <tr><th>Release</th><th>Suite</th><th>Yazi version</th></tr>
+            <tr><td>Debian 12 “Bookworm”</td><td><a href="/install-yazi-on-debian-12-bookworm.html">bookworm</a></td><td><span class="version-badge">26.5.6-2+bookworm</span></td></tr>
+            <tr><td>Debian 13 “Trixie”</td><td><a href="/install-yazi-on-debian-13-trixie.html">trixie</a></td><td><span class="version-badge">26.5.6-2+trixie</span></td></tr>
+            <tr><td>Debian 14 “Forky”</td><td><a href="/install-yazi-on-debian-14-forky.html">forky</a></td><td><span class="version-badge">26.5.6-2+forky</span></td></tr>
+            <tr><td>Debian Sid</td><td><a href="/install-yazi-on-debian-sid.html">sid</a></td><td><span class="version-badge">26.5.6-2+sid</span></td></tr>
+            <tr><td>Ubuntu 22.04 LTS “Jammy Jellyfish”</td><td><a href="/install-yazi-on-ubuntu-22-04-jammy.html">jammy</a></td><td><span class="version-badge">26.5.6-2+jammy</span></td></tr>
+            <tr><td>Ubuntu 24.04 LTS “Noble Numbat”</td><td><a href="/install-yazi-on-ubuntu-24-04-noble.html">noble</a></td><td><span class="version-badge">26.5.6-2+noble</span></td></tr>
+            <tr><td>Ubuntu 25.10 “Questing Quokka”</td><td><strong>questing</strong> (this page)</td><td><span class="version-badge">26.5.6-2+questing</span></td></tr>
+            <tr><td>Ubuntu 26.04 LTS “Resolute”</td><td><a href="/install-yazi-on-ubuntu-26-04-resolute.html">resolute</a></td><td><span class="version-badge">26.5.6-2+resolute</span></td></tr>
+        </table>
+
+        <h2>❓ Frequently asked questions</h2>
+
+        <h3>Is this an official Yazi package?</h3>
+        <p>No — deb.griffo.io is an unofficial repository maintained by
+        <a href="https://github.com/dariogriffo" rel="noopener">Dario Griffo</a>. Packages are built
+        automatically from official upstream Yazi releases; the packaging is open source at
+        <a href="https://github.com/dariogriffo/yazi-debian" rel="noopener">dariogriffo/yazi-debian</a>.</p>
+
+        <h3>Why not install Yazi from the official Ubuntu archive?</h3>
+        <p>Ubuntu's archive freezes package versions when a release ships and afterwards receives mostly security and stability fixes, so fast-moving tools are either absent or several releases behind. This repository tracks upstream releases instead, with builds targeted at each Ubuntu release.</p>
+
+        <h3>How quickly do new Yazi releases arrive?</h3>
+        <p>The repository polls upstream releases and publishes new builds automatically, typically within
+        hours of an upstream release. Subscribe to the <a href="/rss.xml">release feed</a> to follow updates.</p>
+
+        <h3>Which architectures are supported on questing?</h3>
+        <p><code>yazi</code> is currently built for: amd64, arm64.</p>
+
+        <h2>🔗 Related</h2>
+        <ul>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi on Ubuntu — overview and features</a></li>
+            <li><a href="/">All packages served by deb.griffo.io</a></li>
+        </ul>
+
+        <div class="notice-box">
+            <strong>💡 All releases:</strong> need Yazi on a different Debian or Ubuntu version?
+            The table above links to a dedicated guide for every supported release, or start from the
+            <a href="/install-latest-yazi-in-ubuntu.html">Yazi overview</a>.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Yazi",
+     "item": "https://deb.griffo.io/install-latest-yazi-in-ubuntu.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Yazi on Ubuntu 25.10 \u201cQuesting Quokka\u201d",
+     "item": "https://deb.griffo.io/install-yazi-on-ubuntu-25-10-questing.html"
+    }
+   ]
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "Yazi",
+   "applicationCategory": "DeveloperApplication",
+   "operatingSystem": "Ubuntu 25.10 \u201cQuesting Quokka\u201d",
+   "softwareVersion": "26.5.6",
+   "description": "A blazing-fast terminal file manager written in Rust, with async I/O and image preview"
+  },
+  {
+   "@type": "HowTo",
+   "name": "Install Yazi on Ubuntu 25.10 \u201cQuesting Quokka\u201d",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "name": "Add the deb.griffo.io repository",
+     "text": "Import the signing key and add the questing suite to your apt sources."
+    },
+    {
+     "@type": "HowToStep",
+     "name": "Install Yazi",
+     "text": "Run: sudo apt install -y yazi"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is this an official Yazi package?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No, deb.griffo.io is an unofficial repository; packages are built automatically from official upstream Yazi releases."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which Yazi version does questing get?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Currently yazi 26.5.6-2+questing, updated 2026-07-14."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>
