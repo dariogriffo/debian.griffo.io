@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установить последнюю версию TigerBeetle Database в Ubuntu</title>
-    <meta name="description" content="Установите последний TigerBeetle (v0.16.60+) в Ubuntu - распределённая база данных финансовых транзакций, разработанная для критически важной безопасности и производительности. Актуальные пакеты со строгой сериализуемостью и скоростью в 1000x от deb.griffo.io.">
+    <meta name="description" content="Установите последний TigerBeetle (v0.17.9+) в Ubuntu - распределённая база данных финансовых транзакций, разработанная для критически важной безопасности и производительности. Актуальные пакеты со строгой сериализуемостью и скоростью в 1000x от deb.griffo.io.">
     <meta name="keywords" content="tigerbeetle ubuntu, install tigerbeetle ubuntu, financial database, distributed database, OLTP database, ledger database, ubuntu packages, jammy, noble, apt tigerbeetle">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>🐯 Установить последнюю версию TigerBeetle в Ubuntu</h1>
         <p class="subtitle">База данных финансовых транзакций, разработанная для критической безопасности и производительности</p>
-        <div class="version-badge">Последняя версия: 0.16.60 (выпущена в сентябре 2025)</div>
+        <div class="version-badge">Последняя версия: 0.17.9 (выпущена в сентябре 2025)</div>
     </div>
 
     <div class="content">
@@ -109,14 +109,14 @@
             </ul>
         </div>
 
-        <h3>🆕 Что нового в TigerBeetle 0.16.60</h3>
+        <h3>🆕 Что нового в TigerBeetle 0.17.9</h3>
         <ul>
-            <li><strong>Готово к производству:</strong> Проверено в производстве с лицензией Apache 2.0 с открытым исходным кодом</li>
-            <li><strong>Еженедельные выпуски:</strong> Непрерывные улучшения с автоматическим тестированием и развёртыванием</li>
-            <li><strong>Проверено Jepsen:</strong> Первая база данных, выдержавшая инъекцию спиральных дисковых сбоев</li>
-            <li><strong>Поддержка нескольких языков:</strong> Бесшовная интеграция с Python, Java, Node.js, .NET, Go</li>
-            <li><strong>Гибкие кворумы:</strong> Репликация 3/6, выборы 4/6 для улучшенной доступности</li>
-            <li><strong>Протокол-осведомлённое восстановление:</strong> Автоматическое восстановление WAL с использованием избыточности консенсуса</li>
+            <li><strong>Исправление совместимости:</strong> Отменено изменение «уникальных ключей», вызвавшее проблемы совместимости</li>
+            <li><strong>Онлайн-валидация схемы:</strong> Добавлены проверки, обеспечивающие согласованность key_min/key_max при чтении данных</li>
+            <li><strong>Оптимизация поразрядной сортировки:</strong> Микрооптимизация алгоритма для исключения копирования больших значений, размещённых в стеке</li>
+            <li><strong>Клиент Ruby:</strong> Улучшено руководство по миграции, добавлены проверки границ u128 и более идиоматичные типы возврата статуса</li>
+            <li><strong>Клиент Rust:</strong> Удалена зависимость bitflags и включены проверки переполнения</li>
+            <li><strong>Экспериментальный флаг --memory:</strong> Новый флаг CLI автоматически задаёт размер кэшей grid и object</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -228,7 +228,7 @@ await client.createTransfers(transfers);
                 <li><strong>Официальный Ubuntu:</strong> TigerBeetle недоступен в официальных репозиториях</li>
                 <li><strong>Ручная загрузка:</strong> Еженедельные выпуски требуют ручных обновлений</li>
                 <li><strong>Только Docker:</strong> Ограничен контейнеризированными развёртываниями</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.16.60+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.17.9+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -284,7 +284,7 @@ await client.createTransfers(transfers);
         "name": "TigerBeetle",
         "applicationCategory": "Database",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.16.60+",
+        "softwareVersion": "0.17.9+",
         "description": "Распределённая база данных финансовых транзакций, разработанная для критически важной безопасности и производительности"
     }
 }

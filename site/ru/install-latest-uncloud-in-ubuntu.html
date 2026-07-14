@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установить последнюю версию uncloud в Ubuntu</title>
-    <meta name="description" content="Установите последний uncloud (v0.11.0+) в Ubuntu - лёгкий инструмент оркестрации контейнеров между Docker и Kubernetes. Актуальные пакеты с развёртыванием на нескольких машинах и сетевым мешем WireGuard от deb.griffo.io.">
+    <meta name="description" content="Установите последний uncloud (v0.20.0+) в Ubuntu - лёгкий инструмент оркестрации контейнеров между Docker и Kubernetes. Актуальные пакеты с развёртыванием на нескольких машинах и сетевым мешем WireGuard от deb.griffo.io.">
     <meta name="keywords" content="uncloud ubuntu, install uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, ubuntu packages, jammy, noble, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>☁️ Установить последнюю версию uncloud в Ubuntu</h1>
         <p class="subtitle">Лёгкая оркестрация контейнеров между Docker и Kubernetes</p>
-        <div class="version-badge">Последняя версия: 0.11.0+ (август 2025)</div>
+        <div class="version-badge">Последняя версия: 0.20.0+ (август 2025)</div>
     </div>
 
     <div class="content">
@@ -106,14 +106,14 @@
             </div>
         </div>
 
-        <h3>🆕 Что нового в uncloud 0.11.0+</h3>
+        <h3>🆕 Что нового в uncloud 0.20.0+</h3>
         <ul>
-            <li><strong>Улучшенный WireGuard-меш:</strong> Улучшенное обнаружение пиров и надёжность соединения</li>
-            <li><strong>Улучшенное обнаружение сервисов:</strong> Улучшенное DNS-разрешение и балансировка нагрузки</li>
-            <li><strong>Улучшенный CLI:</strong> Лучшая структура команд и пользовательский опыт</li>
-            <li><strong>Улучшенная сеть:</strong> Более надёжная межмашинная связь контейнеров</li>
-            <li><strong>Оптимизация производительности:</strong> Более быстрое развёртывание и синхронизация состояния</li>
-            <li><strong>Документация:</strong> Комплексные руководства и примеры</li>
+            <li><strong>Поддержка секретов:</strong> Определяйте секреты с помощью нового расширения Compose x-command и ссылайтесь на них через secret://&lt;имя&gt; в переменных окружения сервиса — это позволяет держать пароли, API-токены и другие конфиденциальные данные вне файла Compose и git</li>
+            <li><strong>Команда uc proxy:</strong> Перенаправляет порт сервиса на локальную машину через сеть кластера, подобно kubectl port-forward — удобно для доступа к внутренней базе данных или админ-панели с ноутбука</li>
+            <li><strong>Расширенный uc machine ls:</strong> Теперь показывает ОС, ядро, архитектуру, версию Docker и версию демона для каждой машины, что упрощает выявление расхождений версий и устаревших демонов</li>
+            <li><strong>Метрики Prometheus:</strong> Каждый демон теперь отдаёт метрики на порту 51090 для мониторинга кластера</li>
+            <li><strong>Самообновление демона:</strong> uc machine init и uc machine add теперь автоматически обновляют установленный бинарный файл демона</li>
+            <li><strong>Другие улучшения:</strong> автоматическое определение MTU для WireGuard с возможностью переопределения флагом --wg-mtu, автодополнение команд для CLI uc и ucind, а также поддержка rootless Docker при отправке образов</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -226,7 +226,7 @@ uc machine rm server2
                 <li><strong>Официальный Ubuntu:</strong> Недоступен в официальных репозиториях</li>
                 <li><strong>Скрипт установки:</strong> Ручные обновления и управление зависимостями</li>
                 <li><strong>Ручной бинарный файл:</strong> Без управления пакетами и автоматических обновлений</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.11.0+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.20.0+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -282,7 +282,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.11.0+",
+        "softwareVersion": "0.20.0+",
         "description": "Лёгкий инструмент оркестрации контейнеров, сочетающий простоту Docker с возможностями многомашинного развёртывания"
     }
 }

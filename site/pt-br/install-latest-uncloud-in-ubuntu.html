@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instalar a última versão do uncloud Ferramenta de Orquestração de Containers no Ubuntu</title>
-    <meta name="description" content="Instale o último uncloud (v0.11.0+) no Ubuntu - orquestração leve de containers conectando Docker e Kubernetes. Obtenha pacotes atualizados com implantação multi-máquina e rede mesh WireGuard do deb.griffo.io.">
+    <meta name="description" content="Instale o último uncloud (v0.20.0+) no Ubuntu - orquestração leve de containers conectando Docker e Kubernetes. Obtenha pacotes atualizados com implantação multi-máquina e rede mesh WireGuard do deb.griffo.io.">
     <meta name="keywords" content="uncloud ubuntu, instalar uncloud ubuntu, orquestração de containers, clustering docker, implantação multi-máquina, pacotes ubuntu, jammy, noble, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>☁️ Instalar a última versão do uncloud no Ubuntu</h1>
         <p class="subtitle">Orquestração leve de containers conectando Docker e Kubernetes</p>
-        <div class="version-badge">Última Versão: 0.11.0+ (agosto de 2025)</div>
+        <div class="version-badge">Última Versão: 0.20.0+ (agosto de 2025)</div>
     </div>
 
     <div class="content">
@@ -106,14 +106,14 @@
             </div>
         </div>
 
-        <h3>🆕 Novidades no uncloud 0.11.0+</h3>
+        <h3>🆕 Novidades no uncloud 0.20.0+</h3>
         <ul>
-            <li><strong>Mesh WireGuard Aprimorado:</strong> Melhor descoberta de peers e confiabilidade de conexão</li>
-            <li><strong>Melhor Descoberta de Serviços:</strong> Resolução DNS e balanceamento de carga aprimorados</li>
-            <li><strong>CLI Melhorada:</strong> Melhor estrutura de comandos e experiência do usuário</li>
-            <li><strong>Rede Aprimorada:</strong> Comunicação entre containers cross-machine mais robusta</li>
-            <li><strong>Otimizações de Desempenho:</strong> Implantação mais rápida e sincronização de estado</li>
-            <li><strong>Documentação:</strong> Guias e exemplos abrangentes</li>
+            <li><strong>Suporte a Secrets:</strong> Defina secrets com a nova extensão x-command do Compose e referencie-os via secret://&lt;nome&gt; nas variáveis de ambiente de um serviço, mantendo dados sensíveis como senhas e tokens de API fora do arquivo Compose e do git</li>
+            <li><strong>Comando uc proxy:</strong> Encaminha a porta de um serviço para sua máquina local através da rede do cluster, de forma semelhante ao kubectl port-forward, útil para acessar um banco de dados interno ou painel administrativo a partir do seu notebook</li>
+            <li><strong>uc machine ls aprimorado:</strong> Agora exibe o SO, kernel, arquitetura, versão do Docker e versão do daemon de cada máquina, facilitando identificar divergências de versão e daemons desatualizados</li>
+            <li><strong>Métricas do Prometheus:</strong> Cada daemon agora expõe métricas na porta 51090 para monitoramento do cluster</li>
+            <li><strong>Auto-atualização do daemon:</strong> uc machine init e uc machine add agora atualizam automaticamente o binário do daemon instalado</li>
+            <li><strong>Outras melhorias:</strong> detecção automática de MTU do WireGuard com a flag --wg-mtu para substituição manual, autocompletar de shell para os CLIs uc e ucind, e suporte a Docker rootless ao enviar imagens</li>
         </ul>
 
         <h2>📦 Instalação a partir do deb.griffo.io</h2>
@@ -226,7 +226,7 @@ uc machine rm server2
                 <li><strong>Ubuntu Oficial:</strong> Não disponível nos repositórios oficiais</li>
                 <li><strong>Script de Instalação:</strong> Atualizações manuais e gerenciamento de dependências</li>
                 <li><strong>Binário Manual:</strong> Sem gerenciamento de pacotes ou atualizações automáticas</li>
-                <li><strong>deb.griffo.io:</strong> Última versão (0.11.0+) com atualizações automáticas</li>
+                <li><strong>deb.griffo.io:</strong> Última versão (0.20.0+) com atualizações automáticas</li>
             </ul>
         </div>
 
@@ -282,7 +282,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.11.0+",
+        "softwareVersion": "0.20.0+",
         "description": "Ferramenta leve de orquestração de containers conectando a simplicidade do Docker com capacidades de implantação multi-máquina"
     }
 }

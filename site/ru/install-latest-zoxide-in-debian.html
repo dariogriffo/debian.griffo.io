@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка последней версии zoxide Smart cd Command в Debian</title>
-    <meta name="description" content="Установите последнюю версию zoxide (v0.9.8+) в Debian — умная команда cd, написанная на Rust. Получайте актуальные пакеты с интеллектуальным переходом по директориям и интеграцией с оболочкой от deb.griffo.io.">
+    <meta name="description" content="Установите последнюю версию zoxide (v0.10.0+) в Debian — умная команда cd, написанная на Rust. Получайте актуальные пакеты с интеллектуальным переходом по директориям и интеграцией с оболочкой от deb.griffo.io.">
     <meta name="keywords" content="zoxide debian, установить zoxide debian, умная команда cd, переход по директориям, замена cd на rust, пакеты debian, bookworm, trixie, sid, ajeetdsouza, apt zoxide">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>📂 Установка последней версии zoxide в Debian</h1>
         <p class="subtitle">Умная команда cd, изучающая ваши привычки</p>
-        <div class="version-badge">Последняя версия: 0.9.8+ (май 2025)</div>
+        <div class="version-badge">Последняя версия: 0.10.0+ (июль 2026)</div>
     </div>
 
     <div class="content">
@@ -113,14 +113,14 @@
             </ul>
         </div>
 
-        <h3>🆕 Что нового в zoxide 0.9.8+</h3>
+        <h3>🆕 Что нового в zoxide 0.10.0+</h3>
         <ul>
-            <li><strong>Улучшенный алгоритм:</strong> Улучшенная оценка и ранжирование для лучших подсказок директорий</li>
-            <li><strong>Улучшенная интеграция с оболочками:</strong> Расширенная поддержка современных функций оболочек</li>
-            <li><strong>Улучшение производительности:</strong> Более быстрые операции с базой данных и поиск</li>
-            <li><strong>Расширенные интеграции:</strong> Больше интеграций со сторонними инструментами и плагинами</li>
-            <li><strong>Параметры конфигурации:</strong> Дополнительная настройка и переменные окружения</li>
-            <li><strong>Кросс-платформенность:</strong> Улучшенная совместимость с Windows, macOS и Linux</li>
+            <li><strong>Импорт из Atuin:</strong> команда <code>import</code> теперь поддерживает получение записей напрямую из atuin</li>
+            <li><strong>Новые подкоманды import:</strong> <code>import</code> теперь использует подкоманды вместо старого флага <code>--from</code></li>
+            <li><strong>Более умное определение при импорте:</strong> <code>import</code> автоматически определяет файлы баз данных и пропускает директории, соответствующие <code>$_ZO_EXCLUDE_DIRS</code></li>
+            <li><strong>Поддержка CDPATH:</strong> <code>z</code> в Bash, POSIX и Zsh теперь учитывает <code>$CDPATH</code></li>
+            <li><strong>Поддержка RISC-V:</strong> Добавлена поддержка Linux на RISC-V (riscv64)</li>
+            <li><strong>Исправления символических ссылок и автодополнения:</strong> Исправлена обработка относительных путей через симлинки на директории, переход в домашний каталог в PowerShell на дисках без HOME, а также различные проблемы автодополнения в оболочках</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -268,7 +268,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
                 <li><strong>Официальный Debian:</strong> Доступен, но часто устаревшие версии</li>
                 <li><strong>Cargo Install:</strong> Требует цепочки инструментов Rust и компиляции</li>
                 <li><strong>Скрипт установки:</strong> Ручные обновления без управления пакетами</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.9.8+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.10.0+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -324,7 +324,7 @@ export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
         "name": "zoxide",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.9.8+",
+        "softwareVersion": "0.10.0+",
         "description": "Умная команда cd, изучающая ваши привычки и обеспечивающая интеллектуальную навигацию по директориям"
     }
 }

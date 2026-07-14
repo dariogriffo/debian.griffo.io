@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest uncloud on Ubuntu</title>
-    <meta name="description" content="Install the latest uncloud (v0.11.0+) on Ubuntu - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
+    <meta name="description" content="Install the latest uncloud (v0.20.0+) on Ubuntu - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
     <meta name="keywords" content="uncloud ubuntu, install uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, ubuntu packages, jammy, noble, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -98,14 +98,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in uncloud 0.11.0+</h3>
+        <h3>🆕 What's New in uncloud 0.20.0+</h3>
         <ul>
-            <li><strong>Enhanced WireGuard Mesh:</strong> Improved peer discovery and connection reliability</li>
-            <li><strong>Better Service Discovery:</strong> Enhanced DNS resolution and load balancing</li>
-            <li><strong>Improved CLI:</strong> Better command structure and user experience</li>
-            <li><strong>Enhanced Networking:</strong> More robust cross-machine container communication</li>
-            <li><strong>Performance Optimizations:</strong> Faster deployment and state synchronization</li>
-            <li><strong>Documentation:</strong> Comprehensive guides and examples</li>
+            <li><strong>Secrets Support:</strong> Define secrets with the new x-command Compose extension and reference them via secret://&lt;name&gt; in a service's environment, keeping sensitive data like passwords and API tokens out of the Compose file and git</li>
+            <li><strong>uc proxy Command:</strong> Forwards a service port to your local machine over the cluster network, similar to kubectl port-forward, for reaching an internal database or admin UI from your laptop</li>
+            <li><strong>Richer uc machine ls:</strong> Now shows OS, kernel, architecture, Docker version, and daemon version for each machine, making it easy to spot version drift and outdated daemons</li>
+            <li><strong>Prometheus Metrics:</strong> Each daemon serves metrics on port 51090 for cluster monitoring</li>
+            <li><strong>Daemon Self-Upgrade:</strong> uc machine init and uc machine add now automatically upgrade the installed daemon binary</li>
+            <li><strong>Other Improvements:</strong> WireGuard MTU auto-detection with a --wg-mtu override flag, shell completion for the uc and ucind CLIs, and rootless Docker support when pushing images</li>
         </ul>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -218,7 +218,7 @@ uc machine rm server2
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Install Script:</strong> Manual updates and dependency management</li>
                 <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.11.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.20.0+) with automatic updates</li>
             </ul>
         </div>
 
@@ -298,7 +298,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.11.0+",
+        "softwareVersion": "0.20.0+",
         "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
     }
 }

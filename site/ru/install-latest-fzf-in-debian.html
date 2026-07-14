@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установить последнюю версию fzf Fuzzy Finder в Debian</title>
-    <meta name="description" content="Установите последний fzf (v0.65.1+) в Debian — инструмент нечёткого поиска командной строки, написанный на Go. Актуальные пакеты с интеграцией оболочки, плагином Vim и расширенной фильтрацией от deb.griffo.io.">
+    <meta name="description" content="Установите последний fzf (v0.74.0+) в Debian — инструмент нечёткого поиска командной строки, написанный на Go. Актуальные пакеты с интеграцией оболочки, плагином Vim и расширенной фильтрацией от deb.griffo.io.">
     <meta name="keywords" content="fzf debian, установить fzf debian, нечёткий поиск, поиск командной строки, go fuzzy finder, debian пакеты, bookworm, trixie, sid, apt fzf">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>🔍 Установить последнюю версию fzf в Debian</h1>
         <p class="subtitle">Command-line fuzzy finder written in Go</p>
-        <div class="version-badge">Последняя версия: 0.65.1+ (Август 2025)</div>
+        <div class="version-badge">Последняя версия: 0.74.0+ (июль 2026)</div>
     </div>
 
     <div class="content">
@@ -98,14 +98,14 @@
             </div>
         </div>
 
-        <h3>🆕 Что нового в fzf 0.65.1+</h3>
+        <h3>🆕 Что нового в fzf 0.74.0+</h3>
         <ul>
-            <li><strong>Улучшенный предпросмотр:</strong> Улучшенный предпросмотр изображений с поддержкой нескольких протоколов</li>
-            <li><strong>Интеграция с tmux:</strong> Нативная поддержка всплывающих окон tmux с гибким позиционированием</li>
-            <li><strong>Стилевые пресеты:</strong> Пресеты default, full и minimal для быстрой настройки</li>
-            <li><strong>Расширенные схемы:</strong> Специализированные схемы для путей, истории и разных типов входных данных</li>
-            <li><strong>Лучшая производительность:</strong> Оптимизированные алгоритмы для работы с большими наборами данных</li>
-            <li><strong>Улучшенные привязки:</strong> Более гибкая система привязки клавиш с механизмом событий</li>
+            <li><strong>Плавающее всплывающее окно:</strong> На tmux 3.7+ --popup теперь открывает fzf в перемещаемой, изменяемой по размеру плавающей панели с поддержкой мыши и полноэкранным масштабированием вместо модального окна</li>
+            <li><strong>Нативная рамка в Zellij:</strong> --popup в Zellij теперь по умолчанию использует нативную рамку, обеспечивая то же перемещаемое/изменяемое поведение</li>
+            <li><strong>Событие result-final:</strong> Новое событие, срабатывающее один раз после закрытия входного потока — подходит для одноразовых действий по запросу</li>
+            <li><strong>Действие wait:</strong> Блокирует последующие действия до завершения поиска — полезно для связывания действий изменения запроса с действиями перемещения</li>
+            <li><strong>Новая навигация по словам:</strong> Alt-Left и Alt-Right теперь по умолчанию привязаны к переходу назад/вперёд по словам</li>
+            <li><strong>Исправления ошибок:</strong> Пропуск экспорта слишком больших значений $FZF_CURRENT_ITEM во избежание ошибок предпросмотра, исправлена обработка горизонтальной прокрутки колесом мыши, ошибочно воспринимавшейся как вертикальная, и исправлено разрешение символических ссылок для Alt-C в zsh</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -243,7 +243,7 @@ find . -type f | fzf -m
             <ul>
                 <li><strong>Официальный Debian:</strong> Доступен, но часто устаревшие версии</li>
                 <li><strong>Ручная установка:</strong> Требует инструментарий Go или ручное управление бинарными файлами</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.65.1+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.74.0+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -299,7 +299,7 @@ find . -type f | fzf -m
         "name": "fzf",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.65.1+",
+        "softwareVersion": "0.74.0+",
         "description": "General-purpose command-line fuzzy finder with shell integration and advanced filtering capabilities"
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer la dernière version de unregistry  sur Ubuntu</title>
-    <meta name="description" content="Installez le dernier unregistry (v0.2.1+) sur Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
+    <meta name="description" content="Installez le dernier unregistry (v0.4.3+) sur Ubuntu - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
     <meta name="keywords" content="unregistry ubuntu, installer unregistry ubuntu, docker pussh, docker image transfer, container deployment, paquets ubuntu, jammy, noble, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🐳 Installer la dernière version de unregistry sur Ubuntu</h1>
         <p class="subtitle">Push Docker images directly to remote servers without external registry</p>
-        <div class="version-badge">Latest Version: 0.2.1+ (July 2025)</div>
+        <div class="version-badge">Latest Version: 0.4.3+ (July 2026)</div>
     </div>
 
     <div class="content">
@@ -107,14 +107,14 @@
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans unregistry 0.2.1+</h3>
+        <h3>🆕 Nouveautés dans unregistry 0.4.3+</h3>
         <ul>
-            <li><strong>Enhanced SSH Handling:</strong> Better SSH connection management and error handling</li>
-            <li><strong>Improved Performance:</strong> Faster layer transfer and reduced overhead</li>
-            <li><strong>Containerd Integration:</strong> Better containerd image store support and configuration</li>
-            <li><strong>Multi-Platform Support:</strong> Enhanced support for ARM and x86 architectures</li>
-            <li><strong>Error Recovery:</strong> Better handling of network interruptions and transfer failures</li>
-            <li><strong>Documentation:</strong> Improved setup guides and troubleshooting information</li>
+            <li><strong>Détection Automatique du Binaire Docker :</strong> <code>docker pussh</code> détecte désormais le binaire Docker dans davantage d'emplacements (installations snap, Homebrew/linuxbrew, chemins personnalisés), avec les variables <code>REMOTE_DOCKER_PATH</code> et <code>REMOTE_CONTAINERD_SOCKET</code> pour forcer les chemins si la détection automatique échoue</li>
+            <li><strong>Envoi Fiable des Gros Calques :</strong> Correction de l'envoi des gros calques (plusieurs centaines de Mo) qui pouvait échouer en épuisant les tentatives de réessai</li>
+            <li><strong>Compatibilité macOS :</strong> Ajout d'un proxy vers la VM Docker pour Rancher Desktop/Docker Desktop/Colima, ainsi qu'une détection correcte du socket containerd pour OrbStack sur des machines macOS distantes</li>
+            <li><strong>Configuration SSH Personnalisée :</strong> Nouvelle option <code>-F</code>/<code>--ssh-config</code> pour spécifier un fichier de configuration SSH personnalisé</li>
+            <li><strong>Contournement de la Vérification de Clé d'Hôte :</strong> Option <code>--no-host-key-check</code> pour ignorer la vérification de la clé d'hôte SSH</li>
+            <li><strong>Prise en Charge du Port du Registre :</strong> Ajout de la prise en charge des images avec un <code>:port</code> dans l'adresse du registre</li>
         </ul>
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
@@ -221,7 +221,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Manual Script:</strong> Requires manual updates and dependency management</li>
                 <li><strong>Homebrew:</strong> Limited to specific platforms</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.2.1+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.4.3+) with automatic updates</li>
             </ul>
         </div>
 
@@ -278,7 +278,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.2.1+",
+        "softwareVersion": "0.4.3+",
         "description": "Registre d'images de conteneurs léger for pushing Docker images directly to remote servers over SSH"
     }
 }

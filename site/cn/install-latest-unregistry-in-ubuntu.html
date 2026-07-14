@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>安装最新的 unregistry  在 Ubuntu 上</title>
-    <meta name="description" content="安装最新的 unregistry (v0.2.1+) 在 Ubuntu 上 - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
+    <meta name="description" content="安装最新的 unregistry (v0.4.3+) 在 Ubuntu 上 - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
     <meta name="keywords" content="unregistry ubuntu, install unregistry ubuntu, docker pussh, docker image transfer, container deployment, ubuntu packages, jammy, noble, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🐳 安装最新的 unregistry 在 Ubuntu 上</h1>
         <p class="subtitle">Push Docker images directly to remote servers without external registry</p>
-        <div class="version-badge">Latest Version: 0.2.1+ (July 2025)</div>
+        <div class="version-badge">Latest Version: 0.4.3+ (July 2026)</div>
     </div>
 
     <div class="content">
@@ -107,14 +107,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in unregistry 0.2.1+</h3>
+        <h3>🆕 unregistry 0.4.3+ 新增功能</h3>
         <ul>
-            <li><strong>Enhanced SSH Handling:</strong> Better SSH connection management and error handling</li>
-            <li><strong>Improved Performance:</strong> Faster layer transfer and reduced overhead</li>
-            <li><strong>Containerd Integration:</strong> Better containerd image store support and configuration</li>
-            <li><strong>Multi-Platform Support:</strong> Enhanced support for ARM and x86 architectures</li>
-            <li><strong>Error Recovery:</strong> Better handling of network interruptions and transfer failures</li>
-            <li><strong>Documentation:</strong> Improved setup guides and troubleshooting information</li>
+            <li><strong>Docker 二进制文件自动检测：</strong><code>docker pussh</code> 现在可以在更多位置（snap 安装、Homebrew/linuxbrew、自定义路径）自动检测 docker 二进制文件；当自动检测失败时，可通过 <code>REMOTE_DOCKER_PATH</code> 和 <code>REMOTE_CONTAINERD_SOCKET</code> 环境变量手动指定路径</li>
+            <li><strong>大层可靠上传：</strong>修复了推送大层（数百 MB）时可能因重试次数耗尽而失败的问题</li>
+            <li><strong>macOS 兼容性：</strong>为 Rancher Desktop/Docker Desktop/Colima 的 Docker 虚拟机添加了代理，并修正了远程 macOS 上 OrbStack 的 containerd socket 检测</li>
+            <li><strong>自定义 SSH 配置：</strong>新增 <code>-F</code>/<code>--ssh-config</code> 参数，用于指定自定义 SSH 配置文件路径</li>
+            <li><strong>跳过主机密钥检查：</strong><code>--no-host-key-check</code> 选项可跳过 SSH 主机密钥检查</li>
+            <li><strong>镜像仓库端口支持：</strong>新增对镜像仓库地址中包含 <code>:port</code> 的支持</li>
         </ul>
 
         <h2>📦 从 deb.griffo.io 安装</h2>
@@ -221,7 +221,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Manual Script:</strong> Requires manual updates and dependency management</li>
                 <li><strong>Homebrew:</strong> Limited to specific platforms</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.2.1+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.4.3+) with automatic updates</li>
             </ul>
         </div>
 
@@ -278,7 +278,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.2.1+",
+        "softwareVersion": "0.4.3+",
         "description": "轻量级容器镜像仓库 for pushing Docker images directly to remote servers over SSH"
     }
 }

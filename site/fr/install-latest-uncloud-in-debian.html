@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer la dernière version de uncloud sur Debian</title>
-    <meta name="description" content="Installez le dernier uncloud (v0.11.0+) sur Debian - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
+    <meta name="description" content="Installez le dernier uncloud (v0.20.0+) sur Debian - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
     <meta name="keywords" content="uncloud debian, installer uncloud debian, container orchestration, docker clustering, multi-machine deployment, paquets debian, bookworm, trixie, sid, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>☁️ Installer la dernière version de uncloud sur Debian</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Latest Version: 0.11.0+ (August 2025)</div>
+        <div class="version-badge">Latest Version: 0.20.0+ (August 2025)</div>
     </div>
 
     <div class="content">
@@ -101,14 +101,14 @@
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans uncloud 0.11.0+</h3>
+        <h3>🆕 Nouveautés dans uncloud 0.20.0+</h3>
         <ul>
-            <li><strong>Enhanced WireGuard Mesh:</strong> Improved peer discovery and connection reliability</li>
-            <li><strong>Better Service Discovery:</strong> Enhanced DNS resolution and load balancing</li>
-            <li><strong>Improved CLI:</strong> Better command structure and user experience</li>
-            <li><strong>Enhanced Networking:</strong> More robust cross-machine container communication</li>
-            <li><strong>Performance Optimizations:</strong> Faster deployment and state synchronization</li>
-            <li><strong>Documentation:</strong> Comprehensive guides and examples</li>
+            <li><strong>Prise en charge des secrets :</strong> définissez des secrets grâce à la nouvelle extension Compose x-command et référencez-les via secret://&lt;nom&gt; dans l'environnement d'un service, ce qui garde les données sensibles comme les mots de passe et jetons API hors du fichier Compose et de git</li>
+            <li><strong>Commande uc proxy :</strong> redirige un port de service vers votre machine locale via le réseau du cluster, à la manière de kubectl port-forward, pratique pour accéder à une base de données interne ou une interface d'administration depuis votre ordinateur</li>
+            <li><strong>uc machine ls enrichi :</strong> affiche désormais l'OS, le noyau, l'architecture, la version de Docker et la version du daemon de chaque machine, facilitant la détection des écarts de version et des daemons obsolètes</li>
+            <li><strong>Métriques Prometheus :</strong> chaque daemon expose désormais des métriques sur le port 51090 pour la supervision du cluster</li>
+            <li><strong>Mise à jour automatique du daemon :</strong> uc machine init et uc machine add mettent désormais automatiquement à jour le binaire du daemon installé</li>
+            <li><strong>Autres améliorations :</strong> détection automatique du MTU WireGuard avec une option --wg-mtu, complétion shell pour les CLI uc et ucind, et prise en charge de Docker rootless lors du push d'images</li>
         </ul>
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
@@ -221,7 +221,7 @@ uc machine rm server2
                 <li><strong>Official Debian:</strong> Not available in official repositories</li>
                 <li><strong>Install Script:</strong> Manual updates and dependency management</li>
                 <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.11.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.20.0+) with automatic updates</li>
             </ul>
         </div>
 
@@ -277,7 +277,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.11.0+",
+        "softwareVersion": "0.20.0+",
         "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установка последней версии uv Python Package Manager в Debian</title>
-    <meta name="description" content="Установите последнюю версию uv (v0.8.8+) в Debian — чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust. Получайте актуальные пакеты с производительностью в 10-100 раз выше pip от deb.griffo.io.">
+    <meta name="description" content="Установите последнюю версию uv (v0.11.28+) в Debian — чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust. Получайте актуальные пакеты с производительностью в 10-100 раз выше pip от deb.griffo.io.">
     <meta name="keywords" content="uv debian, установить uv debian, менеджер пакетов python, быстрая замена pip, инструменты python на rust, пакеты debian, bookworm, trixie, sid, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>🐍 Установка последней версии uv в Debian</h1>
         <p class="subtitle">Чрезвычайно быстрый менеджер пакетов и проектов Python</p>
-        <div class="version-badge">Последняя версия: 0.8.8+ (август 2025)</div>
+        <div class="version-badge">Последняя версия: 0.11.28+ (август 2025)</div>
     </div>
 
     <div class="content">
@@ -108,14 +108,14 @@
             </div>
         </div>
 
-        <h3>🆕 Что нового в uv 0.8.8+</h3>
+        <h3>🆕 Что нового в uv 0.11.28+</h3>
         <ul>
-            <li><strong>Улучшенное управление проектами:</strong> Расширенная поддержка рабочих пространств и разрешение зависимостей</li>
-            <li><strong>Работа с версиями Python:</strong> Улучшенная установка Python и переключение версий</li>
-            <li><strong>Улучшения скриптов:</strong> Расширенная поддержка встроенных метаданных зависимостей</li>
-            <li><strong>Оптимизация производительности:</strong> Ещё более быстрая установка пакетов и разрешение зависимостей</li>
-            <li><strong>Управление инструментами:</strong> Улучшенное выполнение и установка инструментов uvx</li>
-            <li><strong>Кросс-платформенная поддержка:</strong> Улучшенная совместимость с Windows, macOS и Linux</li>
+            <li><strong>Python 3.14 по умолчанию:</strong> uv теперь устанавливает Python 3.14 как версию по умолчанию, если версия не закреплена, а free-threaded сборки 3.14+ больше не требуют явного включения</li>
+            <li><strong>Стабилизированные обновления Python:</strong> uv python upgrade и автоматические обновления патч-версий в виртуальных окружениях теперь стабильны</li>
+            <li><strong>Обновлённый TLS-стек:</strong> Сеть теперь использует rustls-platform-verifier и aws-lc для более согласованной, нативной для ОС проверки сертификатов; --native-tls признан устаревшим в пользу --system-certs</li>
+            <li><strong>Стабилизированные команды workspace:</strong> uv workspace dir и uv workspace list, а также настройки add-bounds и extra-build-dependencies теперь стабильны</li>
+            <li><strong>Усиленная обработка архивов:</strong> Обновлённые зависимости для разбора ZIP устраняют уязвимости типа parser-differential при распаковке архивов</li>
+            <li><strong>Улучшения производительности и надёжности:</strong> Меньше выделений памяти в резолвере и при проверках совместимости тегов, а также исправления переполнения возраста HTTP-кэша и поддержки uv tree в проектах только с группами зависимостей</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -243,7 +243,7 @@ uv tool list
                 <li><strong>Официальный Debian:</strong> Часто устаревшие версии без новейших функций</li>
                 <li><strong>pip install:</strong> Медленнее, требует предустановленного Python</li>
                 <li><strong>Curl-установщик:</strong> Ручные обновления, без управления пакетами</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.8.8+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.11.28+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -310,7 +310,7 @@ uv tool list
         "name": "uv",
         "applicationCategory": "Package Manager",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.8.8+",
+        "softwareVersion": "0.11.28+",
         "description": "Чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust, в 10-100 раз быстрее pip"
     }
 }

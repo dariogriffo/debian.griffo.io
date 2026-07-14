@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>安装最新的 uv Python Package Manager 在 Ubuntu 上</title>
-    <meta name="description" content="Install the latest uv (v0.8.8+) 在 Ubuntu 上 - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
+    <meta name="description" content="Install the latest uv (v0.11.28+) 在 Ubuntu 上 - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
     <meta name="keywords" content="uv ubuntu, install uv ubuntu, python package manager, fast pip replacement, rust python tools, ubuntu packages, jammy, noble, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🐍 安装最新的 uv 在 Ubuntu 上</h1>
         <p class="subtitle">Extremely fast Python package and project manager</p>
-        <div class="version-badge">Latest Version: 0.8.8+ (August 2025)</div>
+        <div class="version-badge">Latest Version: 0.11.28+ (August 2025)</div>
     </div>
 
     <div class="content">
@@ -103,14 +103,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in uv 0.8.8+</h3>
+        <h3>🆕 uv 0.11.28+ 新特性</h3>
         <ul>
-            <li><strong>Enhanced Project Management:</strong> Improved workspace support and dependency resolution</li>
-            <li><strong>Python Version Handling:</strong> Better Python installation and version switching</li>
-            <li><strong>Script Improvements:</strong> Enhanced inline dependency metadata support</li>
-            <li><strong>Performance Optimizations:</strong> Even faster package installation and resolution</li>
-            <li><strong>Tool Management:</strong> Improved uvx tool execution and installation</li>
-            <li><strong>Cross-Platform Support:</strong> Better Windows, macOS, and Linux compatibility</li>
+            <li><strong>默认使用 Python 3.14：</strong>未指定固定版本时，uv 现在默认安装 Python 3.14；3.14+ 的自由线程（free-threaded）构建版本不再需要显式启用</li>
+            <li><strong>Python 升级功能稳定化：</strong>uv python upgrade 以及虚拟环境中的自动补丁版本升级现已成为稳定功能</li>
+            <li><strong>升级 TLS 网络栈：</strong>网络层现在使用 rustls-platform-verifier 和 aws-lc，证书校验与操作系统原生行为更加一致；--native-tls 已被弃用，推荐使用 --system-certs</li>
+            <li><strong>工作区命令稳定化：</strong>uv workspace dir 和 uv workspace list 命令，以及 add-bounds 和 extra-build-dependencies 设置项现已稳定</li>
+            <li><strong>加固归档文件处理：</strong>更新了 ZIP 解析依赖，修复了解压归档文件时的解析器差异（parser-differential）漏洞</li>
+            <li><strong>性能与可靠性修复：</strong>减少了解析器和标签兼容性检查中的内存分配，并修复了 HTTP 缓存年龄溢出问题以及仅含依赖组项目中 uv tree 的支持问题</li>
         </ul>
 
         <h2>📦 从 deb.griffo.io 安装</h2>
@@ -238,7 +238,7 @@ uv tool list
                 <li><strong>Official Ubuntu:</strong> Often outdated versions missing latest features</li>
                 <li><strong>pip install:</strong> Slower, requires Python already installed</li>
                 <li><strong>Curl installer:</strong> Manual updates, no package management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.8.8+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.11.28+) with automatic updates</li>
             </ul>
         </div>
 
@@ -304,7 +304,7 @@ uv tool list
         "name": "uv",
         "applicationCategory": "Package Manager",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.8.8+",
+        "softwareVersion": "0.11.28+",
         "description": "用 Rust 编写的极快 Python 包和项目管理器, 10-100x faster than pip"
     }
 }

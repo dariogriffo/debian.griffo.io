@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest fzf Fuzzy Finder on Ubuntu</title>
-    <meta name="description" content="Install the latest fzf (v0.65.1+) on Ubuntu - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
+    <meta name="description" content="Install the latest fzf (v0.74.0+) on Ubuntu - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
     <meta name="keywords" content="fzf ubuntu, install fzf ubuntu, fuzzy finder, command line search, go fuzzy finder, ubuntu packages, jammy, noble, junegunn, apt fzf">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -45,7 +45,7 @@
     <div class="header">
         <h1>🔍 Install Latest fzf on Ubuntu</h1>
         <p class="subtitle">Command-line fuzzy finder written in Go</p>
-        <div class="version-badge">Latest Version: 0.66.1+ (October 2025)</div>
+        <div class="version-badge">Latest Version: 0.74.0+ (July 2026)</div>
     </div>
 
     <div class="content">
@@ -91,14 +91,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in fzf 0.65.1+</h3>
+        <h3>🆕 What's New in fzf 0.74.0+</h3>
         <ul>
-            <li><strong>Enhanced Preview:</strong> Improved image preview with multiple protocol support</li>
-            <li><strong>Tmux Integration:</strong> Native tmux popup support with flexible positioning</li>
-            <li><strong>Style Presets:</strong> Default, full, and minimal style presets for quick setup</li>
-            <li><strong>Advanced Schemes:</strong> Specialized schemes for paths, history, and different input types</li>
-            <li><strong>Better Performance:</strong> Optimized algorithms for handling large datasets</li>
-            <li><strong>Enhanced Bindings:</strong> More flexible key binding system with event-action mechanism</li>
+            <li><strong>Floating Popup:</strong> On tmux 3.7+, --popup now opens fzf in a movable, resizable floating pane with mouse support and fullscreen zoom, instead of a modal popup</li>
+            <li><strong>Zellij Native Border:</strong> --popup on Zellij now uses a native border by default, giving the same movable/resizable behavior</li>
+            <li><strong>result-final Event:</strong> New event fires once the input stream closes, ideal for one-shot per-query actions</li>
+            <li><strong>wait Action:</strong> Blocks subsequent actions until the search completes, useful for chaining query-changing actions with motion actions</li>
+            <li><strong>New Word Navigation:</strong> Alt-Left and Alt-Right are now bound to backward-word/forward-word by default</li>
+            <li><strong>Bug Fixes:</strong> Skips exporting huge $FZF_CURRENT_ITEM values to avoid preview errors, fixes horizontal mouse wheel scrolling, and corrects Alt-C symlink resolution in zsh</li>
         </ul>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -236,7 +236,7 @@ find . -type f | fzf -m
             <ul>
                 <li><strong>Official Ubuntu:</strong> Available but often outdated versions</li>
                 <li><strong>Manual Installation:</strong> Requires Go toolchain or manual binary management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.65.1+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.74.0+) with automatic updates</li>
             </ul>
         </div>
 
@@ -316,7 +316,7 @@ find . -type f | fzf -m
         "name": "fzf",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.65.1+",
+        "softwareVersion": "0.74.0+",
         "description": "General-purpose command-line fuzzy finder with shell integration and advanced filtering capabilities"
     }
 }

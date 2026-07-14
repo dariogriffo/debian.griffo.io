@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest TigerBeetle Database on Debian</title>
-    <meta name="description" content="Install the latest TigerBeetle (v0.16.60+) on Debian - distributed financial transactions database designed for mission-critical safety and performance. Get up-to-date packages with strict serializability and 1000x faster OLTP from deb.griffo.io.">
+    <meta name="description" content="Install the latest TigerBeetle (v0.17.9+) on Debian - distributed financial transactions database designed for mission-critical safety and performance. Get up-to-date packages with strict serializability and 1000x faster OLTP from deb.griffo.io.">
     <meta name="keywords" content="tigerbeetle debian, install tigerbeetle debian, financial database, distributed database, OLTP database, ledger database, debian packages, bookworm, trixie, sid, apt tigerbeetle">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -101,14 +101,14 @@
             </ul>
         </div>
 
-        <h3>🆕 What's New in TigerBeetle 0.16.60</h3>
+        <h3>🆕 What's New in TigerBeetle 0.17.9</h3>
         <ul>
-            <li><strong>Production Ready:</strong> Battle-tested in production with Apache 2.0 open source license</li>
-            <li><strong>Weekly Releases:</strong> Continuous improvements with automated testing and deployment</li>
-            <li><strong>Jepsen Verified:</strong> First database to withstand helical disk fault injection</li>
-            <li><strong>Multi-Language Support:</strong> Seamless integration with Python, Java, Node.js, .NET, Go</li>
-            <li><strong>Flexible Quorums:</strong> 3/6 replication, 4/6 election for improved availability</li>
-            <li><strong>Protocol-Aware Recovery:</strong> Automatic WAL repair using consensus redundancy</li>
+            <li><strong>Compatibility Fix:</strong> Reverted a "unique keys" change that had caused compatibility issues</li>
+            <li><strong>Online Schema Validation:</strong> Added checks ensuring coherent key_min/key_max when reading data</li>
+            <li><strong>Radix Sort Optimization:</strong> Micro-optimized the algorithm to avoid copies with large stack-allocated values</li>
+            <li><strong>Ruby Client:</strong> Improved migration guide, added u128 bounds checks and more idiomatic status return types</li>
+            <li><strong>Rust Client:</strong> Removed the bitflags dependency and enabled overflow checks</li>
+            <li><strong>Experimental --memory Flag:</strong> New CLI flag automatically sizes the grid and object caches</li>
         </ul>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -220,7 +220,7 @@ await client.createTransfers(transfers);
                 <li><strong>Official Debian:</strong> TigerBeetle not available in official repositories</li>
                 <li><strong>Manual Download:</strong> Weekly releases require manual updates</li>
                 <li><strong>Docker Only:</strong> Limited to containerized deployments</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.16.60+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.17.9+) with automatic updates</li>
             </ul>
         </div>
 
@@ -300,7 +300,7 @@ await client.createTransfers(transfers);
         "name": "TigerBeetle",
         "applicationCategory": "Database",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.16.60+",
+        "softwareVersion": "0.17.9+",
         "description": "Distributed financial transactions database designed for mission-critical safety and performance"
     }
 }

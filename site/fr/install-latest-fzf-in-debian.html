@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer la dernière version de fzf Fuzzy Finder sur Debian</title>
-    <meta name="description" content="Install the latest fzf (v0.65.1+) sur Debian - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
+    <meta name="description" content="Install the latest fzf (v0.74.0+) sur Debian - command-line fuzzy finder written in Go. Get up-to-date packages with shell integration, Vim plugin, and advanced filtering from deb.griffo.io.">
     <meta name="keywords" content="fzf debian, installer fzf debian, fuzzy finder, command line search, go fuzzy finder, paquets debian, bookworm, trixie, sid, junegunn, apt fzf">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>🔍 Installer la dernière version de fzf sur Debian</h1>
         <p class="subtitle">Command-line fuzzy finder written in Go</p>
-        <div class="version-badge">Latest Version: 0.65.1+ (August 2025)</div>
+        <div class="version-badge">Latest Version: 0.74.0+ (juillet 2026)</div>
     </div>
 
     <div class="content">
@@ -93,14 +93,14 @@
             </div>
         </div>
 
-        <h3>🆕 Nouveautés dans fzf 0.65.1+</h3>
+        <h3>🆕 Nouveautés dans fzf 0.74.0+</h3>
         <ul>
-            <li><strong>Enhanced Preview:</strong> Improved image preview with multiple protocol support</li>
-            <li><strong>Tmux Integration:</strong> Native tmux popup support with flexible positioning</li>
-            <li><strong>Style Presets:</strong> Default, full, and minimal style presets for quick setup</li>
-            <li><strong>Advanced Schemes:</strong> Specialized schemes for paths, history, and different input types</li>
-            <li><strong>Better Performance:</strong> Optimized algorithms for handling large datasets</li>
-            <li><strong>Enhanced Bindings:</strong> More flexible key binding system with event-action mechanism</li>
+            <li><strong>Fenêtre flottante :</strong> Sur tmux 3.7+, --popup ouvre désormais fzf dans un panneau flottant déplaçable et redimensionnable, avec prise en charge de la souris et zoom plein écran, au lieu d'une fenêtre modale</li>
+            <li><strong>Bordure native sous Zellij :</strong> --popup utilise désormais une bordure native par défaut sous Zellij, offrant le même comportement déplaçable/redimensionnable</li>
+            <li><strong>Événement result-final :</strong> Nouvel événement déclenché une seule fois à la fermeture du flux d'entrée, idéal pour les actions ponctuelles par requête</li>
+            <li><strong>Action wait :</strong> Bloque les actions suivantes jusqu'à la fin de la recherche, utile pour enchaîner des actions modifiant la requête avec des actions de déplacement</li>
+            <li><strong>Nouvelle navigation par mot :</strong> Alt-Left et Alt-Right sont désormais liés par défaut à backward-word/forward-word</li>
+            <li><strong>Corrections de bugs :</strong> L'export des valeurs $FZF_CURRENT_ITEM trop volumineuses est ignoré pour éviter les erreurs d'aperçu, le défilement horizontal de la molette n'est plus interprété comme vertical, et la résolution des liens symboliques par Alt-C dans zsh a été corrigée</li>
         </ul>
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
@@ -238,7 +238,7 @@ find . -type f | fzf -m
             <ul>
                 <li><strong>Official Debian:</strong> Available but often outdated versions</li>
                 <li><strong>Manual Installation:</strong> Requires Go toolchain or manual binary management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.65.1+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.74.0+) with automatic updates</li>
             </ul>
         </div>
 
@@ -294,7 +294,7 @@ find . -type f | fzf -m
         "name": "fzf",
         "applicationCategory": "Command Line Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.65.1+",
+        "softwareVersion": "0.74.0+",
         "description": "General-purpose command-line fuzzy finder with shell integration and advanced filtering capabilities"
     }
 }

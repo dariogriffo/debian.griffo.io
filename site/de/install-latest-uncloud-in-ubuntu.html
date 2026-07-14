@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neueste uncloud auf Ubuntu installieren</title>
-    <meta name="description" content="Installieren Sie das neueste uncloud (v0.11.0+) auf Ubuntu - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
+    <meta name="description" content="Installieren Sie das neueste uncloud (v0.20.0+) auf Ubuntu - lightweight container orchestration bridging Docker and Kubernetes. Get up-to-date packages with multi-machine deployment and WireGuard mesh networking from deb.griffo.io.">
     <meta name="keywords" content="uncloud ubuntu, install uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, ubuntu packages, jammy, noble, psviderski, apt uncloud">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -47,7 +47,7 @@
     <div class="header">
         <h1>☁️ Neueste installieren uncloud auf Ubuntu</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Latest Version: 0.11.0+ (August 2025)</div>
+        <div class="version-badge">Latest Version: 0.20.0+ (August 2025)</div>
     </div>
 
     <div class="content">
@@ -101,14 +101,14 @@
             </div>
         </div>
 
-        <h3>🆕 Neu in uncloud 0.11.0+</h3>
+        <h3>🆕 Neu in uncloud 0.20.0+</h3>
         <ul>
-            <li><strong>Enhanced WireGuard Mesh:</strong> Improved peer discovery and connection reliability</li>
-            <li><strong>Better Service Discovery:</strong> Enhanced DNS resolution and load balancing</li>
-            <li><strong>Improved CLI:</strong> Better command structure and user experience</li>
-            <li><strong>Enhanced Networking:</strong> More robust cross-machine container communication</li>
-            <li><strong>Performance Optimizations:</strong> Faster deployment and state synchronization</li>
-            <li><strong>Documentation:</strong> Comprehensive guides and examples</li>
+            <li><strong>Secrets-Unterstützung:</strong> Secrets werden mit der neuen x-command-Compose-Erweiterung definiert und über secret://&lt;name&gt; in der Umgebung eines Dienstes referenziert – so bleiben sensible Daten wie Passwörter und API-Tokens aus der Compose-Datei und aus git heraus</li>
+            <li><strong>Befehl uc proxy:</strong> Leitet einen Dienst-Port über das Cluster-Netzwerk auf die lokale Maschine weiter, ähnlich wie kubectl port-forward – praktisch, um von deinem Laptop aus auf eine interne Datenbank oder Admin-Oberfläche zuzugreifen</li>
+            <li><strong>Erweitertes uc machine ls:</strong> Zeigt jetzt für jede Maschine Betriebssystem, Kernel, Architektur, Docker-Version und Daemon-Version an, sodass Versionsunterschiede und veraltete Daemons leicht erkennbar sind</li>
+            <li><strong>Prometheus-Metriken:</strong> Jeder Daemon stellt jetzt Metriken auf Port 51090 für das Cluster-Monitoring bereit</li>
+            <li><strong>Automatisches Daemon-Upgrade:</strong> uc machine init und uc machine add aktualisieren jetzt automatisch die installierte Daemon-Binärdatei</li>
+            <li><strong>Weitere Verbesserungen:</strong> automatische WireGuard-MTU-Erkennung mit optionalem --wg-mtu-Flag, Shell-Vervollständigung für die uc- und ucind-CLIs sowie Unterstützung für rootless Docker beim Push von Images</li>
         </ul>
 
         <h2>📦 Installation von deb.griffo.io</h2>
@@ -221,7 +221,7 @@ uc machine rm server2
                 <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
                 <li><strong>Install Script:</strong> Manual updates and dependency management</li>
                 <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.11.0+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.20.0+) with automatic updates</li>
             </ul>
         </div>
 
@@ -277,7 +277,7 @@ uc machine rm server2
         "name": "uncloud",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.11.0+",
+        "softwareVersion": "0.20.0+",
         "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest uv Python Package Manager on Debian</title>
-    <meta name="description" content="Install the latest uv (v0.8.8+) on Debian - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
+    <meta name="description" content="Install the latest uv (v0.11.28+) on Debian - extremely fast Python package and project manager written in Rust. Get up-to-date packages with 10-100x faster performance than pip from deb.griffo.io.">
     <meta name="keywords" content="uv debian, install uv debian, python package manager, fast pip replacement, rust python tools, debian packages, bookworm, trixie, sid, astral-sh, apt uv">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -100,14 +100,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in uv 0.8.8+</h3>
+        <h3>🆕 What's New in uv 0.11.28+</h3>
         <ul>
-            <li><strong>Enhanced Project Management:</strong> Improved workspace support and dependency resolution</li>
-            <li><strong>Python Version Handling:</strong> Better Python installation and version switching</li>
-            <li><strong>Script Improvements:</strong> Enhanced inline dependency metadata support</li>
-            <li><strong>Performance Optimizations:</strong> Even faster package installation and resolution</li>
-            <li><strong>Tool Management:</strong> Improved uvx tool execution and installation</li>
-            <li><strong>Cross-Platform Support:</strong> Better Windows, macOS, and Linux compatibility</li>
+            <li><strong>Python 3.14 by Default:</strong> uv now installs Python 3.14 as the default version when none is pinned, and free-threaded 3.14+ builds no longer require explicit opt-in</li>
+            <li><strong>Stabilized Python Upgrades:</strong> uv python upgrade and automatic patch-version upgrades in virtual environments are now stable</li>
+            <li><strong>Modernized TLS Stack:</strong> Networking now uses rustls-platform-verifier and aws-lc for more consistent, OS-native certificate validation; --native-tls is deprecated in favor of --system-certs</li>
+            <li><strong>Stabilized Workspace Commands:</strong> uv workspace dir and uv workspace list, plus the add-bounds and extra-build-dependencies settings, are now stable</li>
+            <li><strong>Hardened Archive Handling:</strong> Updated ZIP-parsing dependencies close parser-differential vulnerabilities in archive extraction</li>
+            <li><strong>Performance & Reliability Fixes:</strong> Reduced allocations across the resolver and tag-compatibility checks, plus fixes for HTTP cache age overflow and uv tree support in dependency-group-only projects</li>
         </ul>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -235,7 +235,7 @@ uv tool list
                 <li><strong>Official Debian:</strong> Often outdated versions missing latest features</li>
                 <li><strong>pip install:</strong> Slower, requires Python already installed</li>
                 <li><strong>Curl installer:</strong> Manual updates, no package management</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.8.8+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.11.28+) with automatic updates</li>
             </ul>
         </div>
 
@@ -326,7 +326,7 @@ uv tool list
         "name": "uv",
         "applicationCategory": "Package Manager",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.8.8+",
+        "softwareVersion": "0.11.28+",
         "description": "Extremely fast Python package and project manager written in Rust, 10-100x faster than pip"
     }
 }

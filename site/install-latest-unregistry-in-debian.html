@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Install Latest unregistry  on Debian</title>
-    <meta name="description" content="Install the latest unregistry (v0.2.1+) on Debian - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
+    <meta name="description" content="Install the latest unregistry (v0.4.3+) on Debian - push Docker images directly to remote servers without external registry. Get up-to-date packages with SSH transfer and efficient layer deduplication from deb.griffo.io.">
     <meta name="keywords" content="unregistry debian, install unregistry debian, docker pussh, docker image transfer, container deployment, debian packages, bookworm, trixie, sid, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -104,14 +104,14 @@
             </div>
         </div>
 
-        <h3>🆕 What's New in unregistry 0.2.1+</h3>
+        <h3>🆕 What's New in unregistry 0.4.3+</h3>
         <ul>
-            <li><strong>Enhanced SSH Handling:</strong> Better SSH connection management and error handling</li>
-            <li><strong>Improved Performance:</strong> Faster layer transfer and reduced overhead</li>
-            <li><strong>Containerd Integration:</strong> Better containerd image store support and configuration</li>
-            <li><strong>Multi-Platform Support:</strong> Enhanced support for ARM and x86 architectures</li>
-            <li><strong>Error Recovery:</strong> Better handling of network interruptions and transfer failures</li>
-            <li><strong>Documentation:</strong> Improved setup guides and troubleshooting information</li>
+            <li><strong>Docker Binary Auto-Detection:</strong> <code>docker pussh</code> now finds the docker binary in more locations (snap installs, Homebrew/linuxbrew, custom paths), with <code>REMOTE_DOCKER_PATH</code> and <code>REMOTE_CONTAINERD_SOCKET</code> env vars to override when auto-detection fails</li>
+            <li><strong>Reliable Big Layer Uploads:</strong> Fixed pushing large layers (hundreds of MBs) that could previously fail by exhausting retry attempts</li>
+            <li><strong>macOS Compatibility:</strong> Added a proxy to the Docker VM for Rancher Desktop/Docker Desktop/Colima, plus correct containerd socket detection for OrbStack on remote macOS machines</li>
+            <li><strong>Custom SSH Config:</strong> New <code>-F</code>/<code>--ssh-config</code> flag to specify a custom SSH config file path</li>
+            <li><strong>Host Key Check Bypass:</strong> <code>--no-host-key-check</code> option to skip SSH host key checking</li>
+            <li><strong>Registry Port Support:</strong> Added support for images with a <code>:port</code> in the registry address</li>
         </ul>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -218,7 +218,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Official Debian:</strong> Not available in official repositories</li>
                 <li><strong>Manual Script:</strong> Requires manual updates and dependency management</li>
                 <li><strong>Homebrew:</strong> Limited to specific platforms</li>
-                <li><strong>deb.griffo.io:</strong> Latest version (0.2.1+) with automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Latest version (0.4.3+) with automatic updates</li>
             </ul>
         </div>
 
@@ -299,7 +299,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Debian Linux",
-        "softwareVersion": "0.2.1+",
+        "softwareVersion": "0.4.3+",
         "description": "Lightweight container image registry for pushing Docker images directly to remote servers over SSH"
     }
 }

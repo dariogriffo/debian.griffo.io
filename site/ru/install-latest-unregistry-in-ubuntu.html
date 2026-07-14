@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Установить последнюю версию unregistry  в Ubuntu</title>
-    <meta name="description" content="Установите последний unregistry (v0.2.1+) в Ubuntu - отправка образов Docker напрямую на удалённые серверы без внешнего реестра. Актуальные пакеты с передачей по SSH и эффективной дедупликацией слоёв от deb.griffo.io.">
+    <meta name="description" content="Установите последний unregistry (v0.4.3+) в Ubuntu - отправка образов Docker напрямую на удалённые серверы без внешнего реестра. Актуальные пакеты с передачей по SSH и эффективной дедупликацией слоёв от deb.griffo.io.">
     <meta name="keywords" content="unregistry ubuntu, install unregistry ubuntu, docker pussh, docker image transfer, container deployment, ubuntu packages, jammy, noble, psviderski, apt unregistry">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -52,7 +52,7 @@
     <div class="header">
         <h1>🐳 Установить последнюю версию unregistry в Ubuntu</h1>
         <p class="subtitle">Отправка образов Docker напрямую на удалённые серверы без внешнего реестра</p>
-        <div class="version-badge">Последняя версия: 0.2.1+ (июль 2025)</div>
+        <div class="version-badge">Последняя версия: 0.4.3+ (июль 2026)</div>
     </div>
 
     <div class="content">
@@ -112,14 +112,14 @@
             </div>
         </div>
 
-        <h3>🆕 Что нового в unregistry 0.2.1+</h3>
+        <h3>🆕 Что нового в unregistry 0.4.3+</h3>
         <ul>
-            <li><strong>Улучшенная обработка SSH:</strong> Лучшее управление SSH-соединениями и обработка ошибок</li>
-            <li><strong>Улучшенная производительность:</strong> Более быстрая передача слоёв и снижение накладных расходов</li>
-            <li><strong>Интеграция containerd:</strong> Улучшенная поддержка хранилища образов containerd и конфигурация</li>
-            <li><strong>Поддержка нескольких платформ:</strong> Расширенная поддержка архитектур ARM и x86</li>
-            <li><strong>Восстановление после ошибок:</strong> Улучшенная обработка прерываний сети и сбоев передачи</li>
-            <li><strong>Документация:</strong> Улучшенные руководства по настройке и устранению неполадок</li>
+            <li><strong>Автоматическое определение бинарника Docker:</strong> <code>docker pussh</code> теперь находит бинарник Docker в большем числе мест (установки через snap, Homebrew/linuxbrew, пользовательские пути); переменные <code>REMOTE_DOCKER_PATH</code> и <code>REMOTE_CONTAINERD_SOCKET</code> позволяют задать пути вручную, если автоопределение не сработало</li>
+            <li><strong>Надёжная передача больших слоёв:</strong> Исправлена отправка больших слоёв (сотни МБ), которая раньше могла завершаться ошибкой из-за исчерпания попыток повтора</li>
+            <li><strong>Совместимость с macOS:</strong> Добавлен прокси к Docker VM для Rancher Desktop/Docker Desktop/Colima, а также корректное определение сокета containerd для OrbStack на удалённых машинах macOS</li>
+            <li><strong>Пользовательская конфигурация SSH:</strong> Новый флаг <code>-F</code>/<code>--ssh-config</code> для указания пути к пользовательскому файлу конфигурации SSH</li>
+            <li><strong>Отключение проверки ключа хоста:</strong> Опция <code>--no-host-key-check</code> для пропуска проверки ключа хоста SSH</li>
+            <li><strong>Поддержка порта в реестре:</strong> Добавлена поддержка образов с указанием <code>:port</code> в адресе реестра</li>
         </ul>
 
         <h2>📦 Установка из deb.griffo.io</h2>
@@ -226,7 +226,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
                 <li><strong>Официальный Ubuntu:</strong> Недоступен в официальных репозиториях</li>
                 <li><strong>Ручной скрипт:</strong> Требует ручных обновлений и управления зависимостями</li>
                 <li><strong>Homebrew:</strong> Ограничен определёнными платформами</li>
-                <li><strong>deb.griffo.io:</strong> Последняя версия (0.2.1+) с автоматическими обновлениями</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия (0.4.3+) с автоматическими обновлениями</li>
             </ul>
         </div>
 
@@ -283,7 +283,7 @@ ssh deploy@prod-server docker run -d myapp:$VERSION
         "name": "unregistry",
         "applicationCategory": "Development Tool",
         "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "0.2.1+",
+        "softwareVersion": "0.4.3+",
         "description": "Лёгкий реестр образов контейнеров для отправки образов Docker напрямую на удалённые серверы по SSH"
     }
 }
