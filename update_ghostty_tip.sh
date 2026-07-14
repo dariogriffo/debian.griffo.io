@@ -5,8 +5,8 @@ set -euo pipefail
 #   repo        : dariogriffo/ghostty-weekly-debian
 #   tag name    : <UPSTREAM_VERSION>-<BUILD_VERSION>
 #                 e.g. 1.3.2.dev.20260418-1
-#   asset files : <pkg>_<UPSTREAM_VERSION>-<BUILD_VERSION>+<dist>_<arch>.deb
-#                 e.g. ghostty-tip_1.3.2.dev.20260418-1+forky_amd64.deb
+#   asset files : <pkg>_<UPSTREAM_VERSION>-<BUILD_VERSION>.<dist>_<arch>.deb
+#                 e.g. ghostty-tip_1.3.2.dev.20260418-1.forky_amd64.deb
 #
 # UPSTREAM_VERSION is composed as `<APP_BASE>.<APP_PRE>.<BUILD_DATE>` — dots
 # throughout, no tilde — matching what the upstream build pipeline uploads.
@@ -43,7 +43,7 @@ for DIST in "${DISTS[@]}"; do
   (
     cd "deb/${DIST}"
     for PKG in "${PKGS[@]}"; do
-      FILE="${PKG}_${UPSTREAM_VERSION}-${BUILD_VERSION}+${DIST}_${ARCH}.deb"
+      FILE="${PKG}_${UPSTREAM_VERSION}-${BUILD_VERSION}.${DIST}_${ARCH}.deb"
       URL="https://github.com/dariogriffo/${REPO}/releases/download/${TAG}/${FILE}"
       wget "${URL}" || true
     done
