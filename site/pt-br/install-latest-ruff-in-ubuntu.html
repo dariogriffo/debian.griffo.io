@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar a última versão do Ruff Linter Python no Ubuntu</title>
+    <meta name="description" content="Instale o último Ruff no Ubuntu com apt — o linter e formatador de código Python extremamente rápido da Astral que substitui Flake8, isort e Black. Instalação para todo o sistema, sem precisar de pip ou venv, para Jammy (22.04), Noble (24.04), Questing (25.10) e Resolute (26.04).">
+    <meta name="keywords" content="ruff ubuntu, instalar ruff ubuntu, ruff ppa, ruff apt, linter python ubuntu, formatador python, substituto do flake8, substituto do black, astral ruff, pacotes ubuntu, jammy, noble, questing, resolute, apt ruff">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-ruff-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-ruff-in-ubuntu.html">
+    <meta property="og:title" content="Instalar a última versão do Ruff Linter Python no Ubuntu">
+    <meta property="og:description" content="Obtenha os pacotes mais atualizados do Ruff para Ubuntu — o linter e formatador Python feito em Rust, instalado para todo o sistema via um repositório apt assinado.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Atualização importante — o acesso muda em 1º de outubro de 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            A partir de <strong>1º de outubro de 2026 ao meio-dia (horário do Reino Unido)</strong>, este espelho exigirá autenticação para que o <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> continue funcionando.<br>
+            Uma <strong>assinatura anual</strong> garante acesso ininterrupto e apoia diretamente a continuidade do projeto. Obrigado! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Obter assinatura anual
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Dúvidas, problemas ou qualquer coisa sobre este repositório?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidade do Discord</a> — o melhor lugar para obter ajuda e se conectar com outros usuários.<br>
+            ☕ <strong>Apoiou anteriormente via Buy Me a Coffee?</strong> Você é incrível! Venha para o nosso <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> e resolveremos uma <strong>assinatura vitalícia gratuita</strong> para você. 💜
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🧹 Instalar a última versão do Ruff no Ubuntu</h1>
+        <p class="subtitle">Um linter e formatador de código Python extremamente rápido, escrito em Rust</p>
+        <div class="version-badge">Última Versão: empacotada em poucas horas após o lançamento upstream</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o Ruff?</h2>
+        <p>O Ruff é um <strong>linter e formatador de código Python extremamente rápido</strong>, escrito em Rust pela <a href="https://astral.sh" target="_blank" rel="noopener">Astral</a> — a equipe por trás do uv. Com mais de 800 regras integradas e reimplementações nativas de plugins populares, um único binário <code>ruff</code> substitui Flake8, isort, Black, pyupgrade, autoflake e dezenas de plugins, rodando de 10 a 100× mais rápido. Ele se tornou o linter padrão do ecossistema Python moderno, adotado por projetos como FastAPI, Pandas e Hugging Face.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Dores do ferramental Python:</strong> Gerenciar o flake8 mais uma dúzia de plugins, o isort brigando com o Black, execuções de lint que levam minutos no CI, e instalar linters em cada virtualenv? O Ruff é um único binário sem dependências que faz tudo isso em milissegundos — e instalá-lo com o apt o torna disponível para todo o sistema, para cada projeto e venv, sem pip.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h3>⚡ Principais Recursos do Ruff</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ De 10 a 100× Mais Rápido</h4>
+                <p>Analisa grandes bases de código em milissegundos onde ferramentas legadas levam minutos — rápido o suficiente para rodar a cada salvamento e em cada pipeline de CI.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 Uma Ferramenta, Mais de 800 Regras</h4>
+                <p>Reimplementa Flake8, isort, pyupgrade, pydocstyle, eradicate e mais — uma configuração no <code>pyproject.toml</code> substitui uma pilha de plugins.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖤 Formatador Substituto Direto</h4>
+                <p><code>ruff format</code> é um formatador compatível com o Black — mesmo estilo, ordens de magnitude mais rápido, sem ferramenta separada para instalar.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Correções Automáticas</h4>
+                <p>Centenas de regras vêm com correções automáticas: imports não utilizados, sintaxe atualizada, imports ordenados — <code>ruff check --fix</code> e pronto.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐍 Ciente da Versão</h4>
+                <p>Suporta qualquer Python a partir do 3.7 com comportamento de regras por versão, configuração hierárquica amigável a monorepos e substituições por arquivo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Integrações com Editores</h4>
+                <p>Um servidor de linguagem integrado (<code>ruff server</code>) alimenta integrações de primeira classe com VS Code, Zed, Neovim e Helix a partir do mesmo binário.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Por que instalar com o apt?</h4>
+            <ul>
+                <li><strong>Para todo o sistema, sem pip:</strong> um binário para cada projeto, venv, job de CI e usuário — sem instalações por projeto para manter em sincronia</li>
+                <li><strong>Perfeito para imagens Docker/CI:</strong> inclua o repositório nas imagens base e cada pipeline recebe o ruff atual automaticamente</li>
+                <li><strong>Sem toolchain:</strong> sem Rust, sem cargo, sem pip — um repositório apt assinado com binários pré-compilados para 8 arquiteturas</li>
+                <li><strong>Atualizações automáticas:</strong> o ruff lança versões com frequência; o <code>apt upgrade</code> acompanha para que suas regras nunca fiquem desatualizadas</li>
+                <li><strong>Combina com o uv:</strong> o gerenciador de pacotes da Astral <a href="/pt-br/install-latest-uv-in-ubuntu.html">também é servido aqui</a> — o toolchain Python moderno completo em um único repositório</li>
+            </ul>
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o Ruff</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y ruff
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y ruff
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Primeira execução</h2>
+        <p>Analise e formate seu projeto:</p>
+        <div class="code-block">
+ruff check .          # lint
+ruff check --fix .    # lint and auto-fix
+ruff format .         # format (Black-compatible)
+        </div>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes do Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ruff-debian" target="_blank" rel="noopener">📂 ruff-debian</a> - Compilações de lançamento mais recente</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-uv-in-ubuntu.html">uv</a> - O gerenciador de pacotes Python extremamente rápido da Astral — o companheiro perfeito do ruff</li>
+            <li><a href="/pt-br/install-latest-zed-in-ubuntu.html">Zed</a> - Um editor rápido com integração de primeira classe com o ruff</li>
+            <li><a href="/pt-br/install-latest-just-in-ubuntu.html">just</a> - Um executor de comandos para seus fluxos de lint/format/test</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Desenvolvedores Python cansados de execuções lentas de lint, equipes consolidando flake8/isort/Black em uma única ferramenta, pipelines de CI/CD e imagens Docker que precisam de um linter atual sem pip, e qualquer pessoa usando o uv que queira o toolchain completo da Astral via apt.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoie Este Projeto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Se este repositório economiza seu tempo e esforço, considere apoiá-lo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dê uma estrela no GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Ruff,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartilhar no Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Ruff Linter Python no Ubuntu",
+    "description": "Guia completo para instalar o mais recente linter e formatador Python Ruff no Ubuntu usando o repositório deb.griffo.io — para todo o sistema, sem pip.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Ruff",
+        "applicationCategory": "Developer Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Um linter e formatador de código Python extremamente rápido que substitui Flake8, isort e Black"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

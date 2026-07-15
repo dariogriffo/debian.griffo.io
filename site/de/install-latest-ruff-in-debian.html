@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuesten Ruff Python-Linter auf Debian installieren</title>
+    <meta name="description" content="Installieren Sie das neueste Ruff auf Debian mit apt — der extrem schnelle Python-Linter und Code-Formatter von Astral, der Flake8, isort und Black ersetzt. Systemweite Installation ohne pip oder venv, für Bookworm, Trixie, Forky und Sid.">
+    <meta name="keywords" content="ruff debian, install ruff debian, ruff apt, python linter debian, python formatter, flake8 replacement, black replacement, astral ruff, debian pakete, bookworm, trixie, sid, apt ruff">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-ruff-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ruff-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-ruff-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-ruff-in-debian.html">
+    <meta property="og:title" content="Neuesten Ruff Python-Linter auf Debian installieren">
+    <meta property="og:description" content="Holen Sie sich die aktuellsten Ruff-Pakete für Debian — der Rust-basierte Python-Linter und Formatter, systemweit installiert über ein signiertes apt-Repository.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Wichtige Aktualisierung — der Zugang ändert sich am 1. Oktober 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Ab dem <strong>1. Oktober 2026 um 12 Uhr mittags (UK-Zeit)</strong> wird für diesen Spiegel eine Authentifizierung benötigt, damit <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> weiterhin funktioniert.<br>
+            Ein <strong>Jahresabonnement</strong> gewährleistet ununterbrochenen Zugang und unterstützt das Projekt direkt. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Jahresabonnement erwerben
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🧹 Neuestes Ruff auf Debian installieren</h1>
+        <p class="subtitle">Ein extrem schneller Python-Linter und Code-Formatter, geschrieben in Rust</p>
+        <div class="version-badge">Latest Version: innerhalb weniger Stunden nach dem Upstream-Release paketiert</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <h2>Was ist Ruff?</h2>
+        <p>Ruff ist ein <strong>extrem schneller Python-Linter und Code-Formatter</strong>, geschrieben in Rust von <a href="https://astral.sh" target="_blank" rel="noopener">Astral</a> — dem Team hinter uv. Mit über 800 integrierten Regeln und nativen Neuimplementierungen beliebter Plugins ersetzt ein einziges <code>ruff</code>-Binary Flake8, isort, Black, pyupgrade, autoflake und Dutzende Plugins — und läuft dabei 10–100× schneller. Es ist zum Standard-Linter des modernen Python-Ökosystems geworden, eingesetzt von Projekten wie FastAPI, Pandas und Hugging Face.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Typische Python-Tooling-Probleme:</strong> Sie verwalten flake8 plus ein Dutzend Plugins, isort streitet mit Black, Lint-Läufe dauern in CI Minuten, und Linter müssen in jedes einzelne virtualenv installiert werden? Ruff ist ein einziges abhängigkeitsfreies Binary, das alles in Millisekunden erledigt — und mit apt installiert ist es systemweit verfügbar, für jedes Projekt und jedes venv, ganz ohne pip.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer aktueller als die offiziellen Archive:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository veröffentlicht neue Upstream-Versionen in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält Sie immer auf der neuesten Version.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von Ruff</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ 10–100× schneller</h4>
+                <p>Lintet große Codebasen in Millisekunden, wo Legacy-Tools Minuten brauchen — schnell genug für jeden Speichervorgang und jede CI-Pipeline.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 Ein Tool, 800+ Regeln</h4>
+                <p>Reimplementiert Flake8, isort, pyupgrade, pydocstyle, eradicate und mehr — eine Konfiguration in <code>pyproject.toml</code> ersetzt einen ganzen Plugin-Stack.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖤 Drop-in-Formatter</h4>
+                <p><code>ruff format</code> ist ein Black-kompatibler Formatter — derselbe Stil, um Größenordnungen schneller, kein separates Tool zu installieren.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Auto-Fixes</h4>
+                <p>Hunderte Regeln bringen automatische Korrekturen mit: ungenutzte Imports, modernisierte Syntax, sortierte Imports — <code>ruff check --fix</code> und fertig.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐍 Versionsbewusst</h4>
+                <p>Unterstützt jedes Python ab 3.7 mit versionsspezifischem Regelverhalten, monorepo-freundlicher hierarchischer Konfiguration und Überschreibungen pro Datei.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Editor-Integrationen</h4>
+                <p>Ein integrierter Language Server (<code>ruff server</code>) liefert erstklassige Integrationen für VS Code, Zed, Neovim und Helix aus demselben Binary.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Warum mit apt installieren?</h4>
+            <ul>
+                <li><strong>Systemweit, ohne pip:</strong> ein Binary für jedes Projekt, jedes venv, jeden CI-Job und jeden Nutzer — keine Installationen pro Projekt, die synchron gehalten werden müssen</li>
+                <li><strong>Perfekt für Docker/CI-Images:</strong> das Repo in Basis-Images einbauen, und jede Pipeline erhält automatisch aktuelles ruff</li>
+                <li><strong>Keine Toolchain:</strong> kein Rust, kein cargo, kein pip — ein signiertes apt-Repository mit vorgebauten Binaries für 8 Architekturen</li>
+                <li><strong>Automatische Updates:</strong> ruff veröffentlicht häufig neue Versionen; <code>apt upgrade</code> hält Schritt, damit Ihre Regeln nie veralten</li>
+                <li><strong>Passt zu uv:</strong> Astrals Paketmanager wird <a href="/de/install-latest-uv-in-debian.html">ebenfalls hier angeboten</a> — die komplette moderne Python-Toolchain aus einem Repository</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Ruff installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y ruff
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y ruff
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Erster Start</h2>
+        <p>Linten und formatieren Sie Ihr Projekt:</p>
+        <div class="code-block">
+ruff check .          # lint
+ruff check --fix .    # lint and auto-fix
+ruff format .         # format (Black-compatible)
+        </div>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ruff-debian" target="_blank" rel="noopener">📂 ruff-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-uv-in-debian.html">uv</a> - Astrals extrem schneller Python-Paketmanager — der perfekte Begleiter zu ruff</li>
+            <li><a href="/de/install-latest-zed-in-debian.html">Zed</a> - Ein schneller Editor mit erstklassiger ruff-Integration</li>
+            <li><a href="/de/install-latest-just-in-debian.html">just</a> - Ein Command-Runner für Ihre Lint/Format/Test-Workflows</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Python-Entwickler, die langsame Lint-Läufe satthaben, Teams, die flake8/isort/Black in einem Tool konsolidieren, CI/CD-Pipelines und Docker-Images, die einen aktuellen Linter ohne pip brauchen, und alle uv-Nutzer, die die komplette Astral-Toolchain über apt wollen.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Unterstützen Sie dieses Projekt</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Wenn dieses Repository Ihnen Zeit und Aufwand spart, unterstützen Sie es doch bitte!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Auf GitHub mit Stern markieren
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Ruff,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Auf Twitter teilen
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neuesten Ruff Python-Linter auf Debian installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten Ruff Python-Linters und -Formatters auf Debian über das deb.griffo.io Repository — systemweit, ohne pip.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Ruff",
+        "applicationCategory": "Developer Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Ein extrem schneller Python-Linter und Code-Formatter, der Flake8, isort und Black ersetzt"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

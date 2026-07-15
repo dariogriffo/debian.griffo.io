@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar la última versión de yq YAML Processor en Ubuntu</title>
+    <meta name="description" content="Instale el último yq (mikefarah, v4) en Ubuntu con apt — el procesador portátil de línea de comandos para YAML, JSON, XML, CSV y TOML con sintaxis estilo jq. Un único binario en Go más página de manual, para Jammy (22.04), Noble (24.04), Questing (25.10) y Resolute (26.04).">
+    <meta name="keywords" content="yq ubuntu, instalar yq ubuntu, yq ppa, yq apt, procesador yaml, yaml cli, mikefarah yq, jq para yaml, yq v4, paquetes ubuntu, jammy, noble, questing, resolute, apt yq">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-yq-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-yq-in-ubuntu.html">
+    <meta property="og:title" content="Instalar la última versión de yq YAML Processor en Ubuntu">
+    <meta property="og:description" content="Obtenga los paquetes más actualizados de yq para Ubuntu — el procesador de YAML/JSON/XML basado en Go con sintaxis estilo jq, instalado mediante un repositorio apt firmado.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Actualización importante — el acceso cambia el 1 de octubre de 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            A partir del <strong>1 de octubre de 2026 al mediodía (hora del Reino Unido)</strong>, este espejo requerirá autenticación para que <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> siga funcionando.<br>
+            Una <strong>suscripción anual</strong> te da acceso ininterrumpido y apoya directamente la continuidad del proyecto. ¡Gracias! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Obtener suscripción anual
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>¿Preguntas, problemas o cualquier cosa sobre este repositorio?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda y conectar con otros usuarios.<br>
+            ☕ <strong>¿Apoyaste anteriormente a través de Buy Me a Coffee?</strong> ¡Eres increíble! Pásate por nuestro <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> y te gestionaremos una <strong>suscripción vitalicia gratuita</strong>. 💜
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>📑 Instalar la última versión de yq en Ubuntu</h1>
+        <p class="subtitle">Un procesador portátil de línea de comandos para YAML, JSON, XML, CSV y TOML</p>
+        <div class="version-badge">Latest version: empaquetada en cuestión de horas desde upstream</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+
+        <h2>¿Qué es yq?</h2>
+        <p>yq es un <strong>procesador de línea de comandos ligero y portátil para datos estructurados</strong> — YAML, JSON, XML, CSV, TOML y archivos properties — escrito en Go por Mike Farah. Usa una sintaxis estilo jq, así que todo lo que sabes de jq se transfiere directamente: consulta, transforma, fusiona y edita archivos in situ, en scripts y pipelines, con un único binario sin dependencias.</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ ¿Qué yq es este?</strong> Este es <strong>mikefarah/yq (v4.x, Go)</strong> — el que se usa en la mayoría de los ejemplos de CI y la documentación. No es el envoltorio de jq <code>yq</code> basado en python que se encuentra en algunos archivos; este paquete lo reemplaza limpiamente, y no requiere python ni jq.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes al publicar cada versión — este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene siempre en la última versión.
+        </div>
+
+        <h3>⚡ Características principales de yq</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔄 Seis formatos</h4>
+                <p>YAML, JSON, XML, CSV/TSV, TOML y properties — lee uno, genera otro: <code>yq -o=json '.' config.yaml</code> convierte en un solo paso.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Sintaxis estilo jq</h4>
+                <p>Rutas, pipes, funciones y operadores familiares. Si sabes escribir un filtro de jq, ya sabes usar yq con YAML.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✏️ Edición in situ</h4>
+                <p><code>yq -i '.spec.replicas = 3' deploy.yaml</code> — ediciones con scripts a manifiestos de Kubernetes, configuraciones de CI y archivos Compose, con los comentarios preservados.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Cero dependencias</h4>
+                <p>Un único binario estático en Go. Sin runtime, sin librerías, sin python — ideal para contenedores mínimos y runners de CI.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔀 Fusiones y anchors</h4>
+                <p>Fusiona en profundidad varios archivos, resuelve anchors y alias de YAML, maneja flujos multi-documento — los casos difíciles de YAML bien resueltos.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📖 Página de manual incluida</h4>
+                <p>Este paquete incluye la página de manual completa junto al binario — <code>man yq</code> funciona sin conexión, siguiendo las convenciones de Debian.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 ¿Por qué instalarlo con apt?</h4>
+            <ul>
+                <li><strong>Apto para flotas:</strong> fija un solo repositorio en tus imágenes base y cada servidor, contenedor y runner de CI obtiene el mismo yq actualizado</li>
+                <li><strong>Sin curl-to-bin:</strong> un repositorio firmado con GPG en lugar de descargar binarios a mano en <code>/usr/local/bin</code></li>
+                <li><strong>El yq correcto:</strong> garantiza la semántica de mikefarah/yq v4 en todas partes — sin sorpresas del envoltorio en python en algunas máquinas</li>
+                <li><strong>Actualizaciones automáticas:</strong> las nuevas versiones upstream llegan con tu <code>apt upgrade</code> habitual</li>
+                <li><strong>Multi-arch:</strong> amd64, arm64, armhf, ppc64el, s390x y riscv64</li>
+            </ul>
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar yq</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y yq
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y yq
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Primera ejecución</h2>
+        <div class="code-block">
+yq '.services | keys' docker-compose.yml     # query
+yq -i '.image.tag = "1.2.3"' values.yaml     # edit in place
+yq -o=json '.' config.yaml                   # YAML -> JSON
+        </div>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Debian se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/yq-debian" target="_blank" rel="noopener">📂 yq-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde deb.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-k9s-in-ubuntu.html">k9s</a> - TUI de Kubernetes — combina con yq para manejar manifiestos</li>
+            <li><a href="/es/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - TUI de Docker para los archivos Compose que acabas de editar</li>
+            <li><a href="/es/install-latest-just-in-ubuntu.html">just</a> - Un ejecutor de comandos para envolver tus one-liners de yq</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Ingenieros DevOps que editan manifiestos de Kubernetes y values de Helm, pipelines de CI/CD que transforman configuración, sysadmins que hacen scripts contra APIs YAML/JSON, y cualquiera que quiera la ergonomía de jq para todos los formatos de configuración.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoya este proyecto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Si este repositorio te ahorra tiempo y esfuerzo, ¡considera apoyarlo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dale una estrella en GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20yq,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartir en Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar la última versión de yq YAML Processor en Ubuntu",
+    "description": "Guía completa para instalar la última versión de yq (mikefarah, v4), el procesador de YAML/JSON/XML, en Ubuntu usando el repositorio deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "yq",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Un procesador portátil de línea de comandos para YAML, JSON, XML, CSV y TOML con sintaxis estilo jq"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>

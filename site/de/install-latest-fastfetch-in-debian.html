@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuestes Fastfetch System-Info-Tool auf Debian installieren</title>
+    <meta name="description" content="Installieren Sie das neueste fastfetch auf Debian mit apt — das schnelle neofetch-ähnliche System-Informations-Tool. Das Debian-Archiv friert fastfetch zum Release-Zeitpunkt ein; deb.griffo.io liefert aktuelle Upstream-Builds für Bookworm, Trixie, Forky und Sid.">
+    <meta name="keywords" content="fastfetch debian, install fastfetch debian, latest fastfetch, neofetch replacement debian, fastfetch apt, system information tool, debian pakete, bookworm, trixie, sid, apt fastfetch">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-fastfetch-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-fastfetch-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-fastfetch-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-fastfetch-in-debian.html">
+    <meta property="og:title" content="Neuestes Fastfetch System-Info-Tool auf Debian installieren">
+    <meta property="og:description" content="Holen Sie sich aktuelle fastfetch-Builds für Debian — die Archiv-Version friert beim Release ein; dieses Repository folgt Upstream innerhalb weniger Stunden, mit demselben Datei-Layout wie das offizielle Paket.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Wichtige Aktualisierung — der Zugang ändert sich am 1. Oktober 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Ab dem <strong>1. Oktober 2026 um 12 Uhr mittags (UK-Zeit)</strong> wird für diesen Spiegel eine Authentifizierung benötigt, damit <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> weiterhin funktioniert.<br>
+            Ein <strong>Jahresabonnement</strong> gewährleistet ununterbrochenen Zugang und unterstützt das Projekt direkt. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Jahresabonnement erwerben
+        </a>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🖥️ Neuestes Fastfetch auf Debian installieren</h1>
+        <p class="subtitle">Ein neofetch-ähnliches System-Informations-Tool, geschrieben in C</p>
+        <div class="version-badge">Latest Version: innerhalb weniger Stunden nach dem Upstream-Release paketiert</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <h2>Was ist Fastfetch?</h2>
+        <p>Fastfetch ist ein <strong>neofetch-ähnliches Tool zum Abrufen von Systeminformationen</strong>, das diese ansprechend in Ihrem Terminal darstellt — OS, Kernel, Hardware, Uptime, Pakete, Desktop-Umgebung und vieles mehr, neben dem Logo Ihrer Distribution. Hauptsächlich in C geschrieben und auf Performance und Anpassbarkeit ausgelegt, wurde es zum De-facto-Nachfolger, als neofetch archiviert wurde, und wird mit häufigen Releases aktiv weiterentwickelt.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Das Archiv-Versions-Problem:</strong> Debian liefert fastfetch zwar mit — eingefroren auf der Version, die beim Release existierte. Upstream entwickelt sich schnell: neue Logos, neue Erkennungsmodule und Fixes für neue Hardware kommen ständig hinzu, sodass die Archiv-Version still zurückfällt. Dieses Repository liefert aktuelle Upstream-Builds und behält dabei <strong>exakt dasselbe Datei-Layout wie das offizielle Debian-Paket</strong>, sodass der Wechsel in beide Richtungen nahtlos ist.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer aktueller als die offiziellen Archive:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository veröffentlicht neue Upstream-Versionen in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält Sie immer auf der neuesten Version.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von Fastfetch</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ Schnell durch Design</h4>
+                <p>Geschrieben in C mit nebenläufiger Erkennung — rendert vollständige Systeminformationen in Millisekunden, ein Bruchteil der Startzeit von neofetch.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 50+ Info-Module</h4>
+                <p>OS, Kernel, CPU, GPU, Arbeitsspeicher, Festplatten, Akku, Display, DE/WM, Terminal, Pakete, Media-Player und viele mehr — jedes einzeln konfigurierbar.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Presets enthalten</h4>
+                <p>Dieses Paket liefert alle integrierten Presets unter <code>/usr/share/fastfetch/presets/</code> — inklusive eines originalgetreuen <code>neofetch</code>-Presets für sofortige Vertrautheit.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 JSONC-Konfiguration</h4>
+                <p>Eine dokumentierte JSONC-Konfigurationsdatei steuert Module, Formatierung und Logos. Erzeugen Sie einen Startpunkt mit <code>fastfetch --gen-config</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Flexible Logos</h4>
+                <p>Hunderte integrierte Distro-Logos, dazu Bild-Logos über sixel/kitty/iTerm-Protokolle, eigene ASCII-Art oder gar kein Logo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Shell-Completions</h4>
+                <p>Bash-, zsh- und fish-Completions plus Man-Page — installiert in die Standard-Debian-Pfade, passend zum Archiv-Paket.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Warum dieses Repository statt der Archiv-Version?</h4>
+            <ul>
+                <li><strong>Aktuelle Version:</strong> neue Upstream-Releases innerhalb weniger Stunden, nicht für die Lebensdauer eines Debian-Releases eingefroren</li>
+                <li><strong>Gleiches Layout:</strong> Datei für Datei identisch mit dem offiziellen Debian-Paket — Presets, Completions und Man-Page an den Standardorten</li>
+                <li><strong>Nahtloser Wechsel:</strong> die Installation aus diesem Repo aktualisiert einfach das Archiv-Paket; nach Entfernen des Repos fällt alles sauber zurück</li>
+                <li><strong>Automatische Updates:</strong> neue Releases kommen mit Ihrem normalen <code>apt upgrade</code></li>
+                <li><strong>Multi-Arch:</strong> amd64, arm64, armel, armhf, ppc64el, s390x, riscv64 und i386</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Fastfetch installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y fastfetch
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y fastfetch
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Erster Start</h2>
+        <p>Führen Sie einfach <code>fastfetch</code> aus. Zum Anpassen erzeugen Sie eine Konfiguration und probieren die mitgelieferten Presets:</p>
+        <div class="code-block">
+fastfetch --gen-config
+fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc
+        </div>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fastfetch-debian" target="_blank" rel="noopener">📂 fastfetch-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-oh-my-posh-in-debian.html">Oh My Posh</a> - Ein schöner Prompt passend zu Ihrem schönen Fetch</li>
+            <li><a href="/de/install-latest-eza-in-debian.html">eza</a> - Moderner ls-Ersatz für das komplette Terminal-Makeover</li>
+            <li><a href="/de/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Interaktives Filtern überall</li>
+            <li><a href="/de/install-latest-yazi-in-debian.html">Yazi Dateimanager</a> - Ein schneller Terminal-Dateimanager</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Ricing-Enthusiasten und Desktop-Screenshotter, Sysadmins, die schnelle Systemübersichten wollen, alle, die vom archivierten neofetch migrieren, und Nutzer, die die neueste Hardware-Erkennung wollen, ohne auf das nächste Debian-Release zu warten.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Unterstützen Sie dieses Projekt</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Wenn dieses Repository Ihnen Zeit und Aufwand spart, unterstützen Sie es doch bitte!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Auf GitHub mit Stern markieren
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20fastfetch,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Auf Twitter teilen
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neuestes Fastfetch System-Info-Tool auf Debian installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten fastfetch System-Informations-Tools auf Debian über das deb.griffo.io Repository, mit demselben Datei-Layout wie das offizielle Debian-Paket.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Fastfetch",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Ein neofetch-ähnliches Tool zum Abrufen von Systeminformationen und deren ansprechender Darstellung"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+</body>
+</html>
