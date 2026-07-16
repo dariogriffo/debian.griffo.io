@@ -43,6 +43,15 @@
            onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
             🔑 Jahresabonnement erwerben
         </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
         <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
             💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
             ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜

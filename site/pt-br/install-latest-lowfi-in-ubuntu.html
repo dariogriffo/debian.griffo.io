@@ -43,6 +43,15 @@
            onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
             🔑 Obter assinatura anual
         </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> por ano — em dólares americanos se a sua moeda não for suportada.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
         <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
             💬 <strong>Dúvidas, problemas ou qualquer coisa sobre este repositório?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidade do Discord</a> — o melhor lugar para obter ajuda e se conectar com outros usuários.<br>
             ☕ <strong>Apoiou anteriormente via Buy Me a Coffee?</strong> Você é incrível! Venha para o nosso <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> e resolveremos uma <strong>assinatura vitalícia gratuita</strong> para você. 💜
