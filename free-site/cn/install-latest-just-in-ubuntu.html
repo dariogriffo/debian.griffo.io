@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Ubuntu 上通过 apt 安装 just — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 just — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="just ubuntu, install just ubuntu, command runner, justfile, make alternative, rust task runner, ubuntu packages, jammy, noble, casey rodarmor, apt just">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-just-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-just-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-just-in-ubuntu.html">
+    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 just — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 just — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🤖 安装最新的 just 在 Ubuntu 上</h1>
+        <p class="subtitle">A 便捷的命令运行器，用于您的项目专属命令</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">1.56.0 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">1.45.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <h2>什么是 just？</h2>
+        <p>just is a <strong>handy command runner</strong> written in Rust by Casey Rodarmor. It saves and runs project-specific commands, called <em>recipes</em>, stored in a file named <code>justfile</code> with a syntax inspired by make. Unlike make, just is not a build system: recipes are simply commands to run, so there are no phony targets and no dependency on file modification times. With over 25k GitHub stars, it has become the go-to task runner for modern projects.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Traditional make Pain Points:</strong> Tired of <code>.PHONY</code> declarations everywhere? Fed up with tab-versus-space errors and implicit build rules that fire when you least expect them? just keeps the familiar recipe feel of a Makefile but drops the build-system baggage — every recipe is just a command.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> just is actively developed with frequent releases containing new attributes, expression functions, shell integrations, and quality-of-life improvements. The latest versions include enhanced completion scripts, new built-in functions, better error messages, and expanded cross-platform support.
+        </div>
+
+        <h3>⚡ Key Features of just</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📝 Make-Inspired Syntax</h4>
+                <p>Write recipes in a familiar, readable justfile. If you know Makefiles, you already know most of just — minus the quirks.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Recipe Parameters</h4>
+                <p>Recipes accept arguments and have default values, so a single recipe can adapt to many invocations without extra scripting.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Any Shell or Language</h4>
+                <p>Write recipes in sh, bash, Python, Node, or anything else with a shebang line. just runs each recipe with the interpreter you choose.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📋 List &amp; Discover</h4>
+                <p>Run <code>just --list</code> to see every recipe with its documentation comment. Newcomers can explore a project's tasks instantly.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 .env &amp; Variables</h4>
+                <p>Load environment files, define variables, and interpolate them into recipes. Keep configuration tidy and out of your commands.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌍 Cross-Platform</h4>
+                <p>A single static binary that works the same on Linux, macOS, and Windows — no runtime, no interpreter, no quirks.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Productivity Benefits</h4>
+            <ul>
+                <li><strong>Save Time:</strong> Run any project task with <code>just &lt;recipe&gt;</code> instead of remembering long commands</li>
+                <li><strong>Self-Documenting:</strong> <code>just --list</code> shows every task and its description</li>
+                <li><strong>Consistent:</strong> The whole team runs the same commands the same way</li>
+                <li><strong>No Build Quirks:</strong> Recipes are commands, not targets — no stale-timestamp surprises</li>
+                <li><strong>Portable:</strong> One justfile works across Linux, macOS, and Windows</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 永久免费，安全修复立即发布：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本免费镜像提供发布至少 2 个月的最新版本，永久免费；安全修复立即发布。如需在上游发布后数小时内获取每个版本，请使用主仓库 deb.griffo.io。只需 <code>apt upgrade</code> 即可获取免费通道内的最新构建。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 just</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest just
+sudo apt install just
+
+# Verify installation
+just --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest just
+apt install just
+
+# Verify installation
+just --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Create Your First justfile</h3>
+            <div class="code-block">
+# Create a justfile in your project
+cat > justfile <<'EOF'
+# Build the project
+build:
+    cargo build --release
+
+# Run the tests
+test:
+    cargo test
+
+# Say hello to someone
+hello name='world':
+    echo "Hello, {{name}}!"
+EOF
+
+# List available recipes
+just --list
+
+# Run a recipe
+just build
+just hello just
+            </div>
+        </div>
+
+        <h3>🎯 基本使用示例</h3>
+
+        <p><strong>Running recipes:</strong></p>
+        <div class="code-block">
+# Run the first recipe in the justfile (the default)
+just
+
+# Run a specific recipe
+just test
+
+# Pass an argument to a recipe
+just hello Dario
+
+# List every recipe with its documentation
+just --list
+        </div>
+
+        <p><strong>Working with justfiles:</strong></p>
+        <div class="code-block">
+# Show the resolved value of a variable
+just --evaluate
+
+# Print a recipe without running it
+just --show build
+
+# Use a justfile in another directory
+just --justfile ~/project/justfile --working-directory ~/project build
+
+# Choose a recipe interactively (needs a chooser like fzf)
+just --choose
+        </div>
+
+        <p><strong>Shell completions:</strong></p>
+        <div class="code-block">
+# Completions for bash, fish and zsh are installed with the package.
+# Generate them manually for any shell if you need to:
+just --completions bash
+just --completions zsh
+just --completions fish
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="productivity-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> Available but often outdated versions</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation</li>
+                <li><strong>Install Script:</strong> Manual updates and no package management</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get the newest recipe attributes and functions</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built binaries, no toolchain needed</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Complete Package:</strong> Includes shell completions and the man page</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/just-debian" target="_blank" rel="noopener">🤖 just-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Powers <code>just --choose</code> for interactive recipe selection</li>
+            <li><a href="/cn/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a> - A modern, Git-compatible version control system</li>
+            <li><a href="/cn/install-latest-helix-in-ubuntu.html">Helix Editor</a> - A post-modern modal editor for editing your justfiles</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers who juggle many project commands, teams that want a single consistent task runner, anyone who likes Makefiles but not make's quirks, and power users who value a fast, portable, self-documenting workflow.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 just Command Runner 在 Ubuntu 上",
+    "description": "Complete guide to installing the latest just command runner 在 Ubuntu 上 using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "just",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Handy command runner that saves and runs project-specific commands from a justfile"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function IsEven(n) {
+        return !IsOdd(n);
+    }
+
+    function IsOdd(n) {
+        return !IsEven(n);
+    }
+
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>1.56.0</code> — 2026-07-13</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>just 在官方 Ubuntu 软件源中吗？</summary><p>在 — 官方 Ubuntu 源提供 just 1.45.0。本免费镜像提供发布至少 2 个月的最新 just 版本，永久免费；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 just？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install just。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "just 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在 — 官方 Ubuntu 源提供 just 1.45.0。本免费镜像提供发布至少 2 个月的最新 just 版本，永久免费；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 just？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install just。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uncloud auf Ubuntu installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="Uncloud auf Ubuntu 22.04, 24.04, 25.10 und 26.04 aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="uncloud ubuntu, install uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, ubuntu packages, jammy, noble, psviderski, apt uncloud">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-uncloud-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-uncloud-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-uncloud-in-ubuntu.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-uncloud-in-ubuntu.html">
+    <meta property="og:title" content="Uncloud auf Ubuntu installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="Uncloud auf Ubuntu 22.04, 24.04, 25.10 und 26.04 aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>☁️ Neueste installieren uncloud auf Ubuntu</h1>
+        <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
+        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.20.0 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+        
+        <h2>Was ist uncloud?</h2>
+        <p>uncloud is a <strong>lightweight clustering and container orchestration tool</strong> created by Pasha Sviderski that lets you deploy and manage web apps across cloud VMs and bare metal with minimal cluster management overhead. It bridges the gap between Docker simplicity and Kubernetes power, providing <strong>Docker simplicity with multi-machine power</strong>.</p>
+
+        <div class="philosophy-box">
+            <strong>🎯 The Sweet Spot:</strong> Modern cloud platforms like Heroku offer amazing developer experiences but at premium prices. Kubernetes provides power but requires significant expertise. uncloud finds the pragmatic middle ground - own your infrastructure, stay simple as you grow, build with proven primitives.
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ Development Status:</strong> uncloud is currently in active development and is <strong>not ready for production use</strong>. Features may change significantly between releases. Perfect for experimentation and learning!
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> uncloud is rapidly evolving with frequent releases containing new orchestration features, performance improvements, and enhanced multi-machine capabilities. The latest versions include better WireGuard mesh networking, improved service discovery, and enhanced Docker Compose compatibility.
+        </div>
+
+        <h3>⚡ Key Features of uncloud</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌐 Multi-Machine Deployment</h4>
+                <p>Deploy across cloud VMs, dedicated servers, and bare metal. Combine different providers into unified computing environment.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🐳 Docker Compose Compatible</h4>
+                <p>Use familiar Docker Compose format for defining services. No need to learn new configuration languages or complex YAML.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔒 Zero-Config Private Network</h4>
+                <p>Automatic WireGuard mesh with peer discovery and NAT traversal. Containers get unique IPs for direct cross-machine communication.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎯 No Control Plane</h4>
+                <p>Fully decentralized design eliminates single points of failure. Each machine maintains synchronized cluster state through peer-to-peer communication.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔍 Service Discovery</h4>
+                <p>Built-in DNS server resolves service names to container IPs. Automatic load balancing and ingress with HTTPS via Caddy.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📦 Persistent Storage</h4>
+                <p>Run stateful services with Docker volumes managed across machines. Data persistence without complex storage orchestration.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Für immer kostenlos, mit eingebauter Verzögerung:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository liefert stattdessen das jeweils neueste Release, sobald es mindestens 2 Monate alt ist, für immer kostenlos; Sicherheits- und Patch-Fixes erscheinen sofort. Wer jedes Release wenige Stunden nach Upstream möchte, nutzt das Haupt-Repository auf deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Installieren uncloud</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest uncloud
+sudo apt install uncloud
+
+# Installation überprüfen
+uc --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest uncloud
+apt install uncloud
+
+# Installation überprüfen
+uc --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+        
+        <p><strong>Initialize your first cluster:</strong></p>
+        <div class="code-block">
+# Initialize cluster on first machine
+uc machine init root@your-server-ip
+
+# Add more machines to cluster
+uc machine add --name server2 root@second-server-ip
+
+# List cluster machines
+uc machine ls
+        </div>
+
+        <p><strong>Deploy applications:</strong></p>
+        <div class="code-block">
+# Deploy from Docker image with HTTPS
+uc run -p app.example.com:8000/https image/my-app
+
+# Deploy from Docker Compose file
+uc compose up -f compose.yaml
+
+# Scale service across machines
+uc scale my-app 3
+
+# List running services
+uc ls
+        </div>
+
+        <p><strong>Manage deployments:</strong></p>
+        <div class="code-block">
+# Update service with new image
+uc update my-app image/my-app:v2
+
+# View service logs
+uc logs my-app
+
+# Remove service
+uc rm my-app
+
+# Clean up cluster
+uc machine rm server2
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+        
+        <div class="philosophy-box">
+            <strong>📊 Installation Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> Not available in official repositories</li>
+                <li><strong>Install Script:</strong> Manual updates and dependency management</li>
+                <li><strong>Manual Binary:</strong> No package management or automatic updates</li>
+                <li><strong>deb.griffo.io:</strong> Neuestes Release, mindestens 2 Monate alt — für immer kostenlos</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get newest orchestration and networking improvements</li>
+            <li>✅ <strong>No Manual Setup:</strong> Pre-built binaries with all dependencies</li>
+            <li>✅ <strong>Automatic Updates:</strong> Security fixes ship immediately; the newest release available is always at least 2 months old</li>
+            <li>✅ <strong>Complete Package:</strong> Includes all required components and scripts</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/uncloud-debian" target="_blank" rel="noopener">🌬️ uncloud-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-unregistry-in-ubuntu.html">unregistry</a> - Direct Docker image transfer (same author)</li>
+            <li><a href="/de/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Terminal UI for Docker management</li>
+            <li><a href="/de/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Enhanced command searching</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Developers who want multi-machine deployment without Kubernetes complexity, teams needing simple container orchestration, homelab enthusiasts, and anyone seeking the sweet spot between Docker and Kubernetes.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neueste installieren uncloud auf Ubuntu",
+    "description": "Complete guide to installing the latest uncloud orchestration tool auf Ubuntu using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "uncloud",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.20.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Uncloud in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein — Uncloud ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Uncloud-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste Uncloud unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Uncloud in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Uncloud ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Uncloud-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Uncloud unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

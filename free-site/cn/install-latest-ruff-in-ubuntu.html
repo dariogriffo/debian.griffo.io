@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Ubuntu 上通过 apt 安装 Ruff — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Ruff — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="ruff ubuntu, install ruff ubuntu, ruff ppa, ruff apt, python linter ubuntu, python formatter, flake8 replacement, black replacement, astral ruff, ubuntu packages, jammy, noble, questing, resolute, apt ruff">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-ruff-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ruff-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-ruff-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-ruff-in-ubuntu.html">
+    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 Ruff — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Ruff — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🧹 安装最新的 Ruff 在 Ubuntu 上</h1>
+        <p class="subtitle">一款使用 Rust 编写的极速 Python linter 和代码格式化工具</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.15.21 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 在特定发行版本上安装？</strong> <a href="/install-ruff-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-ruff-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-ruff-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-ruff-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>什么是 Ruff？</h2>
+        <p>Ruff 是一款<strong>极速的 Python linter 和代码格式化工具</strong>，由 uv 背后的团队 <a href="https://astral.sh" target="_blank" rel="noopener">Astral</a> 使用 Rust 编写。凭借 800 多条内置规则和对流行插件的原生重新实现，单个 <code>ruff</code> 二进制文件即可替代 Flake8、isort、Black、pyupgrade、autoflake 以及数十个插件，同时运行速度快 10–100 倍。它已成为现代 Python 生态的默认 linter，被 FastAPI、Pandas 和 Hugging Face 等项目采用。</p>
+
+        <div class="comparison-box">
+            <strong>😤 Python 工具链的痛点：</strong>要管理 flake8 外加一打插件、isort 和 Black 互相冲突、CI 中动辄数分钟的 lint 运行，还得在每一个 virtualenv 里安装 linter？Ruff 是一个零依赖的二进制文件，毫秒之间搞定这一切——用 apt 安装后即可在系统级使用，覆盖每个项目和 venv，无需 pip。
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 永久免费，安全修复立即发布：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本免费镜像提供发布至少 2 个月的最新版本，永久免费；安全修复立即发布。如需在上游发布后数小时内获取每个版本，请使用主仓库 deb.griffo.io。只需 <code>apt upgrade</code> 即可获取免费通道内的最新构建。
+        </div>
+
+        <h3>⚡ Ruff 的主要特性</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ 快 10–100 倍</h4>
+                <p>在传统工具需要数分钟的大型代码库上，Ruff 只需毫秒即可完成 lint——快到可以在每次保存和每条 CI 流水线中运行。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 一个工具，800+ 规则</h4>
+                <p>重新实现了 Flake8、isort、pyupgrade、pydocstyle、eradicate 等——<code>pyproject.toml</code> 中的一份配置即可替代一整套插件。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖤 即插即用的格式化工具</h4>
+                <p><code>ruff format</code> 是与 Black 兼容的格式化工具——风格相同，速度快上几个数量级，无需安装额外工具。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 自动修复</h4>
+                <p>数百条规则支持自动修复：未使用的导入、语法升级、导入排序——一句 <code>ruff check --fix</code> 就搞定。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐍 版本感知</h4>
+                <p>支持 Python 3.7 及以上的任意版本，提供按版本区分的规则行为、适合 monorepo 的层级化配置以及按文件覆盖。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 编辑器集成</h4>
+                <p>内置语言服务器（<code>ruff server</code>），同一个二进制文件即可为 VS Code、Zed、Neovim 和 Helix 提供一流集成。</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 为什么用 apt 安装？</h4>
+            <ul>
+                <li><strong>系统级、无需 pip：</strong>一个二进制文件服务每个项目、venv、CI 任务和用户——无需维护各项目单独安装的版本</li>
+                <li><strong>非常适合 Docker/CI 镜像：</strong>将仓库预置到基础镜像中，每条流水线都能通过 <code>apt upgrade</code> 获取免费通道内的最新构建</li>
+                <li><strong>无需工具链：</strong>不需要 Rust、cargo 或 pip——一个签名的 apt 仓库，提供 8 种架构的预编译二进制文件</li>
+                <li><strong>自动更新：</strong>通过 <code>apt upgrade</code> 自动获取免费通道的最新构建</li>
+                <li><strong>与 uv 搭配：</strong>Astral 的包管理器<a href="/cn/install-latest-uv-in-ubuntu.html">也在这里提供</a>——从一个仓库获取完整的现代 Python 工具链</li>
+            </ul>
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 Ruff</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y ruff
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y ruff
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 首次运行</h2>
+        <p>对您的项目进行 lint 和格式化：</p>
+        <div class="code-block">
+ruff check .          # lint
+ruff check --fix .    # lint and auto-fix
+ruff format .         # format (Black-compatible)
+        </div>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ruff-debian" target="_blank" rel="noopener">📂 ruff-debian</a> - 最新发布版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-uv-in-ubuntu.html">uv</a> - Astral 出品的极速 Python 包管理器——ruff 的完美搭档</li>
+            <li><a href="/cn/install-latest-zed-in-ubuntu.html">Zed</a> - 快速的编辑器，提供一流的 ruff 集成</li>
+            <li><a href="/cn/install-latest-just-in-ubuntu.html">just</a> - 命令运行器，管理您的 lint/格式化/测试工作流</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 适合人群：</strong>受够了缓慢 lint 运行的 Python 开发者、希望将 flake8/isort/Black 整合为一个工具的团队、需要最新 linter 而不想依赖 pip 的 CI/CD 流水线和 Docker 镜像，以及正在使用 uv、想通过 apt 获取完整 Astral 工具链的用户。
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 支持本项目</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                如果这个仓库为您节省了时间和精力，请考虑支持它！
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ 在 GitHub 上加星
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Ruff,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 在 Twitter 上分享
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 Ruff Python Linter 在 Ubuntu 上",
+    "description": "在 Ubuntu 上使用 deb.griffo.io 仓库安装最新 Ruff Python linter 和格式化工具的完整指南——系统级安装，无需 pip。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Ruff",
+        "applicationCategory": "Developer Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "An extremely fast Python linter and code formatter that replaces Flake8, isort and Black"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.15.21</code> — 2026-07-14</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Ruff 在官方 Ubuntu 软件源中吗？</summary><p>不在 — 官方 Ubuntu 源没有打包 Ruff。本免费镜像提供发布至少 2 个月的最新 Ruff 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 Ruff？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install ruff。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ruff 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Ubuntu 源没有打包 Ruff。本免费镜像提供发布至少 2 个月的最新 Ruff 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Ruff？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install ruff。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

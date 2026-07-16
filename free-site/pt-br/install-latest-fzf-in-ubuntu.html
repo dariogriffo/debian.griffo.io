@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar fzf no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale fzf no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="fzf ubuntu, instalar fzf ubuntu, fuzzy finder, busca linha de comando, go fuzzy finder, pacotes ubuntu, jammy, noble, junegunn, apt fzf">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-fzf-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-fzf-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-fzf-in-ubuntu.html">
+    <meta property="og:title" content="Instalar fzf no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale fzf no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🔍 Instalar fzf no Ubuntu</h1>
+        <p class="subtitle">Buscador fuzzy de linha de comando escrito em Go</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.74.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">0.67.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-fzf-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-fzf-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-fzf-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-fzf-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>O que é o fzf?</h2>
+        <p>O fzf é um <strong>buscador fuzzy de linha de comando de uso geral</strong> escrito em Go por Junegunn Choi. É um programa de filtro interativo para qualquer tipo de lista - arquivos, histórico de comandos, processos, hostnames, favoritos, commits do git e muito mais. Com mais de 72 mil estrelas no GitHub, tornou-se uma ferramenta essencial para produtividade na linha de comando.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as últimas versões importam:</strong> O fzf é desenvolvido ativamente com lançamentos frequentes contendo melhorias de desempenho, novos recursos e integrações aprimoradas. As últimas versões incluem capacidades de visualização melhoradas, melhor integração de shell, suporte a tmux e opções avançadas de personalização.
+        </div>
+
+        <h3>⚡ Principais Recursos do fzf</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Portátil e Rápido</h4>
+                <p>Distribuição em binário único com desempenho extremamente rápido. Processa instantaneamente milhões de itens com implementação otimizada em Go.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Extremamente Versátil</h4>
+                <p>Totalmente personalizável via mecanismo de vinculação evento-ação. Funciona com qualquer tipo de entrada de lista - arquivos, processos, comandos, etc.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔋 Integração com Shell</h4>
+                <p>Integração incorporada com bash, zsh e fish. Inclui atalhos de teclado para busca de arquivos (Ctrl-T), histórico de comandos (Ctrl-R) e navegação de diretórios (Alt-C).</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Janela de Visualização</h4>
+                <p>Visualização em tempo real de arquivos, imagens e conteúdo. Suporta destaque de sintaxe, exibição de imagens e comandos de visualização personalizados.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Altamente Personalizável</h4>
+                <p>Múltiplos modos de exibição, esquemas de cores, opções de layout e predefinições de estilo. Playground de temas disponível para personalização interativa.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Integração com Editores</h4>
+                <p>Plugins para Vim e Neovim disponíveis. Integração perfeita com editores populares e fluxos de trabalho de desenvolvimento.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o fzf</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Instalar a última versão do fzf
+sudo apt install fzf
+
+# Verificar instalação
+fzf --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Instalar a última versão do fzf
+apt install fzf
+
+# Verificar instalação
+fzf --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Configurar Integração com o Shell</h3>
+            <div class="code-block">
+# Para usuários de bash
+echo 'eval "$(fzf --bash)"' >> ~/.bashrc
+
+# Para usuários de zsh
+echo 'source <(fzf --zsh)' >> ~/.zshrc
+
+# Para usuários de fish
+echo 'fzf --fish | source' >> ~/.config/fish/config.fish
+
+# Recarregar o shell
+source ~/.bashrc  # ou ~/.zshrc
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Buscador interativo de arquivos:</strong></p>
+        <div class="code-block">
+# Encontrar e editar arquivos
+vim $(fzf)
+
+# Encontrar arquivos com visualização
+fzf --preview 'cat {}'
+
+# Encontrar arquivos com destaque de sintaxe
+fzf --preview 'bat --color=always {}'
+        </div>
+
+        <p><strong>Atalhos de teclado da integração com o shell:</strong></p>
+        <div class="code-block">
+# Ctrl-T: Encontrar arquivos e diretórios
+# Digite qualquer comando, então pressione Ctrl-T para inserir arquivos selecionados
+
+# Ctrl-R: Pesquisar histórico de comandos
+# Pressione Ctrl-R para pesquisar e selecionar no histórico de comandos
+
+# Alt-C: Mudar de diretório
+# Pressione Alt-C para buscar fuzzy e entrar em diretórios
+        </div>
+
+        <p><strong>Uso avançado:</strong></p>
+        <div class="code-block">
+# Pesquisar processos e encerrar
+ps aux | fzf | awk '{print $2}' | xargs kill
+
+# Pesquisar commits git
+git log --oneline | fzf | awk '{print $1}' | xargs git show
+
+# ripgrep interativo
+rg --color=always --line-number . | fzf --ansi
+
+# Modo de seleção múltipla
+find . -type f | fzf -m
+        </div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações com Ferramentas</h4>
+            <p>O fzf funciona perfeitamente com outras ferramentas modernas de linha de comando:</p>
+            <ul>
+                <li><strong>fd:</strong> Use como fonte de arquivos respeitando .gitignore</li>
+                <li><strong>ripgrep:</strong> grep interativo com recarga ao vivo</li>
+                <li><strong>bat:</strong> Visualizações de arquivos com destaque de sintaxe</li>
+                <li><strong>eza:</strong> Listagem de arquivos aprimorada com filtragem fzf</li>
+                <li><strong>zoxide:</strong> Navegação inteligente de diretórios com busca fuzzy</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparação de Repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu Oficial:</strong> Disponível, mas geralmente com versões desatualizadas</li>
+                <li><strong>Instalação Manual:</strong> Requer toolchain Go ou gerenciamento manual de binários</li>
+                <li><strong>deb.griffo.io (repositório principal):</strong> Última versão com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Recursos Atualizados:</strong> Obtenha os recursos e melhorias de desempenho mais recentes do fzf com pelo menos 2 meses, grátis para sempre</li>
+            <li>✅ <strong>Sem Configuração Manual:</strong> Binários pré-compilados, sem necessidade de compilação Go</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Pacote Completo:</strong> Inclui scripts de integração de shell e documentação</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Manutenção Fácil:</strong> Comandos apt padrão para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fzf-debian" target="_blank" rel="noopener">🔍 fzf-debian</a> - Compilações da última versão</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-eza-in-ubuntu.html">eza</a> - Substituto moderno do ls (ótimo com fzf)</li>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Gerenciador de Arquivos Yazi</a> - Integra-se com fzf para busca de arquivos</li>
+            <li><a href="/pt-br/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Comando cd inteligente (funciona com fzf)</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Usuários avançados de linha de comando, desenvolvedores que desejam busca mais rápida de arquivos e comandos, qualquer pessoa que queira melhorar a produtividade no terminal e usuários que apreciam a correspondência fuzzy para navegação.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do fzf Fuzzy Finder no Ubuntu",
+    "description": "Guia completo para instalar a última ferramenta fzf fuzzy finder de linha de comando no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "fzf",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Buscador fuzzy de linha de comando de uso geral com integração de shell e capacidades de filtragem avançada"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.74.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O fzf está nos repositórios oficiais do Ubuntu?</summary><p>Sim — o arquivo oficial do Ubuntu traz fzf 0.67.0. Este espelho gratuito oferece a versão mais recente do fzf com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o fzf mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install fzf. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O fzf está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz fzf 0.67.0. Este espelho gratuito oferece a versão mais recente do fzf com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o fzf mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install fzf. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

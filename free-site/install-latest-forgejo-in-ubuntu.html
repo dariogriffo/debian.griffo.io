@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Forgejo on Ubuntu via apt — Free Forever</title>
+    <meta name="description" content="Install Forgejo on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta name="keywords" content="forgejo ubuntu, install forgejo ubuntu, self-hosted git, gitea fork, git forge, ubuntu packages, jammy, noble, apt forgejo, self-hosted github">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html">
+    <meta property="og:title" content="Install Forgejo on Ubuntu via apt — Free Forever">
+    <meta property="og:description" content="Install Forgejo on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>⚒️ Install Latest Forgejo on Ubuntu</h1>
+        <p class="subtitle">Self-hosted lightweight software forge — Beyond coding. We forge.</p>
+        <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">15.0.2 ✅</td></tr>
+<tr><td>Official Ubuntu</td><td class="vc-lose">🚫 not packaged</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <h2>What is Forgejo?</h2>
+        <p>Forgejo is a <strong>self-hosted lightweight software forge</strong>. Easy to install and low maintenance, it just does the job. Forgejo is a community-driven fork of Gitea focused on security, privacy, and democratic governance — giving you a self-hosted alternative to GitHub or GitLab that you fully control.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Staying Current Matters:</strong> Forgejo receives regular updates with security patches, new features, and performance improvements. The latest releases include Forgejo Actions (GitHub Actions-compatible CI/CD), improved package registry support, and enhanced federation capabilities.
+        </div>
+
+        <h3>⚡ Key Features of Forgejo</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Git Repository Hosting</h4>
+                <p>Host unlimited public and private git repositories. Full support for Git LFS, large file storage, and repository mirroring from GitHub, GitLab, and more.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Pull Requests &amp; Code Review</h4>
+                <p>Built-in pull request workflow with inline code review, review assignments, required reviewers, and merge strategies including squash and rebase.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐛 Issue Tracking</h4>
+                <p>Full-featured issue tracker with labels, milestones, projects board, custom fields, and cross-repository references.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Forgejo Actions</h4>
+                <p>Built-in CI/CD engine compatible with GitHub Actions workflows. Use existing GitHub Actions marketplace actions on your self-hosted runner.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📚 Package Registry</h4>
+                <p>Host your own packages: npm, PyPI, Maven, Docker/OCI images, Debian/RPM packages, Helm charts, and more — all in one place.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Security &amp; Access Control</h4>
+                <p>Fine-grained permissions, two-factor authentication, OAuth2 provider, LDAP/SAML integration, SSH and HTTPS access, branch protection rules.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🏆 Why Forgejo?</h4>
+            <ul>
+                <li><strong>Self-hosted:</strong> Your data stays on your servers, under your control</li>
+                <li><strong>Lightweight:</strong> Runs on a Raspberry Pi or a $5/month VPS</li>
+                <li><strong>Gitea compatible:</strong> Drop-in replacement with full API compatibility</li>
+                <li><strong>Community-driven:</strong> Democratic governance, no corporate lock-in</li>
+                <li><strong>GitHub Actions compatible:</strong> Reuse existing workflows and marketplace actions</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Free forever, patched immediately:</strong> Debian and Ubuntu freeze package versions when a release ships; this free mirror instead serves the newest release once it is at least 2 months old, with security fixes published immediately. Want every release within hours instead? That's the main repository at deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install Forgejo</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Forgejo (also installs git and git-lfs)
+sudo apt install forgejo
+
+# Verify installation
+forgejo --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Forgejo (also installs git and git-lfs)
+apt install forgejo
+
+# Verify installation
+forgejo --version
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>📋 Post-install setup required:</strong> Forgejo is a web server — after installation you need to start it and complete the initial configuration through the web interface. See the setup steps below.
+        </div>
+
+        <h3>🚀 Initial Setup</h3>
+        <p>The package automatically creates the <code>git</code> system user, the <code>/var/lib/forgejo</code> data directory, and the <code>/etc/forgejo</code> config directory. Complete the setup with:</p>
+
+        <div class="code-block">
+# Start the Forgejo service
+sudo systemctl start forgejo
+
+# Open http://localhost:3000 in your browser to complete initial configuration
+# (configure database, admin account, domain, etc.)
+
+# After the web setup is complete, enable Forgejo on boot:
+sudo systemctl enable forgejo
+
+# Check service status
+sudo systemctl status forgejo
+        </div>
+
+        <h3>🛡️ Post-Configuration Security Hardening</h3>
+        <p>After completing the web-based setup, make the config file read-only for added security:</p>
+        <div class="code-block">
+# Lock down the config directory and app.ini after initial configuration
+sudo systemctl stop forgejo
+sudo chmod 750 /etc/forgejo
+sudo chmod 640 /etc/forgejo/app.ini
+sudo systemctl start forgejo
+        </div>
+
+        <h3>🔧 Command-Line Administration</h3>
+        <p>Forgejo provides a CLI for administration tasks. Run commands as the <code>git</code> user:</p>
+        <div class="code-block">
+# List all users
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user list
+
+# Create admin user
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user create \
+  --username admin --password changeme --email admin@example.com --admin
+
+# Regenerate Git hooks (useful after upgrades)
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks
+        </div>
+
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> No Forgejo package available in official repos</li>
+                <li><strong>Manual install:</strong> Requires downloading and placing binary manually</li>
+                <li><strong>deb.griffo.io (main):</strong> Latest version with proper packaging, postinst setup, and apt update support</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Security Patches:</strong> Security and patch fixes for the version served publish immediately</li>
+            <li>✅ <strong>Automatic Setup:</strong> Post-install script creates user, directories, and systemd service</li>
+            <li>✅ <strong>Proper Dependencies:</strong> git and git-lfs installed automatically</li>
+            <li>✅ <strong>Automatic Updates:</strong> <code>apt upgrade</code> keeps Forgejo current</li>
+            <li>✅ <strong>Multi-Architecture:</strong> Supports amd64, armhf (Raspberry Pi), and arm64</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+        </ul>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Ubuntu packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/forgejo-debian" target="_blank" rel="noopener">⚒️ forgejo-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Terminal UI for Git (great companion for git workflows)</li>
+            <li><a href="/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Terminal UI for Docker (useful if running Forgejo in containers)</li>
+            <li><a href="/install-latest-eza-in-ubuntu.html">eza</a> - Modern ls replacement</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers and teams who want full control over their source code, organizations with data privacy requirements, homelab enthusiasts, anyone looking for a self-hosted GitHub/GitLab alternative that's lightweight enough to run on minimal hardware.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest  on Ubuntu",
+    "description": "Complete guide to installing Forgejo on Ubuntu from the free-forever deb.griffo.io mirror — at most 2 months behind upstream, security fixes immediate.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-05-27",
+    "dateModified": "2025-05-27",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Forgejo",
+        "applicationCategory": "Software Forge",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Self-hosted lightweight software forge with git hosting, issue tracking, pull requests, and CI/CD"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>15.0.2</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is Forgejo in the official Ubuntu repositories?</summary><p>No — Forgejo is not packaged in the official Ubuntu archives. This free mirror serves the newest Forgejo release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.0.2.</p></details>
+<details><summary>How do I install the latest Forgejo on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install forgejo. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Forgejo in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — Forgejo is not packaged in the official Ubuntu archives. This free mirror serves the newest Forgejo release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.0.2."}}, {"@type": "Question", "name": "How do I install the latest Forgejo on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install forgejo. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

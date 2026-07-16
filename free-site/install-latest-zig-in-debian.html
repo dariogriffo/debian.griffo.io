@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Zig on Debian via apt — Free Forever</title>
+    <meta name="description" content="Install Zig on Bookworm, Trixie, Forky and Sid from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta name="keywords" content="zig debian, install zig debian, latest zig version, zig 0.15, zig programming language, debian packages, bookworm, trixie, sid, apt zig">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-zig-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-zig-in-debian.html">
+    <meta property="og:title" content="Install Zig on Debian via apt — Free Forever">
+    <meta property="og:description" content="Install Zig on Bookworm, Trixie, Forky and Sid from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🇿 Install Latest Zig on Debian</h1>
+        <p class="subtitle">Get Zig programming language packages from the free-forever mirror</p>
+        <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.16.0 ✅</td></tr>
+<tr><td>Official Debian</td><td class="vc-lose">🚫 not packaged</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-zig-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-zig-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-zig-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-zig-on-debian-sid.html">Debian Sid</a></div>
+        
+        <h2>What is Zig?</h2>
+        <p>Zig is a <strong>general-purpose programming language and toolchain</strong> designed for maintaining <strong>robust</strong>, <strong>optimal</strong>, and <strong>reusable</strong> software. Created by Andrew Kelley, Zig aims to be a better alternative to C, offering modern language features while maintaining the simplicity and performance that systems programmers need.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Staying Current Matters:</strong> Zig is rapidly evolving with significant performance improvements, new language features, and critical bug fixes in each release. The latest 0.16.0 includes major enhancements like improved cross-compilation, faster compilation times, and enhanced debugging capabilities.
+        </div>
+
+        <h3>🔥 Key Features of Zig</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Simple & Fast</h4>
+                <p>No hidden control flow, no hidden memory allocations, no preprocessor. Focus on debugging your application, not your language knowledge.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔧 Comptime Magic</h4>
+                <p>Compile-time code execution and lazy evaluation. Call any function at compile-time and manipulate types as values without runtime overhead.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🌐 Cross-Compilation</h4>
+                <p>Built-in cross-compilation support for dozens of targets. No external dependencies needed for most platforms.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔄 C/C++ Interop</h4>
+                <p>Use Zig as a drop-in C/C++ compiler with better cross-compilation. Incrementally adopt Zig in existing codebases.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Free forever, patched immediately:</strong> Debian and Ubuntu freeze package versions when a release ships; this free mirror instead serves the newest release once it is at least 2 months old, with security fixes published immediately. Want every release within hours instead? That's the main repository at deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+<div class="install-steps">
+            <h3>Step 2: Install Zig</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install current stable Zig
+sudo apt install zig
+
+# Or install nightly builds for cutting-edge features
+sudo apt install zig-master
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install current stable Zig
+apt install zig
+
+# Or install nightly builds for cutting-edge features
+apt install zig-master
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+        
+        <p><strong>Create a new project:</strong></p>
+        <div class="code-block">
+# Create and enter project directory
+mkdir my-zig-project && cd my-zig-project
+
+# Initialize new Zig project
+zig init
+
+# Build and run
+zig build run
+        </div>
+
+        <p><strong>Compile a single file:</strong></p>
+        <div class="code-block">
+# Create hello.zig
+echo 'const std = @import("std");
+pub fn main() void {
+    std.debug.print("Hello, Zig!\n", .{});
+}' > hello.zig
+
+# Compile and run
+zig run hello.zig
+        </div>
+
+        <p><strong>Use as C compiler:</strong></p>
+        <div class="code-block">
+# Compile C code with Zig
+zig cc -o program program.c
+
+# Cross-compile for different targets
+zig cc -target x86_64-windows -o program.exe program.c
+        </div>
+
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+        
+        <div class="warning-box">
+            <strong>⚠️ Official Debian Lag:</strong> Official Debian repositories often contain outdated Zig versions that may be months or even years behind the latest release, missing critical features and performance improvements.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Never Frozen:</strong> Get the newest Zig release once it is at least 2 months old — security fixes ship immediately</li>
+            <li>✅ <strong>Nightly Builds:</strong> Access cutting-edge features with zig-master package</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated once a release is at least 2 months old; security fixes ship immediately</li>
+            <li>✅ <strong>Proper Dependencies:</strong> Correctly packaged with all required dependencies</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Zero Hassle:</strong> No manual compilation or complex setup required</li>
+        </ul>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Debian packages are automatically built and maintained in these GitHub repositories:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zig-debian" target="_blank" rel="noopener">🇿 zig-debian (stable)</a> - Stable release builds</li>
+            <li><a href="https://github.com/dariogriffo/zig-master-debian" target="_blank" rel="noopener">🇿 zig-master-debian (nightly)</a> - Nightly development builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-zls-in-debian.html">ZLS Language Server</a> - IDE support for Zig</li>
+            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty Terminal</a> - Fast terminal emulator</li>
+            <li><a href="/install-latest-yazi-in-debian.html">Yazi File Manager</a> - Terminal file manager</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Systems programming, game development, embedded systems, performance-critical applications, and anyone wanting a modern alternative to C with better safety and tooling.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest Zig Programming Language on Debian",
+    "description": "Complete guide to installing Zig programming language on Debian from the free-forever deb.griffo.io mirror — at most 2 months behind upstream, security fixes immediate.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zig Programming Language",
+        "applicationCategory": "Programming Language",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "General-purpose programming language and toolchain for robust, optimal, and reusable software"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>0.16.0</code> — 2026-07-08</li>
+</ul>
+<h2>📚 Release-specific install guides</h2>
+<ul class="release-list">
+<li><a href="/install-zig-on-debian-12-bookworm.html">Install Zig on Debian 12 “Bookworm”</a></li>
+<li><a href="/install-zig-on-debian-13-trixie.html">Install Zig on Debian 13 “Trixie”</a></li>
+<li><a href="/install-zig-on-debian-14-forky.html">Install Zig on Debian 14 “Forky”</a></li>
+<li><a href="/install-zig-on-debian-sid.html">Install Zig on Debian Sid</a></li>
+<li><a href="/install-zig-on-ubuntu-22-04-jammy.html">Install Zig on Ubuntu 22.04 LTS “Jammy Jellyfish”</a></li>
+<li><a href="/install-zig-on-ubuntu-24-04-noble.html">Install Zig on Ubuntu 24.04 LTS “Noble Numbat”</a></li>
+<li><a href="/install-zig-on-ubuntu-25-10-questing.html">Install Zig on Ubuntu 25.10 “Questing Quokka”</a></li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is Zig in the official Debian repositories?</summary><p>No — Zig is not packaged in the official Debian archives. This free mirror serves the newest Zig release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.16.0.</p></details>
+<details><summary>How do I install the latest Zig on Debian?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install zig-stable. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Debian releases are supported?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Zig in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — Zig is not packaged in the official Debian archives. This free mirror serves the newest Zig release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.16.0."}}, {"@type": "Question", "name": "How do I install the latest Zig on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install zig-stable. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

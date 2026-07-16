@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar zoxide no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale zoxide no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="zoxide ubuntu, instalar zoxide ubuntu, comando cd inteligente, salto de diretório, substituto cd em rust, pacotes ubuntu, jammy, noble, ajeetdsouza, apt zoxide">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zoxide-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zoxide-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-zoxide-in-ubuntu.html">
+    <meta property="og:title" content="Instalar zoxide no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale zoxide no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📂 Instalar zoxide no Ubuntu</h1>
+        <p class="subtitle">Um comando cd mais inteligente que aprende seus hábitos</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.10.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">0.9.8 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o zoxide?</h2>
+        <p>O zoxide é um <strong>comando cd mais inteligente</strong> escrito em Rust por Ajeet D'Souza, inspirado no z e no autojump. Ele lembra quais diretórios você usa com mais frequência, para que você possa "pular" para eles com apenas alguns pressionamentos de tecla. Com mais de 28 mil estrelas no GitHub, ele revolucionou a navegação de diretórios para usuários de linha de comando em todo o mundo.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Problemas do cd Tradicional:</strong> Cansado de digitar caminhos longos de diretórios? Frustrado com `cd ../../projects/my-app/src/components`? Irritado com ter que lembrar nomes exatos de diretórios? O zoxide aprende seus hábitos e deixa você pular para qualquer lugar com apenas alguns caracteres.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as versões mais recentes importam:</strong> O zoxide está sendo ativamente desenvolvido com lançamentos frequentes contendo melhorias de desempenho, novas integrações com shells, algoritmos aprimorados e melhor compatibilidade. As versões mais recentes incluem correspondência fuzzy melhorada, melhor suporte a shells e integrações aprimoradas com ferramentas de terceiros.
+        </div>
+
+        <h3>⚡ Principais Recursos do zoxide</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🧠 Aprendizado Inteligente</h4>
+                <p>Aprende seus padrões de uso de diretórios e os classifica por frequência e recência. Quanto mais você visita um diretório, mais fácil fica acessá-lo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Correspondência Fuzzy</h4>
+                <p>Pule para diretórios com correspondências parciais. Digite apenas alguns caracteres e o zoxide encontrará o diretório certo com base no seu histórico.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Suporte Universal a Shells</h4>
+                <p>Funciona com bash, zsh, fish, PowerShell, Nushell, Elvish, Tcsh e Xonsh. Experiência consistente em todos os principais shells.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Integrações Ricas</h4>
+                <p>Integração nativa com fzf para seleção interativa, além de plugins para Vim, Emacs, gerenciadores de arquivos e gerenciadores de sessão tmux.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Importação de Dados</h4>
+                <p>Importe dados existentes do autojump, z, z.lua, fasd e outros programas de salto de diretórios. Não precisa começar do zero.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Altamente Configurável</h4>
+                <p>Algoritmo de pontuação personalizável, padrões de exclusão, configurações de envelhecimento e prefixos de comando. Adapta-se às suas preferências de fluxo de trabalho.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Benefícios de Produtividade</h4>
+            <ul>
+                <li><strong>Economize Tempo:</strong> Pule para qualquer diretório em 2-3 pressionamentos de tecla em vez de digitar caminhos completos</li>
+                <li><strong>Reduza Erros:</strong> Sem mais erros de digitação em caminhos longos de diretórios</li>
+                <li><strong>Aprenda Padrões:</strong> Adapta-se automaticamente aos seus diretórios mais usados</li>
+                <li><strong>Entre Sessões:</strong> Lembra diretórios entre sessões de terminal</li>
+                <li><strong>Modo Interativo:</strong> Use com fzf para seleção visual de diretórios</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o zoxide</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Instalar o último zoxide
+sudo apt install zoxide
+
+# Verificar instalação
+zoxide --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Instalar o último zoxide
+apt install zoxide
+
+# Verificar instalação
+zoxide --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Configurar Integração com Shell</h3>
+            <div class="code-block">
+# For bash users
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+
+# For zsh users
+echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
+
+# For fish users
+echo 'zoxide init fish | source' >> ~/.config/fish/config.fish
+
+# Reload shell
+source ~/.bashrc  # or ~/.zshrc
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Salto inteligente de diretórios:</strong></p>
+        <div class="code-block">
+# Jump to directory containing "projects"
+z projects
+
+# Jump to directory matching "my" and "app"
+z my app
+
+# Jump to subdirectory starting with "src"
+z src/
+
+# Go back to previous directory
+z -
+
+# Interactive selection with fzf
+zi
+        </div>
+
+        <p><strong>O cd tradicional ainda funciona:</strong></p>
+        <div class="code-block">
+# Regular cd functionality
+z ~/Documents
+z ../
+z /usr/local/bin
+
+# Relative paths
+z ./src/components
+        </div>
+
+        <p><strong>Recursos avançados:</strong></p>
+        <div class="code-block">
+# Query directories without jumping
+zoxide query projects
+
+# Add directory manually
+zoxide add /path/to/directory
+
+# Remove directory from database
+zoxide remove /path/to/directory
+
+# Import from other tools
+zoxide import --from=autojump ~/.local/share/autojump/autojump.txt
+zoxide import --from=z ~/.z
+        </div>
+
+        <p><strong>Personalização:</strong></p>
+        <div class="code-block">
+# Use different command prefix (j instead of z)
+eval "$(zoxide init bash --cmd j)"
+
+# Replace cd command entirely
+eval "$(zoxide init bash --cmd cd)"
+
+# Echo directory before jumping
+export _ZO_ECHO=1
+
+# Exclude certain directories
+export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="productivity-box">
+            <strong>📊 Comparação de Repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu Oficial:</strong> Disponível, mas frequentemente versões desatualizadas</li>
+                <li><strong>Cargo Install:</strong> Requer toolchain Rust e compilação</li>
+                <li><strong>Script de Instalação:</strong> Atualizações manuais e sem gerenciamento de pacotes</li>
+                <li><strong>deb.griffo.io (repositório principal):</strong> Última versão com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Último Algoritmo:</strong> Obtenha as mais novas melhorias de pontuação e correspondência</li>
+            <li>✅ <strong>Sem Compilação Rust:</strong> Binários pré-compilados, sem necessidade de toolchain</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Pacote Completo:</strong> Inclui integração com shell e documentação</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Manutenção Fácil:</strong> Comandos apt padrão para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes do Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zoxide-debian" target="_blank" rel="noopener">📂 zoxide-debian</a> - Compilações de lançamento mais recente</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Companheiro perfeito para seleção interativa com zoxide</li>
+            <li><a href="/pt-br/install-latest-eza-in-ubuntu.html">eza</a> - Substituto moderno do ls para melhor listagem de diretórios</li>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Gerenciador de Arquivos Yazi</a> - Integra-se com zoxide para navegação inteligente</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Desenvolvedores que navegam em estruturas de diretórios complexas, usuários avançados que querem fluxos de trabalho eficientes no terminal, qualquer pessoa cansada de digitar caminhos longos e usuários que apreciam automação inteligente em suas ferramentas.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do zoxide Comando cd Inteligente no Ubuntu",
+    "description": "Guia completo para instalar a última ferramenta de navegação inteligente de diretórios zoxide no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "zoxide",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Comando cd mais inteligente que aprende seus hábitos e fornece navegação inteligente de diretórios"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function IsEven(n) {
+        return !IsOdd(n);
+    }
+
+    function IsOdd(n) {
+        return !IsEven(n);
+    }
+
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.10.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O zoxide está nos repositórios oficiais do Ubuntu?</summary><p>Sim — o arquivo oficial do Ubuntu traz zoxide 0.9.8. Este espelho gratuito oferece a versão mais recente do zoxide com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o zoxide mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install zoxide. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O zoxide está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz zoxide 0.9.8. Este espelho gratuito oferece a versão mais recente do zoxide com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o zoxide mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install zoxide. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

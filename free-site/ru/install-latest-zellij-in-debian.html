@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Zellij в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите Zellij в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="zellij debian, установить zellij debian, zellij, терминальный мультиплексер, альтернатива tmux, терминальное рабочее пространство, мультиплексер на rust, пакеты debian, bookworm, trixie, sid, apt zellij">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zellij-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-zellij-in-debian.html">
+    <meta property="og:title" content="Установка Zellij в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите Zellij в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🪟 Установка Zellij в Debian</h1>
+        <p class="subtitle">Терминальное рабочее пространство и мультиплексер</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.44.3 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое Zellij?</h2>
+        <p>Zellij — это <strong>терминальное рабочее пространство и мультиплексер</strong>, написанный на Rust. Современная альтернатива tmux и screen, он позволяет разделять терминал на панели и вкладки, сохранять и восстанавливать макеты, а также расширять функциональность с помощью системы плагинов на WebAssembly — всё это с наглядными подсказками по комбинациям клавиш и дружелюбным интерфейсом, который легко освоить.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> Zellij активно разрабатывается — появляются новые возможности макетов, функции плагинов и улучшения производительности. Использование последнего релиза даёт вам новейшие возможности рабочего пространства и исправления ошибок.
+        </div>
+
+        <h3>⚡ Ключевые возможности Zellij</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 Панели и вкладки</h4>
+                <p>Разделяйте терминал на панели и организуйте работу в нескольких вкладках.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📐 Макеты</h4>
+                <p>Определяйте и восстанавливайте воспроизводимые макеты рабочего пространства для ваших проектов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Система плагинов</h4>
+                <p>Расширяйте Zellij с помощью плагинов на WebAssembly для дополнительной функциональности.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧭 Наглядный интерфейс</h4>
+                <p>Подсказки на экране упрощают изучение и запоминание комбинаций клавиш.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 Почему Zellij?</h4>
+            <ul>
+                <li><strong>Дружелюбен к новичкам:</strong> Подсказки по комбинациям клавиш на экране снижают порог вхождения</li>
+                <li><strong>Мощные макеты:</strong> Воспроизводимые рабочие пространства, задаваемые в конфигурации</li>
+                <li><strong>Расширяемость:</strong> Система плагинов на основе WebAssembly</li>
+                <li><strong>Современность:</strong> Быстрая реализация на Rust с разумными настройками по умолчанию</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Основные особенности</h3>
+        <ul>
+            <li><strong>Мультиплексирование:</strong> Панели и вкладки в одном терминале</li>
+            <li><strong>Управление сессиями:</strong> Отключение и повторное подключение к запущенным сессиям</li>
+            <li><strong>Макеты:</strong> Сохранение и загрузка расположений рабочего пространства</li>
+            <li><strong>Плагины:</strong> Расширяемость на основе WASM</li>
+        </ul>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить zellij</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest zellij
+sudo apt install zellij
+
+# Verify installation
+zellij --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest zellij
+apt install zellij
+
+# Verify installation
+zellij --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+        <div class="code-block">
+# Show version
+zellij --version
+
+# Start a new session
+zellij
+
+# Start a named session
+zellij --session work
+
+# List active sessions
+zellij list-sessions
+
+# Attach to an existing session
+zellij attach work
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> Часто отстаёт на месяцы, отсутствуют последние функции</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия в течение нескольких часов после релиза</li>
+                <li><strong>Ручная установка:</strong> Требуется вручную скачивать файлы и настраивать PATH</li>
+                <li><strong>Наш репозиторий:</strong> Готовые к использованию собранные пакеты</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие функции и улучшения Zellij — релиз не старше 2 месяцев</li>
+            <li>✅ <strong>Без ручной настройки:</strong> Готовые бинарные файлы, устанавливаемые и обновляемые через apt</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упаковано со всеми необходимыми библиотеками</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Простые команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zellij-debian" target="_blank" rel="noopener">📁 zellij-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-starship-in-debian.html">Starship</a> — быстрый, настраиваемый prompt для разных оболочек</li>
+            <li><a href="/ru/install-latest-atuin-in-debian.html">Atuin</a> — синхронизация, поиск и статистика истории команд оболочки</li>
+            <li><a href="/ru/install-latest-helix-in-debian.html">Helix Editor</a> — постмодернистский модальный текстовый редактор</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> опытных пользователей терминала, которым нужен современный, доступный мультиплексер с панелями, вкладками, сохраняемыми макетами и плагинами в качестве альтернативы tmux.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Поддержать проект</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Если этот репозиторий экономит ваше время и усилия, рассмотрите возможность его поддержки!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Поставить звезду на GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Поделиться в Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка Zellij в Debian",
+    "description": "Полное руководство по установке Zellij в Debian с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zellij",
+        "applicationCategory": "Terminal Tool",
+        "operatingSystem": "Debian Linux",
+        "description": "Терминальное рабочее пространство и мультиплексер с панелями, вкладками, макетами и системой плагинов, написанный на Rust."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.44.3</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Zellij в официальных репозиториях Debian?</summary><p>Нет — Zellij не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Zellij возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию Zellij в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zellij. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Zellij в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Zellij не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Zellij возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Zellij в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zellij. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

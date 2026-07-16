@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgejo auf Debian installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="Forgejo auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="forgejo debian, forgejo debian installieren, self-hosted git, gitea fork, git forge, debian pakete, bookworm, trixie, sid, apt forgejo, self-hosted github">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-forgejo-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-forgejo-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-forgejo-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-forgejo-in-debian.html">
+    <meta property="og:title" content="Forgejo auf Debian installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="Forgejo auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>⚒️ Neueste Forgejo auf Debian installieren</h1>
+        <p class="subtitle">Selbst gehostete, leichtgewichtige Software-Forge — Beyond coding. We forge.</p>
+        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">15.0.2 ✅</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <h2>Was ist Forgejo?</h2>
+        <p>Forgejo ist eine <strong>selbst gehostete, leichtgewichtige Software-Forge</strong>. Einfach zu installieren und wartungsarm — sie erledigt einfach ihren Job. Forgejo ist ein community-getriebener Fork von Gitea, der sich auf Sicherheit, Datenschutz und demokratische Governance konzentriert — eine selbst gehostete Alternative zu GitHub oder GitLab, die Sie vollständig kontrollieren.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> Forgejo erhält regelmäßige Updates mit Sicherheits-Patches, neuen Funktionen und Leistungsverbesserungen. Die neuesten Releases umfassen Forgejo Actions (GitHub Actions-kompatibles CI/CD), verbesserte Paketregistrierungsunterstützung und erweiterte Föderationsfähigkeiten.
+        </div>
+
+        <h3>⚡ Wichtigste Funktionen von Forgejo</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Git Repository Hosting</h4>
+                <p>Host unlimited public and private git repositories. Full support for Git LFS, large file storage, and repository mirroring from GitHub, GitLab, and more.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Pull Requests &amp; Code Review</h4>
+                <p>Built-in pull request workflow with inline code review, review assignments, required reviewers, and merge strategies including squash and rebase.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐛 Issue Tracking</h4>
+                <p>Full-featured issue tracker with labels, milestones, projects board, custom fields, and cross-repository references.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Forgejo Actions</h4>
+                <p>Built-in CI/CD engine compatible with GitHub Actions workflows. Use existing GitHub Actions marketplace actions on your self-hosted runner.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📚 Package Registry</h4>
+                <p>Host your own packages: npm, PyPI, Maven, Docker/OCI images, Debian/RPM packages, Helm charts, and more — all in one place.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Security &amp; Access Control</h4>
+                <p>Fine-grained permissions, two-factor authentication, OAuth2 provider, LDAP/SAML integration, SSH and HTTPS access, branch protection rules.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🏆 Warum Forgejo?</h4>
+            <ul>
+                <li><strong>Selbst gehostet:</strong> Ihre Daten bleiben auf Ihren Servern, unter Ihrer Kontrolle</li>
+                <li><strong>Leichtgewichtig:</strong> Läuft auf einem Raspberry Pi oder einem 5-$/Monat-VPS</li>
+                <li><strong>Gitea-kompatibel:</strong> Drop-in-Ersatz mit vollständiger API-Kompatibilität</li>
+                <li><strong>Community-getrieben:</strong> Demokratische Governance, keine Unternehmensabhängigkeit</li>
+                <li><strong>GitHub Actions-kompatibel:</strong> Bestehende Workflows und Marketplace-Actions wiederverwenden</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Für immer kostenlos, mit eingebauter Verzögerung:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository liefert stattdessen das jeweils neueste Release, sobald es mindestens 2 Monate alt ist, für immer kostenlos; Sicherheits- und Patch-Fixes erscheinen sofort. Wer jedes Release wenige Stunden nach Upstream möchte, nutzt das Haupt-Repository auf deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Forgejo installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Forgejo (also installs git and git-lfs)
+sudo apt install forgejo
+
+# Verify installation
+forgejo --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Forgejo (also installs git and git-lfs)
+apt install forgejo
+
+# Verify installation
+forgejo --version
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>📋 Einrichtung nach der Installation erforderlich:</strong> Forgejo ist ein Webserver — nach der Installation müssen Sie ihn starten und die Erstkonfiguration über die Weboberfläche abschließen. Siehe die Einrichtungsschritte unten.
+        </div>
+
+        <h3>🚀 Ersteinrichtung</h3>
+        <p>Das Paket erstellt automatisch den <code>git</code>-Systembenutzer, das Datenverzeichnis <code>/var/lib/forgejo</code> und das Konfigurationsverzeichnis <code>/etc/forgejo</code>. Schließen Sie die Einrichtung ab mit:</p>
+
+        <div class="code-block">
+# Start the Forgejo service
+sudo systemctl start forgejo
+
+# Open http://localhost:3000 in your browser to complete initial configuration
+# (configure database, admin account, domain, etc.)
+
+# After the web setup is complete, enable Forgejo on boot:
+sudo systemctl enable forgejo
+
+# Check service status
+sudo systemctl status forgejo
+        </div>
+
+        <h3>🛡️ Sicherheitshärtung nach der Konfiguration</h3>
+        <p>Machen Sie nach dem webbasierten Setup die Konfigurationsdatei zum Schutz schreibgeschützt:</p>
+        <div class="code-block">
+# Lock down the config directory and app.ini after initial configuration
+sudo systemctl stop forgejo
+sudo chmod 750 /etc/forgejo
+sudo chmod 640 /etc/forgejo/app.ini
+sudo systemctl start forgejo
+        </div>
+
+        <h3>🔧 Befehlszeilenverwaltung</h3>
+        <p>Forgejo bietet eine CLI für Verwaltungsaufgaben. Führen Sie Befehle als <code>git</code>-Benutzer aus:</p>
+        <div class="code-block">
+# List all users
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user list
+
+# Create admin user
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user create \
+  --username admin --password changeme --email admin@example.com --admin
+
+# Regenerate Git hooks (useful after upgrades)
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Debian:</strong> Kein Forgejo-Paket in offiziellen Repos verfügbar</li>
+                <li><strong>Manuelle Installation:</strong> Erfordert manuelles Herunterladen und Platzieren der Binärdatei</li>
+                <li><strong>deb.griffo.io:</strong> Neuestes Release, mindestens 2 Monate alt — für immer kostenlos</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Sicherheitsfixes sofort:</strong> Erhalten Sie das neueste Forgejo-Release, sobald es mindestens 2 Monate alt ist</li>
+            <li>✅ <strong>Automatische Einrichtung:</strong> Post-Install-Skript erstellt Benutzer, Verzeichnisse und systemd-Dienst</li>
+            <li>✅ <strong>Korrekte Abhängigkeiten:</strong> git und git-lfs werden automatisch installiert</li>
+            <li>✅ <strong>Automatische Updates:</strong> <code>apt upgrade</code> hält Forgejo aktuell</li>
+            <li>✅ <strong>Multi-Architektur:</strong> Unterstützt amd64, armhf (Raspberry Pi) und arm64</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Funktioniert auf Bookworm, Trixie und Sid</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/forgejo-debian" target="_blank" rel="noopener">⚒️ forgejo-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-lazygit-in-debian.html">lazygit</a> - Terminal UI for Git (great companion for git workflows)</li>
+            <li><a href="/de/install-latest-lazydocker-in-debian.html">lazydocker</a> - Terminal UI for Docker (useful if running Forgejo in containers)</li>
+            <li><a href="/de/install-latest-eza-in-debian.html">eza</a> - Modern ls replacement</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Entwickler und Teams, die volle Kontrolle über ihren Quellcode wünschen, Organisationen mit Datenschutzanforderungen, Homelab-Enthusiasten und alle, die eine selbst gehostete GitHub/GitLab-Alternative suchen, die leichtgewichtig genug ist, um auf minimaler Hardware zu laufen.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neueste  auf Debian installieren",
+    "description": "Vollständige Anleitung zur Installation der neuesten Forgejo auf Debian mit dem deb.griffo.io-Repository für aktuelle Pakete.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-05-27",
+    "dateModified": "2025-05-27",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Forgejo",
+        "applicationCategory": "Software Forge",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Selbst gehostete, leichtgewichtige Software-Forge mit Git-Hosting, Issue-Tracking, Pull Requests und CI/CD"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>15.0.2</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Forgejo in den offiziellen Debian-Paketquellen?</summary><p>Nein — Forgejo ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Forgejo-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste Forgejo unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install forgejo. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Forgejo in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Forgejo ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Forgejo-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Forgejo unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install forgejo. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

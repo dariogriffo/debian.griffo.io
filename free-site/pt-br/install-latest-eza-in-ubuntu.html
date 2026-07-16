@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar eza no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale eza no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="eza ubuntu, instalar eza ubuntu, substituto ls, ls moderno, ferramenta listagem arquivos, rust linha de comando, pacotes ubuntu, jammy, noble, apt eza">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-eza-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-eza-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-eza-in-ubuntu.html">
+    <meta property="og:title" content="Instalar eza no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale eza no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📁 Instalar eza no Ubuntu</h1>
+        <p class="subtitle">Substituto moderno e rico em recursos para o comando ls</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.23.5 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">0.23.4 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o eza?</h2>
+        <p>O eza é um <strong>substituto moderno e mantido</strong> para o clássico programa de listagem de arquivos em linha de comando <code>ls</code>, incluído nos sistemas Unix e Linux. Escrito em Rust, o eza oferece mais recursos e melhores padrões ao mesmo tempo que é <strong>pequeno</strong>, <strong>rápido</strong> e apenas <strong>um único binário</strong>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as últimas versões importam:</strong> O eza é desenvolvido ativamente com lançamentos frequentes contendo novos recursos, melhorias de desempenho e correções de bugs. As últimas versões incluem suporte a hiperlinks, temas personalizados, integração Git aprimorada e muitas melhorias de usabilidade em relação ao projeto exa original.
+        </div>
+
+        <h3>⚡ Principais Recursos do eza</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Saída Visual Rica</h4>
+                <p>Cores para distinguir tipos de arquivos, suporte a ícones e temas personalizáveis. Torna a navegação de arquivos mais intuitiva e visualmente atraente.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔗 Integração com Git</h4>
+                <p>Exibe o status do Git para arquivos e repositórios, rastreia arquivos ignorados e mostra informações do repositório diretamente nas listagens.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Metadados Estendidos</h4>
+                <p>Exibe links simbólicos, atributos estendidos, pontos de montagem, contexto SELinux e datas relativas legíveis por humanos.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Altamente Configurável</h4>
+                <p>Temas personalizados via theme.yml, opções extensas de linha de comando e compatibilidade retroativa com ls e exa.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🆚 eza vs ls vs exa</h4>
+            <ul>
+                <li><strong>vs ls:</strong> Cores, ícones, integração Git, visualização em árvore, melhores padrões</li>
+                <li><strong>vs exa:</strong> Mantido ativamente, corrige o "Bug de Grade", hiperlinks, temas, correções de segurança</li>
+                <li><strong>Desempenho:</strong> Implementação rápida em Rust, binário único, dependências mínimas</li>
+                <li><strong>Compatibilidade:</strong> Substituto direto com opções familiares</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o eza</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Instalar a última versão do eza
+sudo apt install eza
+
+# Verificar instalação
+eza --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Instalar a última versão do eza
+apt install eza
+
+# Verificar instalação
+eza --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Substituir ls pelo eza:</strong></p>
+        <div class="code-block">
+# Listagem básica com cores e ícones
+eza
+
+# Formato longo com detalhes
+eza -l
+
+# Visualização em árvore
+eza --tree
+
+# Exibir status do Git
+eza -l --git
+
+# Visualização em grade com ícones
+eza --icons --grid
+        </div>
+
+        <p><strong>Recursos avançados:</strong></p>
+        <div class="code-block">
+# Mostrar todos os arquivos incluindo ocultos
+eza -la
+
+# Ordenar por tamanho, maior primeiro
+eza -l --sort=size --reverse
+
+# Mostrar apenas diretórios
+eza -D
+
+# Listagem recursiva com limite de profundidade
+eza -R --level=2
+
+# Formato de hora personalizado
+eza -l --time-style=iso
+        </div>
+
+        <p><strong>Criar alias para uso permanente:</strong></p>
+        <div class="code-block">
+# Adicionar a ~/.bashrc ou ~/.zshrc
+echo 'alias ls="eza"' >> ~/.bashrc
+echo 'alias ll="eza -l"' >> ~/.bashrc
+echo 'alias la="eza -la"' >> ~/.bashrc
+
+# Recarregar o shell
+source ~/.bashrc
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Comparação de Repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu Oficial:</strong> Frequentemente meses atrás, faltando os recursos mais recentes</li>
+                <li><strong>deb.griffo.io (repositório principal):</strong> Última versão em horas após o lançamento</li>
+                <li><strong>Instalação Manual:</strong> Requer compilação complexa em Rust</li>
+                <li><strong>Nosso Repositório:</strong> Pacotes pré-compilados, prontos para uso</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Recursos Atualizados:</strong> Obtenha os recursos e melhorias mais recentes do eza com pelo menos 2 meses, grátis para sempre</li>
+            <li>✅ <strong>Sem Compilação:</strong> Binários pré-compilados, sem necessidade de toolchain Rust</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Dependências Corretas:</strong> Corretamente empacotado com todas as bibliotecas necessárias</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Manutenção Fácil:</strong> Comandos apt simples para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/eza-debian" target="_blank" rel="noopener">📁 eza-debian</a> - Compilações da última versão</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Gerenciador de Arquivos Yazi</a> - Gerenciador de arquivos avançado para terminal</li>
+            <li><a href="/pt-br/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Busca aprimorada de arquivos e comandos</li>
+            <li><a href="/pt-br/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Substituto inteligente para o comando cd</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Usuários diários de linha de comando, desenvolvedores que desejam melhores listagens de arquivos, qualquer pessoa que queira modernizar seu fluxo de trabalho no terminal com cores, ícones e integração Git.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do eza (Substituto Moderno do ls) no Ubuntu",
+    "description": "Guia completo para instalar a última ferramenta de linha de comando eza no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "eza",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Substituto moderno e mantido para ls com recursos aprimorados, integração Git e melhorias visuais"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.23.5</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O eza está nos repositórios oficiais do Ubuntu?</summary><p>Sim — o arquivo oficial do Ubuntu traz eza 0.23.4. Este espelho gratuito oferece a versão mais recente do eza com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o eza mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install eza. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O eza está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz eza 0.23.4. Este espelho gratuito oferece a versão mais recente do eza com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o eza mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install eza. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

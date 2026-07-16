@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Bun on Ubuntu via apt — Free Forever</title>
+    <meta name="description" content="Install Bun on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta name="keywords" content="bun ubuntu, install bun ubuntu, latest bun version, bun javascript runtime, bun bundler, ubuntu packages, jammy, noble, apt bun">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-bun-in-ubuntu.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-bun-in-ubuntu.html">
+    <meta property="og:title" content="Install Bun on Ubuntu via apt — Free Forever">
+    <meta property="og:description" content="Install Bun on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FKYKE1SD5C');
+    </script>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div>
+    <div class="container">
+        <div class="header">
+            <h1>🥟 Install Latest Bun on Ubuntu</h1>
+            <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+            <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">1.3.14 ✅</td></tr>
+<tr><td>Official Ubuntu</td><td class="vc-lose">🚫 not packaged</td></tr>
+</tbody>
+</table>
+</div>
+            <p>Fast all-in-one JavaScript runtime with bundler, test runner, and package manager</p>
+        </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-bun-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-bun-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-bun-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-bun-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+        
+        <h2>What is Bun?</h2>
+        <p>Bun is a <strong>fast all-in-one JavaScript runtime</strong> built from scratch to serve the modern JavaScript ecosystem. It's designed as a drop-in replacement for Node.js with significantly better performance, featuring a built-in bundler, test runner, and package manager all in a single executable.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Staying Current Matters:</strong> Bun is rapidly evolving with major performance improvements, new JavaScript/TypeScript features, and enhanced compatibility in each release. The latest versions include critical bug fixes, improved Node.js compatibility, and significant speed improvements for package management and bundling.
+        </div>
+
+        <h3>🔥 Key Features of Bun</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Blazing Fast</h4>
+                <p>Up to 4x faster than Node.js for many workloads, with optimized JavaScript engine and native code compilation.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Built-in Package Manager</h4>
+                <p>Install packages up to 25x faster than npm with built-in package management and lockfile compatibility.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Bundler Included</h4>
+                <p>Native bundler with tree-shaking, code splitting, and hot reloading - no webpack or rollup needed.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Test Runner</h4>
+                <p>Built-in test runner compatible with Jest API, with parallel execution and watch mode.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔄 Node.js Compatible</h4>
+                <p>Drop-in replacement for Node.js with excellent compatibility for existing npm packages and APIs.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 TypeScript Native</h4>
+                <p>Run TypeScript files directly without compilation step, with built-in transpilation.</p>
+            </div>
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="package-variants">
+            <h3>📋 Available Bun Packages</h3>
+            <p>deb.griffo.io provides three different Bun packages to suit different needs:</p>
+            
+            <div class="variant-card">
+                <div class="variant-title">🥟 bun (Recommended)</div>
+                <p><strong>Metapackage</strong> that automatically installs the current stable bun-one. This is the recommended choice for most users as it tracks whichever stable release this free mirror currently serves (newest release at least 2 months old, security fixes immediate).</p>
+                <div class="code-block">sudo apt install bun</div>
+            </div>
+            
+            <div class="variant-card">
+                <div class="variant-title">🚀 bun-one</div>
+                <p><strong>Latest stable release</strong> of Bun runtime. This package contains the production-ready version with optimizations for performance and stability.</p>
+                <div class="code-block">sudo apt install bun-one</div>
+            </div>
+            
+            <div class="variant-card">
+                <div class="variant-title">🔍 bun-profile</div>
+                <p><strong>Profiling-enabled build</strong> of Bun with debugging symbols and profiling capabilities. Ideal for development, debugging, and performance analysis. Slightly larger binary with additional debugging information.</p>
+                <div class="code-block">sudo apt install bun-profile</div>
+            </div>
+        </div>
+
+        <div class="alternatives-box">
+            <h3>🔄 Managing Multiple Bun Versions</h3>
+            <p>You can install both <code>bun-one</code> and <code>bun-profile</code> simultaneously and switch between them using Debian's update-alternatives system:</p>
+            
+            <h4>Install both versions:</h4>
+            <div class="code-block">
+sudo apt install bun-one bun-profile
+            </div>
+            
+            <h4>Configure alternatives (done automatically during package installation):</h4>
+            <div class="code-block">
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-one 100
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-profile 90
+            </div>
+            
+            <h4>Switch between versions interactively:</h4>
+            <div class="code-block">
+sudo update-alternatives --config bun
+            </div>
+            
+            <h4>Check current version:</h4>
+            <div class="code-block">
+bun --version
+which bun
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install Bun</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install bun
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install bun
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Verify Installation</h3>
+            <div class="code-block">
+bun --version
+bun --help
+            </div>
+        </div>
+
+        <h2>🚀 Quick Start Examples</h2>
+        
+        <h3>Create a new project:</h3>
+        <div class="code-block">
+mkdir my-bun-app && cd my-bun-app
+bun init
+        </div>
+        
+        <h3>Install packages (faster than npm):</h3>
+        <div class="code-block">
+bun install express
+bun add -d @types/express
+        </div>
+        
+        <h3>Run TypeScript directly:</h3>
+        <div class="code-block">
+echo 'console.log("Hello from Bun!")' > app.ts
+bun run app.ts
+        </div>
+        
+        <h3>Bundle for production:</h3>
+        <div class="code-block">
+bun build ./app.ts --outdir ./dist --minify
+        </div>
+        
+        <h3>Run tests:</h3>
+        <div class="code-block">
+bun test
+        </div>
+
+        <h2>🔧 Configuration</h2>
+        <p>Bun can be configured using a <code>bunfig.toml</code> file in your project root or home directory:</p>
+        <div class="code-block">
+# bunfig.toml
+[install]
+# Configure package manager behavior
+cache = "~/.bun/install/cache"
+registry = "https://registry.npmjs.org"
+
+[run]
+# Configure script runner
+shell = "bash"
+
+[test]
+# Configure test runner
+preload = ["./setup.ts"]
+        </div>
+
+        <h2>⚡ Performance Benefits</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Package Installation</h4>
+                <p>Up to 25x faster than npm, 4x faster than pnpm for installing dependencies.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🏃 Runtime Performance</h4>
+                <p>4x faster than Node.js for many JavaScript workloads with optimized engine.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Bundling Speed</h4>
+                <p>Native bundler significantly faster than webpack, rollup, or esbuild.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Test Execution</h4>
+                <p>Parallel test execution with built-in runner, faster than Jest or Vitest.</p>
+            </div>
+        </div>
+
+        <h2>📦 Package Build Repository</h2>
+        <p>The Ubuntu packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/bun-debian" target="_blank" rel="noopener">🥟 bun-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h2>🔗 Related Packages</h2>
+        <p>Enhance your development workflow with these complementary tools from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-zig-in-ubuntu.html">Zig Programming Language</a> - Systems programming language</li>
+            <li><a href="/install-latest-uv-in-ubuntu.html">uv Python Manager</a> - Fast Python package manager</li>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Terminal UI for git</li>
+        </ul>
+
+        <h2>📚 Additional Resources</h2>
+        <ul>
+            <li><a href="https://bun.com/" target="_blank" rel="noopener">Official Bun Website</a></li>
+            <li><a href="https://bun.com/docs" target="_blank" rel="noopener">Bun Documentation</a></li>
+            <li><a href="https://github.com/oven-sh/bun" target="_blank" rel="noopener">Bun GitHub Repository</a></li>
+            <li><a href="https://bun.com/guides" target="_blank" rel="noopener">Bun Guides and Tutorials</a></li>
+        </ul>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Install Latest Bun JavaScript Runtime on Ubuntu",
+        "description": "Complete guide to installing Bun JavaScript runtime on Ubuntu Linux with bundler, test runner, and package manager included.",
+        "author": {
+            "@type": "Person",
+            "name": "Dario Griffo"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-01-01",
+        "publisher": {
+            "@type": "Organization",
+            "name": "deb.griffo.io"
+        },
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Bun",
+            "applicationCategory": "JavaScript Runtime",
+            "operatingSystem": "Ubuntu Linux",
+            "description": "Fast all-in-one JavaScript runtime with bundler, test runner, and package manager"
+        }
+    }
+    </script>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Get the parent install-steps container
+            const container = event.target.closest('.install-steps');
+
+            // Hide all tab contents in this container
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons in this container
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to the clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+<div class="tool-extras">
+<section>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>1.3.14</code> — 2026-07-12</li>
+</ul>
+<h2>📚 Release-specific install guides</h2>
+<ul class="release-list">
+<li><a href="/install-bun-on-debian-12-bookworm.html">Install Bun on Debian 12 “Bookworm”</a></li>
+<li><a href="/install-bun-on-debian-13-trixie.html">Install Bun on Debian 13 “Trixie”</a></li>
+<li><a href="/install-bun-on-debian-14-forky.html">Install Bun on Debian 14 “Forky”</a></li>
+<li><a href="/install-bun-on-debian-sid.html">Install Bun on Debian Sid</a></li>
+<li><a href="/install-bun-on-ubuntu-22-04-jammy.html">Install Bun on Ubuntu 22.04 LTS “Jammy Jellyfish”</a></li>
+<li><a href="/install-bun-on-ubuntu-24-04-noble.html">Install Bun on Ubuntu 24.04 LTS “Noble Numbat”</a></li>
+<li><a href="/install-bun-on-ubuntu-25-10-questing.html">Install Bun on Ubuntu 25.10 “Questing Quokka”</a></li>
+<li><a href="/install-bun-on-ubuntu-26-04-resolute.html">Install Bun on Ubuntu 26.04 LTS “Resolute”</a></li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is Bun in the official Ubuntu repositories?</summary><p>No — Bun is not packaged in the official Ubuntu archives. This free mirror serves the newest Bun release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.3.14.</p></details>
+<details><summary>How do I install the latest Bun on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install bun. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Bun in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — Bun is not packaged in the official Ubuntu archives. This free mirror serves the newest Bun release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.3.14."}}, {"@type": "Question", "name": "How do I install the latest Bun on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install bun. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

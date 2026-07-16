@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar Headscale en Debian vía apt — gratis para siempre</title>
+    <meta name="description" content="Instala Headscale en Bookworm, Trixie, Forky y Sid desde el espejo apt gratis para siempre — paquetes firmados con GPG, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Sin cuenta, sin autenticación.">
+    <meta name="keywords" content="headscale debian, instalar headscale debian, headscale, servidor de control tailscale, vpn autoalojada, malla wireguard, servidor de coordinación tailscale, paquetes debian, bookworm, trixie, sid, apt headscale">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-headscale-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-headscale-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-headscale-in-debian.html">
+    <meta property="og:title" content="Instalar Headscale en Debian vía apt — gratis para siempre">
+    <meta property="og:description" content="Instala Headscale en Bookworm, Trixie, Forky y Sid desde el espejo apt gratis para siempre — paquetes firmados con GPG, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Sin cuenta, sin autenticación.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Gratis para siempre — garantizado por las licencias
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada herramienta aquí es open source; su licencia garantiza el derecho a usarla y redistribuirla. Este espejo es esa promesa en la práctica: la versión más reciente de cada paquete con <strong>al menos 2 meses de antigüedad</strong>, servida <strong>gratis para siempre</strong> — sin cuenta, sin autenticación.<br>
+            Las correcciones de seguridad y los parches se publican <strong>de inmediato</strong>. ¿Quieres cada versión pocas horas después del upstream? Para eso está el repositorio principal en <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>¿Preguntas o problemas?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🕸️ Instalar Headscale en Debian</h1>
+        <p class="subtitle">Implementación autoalojada del servidor de control de Tailscale</p>
+        <div class="version-badge">Plan gratis para siempre: máximo 2 meses de retraso respecto al upstream · correcciones de seguridad inmediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.29.2 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 no empaquetado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver a la página principal</a>
+
+        <h2>¿Qué es Headscale?</h2>
+        <p>Headscale es una <strong>implementación de código abierto y autoalojada del servidor de control de Tailscale</strong>. Te permite ejecutar tu propio servidor de coordinación para una red mesh privada basada en WireGuard, de modo que tus dispositivos puedan conectarse entre sí de forma segura sin depender del plano de control alojado de Tailscale — mientras sigues usando los clientes estándar de Tailscale.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> Headscale evoluciona junto con el protocolo de Tailscale, añadiendo soporte para nuevas funciones de cliente, mejoras en las ACL y correcciones de estabilidad. Ejecutar la última versión te mantiene compatible con los clientes actuales de Tailscale.
+        </div>
+
+        <h3>⚡ Características clave de Headscale</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔐 Plano de control autoalojado</h4>
+                <p>Ejecuta tu propio servidor de coordinación — sin depender de un servicio alojado por terceros.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Malla WireGuard</h4>
+                <p>Conectividad punto a punto rápida y cifrada entre todos tus dispositivos.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📱 Clientes estándar</h4>
+                <p>Funciona con los clientes oficiales de Tailscale en escritorio, móvil y servidores.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📜 Políticas ACL</h4>
+                <p>Reglas de control de acceso granular para segmentar y proteger tu red.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 ¿Por qué Headscale?</h4>
+            <ul>
+                <li><strong>Control total:</strong> Eres dueño del servidor de coordinación y de los datos de tu red</li>
+                <li><strong>Sin dependencia de proveedor:</strong> Alternativa de código abierto al plano de control alojado</li>
+                <li><strong>Usa clientes oficiales:</strong> Conserva la experiencia pulida de la app de Tailscale</li>
+                <li><strong>Ligero:</strong> Un único binario de Go fácil de desplegar</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Aspectos destacados</h3>
+        <ul>
+            <li><strong>Servidor de coordinación:</strong> Plano de control de Tailscale autoalojado</li>
+            <li><strong>WireGuard:</strong> Redes mesh modernas y cifradas</li>
+            <li><strong>ACL:</strong> Control de acceso basado en políticas</li>
+            <li><strong>Multiusuario:</strong> Espacios de nombres para separar dispositivos y usuarios</li>
+        </ul>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar headscale</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest headscale
+sudo apt install headscale
+
+# Verify installation
+headscale version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest headscale
+apt install headscale
+
+# Verify installation
+headscale version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Ejemplos básicos de uso</h3>
+        <div class="code-block">
+# Show version
+headscale version
+
+# Create a user
+headscale users create alice
+
+# Generate a pre-auth key for a user
+headscale preauthkeys create --user alice --reusable
+
+# List connected nodes
+headscale nodes list
+
+# Serve the control server
+headscale serve
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Comparación de repositorios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> A menudo meses por detrás, sin las últimas funciones</li>
+                <li><strong>deb.griffo.io (principal):</strong> Cada versión pocas horas después del upstream</li>
+                <li><strong>Instalación manual:</strong> Requiere descargas manuales y configuración del PATH</li>
+                <li><strong>Nuestro repositorio:</strong> Paquetes prediseñados y listos para usar</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Actualizaciones regulares:</strong> Recibe las funciones y mejoras con como máximo 2 meses de retraso, gratis para siempre</li>
+            <li>✅ <strong>Sin configuración manual:</strong> Binarios prediseñados, instalados y actualizados mediante apt</li>
+            <li>✅ <strong>Actualizaciones automáticas:</strong> Paquetes actualizados vía apt; las correcciones de seguridad se publican de inmediato</li>
+            <li>✅ <strong>Dependencias correctas:</strong> Correctamente empaquetado con todas las bibliotecas necesarias</li>
+            <li>✅ <strong>Multi-distribución:</strong> Funciona en Bookworm, Trixie y Sid</li>
+            <li>✅ <strong>Mantenimiento sencillo:</strong> Comandos apt simples para las actualizaciones</li>
+        </ul>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Debian se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/headscale-debian" target="_blank" rel="noopener">📁 headscale-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde deb.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-garage-in-debian.html">Garage</a> - Almacenamiento de objetos distribuido compatible con S3</li>
+            <li><a href="/es/install-latest-forgejo-in-debian.html">Forgejo</a> - Forja de software ligera y autoalojada</li>
+            <li><a href="/es/install-latest-k9s-in-debian.html">k9s</a> - Interfaz de terminal para clústeres de Kubernetes</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Autoalojadores y organizaciones que quieren una VPN mesh privada y segura usando los clientes de Tailscale, pero con control total sobre el servidor de coordinación y sus datos.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoyar este proyecto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                ¡Si este repositorio te ahorra tiempo y esfuerzo, considera apoyarlo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dar estrella en GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartir en Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar Headscale en Debian",
+    "description": "Guía completa para instalar Headscale en Debian usando el repositorio deb.griffo.io para paquetes del espejo gratuito, con como máximo 2 meses de retraso respecto al upstream.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Headscale",
+        "applicationCategory": "Networking Tool",
+        "operatingSystem": "Debian Linux",
+        "description": "Una implementación de código abierto y autoalojada del servidor de control de Tailscale para construir redes mesh privadas con WireGuard."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimas versiones publicadas en deb.griffo.io (repositorio principal)</h2>
+<ul class="release-list">
+<li><code>0.29.2</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está Headscale en los repositorios oficiales de Debian?</summary><p>No — Headscale no está empaquetado en los archivos oficiales de Debian. Este espejo gratuito ofrece la versión más reciente de Headscale con al menos 2 meses de antigüedad; el repositorio principal en deb.griffo.io ofrece cada versión pocas horas después del upstream.</p></details>
+<details><summary>¿Cómo instalo el último Headscale en Debian?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install headscale. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Debian son compatibles?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está Headscale en los repositorios oficiales de Debian?", "acceptedAnswer": {"@type": "Answer", "text": "No — Headscale no está empaquetado en los archivos oficiales de Debian. Este espejo gratuito ofrece la versión más reciente de Headscale con al menos 2 meses de antigüedad; el repositorio principal en deb.griffo.io ofrece cada versión pocas horas después del upstream."}}, {"@type": "Question", "name": "¿Cómo instalo el último Headscale en Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install headscale. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Debian son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos los derechos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Términos y Condiciones</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка uv в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите uv в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="uv debian, установить uv debian, менеджер пакетов python, быстрая замена pip, инструменты python на rust, пакеты debian, bookworm, trixie, sid, astral-sh, apt uv">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-uv-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-uv-in-debian.html">
+    <meta property="og:title" content="Установка uv в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите uv в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐍 Установка uv в Debian</h1>
+        <p class="subtitle">Чрезвычайно быстрый менеджер пакетов и проектов Python</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.11.29 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">0.9.17 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-uv-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-uv-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-uv-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-uv-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое uv?</h2>
+        <p>uv — это <strong>чрезвычайно быстрый менеджер пакетов и проектов Python</strong>, написанный на Rust компанией Astral (создателями Ruff). Он разработан как единый инструмент, заменяющий pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv и многое другое, обеспечивая <strong>производительность в 10-100 раз выше</strong>, чем традиционные инструменты Python.</p>
+
+        <div class="benchmark-box">
+            <strong>⚡ Бенчмарки производительности:</strong>
+            <ul>
+                <li><strong>В 10-100 раз быстрее</strong> pip при установке пакетов</li>
+                <li><strong>Разрешает зависимости</strong> за миллисекунды вместо секунд</li>
+                <li><strong>Глобальный кэш</strong> для дедупликации зависимостей с экономией дискового пространства</li>
+                <li><strong>Параллельные загрузки</strong> и установки</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> uv активно развивается с частыми релизами, содержащими значительные улучшения производительности, новые функции и расширенную совместимость с экосистемой Python. Последние версии включают функции управления проектами, управление версиями Python и существенные улучшения рабочего процесса.
+        </div>
+
+        <h3>⚡ Ключевые возможности uv</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Молниеносная скорость</h4>
+                <p>В 10-100 раз быстрее pip благодаря производительности Rust. Параллельные загрузки, эффективное кэширование и оптимизированное разрешение зависимостей.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Управление проектами</h4>
+                <p>Комплексное управление проектами с универсальными lock-файлами, поддержкой рабочих пространств и отслеживанием зависимостей, аналогично Poetry.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐍 Управление версиями Python</h4>
+                <p>Установка нескольких версий Python и управление ими. Загрузка нужных версий Python по мере необходимости, беспроблемное переключение между ними.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Управление инструментами</h4>
+                <p>Запуск и установка инструментов Python с помощью uvx (как pipx). Выполнение инструментов во временных окружениях или глобальная установка.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📜 Поддержка скриптов</h4>
+                <p>Запуск однофайловых скриптов с встроенными метаданными зависимостей. Автоматическое создание окружений и управление зависимостями.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔩 Совместимость с pip</h4>
+                <p>Замена pip, pip-tools и virtualenv с привычным CLI и расширенными функциями, такими как платформонезависимое разрешение зависимостей.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить uv</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest uv
+sudo apt install uv
+
+# Проверить установку
+uv --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest uv
+apt install uv
+
+# Проверить установку
+uv --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Управление проектами:</strong></p>
+        <div class="code-block">
+# Create new Python project
+uv init my-project
+cd my-project
+
+# Add dependencies
+uv add requests pandas
+
+# Run project
+uv run python main.py
+
+# Sync dependencies
+uv sync
+        </div>
+
+        <p><strong>Замена команд pip:</strong></p>
+        <div class="code-block">
+# Create virtual environment
+uv venv
+
+# Install packages (much faster than pip)
+uv pip install requests numpy pandas
+
+# Compile requirements
+uv pip compile requirements.in
+
+# Sync requirements
+uv pip sync requirements.txt
+        </div>
+
+        <p><strong>Управление версиями Python:</strong></p>
+        <div class="code-block">
+# Install Python versions
+uv python install 3.11 3.12 3.13
+
+# Use specific Python version
+uv python pin 3.12
+
+# Run with specific Python
+uv run --python 3.11 python script.py
+        </div>
+
+        <p><strong>Управление инструментами:</strong></p>
+        <div class="code-block">
+# Run tool in ephemeral environment
+uvx black .
+uvx ruff check
+
+# Install tool globally
+uv tool install black
+uv tool install ruff
+
+# List installed tools
+uv tool list
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Сравнение методов установки:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> Часто устаревшие версии без новейших функций</li>
+                <li><strong>pip install:</strong> Медленнее, требует предустановленного Python</li>
+                <li><strong>Curl-установщик:</strong> Ручные обновления, без управления пакетами</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последняя производительность:</strong> Получайте новейшие улучшения скорости и оптимизации</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Без ручной настройки:</strong> Готовые бинарные файлы, компиляция Rust не требуется</li>
+            <li>✅ <strong>Правильная интеграция:</strong> Корректно упакован с системными зависимостями</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <div class="benchmark-box">
+            <h4>🏆 Почему uv революционен</h4>
+            <ul>
+                <li><strong>Скорость:</strong> Реализация на Rust обеспечивает улучшение производительности в 10-100 раз</li>
+                <li><strong>Единый инструмент:</strong> Заменяет несколько инструментов Python одним бинарным файлом</li>
+                <li><strong>Современные функции:</strong> Lock-файлы, рабочие пространства и расширенное разрешение зависимостей</li>
+                <li><strong>Совместимость:</strong> Полноценная замена для существующих рабочих процессов</li>
+                <li><strong>Надёжность:</strong> Детерминированные сборки и воспроизводимые окружения</li>
+            </ul>
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/uv-debian" target="_blank" rel="noopener">🐍 uv-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zig-in-debian.html">Язык программирования Zig</a> — современное системное программирование</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — быстрый терминал для разработки</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> — улучшенный поиск по командам</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Python-разработчиков, которым нужно более быстрое управление пакетами, команд с потребностью в воспроизводимых окружениях, тех, кто устал от медленных операций pip, и проектов, требующих современного инструментария Python с высокой производительностью.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка uv Python Package Manager в Debian",
+    "description": "Полное руководство по установке менеджера пакетов Python uv в Debian с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "uv",
+        "applicationCategory": "Package Manager",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Чрезвычайно быстрый менеджер пакетов и проектов Python, написанный на Rust, в 10-100 раз быстрее pip"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.11.29</code> — 2026-07-15</li>
+<li><code>0.11.28</code> — 2026-07-12</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли uv в официальных репозиториях Debian?</summary><p>Да — официальный архив Debian поставляет uv 0.9.17. Это бесплатное зеркало предлагает новейший релиз uv возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию uv в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install uv. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли uv в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Да — официальный архив Debian поставляет uv 0.9.17. Это бесплатное зеркало предлагает новейший релиз uv возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию uv в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install uv. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

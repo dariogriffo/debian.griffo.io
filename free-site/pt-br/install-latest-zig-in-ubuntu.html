@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar Zig no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale Zig no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="zig ubuntu, instalar zig ubuntu, linguagem zig, programação de sistemas, pacotes ubuntu, jammy, noble, apt zig">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zig-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zig-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-zig-in-ubuntu.html">
+    <meta property="og:title" content="Instalar Zig no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale Zig no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🇿 Instalar Zig no Ubuntu</h1>
+        <p class="subtitle">Linguagem de programação de sistemas moderna e conjunto de ferramentas</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.16.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-zig-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-zig-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-zig-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a></div>
+
+        <h2>O que é Zig?</h2>
+        <p>Zig é uma <strong>linguagem de programação de sistemas moderna</strong> e um conjunto de ferramentas projetado para criar software robusto, otimizado e reutilizável. Com suporte a compilação cruzada de primeira classe, gerenciamento de memória explícito e integração perfeita com C, o Zig está se tornando uma escolha popular para programação de sistemas de alto desempenho.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as versões mais recentes importam:</strong> O Zig está evoluindo rapidamente, com novos lançamentos trazendo melhorias significativas de desempenho, novas funcionalidades de linguagem e melhor compatibilidade com ferramentas. Manter-se atualizado garante acesso às últimas otimizações e correções de bugs.
+        </div>
+
+        <h3>⚡ Principais Recursos do Zig</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔧 Compilação Cruzada</h4>
+                <p>Suporte de primeira classe para compilação cruzada. Compile para qualquer alvo a partir de qualquer sistema sem configuração complexa de ferramentas.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛡️ Sem Comportamento Indefinido</h4>
+                <p>Zig elimina comportamento indefinido com verificações explícitas em tempo de compilação e execução, tornando o código mais seguro e previsível.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔗 Interoperabilidade com C</h4>
+                <p>Importação direta de arquivos de cabeçalho C, sem necessidade de bindings. Integra-se perfeitamente com bibliotecas C e bases de código existentes.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Gerenciamento de Pacotes</h4>
+                <p>Sistema de pacotes integrado com resolução de dependências determinística e suporte a múltiplos registros de pacotes.</p>
+            </div>
+            <div class="feature-card">
+                <h4>⚡ Desempenho</h4>
+                <p>Desempenho comparável ao C/C++ com segurança melhorada. Controle explícito sobre alocação de memória e layout de dados.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Testes Integrados</h4>
+                <p>Framework de testes nativo com `zig test`. Escreva e execute testes sem dependências externas.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir de deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+<div class="install-steps">
+            <h3>Passo 2: Instalar Zig</h3>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Instalar a versão estável mais recente do Zig
+sudo apt install zig
+
+# Ou instalar builds noturnos para recursos de ponta
+sudo apt install zig-master
+
+# Verificar instalação
+zig version
+                </div>
+            </div>
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Instalar a versão estável mais recente do Zig
+apt install zig
+
+# Ou instalar builds noturnos para recursos de ponta
+apt install zig-master
+
+# Verificar instalação
+zig version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+        <p><strong>Criar e executar um programa Zig:</strong></p>
+        <div class="code-block">
+# Criar novo projeto Zig
+mkdir hello-world && cd hello-world
+zig init
+
+# Compilar e executar
+zig build run
+
+# Compilar apenas
+zig build
+
+# Executar testes
+zig build test
+        </div>
+
+        <p><strong>Compilação cruzada:</strong></p>
+        <div class="code-block">
+# Compilar para Windows a partir do Linux
+zig build-exe main.zig -target x86_64-windows
+
+# Compilar para macOS
+zig build-exe main.zig -target aarch64-macos
+
+# Listar alvos disponíveis
+zig targets
+        </div>
+
+        <h2>🚀 Por que escolher deb.griffo.io?</h2>
+        <ul>
+            <li>✅ <strong>Grátis Para Sempre:</strong> Obtenha a versão mais recente do Zig com pelo menos 2 meses, grátis para sempre</li>
+            <li>✅ <strong>Estável e Noturno:</strong> Ambas as versões estável e de ponta disponíveis</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Dependências Corretas:</strong> Empacotado corretamente com todas as dependências necessárias</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Fácil Manutenção:</strong> Comandos apt padrão para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente nestes repositórios do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zig-debian" target="_blank" rel="noopener">🇿 zig-debian (estável)</a> - Builds de versão estável</li>
+            <li><a href="https://github.com/dariogriffo/zig-master-debian" target="_blank" rel="noopener">🇿 zig-master-debian (noturno)</a> - Builds de desenvolvimento noturno</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível em deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-zls-in-ubuntu.html">ZLS Language Server</a> - Suporte IDE para Zig</li>
+            <li><a href="/pt-br/install-latest-zed-in-ubuntu.html">Editor Zed</a> - Editor de código de alto desempenho</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Desenvolvedores de sistemas que precisam de desempenho equivalente ao C com segurança melhorada, projetos de compilação cruzada, trabalho com bases de código C/C++ existentes, e qualquer pessoa interessada na próxima geração de linguagens de programação de sistemas.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a versão mais recente de Zig no Ubuntu",
+    "description": "Guia completo para instalar o Zig mais recente no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zig",
+        "applicationCategory": "Linguagem de Programação",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Linguagem de programação de sistemas moderna e conjunto de ferramentas"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => { content.classList.remove('active'); });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => { button.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.16.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O Zig está nos repositórios oficiais do Ubuntu?</summary><p>Não — Zig não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do Zig com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o Zig mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install zig-stable. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Zig está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Não — Zig não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do Zig com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o Zig mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install zig-stable. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

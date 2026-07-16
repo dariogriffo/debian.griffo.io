@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Debian 上通过 apt 安装 TigerBeetle — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Bookworm、Trixie、Forky 和 Sid 上安装 TigerBeetle — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="tigerbeetle debian, install tigerbeetle debian, financial database, distributed database, OLTP database, ledger database, debian packages, bookworm, trixie, sid, apt tigerbeetle">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-tigerbeetle-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-debian.html">
+    <meta property="og:title" content="在 Debian 上通过 apt 安装 TigerBeetle — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Bookworm、Trixie、Forky 和 Sid 上安装 TigerBeetle — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐯 安装最新的 TigerBeetle 在 Debian 上</h1>
+        <p class="subtitle">The financial transactions database designed for mission-critical safety and performance</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.17.9 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+        
+        <h2>什么是 TigerBeetle？</h2>
+        <p>TigerBeetle is a <strong>distributed financial transactions database</strong> designed for mission-critical safety and performance to power the next 30 years of Online Transaction Processing (OLTP). Written in Zig, it delivers 1000x faster performance than traditional databases while maintaining strict serializability and indestructible durability.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> TigerBeetle releases weekly with continuous improvements to performance, safety, and features. The latest versions include protocol optimizations, enhanced fault tolerance, and critical bug fixes that ensure your financial transactions are processed correctly and efficiently.
+        </div>
+
+        <h3>⚡ Key Features of TigerBeetle</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 1000x Faster OLTP</h4>
+                <p>Purpose-built for transaction processing with 100K-500K TPS throughput and predictable low P100 latency. Executes thousands of transactions in a single query with zero lock contention.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>💰 Debit/Credit Strict Consistency</h4>
+                <p>Enforces double-entry accounting with strict serializability by default. Every debit has an equal and opposite credit, guaranteed by the database with no anomalies or caveats.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>☁️ Multi-Cloud High Availability</h4>
+                <p>Runs across AWS, GCP, and Azure simultaneously with Viewstamped Replication (VSR) consensus. Automated failover and flexible quorums ensure uninterrupted transaction processing.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🛡️ Indestructible Durability</h4>
+                <p>Replicated write-ahead log with end-to-end 128-bit checksums and protocol-aware recovery. Survives disk corruption, misdirected I/O, and even helical fault injection.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎯 Universal Schema</h4>
+                <p>Debit/credit model with accounts and transfers provides a minimal and complete schema for any exchange of value across any domain - from banking to gaming to energy.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔬 Extreme Engineering</h4>
+                <p>TigerStyle methodology applies NASA's Power of 10 Rules with static allocation and 6,000+ assertion tripwires. Deterministic simulation testing runs 2000 years of faults every 24 hours.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>📊 Performance Benchmarks</h4>
+            <ul>
+                <li><strong>100K-500K TPS:</strong> Sustained throughput under 90% contention</li>
+                <li><strong>100ms P100 Latency:</strong> Predictable tail latencies at peak load</li>
+                <li><strong>100B+ Transactions:</strong> Store billions in one cluster with tiered storage</li>
+                <li><strong>1B+ Accounts:</strong> Scale to billions of accounts with 20+ indexes</li>
+                <li><strong>6 Replicas:</strong> Replicated, never partitioned for maximum consistency</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 永久免费，安全修复立即发布：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本免费镜像提供发布至少 2 个月的最新版本，永久免费；安全修复立即发布。如需在上游发布后数小时内获取每个版本，请使用主仓库 deb.griffo.io。只需 <code>apt upgrade</code> 即可获取免费通道内的最新构建。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 TigerBeetle</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest TigerBeetle
+sudo apt install tigerbeetle
+
+# Verify installation
+tigerbeetle version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest TigerBeetle
+apt install tigerbeetle
+
+# Verify installation
+tigerbeetle version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Quick Start Example</h3>
+
+        <p><strong>Create and start a TigerBeetle cluster:</strong></p>
+        <div class="code-block">
+# Format a data file for replica 0
+tigerbeetle format --cluster=0 --replica=0 --replica-count=1 0_0.tigerbeetle
+
+# Start the replica
+tigerbeetle start --addresses=3000 0_0.tigerbeetle
+        </div>
+
+        <p><strong>Basic usage with Node.js client:</strong></p>
+        <div class="code-block">
+const { createClient } = require('tigerbeetle-node');
+
+const client = createClient({
+  cluster_id: 0n,
+  replica_addresses: ['3000']
+});
+
+// Create accounts
+const accounts = [{
+  id: 1n,
+  ledger: 1,
+  code: 1,
+  flags: 0,
+}];
+
+await client.createAccounts(accounts);
+
+// Create transfers
+const transfers = [{
+  id: 1n,
+  debit_account_id: 1n,
+  credit_account_id: 2n,
+  amount: 100n,
+  ledger: 1,
+  code: 1,
+}];
+
+await client.createTransfers(transfers);
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="performance-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> TigerBeetle not available in official repositories</li>
+                <li><strong>Manual Download:</strong> Weekly releases require manual updates</li>
+                <li><strong>Docker Only:</strong> Limited to containerized deployments</li>
+                <li><strong>deb.griffo.io:</strong> Latest version with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Performance:</strong> Get newest optimizations and features immediately</li>
+            <li>✅ <strong>Weekly Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Native Installation:</strong> No Docker required, runs directly 在 Debian 上</li>
+            <li>✅ <strong>Production Ready:</strong> Battle-tested with Apache 2.0 license</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/tigerbeetle-debian" target="_blank" rel="noopener">🐯 tigerbeetle-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-zig-in-debian.html">Zig Programming Language</a> - TigerBeetle is written in Zig</li>
+            <li><a href="/cn/install-latest-zls-in-debian.html">ZLS Language Server</a> - For Zig development</li>
+            <li><a href="/cn/install-latest-lazydocker-in-debian.html">lazydocker</a> - Docker management tool</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Financial services building payment systems, fintech companies needing ledger infrastructure, gaming platforms with virtual economies, energy companies managing smart meter transactions, and any application requiring strict consistency and extreme performance for financial transactions.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 TigerBeetle Database 在 Debian 上",
+    "description": "Complete guide to installing the latest TigerBeetle financial transactions database 在 Debian 上 using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-01-09",
+    "dateModified": "2025-01-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "TigerBeetle",
+        "applicationCategory": "Database",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "为关键任务安全性设计的分布式金融交易数据库 and performance"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.17.9</code> — 2026-07-09</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>TigerBeetle 在官方 Debian 软件源中吗？</summary><p>不在 — 官方 Debian 源没有打包 TigerBeetle。本免费镜像提供发布至少 2 个月的最新 TigerBeetle 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Debian 上安装最新版 TigerBeetle？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "TigerBeetle 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Debian 源没有打包 TigerBeetle。本免费镜像提供发布至少 2 个月的最新 TigerBeetle 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 TigerBeetle？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
+

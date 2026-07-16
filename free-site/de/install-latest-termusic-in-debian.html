@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termusic auf Debian installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="Termusic auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="termusic debian, install termusic debian, terminal music player, rust music player, podcast player, debian packages, bookworm, trixie, sid, tramhao, apt termusic">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-termusic-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-termusic-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-termusic-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-termusic-in-debian.html">
+    <meta property="og:title" content="Termusic auf Debian installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="Termusic auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🎵 Neueste installieren termusic auf Debian</h1>
+        <p class="subtitle">Terminal-Musik- und Podcast-Player written in Rust</p>
+        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.13.2 ✅</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+        
+        <h2>Was ist termusic?</h2>
+        <p>termusic is a <strong>comprehensive terminal music and podcast player</strong> written in Rust by tramhao. It allows you to listen to music and podcasts freely - both in terms of freedom and free of charge. With over 1.5k GitHub stars, it provides a full-featured music experience directly in your terminal with album covers, lyrics, and multiple audio backends.</p>
+
+        <div class="freedom-box">
+            <strong>🆓 Freedom Philosophy:</strong>
+            <ul>
+                <li><strong>Freedom:</strong> No dependence on online service providers or complicated copyright restrictions</li>
+                <li><strong>Free of charge:</strong> Download from YouTube, NetEase, Migu, and KuGou without monthly subscriptions</li>
+                <li><strong>Your music:</strong> Play your local collection without platform limitations</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> termusic is actively developed with frequent releases containing new features, performance improvements, and enhanced audio format support. The latest versions include better podcast support, improved album cover display, and enhanced streaming capabilities.
+        </div>
+
+        <h3>⚡ Key Features of termusic</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Album Cover Display</h4>
+                <p>Shows album covers directly in terminal using Kitty, iTerm2, Sixel protocols, or ueberzug. Visual music experience in text mode.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📻 Podcast Support</h4>
+                <p>Full podcast player with RSS feed support, episode management, and streaming capabilities. Listen to your favorite shows in terminal.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔊 Multiple Backends</h4>
+                <p>Symphonia (Rust), GStreamer, and MPV backends for maximum format compatibility and performance options.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📥 Download Integration</h4>
+                <p>Built-in support for yt-dlp and FFmpeg to download music from various online sources including YouTube.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🏷️ Tag Editor</h4>
+                <p>Built-in metadata editor for organizing your music collection. Edit tags, album art, and file information directly.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎼 Lyrics Support</h4>
+                <p>Display synchronized lyrics with timestamp adjustment. Enhanced music experience with lyric viewing and editing.</p>
+            </div>
+        </div>
+
+        <h3>🎵 Supported Audio Formats</h3>
+        <div class="freedom-box">
+            <ul>
+                <li><strong>Lossless:</strong> FLAC, AIFF, WAV</li>
+                <li><strong>Compressed:</strong> MP3, M4A, Opus, Ogg Vorbis</li>
+                <li><strong>Streaming:</strong> WebM, MKV (codec dependent)</li>
+                <li><strong>Metadata:</strong> Full tag support for most formats</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Für immer kostenlos, mit eingebauter Verzögerung:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository liefert stattdessen das jeweils neueste Release, sobald es mindestens 2 Monate alt ist, für immer kostenlos; Sicherheits- und Patch-Fixes erscheinen sofort. Wer jedes Release wenige Stunden nach Upstream möchte, nutzt das Haupt-Repository auf deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Installieren termusic</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest termusic
+sudo apt install termusic
+
+# Installation überprüfen
+termusic --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest termusic
+apt install termusic
+
+# Installation überprüfen
+termusic --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+        
+        <p><strong>Launch termusic:</strong></p>
+        <div class="code-block">
+# Start termusic
+termusic
+
+# Start with specific music directory
+termusic --music-dir ~/Music
+
+# Start server mode for remote control
+termusic-server
+        </div>
+
+        <p><strong>Essential controls:</strong></p>
+        <div class="code-block">
+# Playback
+Space         - Play/Pause
+n             - Next track
+p             - Previous track
+r             - Repeat mode
+s             - Shuffle mode
+
+# Navigation
+j/k or ↑/↓    - Move up/down
+Enter         - Select/Play
+Tab           - Switch panels
+q             - Quit
+
+# Volume
++/-           - Volume up/down
+m             - Mute
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+        
+        <div class="freedom-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> Available in some versions but often outdated</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and complex dependencies</li>
+                <li><strong>deb.griffo.io:</strong> Neuestes Release, mindestens 2 Monate alt — für immer kostenlos</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get newest audio format support and player features</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built with all backends and dependencies</li>
+            <li>✅ <strong>Automatic Updates:</strong> Security fixes ship immediately; the newest release available is always at least 2 months old</li>
+            <li>✅ <strong>Complete Package:</strong> Includes all audio backends and cover protocols</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/termusic-debian" target="_blank" rel="noopener">🎵 termusic-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-lowfi-in-debian.html">lowfi</a> - Simple lofi music player</li>
+            <li><a href="/de/install-latest-yazi-in-debian.html">Yazi File Manager</a> - Browse music files efficiently</li>
+            <li><a href="/de/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Search music collections</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Music enthusiasts who want comprehensive terminal audio experience, podcast listeners, developers who prefer terminal applications, and anyone seeking freedom from subscription-based music platforms.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neueste installieren termusic auf Debian",
+    "description": "Complete guide to installing the latest termusic player auf Debian using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "termusic",
+        "applicationCategory": "Media Player",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Terminal-Musik- und Podcast-Player written in Rust with album covers, lyrics, and multiple backends"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.13.2</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Termusic in den offiziellen Debian-Paketquellen?</summary><p>Nein — Termusic ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Termusic-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste Termusic unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install termusic. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Termusic in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Termusic ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Termusic-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Termusic unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install termusic. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

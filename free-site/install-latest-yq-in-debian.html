@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install yq on Debian via apt — Free Forever</title>
+    <meta name="description" content="Install yq on Bookworm, Trixie, Forky and Sid from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta name="keywords" content="yq debian, install yq debian, yq apt, yaml processor, yaml cli, mikefarah yq, jq for yaml, yq v4, debian packages, bookworm, trixie, sid, apt yq">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-yq-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-yq-in-debian.html">
+    <meta property="og:title" content="Install yq on Debian via apt — Free Forever">
+    <meta property="og:description" content="Install yq on Bookworm, Trixie, Forky and Sid from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>📑 Install Latest yq on Debian</h1>
+        <p class="subtitle">A portable command-line YAML, JSON, XML, CSV and TOML processor</p>
+        <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">4.53.3 ✅</td></tr>
+<tr><td>Official Debian</td><td class="vc-lose">🚫 not packaged</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-yq-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-yq-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-yq-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-yq-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>What is yq?</h2>
+        <p>yq is a <strong>lightweight, portable command-line processor for structured data</strong> — YAML, JSON, XML, CSV, TOML and properties files — written in Go by Mike Farah. It uses jq-like syntax, so everything you know from jq transfers directly: query, transform, merge, and edit files in place, in scripts and pipelines, with a single dependency-free binary.</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ Which yq is this?</strong> This is <strong>mikefarah/yq (v4.x, Go)</strong> — the one used in most CI examples and documentation. It is not the python-based <code>yq</code> jq-wrapper found in some archives; this package supersedes it cleanly, and no python or jq is required.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Free forever, patched immediately:</strong> Debian and Ubuntu freeze package versions when a release ships; this free mirror instead serves the newest release once it is at least 2 months old, with security fixes published immediately. Want every release within hours instead? That's the main repository at deb.griffo.io.
+        </div>
+
+        <h3>⚡ Key Features of yq</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔄 Six Formats</h4>
+                <p>YAML, JSON, XML, CSV/TSV, TOML and properties — read one, output another: <code>yq -o=json '.' config.yaml</code> converts in one step.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 jq-like Syntax</h4>
+                <p>Familiar paths, pipes, functions and operators. If you can write a jq filter, you can already use yq on YAML.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✏️ In-place Editing</h4>
+                <p><code>yq -i '.spec.replicas = 3' deploy.yaml</code> — scripted edits to Kubernetes manifests, CI configs and Compose files, comments preserved.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Zero Dependencies</h4>
+                <p>A single static Go binary. No runtime, no libraries, no python — ideal for minimal containers and CI runners.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔀 Merge &amp; Anchors</h4>
+                <p>Deep-merges multiple files, resolves YAML anchors and aliases, handles multi-document streams — the hard YAML cases done right.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📖 Man Page Included</h4>
+                <p>This package ships the full man page alongside the binary — <code>man yq</code> works offline, matching Debian conventions.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Why install it with apt?</h4>
+            <ul>
+                <li><strong>Fleet-friendly:</strong> pin one repo in your base images and every server, container and CI runner gets the same current yq</li>
+                <li><strong>No curl-to-bin:</strong> a GPG-signed repository instead of downloading binaries into <code>/usr/local/bin</code> by hand</li>
+                <li><strong>The right yq:</strong> guarantees mikefarah/yq v4 semantics everywhere — no surprises from the python wrapper on some machines</li>
+                <li><strong>Automatic updates:</strong> new upstream releases arrive with your normal <code>apt upgrade</code></li>
+                <li><strong>Multi-arch:</strong> amd64, arm64, armhf, ppc64el, s390x, riscv64 and i386</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install yq</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y yq
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y yq
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 First run</h2>
+        <div class="code-block">
+yq '.services | keys' docker-compose.yml     # query
+yq -i '.image.tag = "1.2.3"' values.yaml     # edit in place
+yq -o=json '.' config.yaml                   # YAML -> JSON
+        </div>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Debian packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/yq-debian" target="_blank" rel="noopener">📂 yq-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-k9s-in-debian.html">k9s</a> - Kubernetes TUI — pairs with yq for manifest wrangling</li>
+            <li><a href="/install-latest-lazydocker-in-debian.html">lazydocker</a> - Docker TUI for the Compose files you just edited</li>
+            <li><a href="/install-latest-just-in-debian.html">just</a> - A command runner to wrap your yq one-liners</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> DevOps engineers editing Kubernetes manifests and Helm values, CI/CD pipelines transforming configuration, sysadmins scripting against YAML/JSON APIs, and anyone who wants jq ergonomics for every config format.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20yq,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest yq YAML Processor on Debian",
+    "description": "Complete guide to installing yq (mikefarah, v4) YAML/JSON/XML processor on Debian using the deb.griffo.io repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "yq",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "A portable command-line YAML, JSON, XML, CSV and TOML processor with jq-like syntax"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>4.53.3</code> — 2026-07-14</li>
+</ul>
+<h2>📚 Release-specific install guides</h2>
+<ul class="release-list">
+<li><a href="/install-yq-on-debian-12-bookworm.html">Install yq on Debian 12 “Bookworm”</a></li>
+<li><a href="/install-yq-on-debian-13-trixie.html">Install yq on Debian 13 “Trixie”</a></li>
+<li><a href="/install-yq-on-debian-14-forky.html">Install yq on Debian 14 “Forky”</a></li>
+<li><a href="/install-yq-on-debian-sid.html">Install yq on Debian Sid</a></li>
+<li><a href="/install-yq-on-ubuntu-22-04-jammy.html">Install yq on Ubuntu 22.04 LTS “Jammy Jellyfish”</a></li>
+<li><a href="/install-yq-on-ubuntu-24-04-noble.html">Install yq on Ubuntu 24.04 LTS “Noble Numbat”</a></li>
+<li><a href="/install-yq-on-ubuntu-25-10-questing.html">Install yq on Ubuntu 25.10 “Questing Quokka”</a></li>
+<li><a href="/install-yq-on-ubuntu-26-04-resolute.html">Install yq on Ubuntu 26.04 LTS “Resolute”</a></li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is yq in the official Debian repositories?</summary><p>No — yq is not packaged in the official Debian archives. This free mirror serves the newest yq release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.53.3.</p></details>
+<details><summary>How do I install the latest yq on Debian?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install yq. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Debian releases are supported?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is yq in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — yq is not packaged in the official Debian archives. This free mirror serves the newest yq release that is at least 2 months old; the main repository at deb.griffo.io serves every release within hours of upstream.53.3."}}, {"@type": "Question", "name": "How do I install the latest yq on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install yq. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

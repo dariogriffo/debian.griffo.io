@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Ubuntu 上通过 apt 安装 Oh My Posh — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Oh My Posh — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="oh my posh ubuntu, install oh-my-posh ubuntu, oh-my-posh apt, prompt theme engine, shell prompt ubuntu, oh my posh themes, jandedobbeleer, ubuntu packages, jammy, noble, questing, resolute, apt oh-my-posh, oh-my-posh ppa">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-oh-my-posh-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-oh-my-posh-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-oh-my-posh-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-oh-my-posh-in-ubuntu.html">
+    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 Oh My Posh — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Oh My Posh — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>💠 安装最新的 Oh My Posh 在 Ubuntu 上</h1>
+        <p class="subtitle">适用于任何 shell 的提示符主题引擎</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">29.31.1 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 在特定发行版本上安装？</strong> <a href="/install-oh-my-posh-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-oh-my-posh-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-oh-my-posh-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-oh-my-posh-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>什么是 Oh My Posh？</h2>
+        <p>Oh My Posh 是一个由 Jan De Dobbeleer 创建、使用 Go 编写的<strong>适用于任何 shell 的提示符主题引擎</strong>。一个引擎、一种主题格式——在 bash、zsh、fish、PowerShell、Nushell、elvish、xonsh 和 cmd 中呈现同样美观、信息丰富的提示符。凭借数万 GitHub star 和庞大的主题生态，它已成为在您使用的每台机器和每个 shell 上获得一致提示符的首选方式。</p>
+
+        <div class="comparison-box">
+            <strong>😤 提示符的痛点：</strong>还在手写 <code>PS1</code> 转义码？被只支持单一 shell 的提示符框架绑死？每次在家用 zsh、在服务器上用 bash 之间切换时，都要从头重建提示符？Oh My Posh 让一份配置跟随您到任何地方。
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 永久免费，安全修复立即发布：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本免费镜像提供发布至少 2 个月的最新版本，永久免费；安全修复立即发布。如需在上游发布后数小时内获取每个版本，请使用主仓库 deb.griffo.io。只需 <code>apt upgrade</code> 即可获取免费通道内的最新构建。
+        </div>
+
+        <h3>⚡ Oh My Posh 的主要特性</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🐚 任意 Shell，一份配置</h4>
+                <p>在 bash、zsh、fish、PowerShell、Nushell、elvish、xonsh 和 cmd 中呈现完全一致的提示符。配置一次，处处可用——包括通过 SSH。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 内置 125+ 主题</h4>
+                <p>本软件包将所有内置主题安装到 <code>/usr/share/oh-my-posh/themes/</code>——可离线预览和使用，无需额外下载。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 丰富的信息段</h4>
+                <p>Git 状态、退出码、执行时间、电池、kubernetes 上下文、云账户，以及语言版本（Go、Python、Node、Rust 等数十种）——仅在相关时显示。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 您的主题，您的格式</h4>
+                <p>按照文档化的 schema，使用 JSON、YAML 或 TOML 编写自定义主题。从任意内置主题出发，打造属于您自己的样式。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✨ 瞬态提示符与工具提示</h4>
+                <p>瞬态提示符保持回滚区整洁，工具提示随您的输入实时响应，右对齐的信息段充分利用终端的全部宽度。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ 天生快速</h4>
+                <p>单个 Go 二进制文件，信息段并发渲染——即使启用大量信息段，提示符依然瞬时响应。</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 为什么用 apt 安装？</h4>
+            <ul>
+                <li><strong>无需 curl-pipe-bash：</strong>使用 GPG 签名的仓库，而不是把安装脚本直接通过管道送进您的 shell</li>
+                <li><strong>内置主题：</strong>所有内置主题安装到 <code>/usr/share/oh-my-posh/themes/</code>，与二进制文件版本匹配</li>
+                <li><strong>自动更新：</strong>通过 <code>apt upgrade</code> 自动获取免费通道的最新构建</li>
+                <li><strong>干净卸载：</strong><code>apt remove</code> 一并移除所有内容——不会在 <code>~/bin</code> 留下散落的二进制文件</li>
+                <li><strong>多架构支持：</strong>amd64、arm64 和 armhf——桌面和 Raspberry Pi 使用同一套安装方式</li>
+            </ul>
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 Oh My Posh</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y oh-my-posh
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y oh-my-posh
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 设置您的 shell</h2>
+        <p>从 <code>/usr/share/oh-my-posh/themes/</code> 中挑选一个主题并初始化您的 shell。对于 bash，将以下内容添加到 <code>~/.bashrc</code>：</p>
+        <div class="code-block">
+eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json)"
+        </div>
+        <p>对于 zsh，将同一行（改用 <code>zsh</code>）添加到 <code>~/.zshrc</code>；对于 fish，将 <code>oh-my-posh init fish --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json | source</code> 添加到 <code>~/.config/fish/config.fish</code>。大多数主题搭配 <a href="https://www.nerdfonts.com/" target="_blank" rel="noopener">Nerd Font</a> 效果最佳——也可以运行 <code>oh-my-posh font install</code>。</p>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/oh-my-posh-debian" target="_blank" rel="noopener">📂 oh-my-posh-debian</a> - 最新发布版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-starship-in-ubuntu.html">Starship</a> - 另一款流行的跨 shell 提示符，供您对比选择</li>
+            <li><a href="/cn/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - 为您焕然一新的终端提供交互式筛选</li>
+            <li><a href="/cn/install-latest-zoxide-in-ubuntu.html">zoxide</a> - 智能 cd 命令，与快速提示符完美搭配</li>
+            <li><a href="/cn/install-latest-atuin-in-ubuntu.html">Atuin</a> - 神奇的 shell 历史记录，让整套配置更完整</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 适合人群：</strong>需要在多个 shell 和多台机器之间工作的开发者、热衷终端定制的用户、希望一眼看到 git 状态和上下文信息的人，以及想用一条 apt 命令统一部署提示符配置的团队。
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 支持本项目</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                如果这个仓库为您节省了时间和精力，请考虑支持它！
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ 在 GitHub 上加星
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Oh%20My%20Posh,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 在 Twitter 上分享
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 Oh My Posh Prompt Engine 在 Ubuntu 上",
+    "description": "在 Ubuntu 上使用 deb.griffo.io 仓库安装最新 Oh My Posh 提示符主题引擎的完整指南，包含全部内置主题。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Oh My Posh",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "A prompt theme engine for any shell with rich segments and 125+ built-in themes"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>29.31.1</code> — 2026-07-16</li>
+<li><code>29.31.0</code> — 2026-07-15</li>
+<li><code>29.30.0</code> — 2026-07-15</li>
+<li><code>29.28.0</code> — 2026-07-14</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Oh My Posh 在官方 Ubuntu 软件源中吗？</summary><p>不在 — 官方 Ubuntu 源没有打包 Oh My Posh。本免费镜像提供发布至少 2 个月的最新 Oh My Posh 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 Oh My Posh？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install oh-my-posh。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Oh My Posh 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Ubuntu 源没有打包 Oh My Posh。本免费镜像提供发布至少 2 个月的最新 Oh My Posh 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Oh My Posh？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install oh-my-posh。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

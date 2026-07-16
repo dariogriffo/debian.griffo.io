@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Unregistry в Ubuntu через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите Unregistry в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="unregistry ubuntu, install unregistry ubuntu, docker pussh, docker image transfer, container deployment, ubuntu packages, jammy, noble, psviderski, apt unregistry">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-unregistry-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-unregistry-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-unregistry-in-ubuntu.html">
+    <meta property="og:title" content="Установка Unregistry в Ubuntu через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите Unregistry в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐳 Установить unregistry в Ubuntu</h1>
+        <p class="subtitle">Отправка образов Docker напрямую на удалённые серверы без внешнего реестра</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.4.3 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое unregistry?</h2>
+        <p>unregistry — это <strong>лёгкий реестр образов контейнеров</strong>, созданный Пашей Свидерским, который хранит и предоставляет образы непосредственно из хранилища Docker-демона. Входящая команда <code>docker pussh</code> позволяет отправлять образы напрямую на удалённые серверы Docker по SSH, передавая только отсутствующие слои для максимальной эффективности.</p>
+
+        <div class="problem-box">
+            <strong>😤 Проблемы с развёртыванием Docker:</strong>
+            <ul>
+                <li><strong>Docker Hub/GHCR:</strong> Ваш код становится публичным или вы платите за приватные репозитории</li>
+                <li><strong>Собственный реестр:</strong> Ещё один сервис для поддержки, защиты и оплаты</li>
+                <li><strong>Save/Load:</strong> Передаёт весь образ, даже если 90% уже существует на сервере</li>
+                <li><strong>Удалённая пересборка:</strong> Тратит время и серверные ресурсы при отладке производственных сборок</li>
+            </ul>
+        </div>
+
+        <div class="solution-box">
+            <strong>✅ Решение unregistry:</strong> <code>docker pussh myapp:latest user@server</code> — это всё! Ваш образ теперь на удалённом сервере без настройки реестра, без подписки, без промежуточного хранилища, просто прямая передача отсутствующих слоёв по SSH.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> unregistry активно развивается с частыми выпусками, содержащими улучшения производительности, улучшенную обработку SSH, лучшую интеграцию containerd и новые функции развёртывания. Последние версии включают улучшенную дедупликацию слоёв и расширенную поддержку нескольких платформ.
+        </div>
+
+        <h3>⚡ Ключевые возможности unregistry</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Прямая передача</h4>
+                <p>Отправка образов напрямую на удалённые серверы по SSH. Без промежуточного реестра, без открытых портов — просто эффективная прямая передача.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Дедупликация слоёв</h4>
+                <p>Передаёт только отсутствующие слои, как rsync для образов Docker. Если 90% образа уже существует удалённо, передаётся только 10%.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Безопасность по дизайну</h4>
+                <p>Использует SSH для аутентификации и транспорта. Нет открытых портов реестра, не требуется дополнительная конфигурация безопасности.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Нулевая настройка</h4>
+                <p>Никакой инфраструктуры реестра для обслуживания. Работает с любым сервером с Docker и SSH-доступом.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🏗️ Готово для CI/CD</h4>
+                <p>Идеально для конвейеров развёртывания. Сборка локально или в CI, отправка напрямую на производственные серверы без сложности реестра.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Мультиплатформенность</h4>
+                <p>Поддержка мультиплатформенных образов с хранилищем образов containerd. Эффективное развёртывание ARM и x86 образов.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить unregistry</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install unregistry and docker-pussh
+sudo apt install unregistry docker-pussh
+
+# Проверить установку
+docker pussh --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install unregistry and docker-pussh
+apt install unregistry docker-pussh
+
+# Проверить установку
+docker pussh --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Простая отправка образа:</strong></p>
+        <div class="code-block">
+# Build image locally
+docker build -t myapp:latest .
+
+# Push directly to remote server
+docker pussh myapp:latest user@server.example.com
+
+# That's it! Image is now available on remote server
+        </div>
+
+        <p><strong>Расширенное использование:</strong></p>
+        <div class="code-block">
+# Push with SSH key
+docker pussh myapp:latest ubuntu@192.168.1.100 -i ~/.ssh/id_rsa
+
+# Custom SSH port
+docker pussh myapp:latest user@server:2222
+
+# Specific platform for multi-arch images
+docker pussh myapp:latest user@server --platform linux/amd64
+
+# Use in deployment script
+docker pussh myapp:$VERSION deploy@prod-server
+ssh deploy@prod-server docker run -d myapp:$VERSION
+        </div>
+
+        <p><strong>Интеграция с CI/CD:</strong></p>
+        <div class="code-block">
+# GitHub Actions example
+- name: Build and deploy
+  run: |
+    docker build -t myapp:${{ github.sha }} .
+    docker pussh myapp:${{ github.sha }} deploy@staging-server
+        </div>
+
+        <h2>🚀 Почему выбрать deb.griffo.io?</h2>
+
+        <div class="solution-box">
+            <strong>📊 Сравнение способов установки:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> Недоступен в официальных репозиториях</li>
+                <li><strong>Ручной скрипт:</strong> Требует ручных обновлений и управления зависимостями</li>
+                <li><strong>Homebrew:</strong> Ограничен определёнными платформами</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Новейшие улучшения интеграции Docker и SSH</li>
+            <li>✅ <strong>Полный пакет:</strong> Включены как unregistry, так и docker-pussh</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Правильная интеграция:</strong> Корректно настроен как плагин Docker CLI</li>
+            <li>✅ <strong>Мультидистрибутив:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu автоматически собираются и поддерживаются в этих репозиториях GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/unregistry-debian" target="_blank" rel="noopener">📠 unregistry-debian</a> - Latest release builds</li>
+            <li><a href="https://github.com/dariogriffo/docker-pussh-debian" target="_blank" rel="noopener">📡 docker-pussh-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступно из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Терминальный интерфейс для управления Docker</li>
+            <li><a href="/ru/install-latest-uncloud-in-ubuntu.html">uncloud</a> - Развёртывание контейнеров на нескольких серверах</li>
+            <li><a href="/ru/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Расширенный поиск команд</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> DevOps-инженеров, развёртывающих контейнеры, разработчиков, которым нужно простое распространение образов, команд, избегающих сложности реестра, энтузиастов домашних лабораторий и всех, кому нужна эффективная передача образов Docker.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить unregistry  в Ubuntu",
+    "description": "Полное руководство по установке инструмента unregistry в Ubuntu с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "unregistry",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Лёгкий реестр образов контейнеров для отправки образов Docker напрямую на удалённые серверы по SSH"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.4.3</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Unregistry в официальных репозиториях Ubuntu?</summary><p>Нет — Unregistry не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз Unregistry возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию Unregistry в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install unregistry. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Unregistry в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Unregistry не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз Unregistry возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Unregistry в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install unregistry. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

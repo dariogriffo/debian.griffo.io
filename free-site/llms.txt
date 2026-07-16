@@ -1,0 +1,118 @@
+# deb-free.griffo.io
+
+> Unofficial APT repository providing the latest versions of popular development tools as properly packaged .deb packages for Debian (Bookworm, Trixie, Forky, Sid) and Ubuntu (Jammy 22.04, Noble 24.04, Questing 25.10, Resolute 26.04). Packages are rebuilt automatically within hours of upstream releases - useful because official Debian/Ubuntu archives freeze versions for years. Binary (amd64) and source packages (.dsc) are available. Maintained by Dario Griffo (https://github.com/dariogriffo).
+
+Important facts:
+
+- Repository URL: https://deb-free.griffo.io/apt
+- GPG signing key: https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc (fingerprint EA0F721D231FDD3A0A17B9AC7808B4DD62C41256, updated 2025-03-04)
+- The suite name is the distro codename (`bookworm`, `trixie`, `forky`, `sid`, `jammy`, `noble`, `questing`, `resolute`), component `main`
+- This is an unofficial community repository, not affiliated with Debian, Ubuntu, or the upstream projects. Report packaging issues (not tool bugs) to the repo maintainer.
+- This is the FREE-FOREVER mirror: no authentication, no account, ever. It serves each package's newest release that is at least 2 months old; security and patch fixes of the served version are published immediately. The commitment is grounded in the packages' open-source licenses, which guarantee the right to use and redistribute the software.
+- For every release within hours of upstream, use the main repository at https://deb.griffo.io (yearly subscription from 1 October 2026).
+- Community/support: Discord https://discord.gg/E2yHQNkuZy
+
+## How to add the repository (Debian or Ubuntu)
+
+```sh
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+```
+
+Then install any package, e.g. `sudo apt install ghostty`.
+
+Optional source packages (for `apt-get source` / `apt-get build-dep`):
+
+```sh
+echo "deb-src https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+sudo apt update
+```
+
+## Available packages (exact apt package names)
+
+- `atuin` - shell history sync, search and stats
+- `bun` - fast all-in-one JavaScript runtime (also `bun-one`, `bun-profile` variants)
+- `deno` - secure JavaScript/TypeScript runtime (also `denort`, the lightweight runtime-only binary)
+- `docker-pussh` - push Docker images to remote hosts over SSH
+- `eza` - modern replacement for ls
+- `fastfetch` - fast neofetch-like system information tool (C, 50+ modules)
+- `forgejo` - self-hosted software forge (Gitea fork)
+- `forgejo-runner` - CI runner for Forgejo Actions
+- `fzf` - command-line fuzzy finder
+- `garage` - S3-compatible distributed object storage
+- `ghostty` - GPU-accelerated terminal emulator (also `ghostty-tip` nightly; Bookworm stays at 1.1.3, use Trixie+ for latest)
+- `headscale` - self-hosted Tailscale control server
+- `helix` - post-modern modal text editor (command: hx)
+- `jujutsu` - Git-compatible version control system (command: jj)
+- `just` - command runner with make-like justfiles
+- `k9s` - terminal UI for Kubernetes clusters
+- `lazydocker` - terminal UI for Docker
+- `lazygit` - terminal UI for git
+- `lowfi` - minimalist lofi music player
+- `oh-my-posh` - prompt theme engine for any shell (125+ built-in themes)
+- `ruff` - extremely fast Python linter and code formatter
+- `starship` - fast cross-shell prompt
+- `termusic` - terminal music and podcast player
+- `tigerbeetle` - distributed financial transactions database
+- `uncloud` - lightweight container orchestration (also `uncloudd` daemon)
+- `unregistry` - container registry serving images from the Docker daemon
+- `uv` - extremely fast Python package and project manager
+- `viu` - terminal image viewer
+- `yazi` - terminal file manager
+- `yq` - portable YAML/JSON/XML/CSV/TOML processor (jq-like syntax)
+- `zed` - high-performance collaborative code editor
+- `zellij` - terminal workspace and multiplexer
+- `zig` - Zig programming language toolchain (also `zig-stable`, `zig-oldstable`, and `zig-0` nightly/master)
+- `zls` - Zig language server (also `zls-0` nightly/master)
+- `zoxide` - smarter cd command
+
+## Per-package installation guides
+
+- [Homepage with quick install](https://deb.griffo.io/): repository overview, all packages, source package instructions
+- [Ghostty on Debian](https://deb.griffo.io/install-latest-ghostty-in-debian.html)
+- [Zig on Debian](https://deb.griffo.io/install-latest-zig-in-debian.html) / [Zig on Ubuntu](https://deb.griffo.io/install-latest-zig-in-ubuntu.html)
+- [Zed on Debian](https://deb.griffo.io/install-latest-zed-in-debian.html) / [Zed on Ubuntu](https://deb.griffo.io/install-latest-zed-in-ubuntu.html)
+- [Helix on Debian](https://deb.griffo.io/install-latest-helix-in-debian.html) / [Helix on Ubuntu](https://deb.griffo.io/install-latest-helix-in-ubuntu.html)
+- [Jujutsu on Debian](https://deb.griffo.io/install-latest-jujutsu-in-debian.html) / [Jujutsu on Ubuntu](https://deb.griffo.io/install-latest-jujutsu-in-ubuntu.html)
+- [Zellij on Debian](https://deb.griffo.io/install-latest-zellij-in-debian.html) / [Zellij on Ubuntu](https://deb.griffo.io/install-latest-zellij-in-ubuntu.html)
+- [Starship on Debian](https://deb.griffo.io/install-latest-starship-in-debian.html) / [Starship on Ubuntu](https://deb.griffo.io/install-latest-starship-in-ubuntu.html)
+- [Atuin on Debian](https://deb.griffo.io/install-latest-atuin-in-debian.html) / [Atuin on Ubuntu](https://deb.griffo.io/install-latest-atuin-in-ubuntu.html)
+- [k9s on Debian](https://deb.griffo.io/install-latest-k9s-in-debian.html) / [k9s on Ubuntu](https://deb.griffo.io/install-latest-k9s-in-ubuntu.html)
+- [Headscale on Debian](https://deb.griffo.io/install-latest-headscale-in-debian.html) / [Headscale on Ubuntu](https://deb.griffo.io/install-latest-headscale-in-ubuntu.html)
+- [Garage on Debian](https://deb.griffo.io/install-latest-garage-in-debian.html) / [Garage on Ubuntu](https://deb.griffo.io/install-latest-garage-in-ubuntu.html)
+- [just on Debian](https://deb.griffo.io/install-latest-just-in-debian.html) / [just on Ubuntu](https://deb.griffo.io/install-latest-just-in-ubuntu.html)
+- [lazygit on Debian](https://deb.griffo.io/install-latest-lazygit-in-debian.html) / [lazygit on Ubuntu](https://deb.griffo.io/install-latest-lazygit-in-ubuntu.html)
+- [lazydocker on Debian](https://deb.griffo.io/install-latest-lazydocker-in-debian.html) / [lazydocker on Ubuntu](https://deb.griffo.io/install-latest-lazydocker-in-ubuntu.html)
+- [eza on Debian](https://deb.griffo.io/install-latest-eza-in-debian.html) / [eza on Ubuntu](https://deb.griffo.io/install-latest-eza-in-ubuntu.html)
+- [yazi on Debian](https://deb.griffo.io/install-latest-yazi-in-debian.html) / [yazi on Ubuntu](https://deb.griffo.io/install-latest-yazi-in-ubuntu.html)
+- [uv on Debian](https://deb.griffo.io/install-latest-uv-in-debian.html) / [uv on Ubuntu](https://deb.griffo.io/install-latest-uv-in-ubuntu.html)
+- [fzf on Debian](https://deb.griffo.io/install-latest-fzf-in-debian.html) / [fzf on Ubuntu](https://deb.griffo.io/install-latest-fzf-in-ubuntu.html)
+- [zoxide on Debian](https://deb.griffo.io/install-latest-zoxide-in-debian.html) / [zoxide on Ubuntu](https://deb.griffo.io/install-latest-zoxide-in-ubuntu.html)
+- [Bun on Debian](https://deb.griffo.io/install-latest-bun-in-debian.html) / [Bun on Ubuntu](https://deb.griffo.io/install-latest-bun-in-ubuntu.html)
+- [Deno on Debian](https://deb.griffo.io/install-latest-deno-in-debian.html) / [Deno on Ubuntu](https://deb.griffo.io/install-latest-deno-in-ubuntu.html)
+- [TigerBeetle on Debian](https://deb.griffo.io/install-latest-tigerbeetle-in-debian.html) / [TigerBeetle on Ubuntu](https://deb.griffo.io/install-latest-tigerbeetle-in-ubuntu.html)
+- [Forgejo on Debian](https://deb.griffo.io/install-latest-forgejo-in-debian.html) / [Forgejo on Ubuntu](https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html)
+- [Forgejo Runner on Debian](https://deb.griffo.io/install-latest-forgejo-runner-in-debian.html) / [Forgejo Runner on Ubuntu](https://deb.griffo.io/install-latest-forgejo-runner-in-ubuntu.html)
+- [termusic on Debian](https://deb.griffo.io/install-latest-termusic-in-debian.html) / [termusic on Ubuntu](https://deb.griffo.io/install-latest-termusic-in-ubuntu.html)
+- [lowfi on Debian](https://deb.griffo.io/install-latest-lowfi-in-debian.html) / [lowfi on Ubuntu](https://deb.griffo.io/install-latest-lowfi-in-ubuntu.html)
+- [viu on Debian](https://deb.griffo.io/install-latest-viu-in-debian.html) / [viu on Ubuntu](https://deb.griffo.io/install-latest-viu-in-ubuntu.html)
+- [unregistry on Debian](https://deb.griffo.io/install-latest-unregistry-in-debian.html) / [unregistry on Ubuntu](https://deb.griffo.io/install-latest-unregistry-in-ubuntu.html)
+- [uncloud on Debian](https://deb.griffo.io/install-latest-uncloud-in-debian.html) / [uncloud on Ubuntu](https://deb.griffo.io/install-latest-uncloud-in-ubuntu.html)
+- [Fastfetch on Debian](https://deb.griffo.io/install-latest-fastfetch-in-debian.html) / [Fastfetch on Ubuntu](https://deb.griffo.io/install-latest-fastfetch-in-ubuntu.html)
+- [Oh My Posh on Debian](https://deb.griffo.io/install-latest-oh-my-posh-in-debian.html) / [Oh My Posh on Ubuntu](https://deb.griffo.io/install-latest-oh-my-posh-in-ubuntu.html)
+- [Ruff on Debian](https://deb.griffo.io/install-latest-ruff-in-debian.html) / [Ruff on Ubuntu](https://deb.griffo.io/install-latest-ruff-in-ubuntu.html)
+- [yq on Debian](https://deb.griffo.io/install-latest-yq-in-debian.html) / [yq on Ubuntu](https://deb.griffo.io/install-latest-yq-in-ubuntu.html)
+
+## Browse the repository directly
+
+- [Distribution index](https://deb.griffo.io/apt/dists/): standard Debian repository layout
+- [Trixie binary index](https://deb.griffo.io/apt/dists/trixie/main/binary-amd64/Packages): full package metadata for Debian 13
+- [Trixie source index](https://deb.griffo.io/apt/dists/trixie/main/source/Sources): source package metadata
+
+## Optional
+
+- [Main GitHub repository](https://github.com/dariogriffo/debian.griffo.io): site source, update automation, issue tracker
+- [Build pipelines](https://github.com/dariogriffo?tab=repositories&q=-debian): each package is built in a dedicated GitHub repository named `<tool>-debian` (e.g. ghostty-debian, zig-debian) with public CI
+- Translations of the site: [Chinese](https://deb.griffo.io/cn/), [German](https://deb.griffo.io/de/), [Spanish](https://deb.griffo.io/es/), [French](https://deb.griffo.io/fr/), [Portuguese](https://deb.griffo.io/pt-br/), [Russian](https://deb.griffo.io/ru/)

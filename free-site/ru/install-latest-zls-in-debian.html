@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка ZLS в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите ZLS в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="zls debian, установить zls debian, языковой сервер zig, ide для zig, автодополнение zig, пакеты debian, bookworm, trixie, sid, zigtools, apt zls">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zls-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zls-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-zls-in-debian.html">
+    <meta property="og:title" content="Установка ZLS в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите ZLS в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🇿 Установка ZLS в Debian</h1>
+        <p class="subtitle">Zig Language Server для возможностей IDE и продуктивной разработки</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.15.1 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое ZLS?</h2>
+        <p>ZLS (Zig Language Server) — это <strong>реализация протокола языкового сервера для Zig</strong>, написанная на Zig сообществом zigtools. Он предоставляет разработчикам современные возможности IDE, такие как автодополнение, переход к определению, отображение справки при наведении и семантический анализ в их любимых редакторах. Набравший более 4 тысяч звёзд на GitHub, это незаменимый инструмент для продуктивной разработки на Zig.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> ZLS активно развивается вместе с самим Zig, с частыми релизами, содержащими поддержку новых языковых функций, улучшения производительности и расширенные возможности IDE. Последние версии включают улучшенный семантический анализ, более точные подсказки и совместимость с Zig 0.16+.
+        </div>
+
+        <h3>⚡ Ключевые возможности ZLS</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>💡 Умное автодополнение</h4>
+                <p>Интеллектуальное автодополнение функций, переменных, типов и импортов. Контекстно-зависимые подсказки на основе текущей области видимости и доступных символов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Навигация по коду</h4>
+                <p>Переход к определению/объявлению, поиск ссылок и символов документа. Навигация по большим кодовым базам Zig с лёгкостью и точностью.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Анализ кода</h4>
+                <p>Справка при наведении, выделение семантических токенов и встроенные подсказки. Понимание структуры кода и типов без ручного поиска.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Инструменты разработки</h4>
+                <p>Автоматическое форматирование с zig fmt, действия с кодом, диапазоны выделения и области свёртки для лучшей организации кода.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Операции с символами</h4>
+                <p>Переименование символов по всей кодовой базе, поиск всех ссылок и схема символов документа для навигации по проекту.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Поддержка пакетов</h4>
+                <p>Разрешение пользовательских пакетов, поддержка cImport и обработка пространств имён для сложных проектов и зависимостей Zig.</p>
+            </div>
+        </div>
+
+        <div class="ide-box">
+            <h4>🎯 Поддерживаемые редакторы и IDE</h4>
+            <ul>
+                <li><strong>VS Code:</strong> Официальное расширение Zig с интеграцией ZLS</li>
+                <li><strong>Neovim/Vim:</strong> Встроенная поддержка LSP и специальные плагины</li>
+                <li><strong>Emacs:</strong> Совместимость с lsp-mode и eglot</li>
+                <li><strong>Sublime Text:</strong> Интеграция пакета LSP</li>
+                <li><strong>Kate/KDevelop:</strong> Встроенная поддержка LSP</li>
+                <li><strong>Любой редактор с LSP:</strong> Универсальная поддержка протокола языкового сервера</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить ZLS</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Установить последнюю стабильную версию ZLS
+sudo apt install zls
+
+# Или установить ночные сборки для новейших функций
+sudo apt install zls-master
+
+# Проверить установку
+zls --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Установить последнюю стабильную версию ZLS
+apt install zls
+
+# Или установить ночные сборки для новейших функций
+apt install zls-master
+
+# Проверить установку
+zls --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры настройки редакторов</h3>
+
+        <p><strong>Настройка VS Code:</strong></p>
+        <div class="code-block">
+# Install Zig extension from marketplace
+# Extension automatically detects ZLS if installed in PATH
+
+# Or configure custom ZLS path in settings.json:
+{
+    "zig.zls.path": "/usr/bin/zls"
+}
+        </div>
+
+        <p><strong>Настройка Neovim (с nvim-lspconfig):</strong></p>
+        <div class="code-block">
+-- In your init.lua
+require('lspconfig').zls.setup{
+    cmd = { "zls" },
+    filetypes = { "zig" },
+    root_dir = require('lspconfig.util').root_pattern("build.zig", ".git"),
+}
+        </div>
+
+        <p><strong>Базовая конфигурация ZLS:</strong></p>
+        <div class="code-block">
+# Create ZLS config file
+mkdir -p ~/.config/zls
+cat > ~/.config/zls/zls.json << 'EOF'
+{
+    "enable_semantic_tokens": true,
+    "enable_inlay_hints": true,
+    "enable_snippets": true,
+    "warn_style": true,
+    "highlight_global_var_declarations": true
+}
+EOF
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="ide-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> ZLS не доступен в официальных репозиториях</li>
+                <li><strong>Ручная компиляция:</strong> Требует Zig master и сложного процесса сборки</li>
+                <li><strong>Загрузка бинарных файлов:</strong> Ручные обновления без управления пакетами</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Поддержка языка:</strong> Получайте поддержку новейших функций Zig — релиз не старше 2 месяцев</li>
+            <li>✅ <strong>Без ручной компиляции:</strong> Готовые бинарные файлы, Zig master не требуется</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Стабильные и ночные сборки:</strong> Доступны как стабильные, так и передовые версии</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этих репозиториях GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zls-debian" target="_blank" rel="noopener">🇿 zls-debian (стабильный)</a> — сборки стабильных релизов</li>
+            <li><a href="https://github.com/dariogriffo/zls-master-debian" target="_blank" rel="noopener">🇿 zls-master-debian (ночные)</a> — ночные сборки для разработки</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zig-in-debian.html">Язык программирования Zig</a> — необходим для разработки с ZLS</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — современный терминал для разработки</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> — улучшенная навигация по файлам</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Zig-разработчиков, которым нужны современные возможности IDE, команд, работающих над большими Zig-проектами, всех, кто хочет автодополнение и навигацию в своём редакторе, и разработчиков, ценящих продуктивные среды разработки.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка ZLS Zig в Debian",
+    "description": "Полное руководство по установке ZLS Language Server в Debian с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ZLS",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Реализация протокола языкового сервера для Zig, предоставляющая возможности IDE, такие как автодополнение и переход к определению"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.16.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли ZLS в официальных репозиториях Debian?</summary><p>Нет — ZLS не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз ZLS возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию ZLS в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zls. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли ZLS в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — ZLS не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз ZLS возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию ZLS в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zls. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

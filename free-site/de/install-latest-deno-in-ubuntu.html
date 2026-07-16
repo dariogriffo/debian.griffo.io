@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deno auf Ubuntu installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="Deno auf Ubuntu 22.04, 24.04, 25.10 und 26.04 aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="deno ubuntu, deno ubuntu installieren, neueste deno version, deno typescript laufzeit, deno javascript, ubuntu pakete, jammy, noble, apt deno, denort ubuntu">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-deno-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-deno-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-deno-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-deno-in-ubuntu.html">
+    <meta property="og:title" content="Deno auf Ubuntu installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="Deno auf Ubuntu 22.04, 24.04, 25.10 und 26.04 aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FKYKE1SD5C');
+    </script>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div>
+    <div class="container">
+        <div class="header">
+            <h1>🦕 Neueste Deno auf Ubuntu installieren</h1>
+            <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+            <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">2.9.3 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+            <p>Sichere JavaScript/TypeScript-Laufzeitumgebung mit eingebautem TypeScript-Support und Web-Standard-APIs</p>
+        </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einem bestimmten Release?</strong> <a href="/install-deno-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-deno-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-deno-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-deno-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist Deno?</h2>
+        <p>Deno is a <strong>secure JavaScript and TypeScript runtime</strong> built on V8 and Rust, created by Ryan Dahl (the original creator of Node.js). It runs TypeScript natively without a compilation step, has secure-by-default sandboxing, and implements modern web standard APIs. Deno 2 brings full Node.js and npm compatibility.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> Deno is actively developed with major improvements in each release, including enhanced Node.js/npm compatibility, performance improvements, and new web platform API implementations. Latest versions include critical security patches and improved TypeScript support.
+        </div>
+
+        <h3>🔥 Hauptmerkmale von Deno</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Blazing Fast</h4>
+                <p>Built on V8 engine with Rust, offering excellent performance for JavaScript and TypeScript workloads.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔒 Secure by Default</h4>
+                <p>No file, network, or environment access unless explicitly granted. Fine-grained permission system.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 TypeScript Native</h4>
+                <p>Run TypeScript files directly without any compilation step or configuration required.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🌐 Web Standard APIs</h4>
+                <p>Implements browser-compatible APIs like fetch, WebSockets, and Streams out of the box.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔄 Node.js Compatible</h4>
+                <p>Deno 2 supports Node.js APIs and npm packages for seamless migration.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Built-in Toolchain</h4>
+                <p>Includes formatter, linter, test runner, bundler, and documentation generator.</p>
+            </div>
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="package-variants">
+            <h3>📋 Verfügbare Deno-Pakete</h3>
+            <p>deb.griffo.io provides two different Deno packages to suit different needs:</p>
+
+            <div class="variant-card">
+                <div class="variant-title">🦕 deno (Recommended)</div>
+                <p><strong>Full Deno runtime</strong> with all developer tooling including the REPL, LSP, formatter, linter, test runner, and bundler. This is the recommended choice for most developers.</p>
+                <div class="code-block">sudo apt install deno</div>
+            </div>
+
+            <div class="variant-card">
+                <div class="variant-title">⚡ denort</div>
+                <p><strong>Lightweight Deno runtime</strong> without the developer tooling. Ideal for production deployments where you only need to run compiled Deno programs with minimal overhead and a smaller binary footprint.</p>
+                <div class="code-block">sudo apt install denort</div>
+            </div>
+        </div>
+
+        <div class="alternatives-box">
+            <h3>🔄 Managing Both Packages</h3>
+            <p>You can install both <code>deno</code> and <code>denort</code> simultaneously:</p>
+
+            <h4>Install both:</h4>
+            <div class="code-block">
+sudo apt install deno denort
+            </div>
+
+            <h4>Check deno version:</h4>
+            <div class="code-block">
+deno --version
+            </div>
+
+            <h4>Check denort:</h4>
+            <div class="code-block">
+denort --version
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Deno installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install deno
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install deno
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: Installation überprüfen</h3>
+            <div class="code-block">
+deno --version
+deno --help
+            </div>
+        </div>
+
+        <h2>🚀 Quick Start Examples</h2>
+
+        <h3>Run TypeScript directly:</h3>
+        <div class="code-block">
+echo 'console.log("Hello from Deno!")' > app.ts
+deno run app.ts
+        </div>
+
+        <h3>Run with permissions:</h3>
+        <div class="code-block">
+deno run --allow-net --allow-read app.ts
+        </div>
+
+        <h3>Create a new project:</h3>
+        <div class="code-block">
+deno init my-deno-app
+cd my-deno-app
+deno run main.ts
+        </div>
+
+        <h3>Run with npm packages:</h3>
+        <div class="code-block">
+import { express } from "npm:express@4";
+deno run --allow-net server.ts
+        </div>
+
+        <h3>Run tests:</h3>
+        <div class="code-block">
+deno test
+        </div>
+
+        <h3>Format and lint:</h3>
+        <div class="code-block">
+deno fmt
+deno lint
+        </div>
+
+        <h2>📦 Package Build Repository</h2>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/deno-debian" target="_blank" rel="noopener">🦕 deno-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h2>🔗 Related Packages</h2>
+        <p>Enhance your development workflow with these complementary tools from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-bun-in-ubuntu.html">Bun JavaScript Runtime</a> - Fast all-in-one JavaScript runtime</li>
+            <li><a href="/de/install-latest-zig-in-ubuntu.html">Zig Programming Language</a> - Systems programming language</li>
+            <li><a href="/de/install-latest-uv-in-ubuntu.html">uv Python Manager</a> - Fast Python package manager</li>
+        </ul>
+
+        <h2>📚 Additional Resources</h2>
+        <ul>
+            <li><a href="https://deno.com/" target="_blank" rel="noopener">Official Deno Website</a></li>
+            <li><a href="https://docs.deno.com/" target="_blank" rel="noopener">Deno Documentation</a></li>
+            <li><a href="https://github.com/denoland/deno" target="_blank" rel="noopener">Deno GitHub Repository</a></li>
+            <li><a href="https://jsr.io/" target="_blank" rel="noopener">JSR Package Registry (Deno's package registry)</a></li>
+        </ul>
+    </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "inLanguage": "de",
+        "headline": "Neueste Deno JavaScript Runtime auf Ubuntu installieren",
+        "description": "Vollständige Anleitung zur Installation der neuesten Deno JavaScript/TypeScript-Laufzeitumgebung auf Ubuntu Linux mit integriertem TypeScript-Support, sicherer Sandbox und Web-Standard-APIs.",
+        "author": {
+            "@type": "Person",
+            "name": "Dario Griffo"
+        },
+        "datePublished": "2026-03-04",
+        "dateModified": "2026-03-04",
+        "publisher": {
+            "@type": "Organization",
+            "name": "deb.griffo.io"
+        },
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Deno",
+            "applicationCategory": "JavaScript Runtime",
+            "operatingSystem": "Ubuntu Linux",
+            "description": "Sichere JavaScript/TypeScript-Laufzeitumgebung mit eingebautem TypeScript-Support und Web-Standard-APIs"
+        }
+    }
+    </script>
+
+    <script>
+        function switchTab(event, tabId) {
+            const container = event.target.closest('.install-steps');
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>2.9.3</code> — 2026-07-15</li>
+<li><code>2.9.2</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Deno in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein — Deno ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Deno-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste Deno unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install deno. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Deno in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Deno ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Deno-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Deno unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install deno. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

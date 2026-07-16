@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Fastfetch в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите Fastfetch в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="fastfetch debian, установить fastfetch debian, последняя версия fastfetch, замена neofetch debian, fastfetch apt, информация о системе, пакеты debian, bookworm, trixie, sid, apt fastfetch">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-fastfetch-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-fastfetch-in-debian.html">
+    <meta property="og:title" content="Установка Fastfetch в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите Fastfetch в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🖥️ Установка Fastfetch в Debian</h1>
+        <p class="subtitle">Инструмент информации о системе в стиле neofetch, написанный на C</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">2.66.0 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">2.62.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-fastfetch-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-fastfetch-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-fastfetch-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-fastfetch-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое Fastfetch?</h2>
+        <p>Fastfetch — это <strong>инструмент в стиле neofetch для сбора информации о системе</strong> и её красивого отображения в терминале — ОС, ядро, оборудование, время работы, пакеты, окружение рабочего стола и многое другое, рядом с логотипом вашего дистрибутива. Написанный преимущественно на C с упором на производительность и настраиваемость, он стал де-факто преемником neofetch после его архивации и активно развивается с частыми релизами.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Проблема версии из архива:</strong> Debian действительно поставляет fastfetch — но замороженный на той версии, которая существовала на момент выпуска релиза. Upstream развивается быстро: новые логотипы, новые модули определения и исправления для нового оборудования появляются постоянно, поэтому версия из архива незаметно отстаёт. Это бесплатное зеркало предоставляет сборки upstream не старше 2 месяцев, сохраняя <strong>точно такую же раскладку файлов, как в официальном пакете Debian</strong>, так что переключение бесшовно в обе стороны.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h3>⚡ Ключевые возможности Fastfetch</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ Быстрый по замыслу</h4>
+                <p>Написан на C с параллельным определением — выводит полную информацию о системе за миллисекунды, за долю времени запуска neofetch.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 50+ информационных модулей</h4>
+                <p>ОС, ядро, CPU, GPU, память, диски, батарея, дисплей, DE/WM, терминал, пакеты, медиаплеер и многие другие — каждый настраивается отдельно.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Пресеты в комплекте</h4>
+                <p>Этот пакет поставляет все встроенные пресеты в <code>/usr/share/fastfetch/presets/</code> — включая точный пресет <code>neofetch</code> для мгновенной привычности.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Конфигурация JSONC</h4>
+                <p>Один документированный конфигурационный файл JSONC управляет модулями, форматированием и логотипами. Создайте отправную точку командой <code>fastfetch --gen-config</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Гибкость логотипов</h4>
+                <p>Сотни встроенных логотипов дистрибутивов, плюс логотипы-изображения через протоколы sixel/kitty/iTerm, собственный ASCII-арт или вовсе без логотипа.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Автодополнение для оболочек</h4>
+                <p>Автодополнение для bash, zsh и fish плюс man-страница — устанавливаются в стандартные пути Debian, как и в пакете из архива.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Почему этот репозиторий, а не версия из архива?</h4>
+            <ul>
+                <li><strong>Актуальная версия:</strong> новые релизы upstream в течение нескольких часов, без заморозки на весь срок жизни релиза Debian</li>
+                <li><strong>Та же раскладка:</strong> файл в файл совпадает с официальным пакетом Debian — пресеты, автодополнение и man-страница на стандартных местах</li>
+                <li><strong>Бесшовное переключение:</strong> установка из этого репозитория просто обновляет пакет из архива; после удаления репозитория происходит чистый откат</li>
+                <li><strong>Автоматические обновления:</strong> новые релизы приходят с обычным <code>apt upgrade</code></li>
+                <li><strong>Мульти-архитектура:</strong> amd64, arm64, armel, armhf, ppc64el, s390x, riscv64 и i386</li>
+            </ul>
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить Fastfetch</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y fastfetch
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y fastfetch
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Первый запуск</h2>
+        <p>Просто выполните <code>fastfetch</code>. Чтобы начать настройку, сгенерируйте конфигурацию и попробуйте пресеты из комплекта:</p>
+        <div class="code-block">
+fastfetch --gen-config
+fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fastfetch-debian" target="_blank" rel="noopener">📂 fastfetch-debian</a> - сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-oh-my-posh-in-debian.html">Oh My Posh</a> - красивое приглашение командной строки в пару к красивому fetch</li>
+            <li><a href="/ru/install-latest-eza-in-debian.html">eza</a> - современная замена ls для полного преображения терминала</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - интерактивная фильтрация повсюду</li>
+            <li><a href="/ru/install-latest-yazi-in-debian.html">Yazi File Manager</a> - быстрый терминальный файловый менеджер</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> энтузиастов райсинга и любителей скриншотов рабочего стола, сисадминов, которым нужен быстрый обзор системы, всех, кто мигрирует с заархивированного neofetch, и пользователей, которым нужно новейшее определение оборудования без ожидания следующего релиза Debian.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Поддержите этот проект</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Если этот репозиторий экономит ваше время и усилия, пожалуйста, поддержите его!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Звезда на GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20fastfetch,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Поделиться в Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка Fastfetch System Info Tool в Debian",
+    "description": "Полное руководство по установке инструмента информации о системе fastfetch в Debian с использованием репозитория deb.griffo.io, с той же раскладкой файлов, что и в официальном пакете Debian.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Fastfetch",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Инструмент в стиле neofetch для сбора информации о системе и её красивого отображения"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>2.66.0</code> — 2026-07-14</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Fastfetch в официальных репозиториях Debian?</summary><p>Да — официальный архив Debian поставляет Fastfetch 2.62.1. Это бесплатное зеркало предлагает новейший релиз Fastfetch возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию Fastfetch в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install fastfetch. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Fastfetch в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Да — официальный архив Debian поставляет Fastfetch 2.62.1. Это бесплатное зеркало предлагает новейший релиз Fastfetch возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Fastfetch в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install fastfetch. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

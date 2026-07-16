@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Yazi в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите Yazi в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="yazi debian, установить yazi debian, файловый менеджер для терминала, файловый менеджер на rust, асинхронный файловый менеджер, пакеты debian, bookworm, trixie, sid, apt yazi">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-yazi-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-yazi-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-yazi-in-debian.html">
+    <meta property="og:title" content="Установка Yazi в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите Yazi в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🦆 Установка Yazi в Debian</h1>
+        <p class="subtitle">Ультрабыстрый файловый менеджер для терминала, написанный на Rust</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">26.5.6 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-yazi-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-yazi-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-yazi-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-yazi-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое Yazi?</h2>
+        <p>Yazi (означает «утка» 🦆) — это <strong>молниеносный файловый менеджер для терминала</strong>, написанный на Rust, основанный на неблокирующем асинхронном I/O. Он стремится обеспечить эффективный, удобный и настраиваемый опыт управления файлами, превосходящий традиционные файловые менеджеры благодаря современной архитектуре и инновационным функциям.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> Yazi активно развивается с частыми релизами, содержащими оптимизации производительности, новые плагины, улучшенную поддержку предпросмотра изображений и улучшения рабочего процесса. Последние версии включают значительные архитектурные улучшения и новые функции, существенно повышающие удобство работы.
+        </div>
+
+        <h3>⚡ Ключевые возможности Yazi</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Полная асинхронность</h4>
+                <p>Все операции I/O асинхронны, задачи CPU распределены по нескольким потокам, что максимально использует доступные ресурсы для молниеносной производительности.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Предпросмотр изображений</h4>
+                <p>Встроенная поддержка нескольких протоколов изображений, включая Kitty, iTerm2, Sixel и другие. Предпросмотр изображений, видео, PDF-файлов и кода прямо в терминале.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Система плагинов</h4>
+                <p>Параллельная система плагинов на основе Lua с плагинами UI, функциональными плагинами, настраиваемыми средствами предпросмотра и встроенным менеджером пакетов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📡 Распределение данных</h4>
+                <p>Клиент-серверная архитектура с моделью публикации-подписки на основе Lua для межэкземплярной коммуникации и сохранения состояния.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 Интеграция с инструментами</h4>
+                <p>Бесшовная интеграция с ripgrep, fd, fzf, zoxide и другими современными инструментами командной строки для улучшенных рабочих процессов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Настройка</h4>
+                <p>Система тем, настраиваемые макеты, Vim-подобные сочетания клавиш, поддержка мыши и обширные параметры конфигурации.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🏆 Почему Yazi такой быстрый</h4>
+            <ul>
+                <li><strong>Асинхронный I/O:</strong> Неблокирующие операции предотвращают зависание UI</li>
+                <li><strong>Многопоточность:</strong> Задачи CPU распределены по потокам</li>
+                <li><strong>Умное кэширование:</strong> Механизмы предзагрузки и кэширования</li>
+                <li><strong>Производительность Rust:</strong> Язык системного программирования с безопасной работой с памятью</li>
+                <li><strong>Оптимизированный рендеринг:</strong> Эффективные алгоритмы рендеринга терминала</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить Yazi</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Yazi
+sudo apt install yazi
+
+# Проверить установку
+yazi --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Yazi
+apt install yazi
+
+# Проверить установку
+yazi --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Запуск Yazi:</strong></p>
+        <div class="code-block">
+# Start Yazi in current directory
+yazi
+
+# Start in specific directory
+yazi /path/to/directory
+
+# File chooser mode (returns selected file)
+yazi --chooser-file=/tmp/chosen
+        </div>
+
+        <p><strong>Основные сочетания клавиш:</strong></p>
+        <div class="code-block">
+# Навигация
+j/k или ↑/↓    - Вверх/вниз
+h/l или ←/→    - Войти/выйти из директории
+g/G            - В начало/конец
+/              - Поиск файлов
+
+# Операции с файлами
+y              - Копировать (yank)
+x              - Вырезать
+p              - Вставить
+d              - Удалить
+r              - Переименовать
+c              - Создать файл/директорию
+
+# Виды
+t              - Новая вкладка
+1-9            - Переключить на вкладку
+z              - Показать/скрыть скрытые файлы
+        </div>
+
+        <p><strong>Расширенные функции:</strong></p>
+        <div class="code-block">
+# Массовые операции
+space          - Выбрать/снять выбор файла
+v              - Визуальный режим выбора
+ctrl+a         - Выбрать всё
+
+# Управление плагинами
+:              - Режим команд
+:plugin        - Операции с плагинами
+
+# Интеграция
+:zoxide        - Прыжок с zoxide
+:fzf           - Нечёткий поиск файлов
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> Часто устаревшие версии без новейших функций</li>
+                <li><strong>Cargo Install:</strong> Требует цепочки инструментов Rust и времени на компиляцию</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия доступна немедленно</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие функции Yazi и улучшения производительности</li>
+            <li>✅ <strong>Без компиляции Rust:</strong> Готовые бинарные файлы, цепочка инструментов не нужна</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упакован со всеми необходимыми библиотеками</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Готов к плагинам:</strong> Включает все зависимости для системы плагинов</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/yazi-debian" target="_blank" rel="noopener">🦆 yazi-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-eza-in-debian.html">eza</a> — современная замена ls (идеальный компаньон)</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> — интегрируется с Yazi для поиска файлов</li>
+            <li><a href="/ru/install-latest-zoxide-in-debian.html">zoxide</a> — умные прыжки по директориям (интеграция с Yazi)</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> опытных пользователей, которым нужно быстрое управление файлами, разработчиков, работающих с большими кодовыми базами, тех, кто хочет современного файлового менеджера для терминала с предпросмотром изображений, и пользователей, ценящих Vim-подобные сочетания клавиш.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка Yazi Terminal File Manager в Debian",
+    "description": "Полное руководство по установке файлового менеджера Yazi в Debian с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Yazi",
+        "applicationCategory": "File Manager",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Ультрабыстрый файловый менеджер для терминала, написанный на Rust с асинхронным I/O, предпросмотром изображений и системой плагинов"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>26.5.6</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Yazi в официальных репозиториях Debian?</summary><p>Нет — Yazi не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Yazi возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию Yazi в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install yazi. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Yazi в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Yazi не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Yazi возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Yazi в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install yazi. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

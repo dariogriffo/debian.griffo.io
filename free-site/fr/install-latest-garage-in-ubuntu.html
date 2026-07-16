@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installer Garage sur Ubuntu via apt — gratuit pour toujours</title>
+Installez     <meta name="description" content="Garage sur Ubuntu 22.04, 24.04, 25.10 et 26.04 depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta name="keywords" content="garage ubuntu, installer garage ubuntu, garage s3, stockage objet distribué, s3 auto-hébergé, alternative à minio, stockage compatible s3, paquets ubuntu, jammy, noble, apt garage">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/fr/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-garage-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-garage-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-garage-in-ubuntu.html">
+    <meta property="og:title" content="Installer Garage sur Ubuntu via apt — gratuit pour toujours">
+Installez     <meta property="og:description" content="Garage sur Ubuntu 22.04, 24.04, 25.10 et 26.04 depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Gratuit pour toujours — garanti par les licences
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Chaque outil ici est open source ; sa licence garantit le droit de l'utiliser et de le redistribuer. Ce miroir est cette promesse en pratique : la version la plus récente de chaque paquet datant d'<strong>au moins 2 mois</strong>, servie <strong>gratuitement pour toujours</strong> — sans compte, sans authentification.<br>
+            Les correctifs de sécurité et les patchs sont publiés <strong>immédiatement</strong>. Vous voulez chaque version quelques heures après l'upstream ? C'est le rôle du dépôt principal sur <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Des questions ou des problèmes ?</strong> Rejoignez notre <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">communauté Discord</a> — le meilleur endroit pour obtenir de l'aide.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🗄️ Installer Garage sur Ubuntu</h1>
+        <p class="subtitle">Stockage objet distribué compatible S3</p>
+        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">2.3.0 ✅</td></tr>
+<tr><td>Ubuntu officiel</td><td class="vc-lose">🚫 non empaqueté</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/fr/" class="back-link">← Retour à l'accueil</a>
+
+        <h2>Qu'est-ce que Garage ?</h2>
+        <p>Garage est un service de <strong>stockage objet distribué léger et compatible S3</strong>. Conçu pour fonctionner sur plusieurs machines réparties géographiquement, il fournit un stockage objet auto-hébergé et résilient avec une API compatible S3, ce qui en fait une solide alternative open source aux services de stockage objet hébergés pour les sauvegardes, les sites statiques et les données d'application.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi les dernières versions sont importantes :</strong> Garage est activement développé, avec des améliorations de la réplication, des performances et de la couverture de l'API S3. Utiliser la dernière version vous donne accès aux fonctionnalités de stockage les plus récentes et aux correctifs de fiabilité.
+        </div>
+
+        <h3>⚡ Fonctionnalités clés de Garage</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>☁️ API compatible S3</h4>
+                <p>Compatibilité directe avec les clients, SDK et outils S3 existants.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Géo-distribué</h4>
+                <p>Répliquez les données sur plusieurs nœuds et sites pour plus de résilience.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🪶 Léger</h4>
+                <p>Implémentation efficace en Rust qui fonctionne bien sur du matériel modeste.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Auto-hébergé</h4>
+                <p>Gardez la pleine propriété de vos données sur votre propre infrastructure.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 Pourquoi Garage ?</h4>
+            <ul>
+                <li><strong>Maîtrisez votre stockage :</strong> Stockage objet auto-hébergé sur votre propre matériel</li>
+                <li><strong>Écosystème S3 :</strong> Fonctionne avec le vaste éventail d'outils S3 existants</li>
+                <li><strong>Résilient :</strong> La réplication multi-nœuds survit aux pannes de nœuds</li>
+                <li><strong>Efficace :</strong> Faible empreinte en ressources, idéal pour les petits clusters</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Points forts</h3>
+        <ul>
+            <li><strong>Stockage objet :</strong> Buckets et objets compatibles S3</li>
+            <li><strong>Réplication :</strong> Redondance configurable entre les nœuds</li>
+            <li><strong>Multi-datacenter :</strong> Prise en compte des zones pour le placement</li>
+            <li><strong>Hébergement statique :</strong> Servez des sites web statiques directement depuis les buckets</li>
+        </ul>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Étape 1 : Ajouter le dépôt</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Étape 2 : Installer garage</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest garage
+sudo apt install garage
+
+# Verify installation
+garage --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest garage
+apt install garage
+
+# Verify installation
+garage --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+        <div class="code-block">
+# Show version
+garage --version
+
+# Show cluster status
+garage status
+
+# Create a bucket
+garage bucket create my-bucket
+
+# Create an access key
+garage key create my-app-key
+
+# Grant the key access to the bucket
+garage bucket allow --read --write my-bucket --key my-app-key
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Comparaison des dépôts :</strong>
+            <ul>
+                <li><strong>Ubuntu officiel :</strong> Souvent en retard de plusieurs mois, sans les dernières fonctionnalités</li>
+                <li><strong>deb.griffo.io :</strong> Dernière version disponible quelques heures après sa sortie</li>
+                <li><strong>Installation manuelle :</strong> Téléchargements manuels et configuration du PATH requis</li>
+                <li><strong>Notre dépôt :</strong> Paquets précompilés, prêts à l'emploi</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Dernières fonctionnalités :</strong> Bénéficiez des fonctionnalités et améliorations de  Garage dès qu'elles datent d'au moins 2 mois</li>
+            <li>✅ <strong>Aucune configuration manuelle :</strong> Binaires précompilés, installés et mis à jour via apt</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> Paquets mis à jour quelques heures après les sorties en amont</li>
+            <li>✅ <strong>Dépendances correctes :</strong> Correctement empaqueté avec toutes les bibliothèques requises</li>
+            <li>✅ <strong>Multi-distribution :</strong> Fonctionne sur Jammy et Noble</li>
+            <li>✅ <strong>Maintenance simplifiée :</strong> Commandes apt simples pour les mises à jour</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction de paquets</h3>
+        <p>Les paquets Ubuntu sont automatiquement construits et maintenus dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/garage-debian" target="_blank" rel="noopener">📁 garage-debian</a> - Dernières versions publiées</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles depuis deb.griffo.io :</p>
+        <ul>
+            <li><a href="/fr/install-latest-headscale-in-ubuntu.html">Headscale</a> - Serveur de contrôle Tailscale auto-hébergé</li>
+            <li><a href="/fr/install-latest-forgejo-runner-in-ubuntu.html">Forgejo Runner</a> - Runner CI pour Forgejo Actions</li>
+            <li><a href="/fr/install-latest-k9s-in-ubuntu.html">k9s</a> - Interface terminal pour les clusters Kubernetes</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> Les adeptes de l'auto-hébergement et les équipes qui ont besoin d'un stockage objet résilient et compatible S3 sur leur propre infrastructure pour les sauvegardes, les sites web statiques ou les données d'application.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Soutenir ce projet</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Si ce dépôt vous fait gagner du temps et des efforts, veuillez envisager de le soutenir !
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Étoiler sur GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "fr",
+    "headline": "Installer Garage sur Ubuntu",
+    "description": "Guide complet pour installer Garage sur Ubuntu depuis le miroir deb.griffo.io, gratuit pour toujours (au plus 2 mois derrière l'upstream).",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Garage",
+        "applicationCategory": "Storage Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Un service de stockage objet distribué léger, auto-hébergé et compatible S3, conçu pour fonctionner sur plusieurs nœuds répartis géographiquement."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>2.3.0</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>Garage est-il dans les dépôts officiels de Ubuntu ?</summary><p>Non — Garage n'est pas empaqueté dans les archives officielles de Ubuntu. Ce miroir gratuit propose la version la plus récente de Garage datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
+<details><summary>Comment installer le dernier Garage sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install garage. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Garage est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Non — Garage n'est pas empaqueté dans les archives officielles de Ubuntu. Ce miroir gratuit propose la version la plus récente de Garage datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Garage sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install garage. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

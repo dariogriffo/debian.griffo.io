@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar Helix en Ubuntu vía apt — gratis para siempre</title>
+    <meta name="description" content="Instala Helix en Ubuntu 22.04, 24.04, 25.10 y 26.04 desde el espejo apt gratis para siempre — paquetes firmados con GPG, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Sin cuenta, sin autenticación.">
+    <meta name="keywords" content="helix ubuntu, instalar helix ubuntu, editor helix, editor hx, editor de texto modal, alternativa a vim, kakoune, editor de terminal, paquetes ubuntu, jammy, noble, apt helix">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-helix-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-helix-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-helix-in-ubuntu.html">
+    <meta property="og:title" content="Instalar Helix en Ubuntu vía apt — gratis para siempre">
+    <meta property="og:description" content="Instala Helix en Ubuntu 22.04, 24.04, 25.10 y 26.04 desde el espejo apt gratis para siempre — paquetes firmados con GPG, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Sin cuenta, sin autenticación.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Gratis para siempre — garantizado por las licencias
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada herramienta aquí es open source; su licencia garantiza el derecho a usarla y redistribuirla. Este espejo es esa promesa en la práctica: la versión más reciente de cada paquete con <strong>al menos 2 meses de antigüedad</strong>, servida <strong>gratis para siempre</strong> — sin cuenta, sin autenticación.<br>
+            Las correcciones de seguridad y los parches se publican <strong>de inmediato</strong>. ¿Quieres cada versión pocas horas después del upstream? Para eso está el repositorio principal en <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>¿Preguntas o problemas?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>✏️ Instalar Helix en Ubuntu</h1>
+        <p class="subtitle">Un editor de texto modal posmoderno</p>
+        <div class="version-badge">Plan gratis para siempre: máximo 2 meses de retraso respecto al upstream · correcciones de seguridad inmediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">25.07.1 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 no empaquetado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver a la página principal</a>
+
+        <h2>¿Qué es Helix?</h2>
+        <p>Helix es un <strong>editor de texto modal posmoderno</strong> escrito en Rust. Inspirado en Kakoune y Vim, utiliza un modelo de edición basado en selección primero e incluye resaltado de sintaxis con tree-sitter y soporte para el Language Server Protocol listos para usar — sin necesidad de plugins ni configuración para obtener una experiencia moderna similar a un IDE en tu terminal. El comando es <code>hx</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> Helix está en desarrollo activo, con lanzamientos frecuentes que añaden soporte para nuevos lenguajes, funciones del editor y mejoras de rendimiento. Las últimas versiones traen mejor integración con LSP, más temas incorporados y comandos de edición refinados.
+        </div>
+
+        <h3>⚡ Características clave de Helix</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌲 Tree-sitter integrado</h4>
+                <p>Resaltado de sintaxis rápido y preciso, y selecciones estructurales impulsadas por gramáticas de tree-sitter.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Servidores de lenguaje incluidos</h4>
+                <p>Autocompletado, diagnósticos y salto a la definición funcionan listos para usar mediante LSP.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎯 Edición basada en selección</h4>
+                <p>Un modelo de selección múltiple que hace que las ediciones complejas sean intuitivas y repetibles.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Sin configuración</h4>
+                <p>Valores predeterminados sensatos y temas incorporados — productivo desde el momento en que lo instalas.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 ¿Por qué Helix?</h4>
+            <ul>
+                <li><strong>Con todo incluido:</strong> Resaltado de sintaxis y soporte LSP sin necesidad de configurar plugins</li>
+                <li><strong>Rápido y ligero:</strong> Escrito en Rust, binario único, ágil incluso con archivos grandes</li>
+                <li><strong>Ergonomía modal:</strong> Un modelo de edición refinado de selección y luego acción</li>
+                <li><strong>Excelentes valores predeterminados:</strong> Mapas de teclas descubribles y una paleta de comandos interactiva</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Aspectos destacados</h3>
+        <ul>
+            <li><strong>LSP integrado:</strong> Funciones de IDE sin plugins externos</li>
+            <li><strong>Selecciones múltiples:</strong> Edita muchos lugares a la vez con facilidad</li>
+            <li><strong>Temas:</strong> Docenas de temas de color incluidos</li>
+            <li><strong>Binario único:</strong> Sin dependencias de tiempo de ejecución que gestionar</li>
+        </ul>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar Helix</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest helix
+sudo apt install helix
+
+# Verify installation
+hx --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest helix
+apt install helix
+
+# Verify installation
+hx --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Ejemplos de uso básico</h3>
+        <div class="code-block">
+# Open a file
+hx src/main.rs
+
+# Open the current directory
+hx .
+
+# Show version
+hx --version
+
+# Check health / language server status
+hx --health
+
+# Open the tutor to learn the basics
+hx --tutor
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Comparación de repositorios:</strong>
+            <ul>
+                <li><strong>Ubuntu oficial:</strong> A menudo meses atrás, sin las últimas funciones</li>
+                <li><strong>deb.griffo.io (principal):</strong> Cada versión pocas horas después del upstream</li>
+                <li><strong>Instalación manual:</strong> Requiere descargas manuales y configuración del PATH</li>
+                <li><strong>Nuestro repositorio:</strong> Paquetes preconstruidos, listos para usar</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Actualizaciones regulares:</strong> Recibe las funciones y mejoras con como máximo 2 meses de retraso, gratis para siempre</li>
+            <li>✅ <strong>Sin configuración manual:</strong> Binarios precompilados, instalados y actualizados mediante apt</li>
+            <li>✅ <strong>Actualizaciones automáticas:</strong> Paquetes actualizados vía apt; las correcciones de seguridad se publican de inmediato</li>
+            <li>✅ <strong>Dependencias correctas:</strong> Correctamente empaquetado con todas las bibliotecas necesarias</li>
+            <li>✅ <strong>Multi-distribución:</strong> Funciona en Jammy y Noble</li>
+            <li>✅ <strong>Mantenimiento sencillo:</strong> Comandos apt simples para actualizar</li>
+        </ul>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Ubuntu se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/helix-debian" target="_blank" rel="noopener">📁 helix-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde deb.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-zed-in-ubuntu.html">Zed editor</a> - Editor de código multijugador de alto rendimiento</li>
+            <li><a href="/es/install-latest-zellij-in-ubuntu.html">Zellij</a> - Espacio de trabajo y multiplexor de terminal</li>
+            <li><a href="/es/install-latest-starship-in-ubuntu.html">Starship</a> - Prompt rápido y personalizable para múltiples shells</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Desarrolladores que quieren un editor de terminal modal, rápido, con funciones modernas de IDE como LSP y tree-sitter listas para usar, sin tener que armar todo un ecosistema de plugins.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoyar este proyecto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                ¡Si este repositorio te ahorra tiempo y esfuerzo, considera apoyarlo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dar estrella en GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartir en Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "es",
+    "headline": "Instalar Helix en Ubuntu",
+    "description": "Guía completa para instalar Helix en Ubuntu usando el repositorio deb.griffo.io para paquetes del espejo gratuito, con como máximo 2 meses de retraso respecto al upstream.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Helix",
+        "applicationCategory": "Text Editor",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Un editor de texto modal posmoderno escrito en Rust con tree-sitter y soporte de servidor de lenguaje incorporados."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimas versiones publicadas en deb.griffo.io (repositorio principal)</h2>
+<ul class="release-list">
+<li><code>25.07.1</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está Helix en los repositorios oficiales de Ubuntu?</summary><p>No — Helix no está empaquetado en los archivos oficiales de Ubuntu. Este espejo gratuito ofrece la versión más reciente de Helix con al menos 2 meses de antigüedad; el repositorio principal en deb.griffo.io ofrece cada versión pocas horas después del upstream.</p></details>
+<details><summary>¿Cómo instalo el último Helix en Ubuntu?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install helix. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Ubuntu son compatibles?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing y 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está Helix en los repositorios oficiales de Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "No — Helix no está empaquetado en los archivos oficiales de Ubuntu. Este espejo gratuito ofrece la versión más reciente de Helix con al menos 2 meses de antigüedad; el repositorio principal en deb.griffo.io ofrece cada versión pocas horas después del upstream."}}, {"@type": "Question", "name": "¿Cómo instalo el último Helix en Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install helix. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Ubuntu son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing y 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos los derechos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Términos y Condiciones</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

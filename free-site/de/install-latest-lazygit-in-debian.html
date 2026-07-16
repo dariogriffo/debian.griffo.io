@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lazygit auf Debian installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="lazygit auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="lazygit debian, install lazygit debian, git terminal UI, git TUI, interactive git, debian packages, bookworm, trixie, sid, jesse duffield, apt lazygit">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-lazygit-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-lazygit-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-lazygit-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-lazygit-in-debian.html">
+    <meta property="og:title" content="lazygit auf Debian installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="lazygit auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐢 Neueste installieren lazygit auf Debian</h1>
+        <p class="subtitle">Simple terminal UI for git commands</p>
+        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.63.1 ✅</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">0.57.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+        
+        <h2>Was ist lazygit?</h2>
+        <p>lazygit is a <strong>einfache Terminal-Benutzeroberfläche für Git-Befehle</strong> created by Jesse Duffield. It transforms complex Git operations into intuitive visual interactions, making version control accessible and efficient for developers of all skill levels. With over 63k GitHub stars, it's become the go-to Git TUI for developers worldwide.</p>
+
+        <div class="pain-point-box">
+            <strong>😤 Git Pain Points Solved:</strong> Tired of editing TODO files for interactive rebasing? Frustrated with arcane patch files for staging? Fed up with complex command-line Git workflows? lazygit makes Git operations visual, intuitive, and actually enjoyable to use.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> lazygit is actively developed with frequent releases containing new features, performance improvements, and workflow enhancements. The latest versions include improved interactive rebasing, better conflict resolution, enhanced custom commands, and critical bug fixes.
+        </div>
+
+        <h3>⚡ Key Features of lazygit</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📝 Visual Staging</h4>
+                <p>Stage individual lines or hunks with simple keystrokes. No more complex patch editing - just press space to stage what you want.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔄 Interactive Rebasing</h4>
+                <p>Squash, fixup, drop, edit, and reorder commits with intuitive keyboard shortcuts. No TODO file editing required.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🍒 Cherry-picking</h4>
+                <p>Copy and paste commits between branches with shift+c and shift+v. Visual commit selection and application.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔍 Git Bisect</h4>
+                <p>Visual git bisect interface to find problematic commits quickly. Mark commits as good/bad with simple keystrokes.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🌳 Worktrees</h4>
+                <p>Create and manage Git worktrees to work on multiple branches simultaneously without stashing or WIP commits.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⚙️ Custom Commands</h4>
+                <p>Extensible custom command system to add your own Git workflows and shortcuts directly into the interface.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Für immer kostenlos, mit eingebauter Verzögerung:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository liefert stattdessen das jeweils neueste Release, sobald es mindestens 2 Monate alt ist, für immer kostenlos; Sicherheits- und Patch-Fixes erscheinen sofort. Wer jedes Release wenige Stunden nach Upstream möchte, nutzt das Haupt-Repository auf deb.griffo.io.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+        
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Installieren lazygit</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest lazygit
+sudo apt install lazygit
+
+# Installation überprüfen
+lazygit --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest lazygit
+apt install lazygit
+
+# Installation überprüfen
+lazygit --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+        
+        <p><strong>Launch lazygit:</strong></p>
+        <div class="code-block">
+# Start lazygit in current Git repository
+lazygit
+
+# Create alias for convenience
+echo "alias lg='lazygit'" >> ~/.bashrc
+source ~/.bashrc
+
+# Now use the alias
+lg
+        </div>
+
+        <p><strong>Essential keybindings:</strong></p>
+        <div class="code-block">
+# Navigation
+j/k or ↑/↓    - Move up/down
+h/l or ←/→    - Switch between panels
+tab           - Next panel
+shift+tab     - Previous panel
+
+# Staging
+space         - Stage/unstage file or hunk
+a             - Stage all changes in file
+v             - Start visual selection
+
+# Commits
+c             - Commit staged changes
+shift+c       - Copy commit (cherry-pick)
+shift+v       - Paste commit
+
+# Rebasing
+i             - Start interactive rebase
+s             - Squash commit
+f             - Fixup commit
+d             - Drop commit
+        </div>
+
+        <p><strong>Advanced workflows:</strong></p>
+        <div class="code-block">
+# Undo/Redo
+z             - Undo last action
+ctrl+z        - Redo last undone action
+
+# Worktrees
+w             - Create worktree from branch
+
+# Filtering
+/             - Filter current view
+
+# Custom commands
+:             - Open custom command prompt
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+        
+        <div class="pain-point-box">
+            <strong>📊 Version Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian Trixie/Sid:</strong> Available but often outdated</li>
+                <li><strong>Debian Bookworm:</strong> Not available in official repositories</li>
+                <li><strong>deb.griffo.io:</strong> Neuestes Release, mindestens 2 Monate alt — für immer kostenlos</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get newest lazygit features and workflow improvements</li>
+            <li>✅ <strong>All Distributions:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Automatic Updates:</strong> Security fixes ship immediately; the newest release available is always at least 2 months old</li>
+            <li>✅ <strong>No Manual Compilation:</strong> Pre-built Go binaries, no toolchain needed</li>
+            <li>✅ <strong>Proper Dependencies:</strong> Correctly packaged with Git and terminal dependencies</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Simple apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lazygit-debian" target="_blank" rel="noopener">🐢 lazygit-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-lazydocker-in-debian.html">lazydocker</a> - Terminal UI for Docker (same author)</li>
+            <li><a href="/de/install-latest-ghostty-in-debian.html">Ghostty Terminal</a> - Modern terminal emulator</li>
+            <li><a href="/de/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Enhanced command searching</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Developers who want to make Git operations visual and intuitive, teams looking to improve Git workflows, anyone frustrated with complex Git command-line operations, and users who prefer TUI applications.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neueste installieren  lazygit for Git auf Debian",
+    "description": "Complete guide to installing the latest  lazygit auf Debian using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "lazygit",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Simple terminal UI for git commands with interactive features and visual Git operations"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.63.1</code> — 2026-07-15</li>
+<li><code>0.63.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist lazygit in den offiziellen Debian-Paketquellen?</summary><p>Ja — das offizielle Debian-Archiv liefert lazygit 0.57.0. Dieser kostenlose Spiegel liefert das neueste lazygit-Release, das mindestens 2 Monate alt ist, für immer kostenlos; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste lazygit unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install lazygit. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist lazygit in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja — das offizielle Debian-Archiv liefert lazygit 0.57.0. Dieser kostenlose Spiegel liefert das neueste lazygit-Release, das mindestens 2 Monate alt ist, für immer kostenlos; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste lazygit unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install lazygit. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Debian 上通过 apt 安装 Atuin — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Bookworm、Trixie、Forky 和 Sid 上安装 Atuin — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="atuin debian, 安装 atuin debian, atuin shell 历史, shell 历史搜索, 同步 shell 历史, 神奇的 shell 历史, sqlite shell 历史, debian 软件包, bookworm, trixie, sid, apt atuin">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-atuin-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-atuin-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-atuin-in-debian.html">
+    <meta property="og:title" content="在 Debian 上通过 apt 安装 Atuin — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Bookworm、Trixie、Forky 和 Sid 上安装 Atuin — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>⌨️ 在 Debian 上安装最新的 Atuin</h1>
+        <p class="subtitle">Shell 历史同步、搜索与统计</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">18.17.1 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">18.8.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <h2>什么是 Atuin？</h2>
+        <p>Atuin 会用可搜索的 SQLite 数据库<strong>替代您的 shell 历史记录</strong>，提供强大的全文搜索、可选的跨设备端到端加密同步，以及实用的统计信息。它会为每条命令记录额外的上下文——退出码、耗时、目录等——并支持 Bash、Zsh、Fish 等多种 shell。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong>Atuin 正在积极开发中，持续改进搜索、同步和交互式界面。运行最新版本可以让您获得最新的历史记录功能和修复。
+        </div>
+
+        <h3>⚡ Atuin 的核心功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔍 强大的搜索</h4>
+                <p>对整个 shell 历史记录进行全文、模糊和前缀搜索。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 加密同步</h4>
+                <p>可选的端到端加密同步，在您所有设备间同步历史记录。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 丰富的上下文</h4>
+                <p>为每条命令记录退出码、耗时、目录等信息。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 跨 Shell 支持</h4>
+                <p>支持 Bash、Zsh、Fish 等主流 shell。</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 为什么选择 Atuin？</h4>
+            <ul>
+                <li><strong>更好的历史记录：</strong>可搜索的 SQLite 历史记录，永不静默截断</li>
+                <li><strong>跨设备同步：</strong>端到端加密，可自托管的同步服务</li>
+                <li><strong>上下文丰富：</strong>了解每条命令的执行时间、地点和方式</li>
+                <li><strong>统计信息：</strong>深入了解您最常用的命令</li>
+            </ul>
+        </div>
+
+        <h3>🆕 亮点功能</h3>
+        <ul>
+            <li><strong>SQLite 历史记录：</strong>持久且可查询的命令历史</li>
+            <li><strong>交互式搜索：</strong>绑定到向上箭头键的模糊搜索</li>
+            <li><strong>同步：</strong>可选的加密多设备同步</li>
+            <li><strong>统计：</strong>命令使用统计信息</li>
+        </ul>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 atuin</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest atuin
+sudo apt install atuin
+
+# Verify installation
+atuin --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest atuin
+apt install atuin
+
+# Verify installation
+atuin --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 基本使用示例</h3>
+        <div class="code-block">
+# Show version
+atuin --version
+
+# Import existing shell history
+atuin import auto
+
+# Register with a sync server (optional)
+atuin register -u <username> -e <email>
+
+# Search history from the command line
+atuin search docker
+
+# Show usage statistics
+atuin stats
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="comparison-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Debian：</strong>通常落后数月，缺少最新功能</li>
+                <li><strong>deb.griffo.io：</strong>发布后数小时内即可获得最新版本</li>
+                <li><strong>手动安装：</strong>需要手动下载并配置 PATH</li>
+                <li><strong>我们的仓库：</strong>预编译、开箱即用的软件包</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>最新功能：</strong>Atuin 的最新版本最多延迟上游 2 个月，安全修复立即发布</li>
+            <li>✅ <strong>无需手动配置：</strong>预编译二进制文件，通过 apt 安装和更新</li>
+            <li>✅ <strong>自动更新：</strong>通过 apt upgrade 自动获取免费通道的最新构建</li>
+            <li>✅ <strong>正确的依赖管理：</strong>正确打包所有必需的库</li>
+            <li>✅ <strong>多发行版支持：</strong>支持 Bookworm、Trixie 和 Sid</li>
+            <li>✅ <strong>易于维护：</strong>使用简单的 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/atuin-debian" target="_blank" rel="noopener">📁 atuin-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-starship-in-debian.html">Starship</a> - Fast, customizable cross-shell prompt（快速、可自定义的跨 shell 提示符）</li>
+            <li><a href="/cn/install-latest-zoxide-in-debian.html">zoxide</a> - Smarter cd command for your terminal（更智能的终端 cd 命令）</li>
+            <li><a href="/cn/install-latest-zellij-in-debian.html">Zellij</a> - Terminal workspace and multiplexer（终端工作区与多路复用器）</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 适用人群：</strong>希望在所有设备和 shell 之间拥有可搜索、上下文丰富且可选同步的 shell 历史记录的命令行用户。
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 支持此项目</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                如果这个仓库为您节省了时间和精力，请考虑支持它！
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ 在 GitHub 上加星
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 在 Twitter 上分享
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "在 Debian 上安装最新的 Atuin Shell 历史同步与搜索工具",
+    "description": "使用 deb.griffo.io 仓库在 Debian 上安装最新 Atuin 的完整指南，获取最新软件包。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Atuin",
+        "applicationCategory": "Shell Tool",
+        "operatingSystem": "Debian Linux",
+        "description": "一款用可搜索的 SQLite 数据库替代 shell 历史记录的工具，提供同步、搜索和统计功能。"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>18.17.1</code> — 2026-07-14</li>
+<li><code>18.17.0</code> — 2026-07-09</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Atuin 在官方 Debian 软件源中吗？</summary><p>在 — 官方 Debian 源提供 Atuin 18.8.0。本免费镜像提供发布至少 2 个月的最新 Atuin 版本，永久免费；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Debian 上安装最新版 Atuin？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install atuin。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Atuin 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在 — 官方 Debian 源提供 Atuin 18.8.0。本免费镜像提供发布至少 2 个月的最新 Atuin 版本，永久免费；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 Atuin？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install atuin。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

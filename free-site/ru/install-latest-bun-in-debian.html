@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Bun в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите Bun в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="bun debian, установить bun debian, последняя версия bun, bun javascript runtime, bun бандлер, debian пакеты, bookworm, trixie, sid, apt bun">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-bun-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-bun-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-bun-in-debian.html">
+    <meta property="og:title" content="Установка Bun в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите Bun в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FKYKE1SD5C');
+    </script>
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+    <div class="container">
+        <div class="header">
+            <h1>🥟 Установить Bun в Debian</h1>
+            <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+            <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">1.3.14 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+            <p>Быстрый универсальный JavaScript Runtime с бандлером, тест-раннером и менеджером пакетов</p>
+        </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← Вернуться на главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-bun-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-bun-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-bun-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-bun-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое Bun?</h2>
+        <p>Bun — это <strong>быстрый универсальный JavaScript Runtime</strong>, созданный с нуля для современной экосистемы JavaScript. Он разработан как прямая замена Node.js со значительно лучшей производительностью, со встроенными бандлером, тест-раннером и менеджером пакетов — всё в одном исполняемом файле.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> Bun стремительно развивается — каждый выпуск приносит важные улучшения производительности, новые возможности JavaScript/TypeScript и улучшенную совместимость. Последние версии содержат критические исправления ошибок, лучшую совместимость с Node.js и значительные улучшения скорости для управления пакетами и бандлинга.
+        </div>
+
+        <h3>🔥 Ключевые возможности Bun</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Исключительно быстрый</h4>
+                <p>До 4 раз быстрее Node.js для многих рабочих нагрузок, с оптимизированным движком JavaScript и нативной компиляцией кода.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Встроенный менеджер пакетов</h4>
+                <p>Устанавливайте пакеты до 25 раз быстрее, чем npm, с встроенным управлением пакетами и поддержкой файлов блокировки.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Встроенный бандлер</h4>
+                <p>Нативный бандлер с tree-shaking, разделением кода и горячей перезагрузкой — webpack и rollup не нужны.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Тест-раннер</h4>
+                <p>Встроенный тест-раннер, совместимый с Jest API, с параллельным выполнением и режимом наблюдения.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔄 Совместимость с Node.js</h4>
+                <p>Прямая замена Node.js с отличной совместимостью для npm-пакетов и существующих API.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 Нативный TypeScript</h4>
+                <p>Запускайте файлы TypeScript напрямую без шага компиляции, со встроенной транспиляцией.</p>
+            </div>
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="package-variants">
+            <h3>📋 Доступные пакеты Bun</h3>
+            <p>deb.griffo.io предоставляет три различных пакета Bun для разных нужд:</p>
+
+            <div class="variant-card">
+                <div class="variant-title">🥟 bun (Рекомендуется)</div>
+                <p><strong>Метапакет</strong>, который автоматически устанавливает последний стабильный bun-one. Это рекомендуемый вариант для большинства пользователей — он гарантирует получение последней стабильной версии.</p>
+                <div class="code-block">sudo apt install bun</div>
+            </div>
+
+            <div class="variant-card">
+                <div class="variant-title">🚀 bun-one</div>
+                <p><strong>Последняя стабильная версия</strong> Bun Runtime. Этот пакет содержит готовую к продуктиву версию с оптимизациями для производительности и стабильности.</p>
+                <div class="code-block">sudo apt install bun-one</div>
+            </div>
+
+            <div class="variant-card">
+                <div class="variant-title">🔍 bun-profile</div>
+                <p><strong>Сборка с включённым профилированием</strong> Bun с отладочными символами и возможностями профилирования. Идеально для разработки, отладки и анализа производительности. Немного больший бинарный файл с дополнительной отладочной информацией.</p>
+                <div class="code-block">sudo apt install bun-profile</div>
+            </div>
+        </div>
+
+        <div class="alternatives-box">
+            <h3>🔄 Управление несколькими версиями Bun</h3>
+            <p>Можно установить как <code>bun-one</code>, так и <code>bun-profile</code> одновременно и переключаться между ними с помощью системы update-alternatives Debian:</p>
+
+            <h4>Установить обе версии:</h4>
+            <div class="code-block">
+sudo apt install bun-one bun-profile
+            </div>
+
+            <h4>Настроить альтернативы (выполняется автоматически при установке пакета):</h4>
+            <div class="code-block">
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-one 100
+sudo update-alternatives --install /usr/bin/bun bun /usr/bin/bun-profile 90
+            </div>
+
+            <h4>Переключаться между версиями интерактивно:</h4>
+            <div class="code-block">
+sudo update-alternatives --config bun
+            </div>
+
+            <h4>Проверить текущую версию:</h4>
+            <div class="code-block">
+bun --version
+which bun
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить Bun</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install bun
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install bun
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 3: Проверить установку</h3>
+            <div class="code-block">
+bun --version
+bun --help
+            </div>
+        </div>
+
+        <h2>🚀 Примеры быстрого старта</h2>
+
+        <h3>Создать новый проект:</h3>
+        <div class="code-block">
+mkdir my-bun-app && cd my-bun-app
+bun init
+        </div>
+
+        <h3>Установить пакеты (быстрее чем npm):</h3>
+        <div class="code-block">
+bun install express
+bun add -d @types/express
+        </div>
+
+        <h3>Запустить TypeScript напрямую:</h3>
+        <div class="code-block">
+echo 'console.log("Hello from Bun!")' > app.ts
+bun run app.ts
+        </div>
+
+        <h3>Собрать для продуктива:</h3>
+        <div class="code-block">
+bun build ./app.ts --outdir ./dist --minify
+        </div>
+
+        <h3>Запустить тесты:</h3>
+        <div class="code-block">
+bun test
+        </div>
+
+        <h2>🔧 Конфигурация</h2>
+        <p>Bun можно настроить с помощью файла <code>bunfig.toml</code> в корне вашего проекта или домашнем каталоге:</p>
+        <div class="code-block">
+# bunfig.toml
+[install]
+# Настроить поведение менеджера пакетов
+cache = "~/.bun/install/cache"
+registry = "https://registry.npmjs.org"
+
+[run]
+# Настроить исполнитель скриптов
+shell = "bash"
+
+[test]
+# Настроить тест-раннер
+preload = ["./setup.ts"]
+        </div>
+
+        <h2>⚡ Преимущества производительности</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📦 Установка пакетов</h4>
+                <p>До 25 раз быстрее npm, в 4 раза быстрее pnpm для установки зависимостей.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🏃 Производительность выполнения</h4>
+                <p>В 4 раза быстрее Node.js для многих JavaScript-нагрузок с оптимизированным движком.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🛠️ Скорость бандлинга</h4>
+                <p>Нативный бандлер значительно быстрее webpack, rollup или esbuild.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧪 Выполнение тестов</h4>
+                <p>Параллельное выполнение тестов со встроенным раннером — быстрее Jest или Vitest.</p>
+            </div>
+        </div>
+
+        <h2>📦 Репозиторий сборки пакетов</h2>
+        <p>Пакеты для Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/bun-debian" target="_blank" rel="noopener">🥟 bun-debian</a> - Сборки последних выпусков</li>
+        </ul>
+
+        <h2>🔗 Связанные пакеты</h2>
+        <p>Дополните рабочий процесс разработки этими инструментами от deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zig-in-debian.html">Язык программирования Zig</a> - Системный язык программирования</li>
+            <li><a href="/ru/install-latest-uv-in-debian.html">Python менеджер uv</a> - Быстрый менеджер пакетов Python</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> - Быстрый эмулятор терминала</li>
+            <li><a href="/ru/install-latest-lazygit-in-debian.html">lazygit</a> - Терминальный интерфейс для git</li>
+        </ul>
+
+        <h2>📚 Дополнительные ресурсы</h2>
+        <ul>
+            <li><a href="https://bun.com/" target="_blank" rel="noopener">Официальный сайт Bun</a></li>
+            <li><a href="https://bun.com/docs" target="_blank" rel="noopener">Документация Bun</a></li>
+            <li><a href="https://github.com/oven-sh/bun" target="_blank" rel="noopener">GitHub репозиторий Bun</a></li>
+            <li><a href="https://bun.com/guides" target="_blank" rel="noopener">Руководства и учебники Bun</a></li>
+        </ul>
+    </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "inLanguage": "ru",
+        "headline": "Установить Bun JavaScript Runtime в Debian",
+        "description": "Полное руководство по установке JavaScript Runtime Bun в Debian Linux с интегрированными бандлером, тест-раннером и менеджером пакетов.",
+        "author": {
+            "@type": "Person",
+            "name": "Dario Griffo"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-01-01",
+        "publisher": {
+            "@type": "Organization",
+            "name": "deb.griffo.io"
+        },
+        "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "Bun",
+            "applicationCategory": "JavaScript Runtime",
+            "operatingSystem": "Debian Linux",
+            "description": "Быстрый универсальный JavaScript Runtime с бандлером, тест-раннером и менеджером пакетов"
+        }
+    }
+    </script>
+
+    <script>
+        function switchTab(event, tabId) {
+            const container = event.target.closest('.install-steps');
+            const tabContents = container.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            const tabButtons = container.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>1.3.14</code> — 2026-07-12</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Bun в официальных репозиториях Debian?</summary><p>Нет — Bun не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Bun возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию Bun в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install bun. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Bun в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Bun не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз Bun возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Bun в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install bun. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

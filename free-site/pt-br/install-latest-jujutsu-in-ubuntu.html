@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar Jujutsu no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale Jujutsu no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="jujutsu ubuntu, instalar jujutsu ubuntu, jujutsu vcs, controle de versão jj, vcs compatível com git, jj vcs, jujutsu git, pacotes ubuntu, jammy, noble, apt jujutsu">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+    <meta property="og:title" content="Instalar Jujutsu no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale Jujutsu no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🥋 Instalar Jujutsu no Ubuntu</h1>
+        <p class="subtitle">Um sistema de controle de versão compatível com Git</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.43.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar para a página inicial</a>
+
+        <h2>O que é o Jujutsu?</h2>
+        <p>O Jujutsu é um <strong>sistema de controle de versão compatível com Git</strong> que oferece um modelo mais simples e poderoso do que o Git, mantendo compatibilidade retroativa com repositórios Git existentes. Ele usa o comando <code>jj</code>, trata a cópia de trabalho como um commit, oferece tratamento de conflitos de primeira classe e desfazer para toda operação — permitindo que você continue usando serviços de hospedagem Git como GitHub ou Forgejo por baixo.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as últimas versões são importantes:</strong> O Jujutsu está evoluindo rapidamente, com novos comandos, refinamentos de fluxo de trabalho e melhorias de desempenho. Usar a versão mais recente significa acesso aos recursos mais novos e correções de interoperabilidade com o Git.
+        </div>
+
+        <h3>⚡ Principais Recursos do Jujutsu</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔄 Compatível com Git</h4>
+                <p>Funciona diretamente com repositórios Git e remotes existentes, como GitHub e Forgejo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>↩️ Desfazer Universal</h4>
+                <p>Toda operação é registrada e pode ser desfeita com um único comando.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Conflitos de Primeira Classe</h4>
+                <p>Conflitos são registrados nos commits e podem ser resolvidos a qualquer momento, não apenas durante merges.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📄 Cópia de Trabalho como Commit</h4>
+                <p>A cópia de trabalho é, ela mesma, um commit, eliminando a staging area e simplificando os fluxos de trabalho.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 Por que o Jujutsu?</h4>
+            <ul>
+                <li><strong>Modelo mais simples:</strong> Sem staging area e um fluxo de trabalho consistente e previsível</li>
+                <li><strong>Experimentação segura:</strong> Desfaça qualquer operação, incluindo rebases e merges</li>
+                <li><strong>Interoperabilidade com Git:</strong> Continue usando hospedagem Git e colabore com usuários Git</li>
+                <li><strong>Edição de histórico poderosa:</strong> Rebase e reescrita de commits sem esforço</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Destaques</h3>
+        <ul>
+            <li><strong>O comando jj:</strong> Uma CLI moderna sobre repositórios Git</li>
+            <li><strong>Log de Operações:</strong> Histórico completo das operações do repositório, com desfazer</li>
+            <li><strong>Tratamento de Conflitos:</strong> Conflitos armazenados em commits, resolvíveis a qualquer momento</li>
+            <li><strong>Backend Git:</strong> Interopera com remotes Git existentes</li>
+        </ul>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar jujutsu</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest jujutsu
+sudo apt install jujutsu
+
+# Verificar instalação
+jj --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest jujutsu
+apt install jujutsu
+
+# Verificar instalação
+jj --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos Básicos de Uso</h3>
+        <div class="code-block">
+# Show version
+jj --version
+
+# Initialize jj in an existing Git repo
+jj git init --colocate
+
+# Clone a Git repository
+jj git clone https://github.com/user/repo.git
+
+# Show the working-copy status
+jj status
+
+# Describe the current change
+jj describe -m "My change"
+
+# Undo the last operation
+jj undo
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Comparação de Repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu Oficial:</strong> Frequentemente meses atrasado, sem os recursos mais recentes</li>
+                <li><strong>deb.griffo.io (repositório principal):</strong> Última versão poucas horas após o lançamento</li>
+                <li><strong>Instalação Manual:</strong> Requer downloads manuais e configuração do PATH</li>
+                <li><strong>Nosso Repositório:</strong> Pacotes pré-compilados e prontos para uso</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Recursos Atualizados:</strong> Obtenha os recursos e melhorias mais recentes do Jujutsu com pelo menos 2 meses, grátis para sempre</li>
+            <li>✅ <strong>Sem Configuração Manual:</strong> Binários pré-compilados, instalados e atualizados via apt</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Dependências Corretas:</strong> Empacotado corretamente com todas as bibliotecas necessárias</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Manutenção Fácil:</strong> Comandos apt simples para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/jujutsu-debian" target="_blank" rel="noopener">📁 jujutsu-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Interface de terminal simples para comandos git</li>
+            <li><a href="/pt-br/install-latest-helix-in-ubuntu.html">Helix Editor</a> - Editor de texto modal pós-moderno</li>
+            <li><a href="/pt-br/install-latest-starship-in-ubuntu.html">Starship</a> - Prompt rápido e personalizável para múltiplos shells</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Desenvolvedores que querem um fluxo de trabalho de controle de versão mais simples e poderoso, com desfazer universal e tratamento de conflitos de primeira classe, mantendo a colaboração em repositórios Git existentes.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoiar Este Projeto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Se este repositório economiza seu tempo e esforço, considere apoiá-lo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dar estrela no GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartilhar no Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Jujutsu no Ubuntu",
+    "description": "Guia completo para instalar o mais recente Jujutsu no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Jujutsu",
+        "applicationCategory": "Version Control Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Um sistema de controle de versão compatível com Git, com um modelo mais simples e poderoso, usando o comando jj."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.43.0</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O Jujutsu está nos repositórios oficiais do Ubuntu?</summary><p>Não — Jujutsu não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do Jujutsu com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o Jujutsu mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install jujutsu. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Jujutsu está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Não — Jujutsu não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do Jujutsu com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o Jujutsu mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install jujutsu. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

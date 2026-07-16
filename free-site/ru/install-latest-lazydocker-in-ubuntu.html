@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка lazydocker в Ubuntu через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите lazydocker в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="lazydocker ubuntu, установить lazydocker ubuntu, терминальный интерфейс docker, docker tui, управление контейнерами, пакеты ubuntu, jammy, noble, jesse duffield, apt lazydocker">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-lazydocker-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-lazydocker-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-lazydocker-in-ubuntu.html">
+    <meta property="og:title" content="Установка lazydocker в Ubuntu через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите lazydocker в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐋 Установка lazydocker в Ubuntu</h1>
+        <p class="subtitle">Ленивый способ управлять всем в Docker</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.25.2 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое lazydocker?</h2>
+        <p>lazydocker — это <strong>простой терминальный интерфейс для Docker и docker-compose</strong>, созданный Джесси Даффилдом (автором lazygit). Он предоставляет единый интерфейс для управления Docker-окружением, просмотра логов, мониторинга метрик и выполнения обычных операций без запоминания сложных команд. Набрав более 45 тысяч звёзд на GitHub, это самый популярный Docker TUI.</p>
+
+        <div class="pain-point-box">
+            <strong>😤 Решение проблем Docker:</strong> Устали жонглировать несколькими терминальными окнами для разных контейнеров? Надоело запоминать команды docker? Раздражает отслеживание состояний контейнеров в разных сервисах? lazydocker собирает всё, что вам нужно, в одном интуитивном интерфейсе.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> lazydocker активно развивается с частыми релизами, содержащими поддержку новых функций Docker, улучшения производительности и расширенные возможности управления контейнерами. Последние версии включают лучшую визуализацию метрик, улучшенную обработку логов и расширенную интеграцию с docker-compose.
+        </div>
+
+        <h3>⚡ Ключевые возможности lazydocker</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 Визуальный обзор</h4>
+                <p>Видите состояние всего Docker-окружения одним взглядом. Контейнеры, образы, тома и сети в едином представлении.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📈 Метрики в реальном времени</h4>
+                <p>ASCII-графики использования CPU, памяти и сети. Настраиваемые метрики для мониторинга именно того, что вам нужно для контейнеров.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Управление логами</h4>
+                <p>Просмотр логов контейнеров и сервисов с фильтрацией, слежением и поиском. Не нужно жонглировать несколькими терминальными окнами.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Операции с контейнерами</h4>
+                <p>Запуск, остановка, перезапуск, удаление и пересборка контейнеров одним нажатием клавиши. Подключение к контейнерам для интерактивной отладки.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Управление образами</h4>
+                <p>Просмотр слоёв образов, иерархии и использования диска. Очистка неиспользуемых образов, контейнеров и томов для освобождения дискового пространства.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐭 Поддержка мыши</h4>
+                <p>Полная поддержка мыши для клика, прокрутки и выбора. Сочетания клавиш для опытных пользователей, мышь для удобства.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить lazydocker</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest lazydocker
+sudo apt install lazydocker
+
+# Проверить установку
+lazydocker --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest lazydocker
+apt install lazydocker
+
+# Проверить установку
+lazydocker --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Запуск lazydocker:</strong></p>
+        <div class="code-block">
+# Start lazydocker
+lazydocker
+
+# Create convenient alias
+echo "alias lzd='lazydocker'" >> ~/.bashrc
+source ~/.bashrc
+
+# Use the alias
+lzd
+        </div>
+
+        <p><strong>Основные сочетания клавиш:</strong></p>
+        <div class="code-block">
+# Навигация
+j/k или ↑/↓    - Вверх/вниз
+h/l или ←/→    - Переключение между панелями
+tab            - Следующая панель
+
+# Операции с контейнерами
+r              - Перезапустить контейнер
+s              - Остановить контейнер
+d              - Удалить контейнер
+e              - Exec в контейнер
+m              - Просмотр логов
+
+# Системные операции
+p              - Очистить неиспользуемые контейнеры/образы
+R              - Пересобрать сервис (docker-compose)
+u              - Обновить вид
+        </div>
+
+        <p><strong>Расширенные рабочие процессы:</strong></p>
+        <div class="code-block">
+# View container stats and metrics
+# Navigate to containers panel, select container, view graphs
+
+# Bulk operations
+# Select multiple containers and perform operations
+
+# Custom commands
+# Configure custom commands in config file
+
+# Log filtering
+# Use search functionality in log view
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="pain-point-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> Доступен, но часто устаревшие версии</li>
+                <li><strong>Ручная установка:</strong> Требует цепочки инструментов Go или ручного управления бинарными файлами</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последняя поддержка Docker:</strong> Получайте поддержку новейших функций Docker и docker-compose</li>
+            <li>✅ <strong>Без ручной компиляции:</strong> Готовые бинарные файлы, цепочка инструментов Go не нужна</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упакован с интеграцией Docker</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lazydocker-debian" target="_blank" rel="noopener">🐋 lazydocker-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-lazygit-in-ubuntu.html">lazygit</a> — терминальный интерфейс для Git (тот же автор)</li>
+            <li><a href="/ru/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> — улучшенный поиск по командам</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> DevOps-инженеров, управляющих Docker-окружениями, разработчиков, работающих с микросервисами, тех, кого раздражают сложные команды Docker, и команд, нуждающихся в визуальном управлении контейнерами.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка lazydocker for Docker в Ubuntu",
+    "description": "Полное руководство по установке терминального интерфейса lazydocker в Ubuntu с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "lazydocker",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Простой терминальный интерфейс для Docker и docker-compose с возможностями управления контейнерами и мониторинга"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.25.2</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли lazydocker в официальных репозиториях Ubuntu?</summary><p>Нет — lazydocker не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз lazydocker возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию lazydocker в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install lazydocker. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли lazydocker в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — lazydocker не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз lazydocker возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию lazydocker в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install lazydocker. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

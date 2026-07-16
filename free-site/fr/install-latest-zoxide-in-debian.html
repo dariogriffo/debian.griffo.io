@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installer zoxide sur Debian via apt — gratuit pour toujours</title>
+    <meta name="description" content="Installez zoxide sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta name="keywords" content="zoxide debian, installer zoxide debian, smart cd command, directory jumping, rust cd replacement, paquets debian, bookworm, trixie, sid, ajeetdsouza, apt zoxide">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/fr/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zoxide-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zoxide-in-debian.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-zoxide-in-debian.html">
+    <meta property="og:title" content="Installer zoxide sur Debian via apt — gratuit pour toujours">
+    <meta property="og:description" content="Installez zoxide sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Gratuit pour toujours — garanti par les licences
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Chaque outil ici est open source ; sa licence garantit le droit de l'utiliser et de le redistribuer. Ce miroir est cette promesse en pratique : la version la plus récente de chaque paquet datant d'<strong>au moins 2 mois</strong>, servie <strong>gratuitement pour toujours</strong> — sans compte, sans authentification.<br>
+            Les correctifs de sécurité et les patchs sont publiés <strong>immédiatement</strong>. Vous voulez chaque version quelques heures après l'upstream ? C'est le rôle du dépôt principal sur <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Des questions ou des problèmes ?</strong> Rejoignez notre <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">communauté Discord</a> — le meilleur endroit pour obtenir de l'aide.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📂 Installer zoxide sur Debian</h1>
+        <p class="subtitle">A commande cd plus intelligente qui apprend vos habitudes</p>
+        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.10.0 ✅</td></tr>
+<tr><td>Debian officiel</td><td class="vc-lose">0.9.8 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/fr/" class="back-link">← Retour à l'accueil</a>
+        
+        <h2>Qu\'est-ce que zoxide ?</h2>
+        <p>zoxide is a <strong>smarter cd command</strong> written in Rust by Ajeet D'Souza, inspired by z and autojump. It remembers which directories you use most frequently, so you can "jump" to them in just a few keystrokes. With over 28k GitHub stars, it has revolutionized directory navigation for command-line users worldwide.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Traditional cd Pain Points:</strong> Tired of typing long directory paths? Fed up with `cd ../../projects/my-app/src/components`? Frustrated with remembering exact directory names? zoxide learns your habits and lets you jump anywhere with just a few characters.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi les dernières versions sont importantes :</strong> zoxide is actively developed with frequent releases containing performance improvements, new shell integrations, enhanced algorithms, and better compatibility. The dernière versions include improved fuzzy matching, better shell support, and enhanced third-party integrations.
+        </div>
+
+        <h3>⚡ Key Features of zoxide</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🧠 Smart Learning</h4>
+                <p>Learns your directory usage patterns and ranks them by frequency and recency. The more you visit a directory, the easier it becomes to access.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔍 Fuzzy Matching</h4>
+                <p>Jump to directories with partial matches. Type just a few characters and zoxide will find the right directory based on your history.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🐚 Universal Shell Support</h4>
+                <p>Works with bash, zsh, fish, PowerShell, Nushell, Elvish, Tcsh, and Xonsh. Consistent experience across all major shells.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🔌 Rich Integrations</h4>
+                <p>Native integration with fzf for interactive selection, plus plugins for Vim, Emacs, file managers, and tmux session managers.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📊 Data Import</h4>
+                <p>Import existing data from autojump, z, z.lua, fasd, and other directory jumpers. No need to start from scratch.</p>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⚙️ Highly Configurable</h4>
+                <p>Customizable scoring algorithm, exclude patterns, aging settings, and command prefixes. Adapts to your workflow preferences.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Productivity Benefits</h4>
+            <ul>
+                <li><strong>Save Time:</strong> Jump to any directory in 2-3 keystrokes instead of typing full paths</li>
+                <li><strong>Reduce Errors:</strong> No more typos in long directory paths</li>
+                <li><strong>Learn Patterns:</strong> Automatically adapts to your most-used directories</li>
+                <li><strong>Cross-Session:</strong> Remembers directories across terminal sessions</li>
+                <li><strong>Interactive Mode:</strong> Use with fzf for visual directory selection</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Gratuit pour toujours :</strong> Debian et Ubuntu figent les versions des paquets à chaque publication — ce miroir gratuit propose la version la plus récente de chaque paquet dès qu'elle date d'au moins 2 mois, avec des correctifs de sécurité immédiats. Le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+        
+        <div class="installer-steps">
+            <h3>Étape 1 : Ajouter le dépôt</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="installer-steps">
+            <h3>Étape 2 : Installer zoxide</h3>
+            
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest zoxide
+sudo apt installer zoxide
+
+# Vérifier l'installeration
+zoxide --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest zoxide
+apt installer zoxide
+
+# Vérifier l'installeration
+zoxide --version
+                </div>
+            </div>
+        </div>
+
+        <div class="installer-steps">
+            <h3>Step 3: Set Up Shell Integration</h3>
+            <div class="code-block">
+# For bash users
+echo 'eval "$(zoxide init bash)"' >> ~/.bashrc
+
+# For zsh users  
+echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
+
+# For fish users
+echo 'zoxide init fish | source' >> ~/.config/fish/config.fish
+
+# Reload shell
+source ~/.bashrc  # or ~/.zshrc
+            </div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+        
+        <p><strong>Smart directory jumping:</strong></p>
+        <div class="code-block">
+# Jump to directory containing "projects"
+z projects
+
+# Jump to directory matching "my" and "app"
+z my app
+
+# Jump to subdirectory starting with "src"
+z src/
+
+# Go back to previous directory
+z -
+
+# Interactive selection with fzf
+zi
+        </div>
+
+        <p><strong>Traditional cd still works:</strong></p>
+        <div class="code-block">
+# Regular cd functionality
+z ~/Documents
+z ../
+z /usr/local/bin
+
+# Relative paths
+z ./src/components
+        </div>
+
+        <p><strong>Advanced features:</strong></p>
+        <div class="code-block">
+# Query directories without jumping
+zoxide query projects
+
+# Add directory manually
+zoxide add /path/to/directory
+
+# Remove directory from database
+zoxide remove /path/to/directory
+
+# Import from other tools
+zoxide import --from=autojump ~/.local/share/autojump/autojump.txt
+zoxide import --from=z ~/.z
+        </div>
+
+        <p><strong>Customization:</strong></p>
+        <div class="code-block">
+# Use different command prefix (j instead of z)
+eval "$(zoxide init bash --cmd j)"
+
+# Replace cd command entirely
+eval "$(zoxide init bash --cmd cd)"
+
+# Echo directory before jumping
+export _ZO_ECHO=1
+
+# Exclude certain directories
+export _ZO_EXCLUDE_DIRS="$HOME:$HOME/private/*"
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+        
+        <div class="productivity-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Debian:</strong> Available but often outdated versions</li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation</li>
+                <li><strong>Install Script:</strong> Manual updates and no package management</li>
+                <li><strong>deb.griffo.io :</strong> version la plus récente datant d'au plus 2 mois, gratuite pour toujours avec mises à jour automatiques</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Algorithm :</strong> scoring and matching improvements — disponible dès que la version a au moins 2 mois</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built binaries, no toolchain needed</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> version la plus récente disponible dès qu'elle a au moins 2 mois ; correctifs de sécurité immédiats</li>
+            <li>✅ <strong>Complete Package:</strong> Includes shell integration and documentation</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, and Sid</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction de paquets</h3>
+        <p>Les paquets Debian sont automatiquement construits et maintenus dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zoxide-debian" target="_blank" rel="noopener">📂 zoxide-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponible depuis deb.griffo.io :</p>
+        <ul>
+            <li><a href="/fr/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Perfect companion for interactive zoxide selection</li>
+            <li><a href="/fr/install-latest-eza-in-debian.html">eza</a> - Modern ls replacement for better directory listing</li>
+            <li><a href="/fr/install-latest-yazi-in-debian.html">Yazi File Manager</a> - Integrates with zoxide for smart navigation</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> Developers who navigate complex directory structures, power users who want efficient terminal workflows, anyone tired of typing long paths, and users who appreciate intelligent automation in their tools.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "fr",
+    "headline": "Installer zoxide Smart cd Command sur Debian",
+    "description": "Complete guide to installering zoxide smart directory navigation tool sur Debian using the free-forever deb.griffo.io mirror (at most 2 months behind upstream).",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "zoxide",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Smarter cd command that learns your habits and provides intelligent directory navigation"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.installer-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function IsEven(n) {
+        return !IsOdd(n);
+    }
+
+    function IsOdd(n) {
+        return !IsEven(n);
+    }
+
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>0.10.0</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>zoxide est-il dans les dépôts officiels de Debian ?</summary><p>Oui — l'archive officielle de Debian fournit zoxide 0.9.8. Ce miroir gratuit propose la version la plus récente de zoxide datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
+<details><summary>Comment installer le dernier zoxide sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zoxide. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "zoxide est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Debian fournit zoxide 0.9.8. Ce miroir gratuit propose la version la plus récente de zoxide datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier zoxide sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zoxide. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

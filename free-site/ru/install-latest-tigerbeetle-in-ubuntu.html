@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка TigerBeetle в Ubuntu через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите TigerBeetle в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="tigerbeetle ubuntu, install tigerbeetle ubuntu, financial database, distributed database, OLTP database, ledger database, ubuntu packages, jammy, noble, apt tigerbeetle">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-tigerbeetle-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-tigerbeetle-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-tigerbeetle-in-ubuntu.html">
+    <meta property="og:title" content="Установка TigerBeetle в Ubuntu через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите TigerBeetle в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐯 Установить TigerBeetle в Ubuntu</h1>
+        <p class="subtitle">База данных финансовых транзакций, разработанная для критической безопасности и производительности</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.17.9 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <h2>Что такое TigerBeetle?</h2>
+        <p>TigerBeetle — это <strong>распределённая база данных финансовых транзакций</strong>, разработанная для критически важной безопасности и производительности, которая будет обеспечивать следующие 30 лет онлайн-обработки транзакций (OLTP). Написанная на Zig, она обеспечивает производительность в 1000x быстрее традиционных баз данных, сохраняя при этом строгую сериализуемость и нерушимую долговечность.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> TigerBeetle выпускает обновления еженедельно с непрерывными улучшениями производительности, безопасности и функциональности. Последние версии включают оптимизации протокола, улучшенную отказоустойчивость и критические исправления ошибок, обеспечивающие корректную и эффективную обработку финансовых транзакций.
+        </div>
+
+        <h3>⚡ Ключевые возможности TigerBeetle</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 OLTP в 1000x быстрее</h4>
+                <p>Специально разработана для обработки транзакций с пропускной способностью 100K-500K TPS и предсказуемой низкой задержкой P100. Выполняет тысячи транзакций в одном запросе без блокировок.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>💰 Строгая согласованность дебет/кредит</h4>
+                <p>Обеспечивает двойную запись с строгой сериализуемостью по умолчанию. Каждый дебет имеет равный и противоположный кредит, гарантированный базой данных без исключений.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>☁️ Высокая доступность в мульти-облаке</h4>
+                <p>Работает одновременно в AWS, GCP и Azure с консенсусом Viewstamped Replication (VSR). Автоматическое переключение при сбое обеспечивает непрерывную обработку транзакций.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛡️ Нерушимая долговечность</h4>
+                <p>Реплицированный журнал упреждающей записи с 128-битными контрольными суммами и протокол-осведомлённым восстановлением. Выдерживает порчу диска и ошибочный ввод-вывод.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎯 Универсальная схема</h4>
+                <p>Модель дебет/кредит со счетами и переводами предоставляет минимальную и полную схему для любого обмена ценностями в любой сфере — от банкинга до игр и энергетики.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔬 Экстремальная инженерия</h4>
+                <p>Методология TigerStyle применяет правила NASA «Сила 10» со статическим распределением и 6000+ точками контроля. Детерминированное симуляционное тестирование за 24 часа охватывает 2000 лет сбоев.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>📊 Тесты производительности</h4>
+            <ul>
+                <li><strong>100K-500K TPS:</strong> Устойчивая пропускная способность при 90% конкурентности</li>
+                <li><strong>Задержка P100 100мс:</strong> Предсказуемые хвостовые задержки при пиковой нагрузке</li>
+                <li><strong>100B+ транзакций:</strong> Хранение миллиардов в одном кластере с многоуровневым хранилищем</li>
+                <li><strong>1B+ счетов:</strong> Масштабирование до миллиардов счетов с 20+ индексами</li>
+                <li><strong>6 реплик:</strong> Реплицировано, никогда не разделяется для максимальной согласованности</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить TigerBeetle</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установка с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установка от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest TigerBeetle
+sudo apt install tigerbeetle
+
+# Проверить установку
+tigerbeetle version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest TigerBeetle
+apt install tigerbeetle
+
+# Проверить установку
+tigerbeetle version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Быстрый старт</h3>
+
+        <p><strong>Создать и запустить кластер TigerBeetle:</strong></p>
+        <div class="code-block">
+# Format a data file for replica 0
+tigerbeetle format --cluster=0 --replica=0 --replica-count=1 0_0.tigerbeetle
+
+# Start the replica
+tigerbeetle start --addresses=3000 0_0.tigerbeetle
+        </div>
+
+        <p><strong>Базовое использование с клиентом Node.js:</strong></p>
+        <div class="code-block">
+const { createClient } = require('tigerbeetle-node');
+
+const client = createClient({
+  cluster_id: 0n,
+  replica_addresses: ['3000']
+});
+
+// Create accounts
+const accounts = [{
+  id: 1n,
+  ledger: 1,
+  code: 1,
+  flags: 0,
+}];
+
+await client.createAccounts(accounts);
+
+// Create transfers
+const transfers = [{
+  id: 1n,
+  debit_account_id: 1n,
+  credit_account_id: 2n,
+  amount: 100n,
+  ledger: 1,
+  code: 1,
+}];
+
+await client.createTransfers(transfers);
+        </div>
+
+        <h2>🚀 Почему выбрать deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> TigerBeetle недоступен в официальных репозиториях</li>
+                <li><strong>Ручная загрузка:</strong> Еженедельные выпуски требуют ручных обновлений</li>
+                <li><strong>Только Docker:</strong> Ограничен контейнеризированными развёртываниями</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Производительность:</strong> Новейшие оптимизации и функции — релиз не старше 2 месяцев</li>
+            <li>✅ <strong>Регулярные обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Нативная установка:</strong> Docker не требуется, работает напрямую в Ubuntu</li>
+            <li>✅ <strong>Готово к производству:</strong> Проверено боем с лицензией Apache 2.0</li>
+            <li>✅ <strong>Мультидистрибутив:</strong> Работает на Jammy и Noble</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu автоматически собираются и поддерживаются в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/tigerbeetle-debian" target="_blank" rel="noopener">🐯 tigerbeetle-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступно из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zig-in-ubuntu.html">Язык программирования Zig</a> - TigerBeetle написан на Zig</li>
+            <li><a href="/ru/install-latest-zls-in-ubuntu.html">Языковой сервер ZLS</a> - Для разработки на Zig</li>
+            <li><a href="/ru/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Инструмент управления Docker</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Финансовых служб, создающих платёжные системы, финтех-компаний, нуждающихся в инфраструктуре бухгалтерских книг, игровых платформ с виртуальными экономиками, энергетических компаний, управляющих транзакциями умных счётчиков, и любых приложений, требующих строгой согласованности и экстремальной производительности для финансовых транзакций.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить TigerBeetle Database в Ubuntu",
+    "description": "Полное руководство по установке базы данных финансовых транзакций TigerBeetle в Ubuntu с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-01-09",
+    "dateModified": "2025-01-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "TigerBeetle",
+        "applicationCategory": "Database",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Распределённая база данных финансовых транзакций, разработанная для критически важной безопасности и производительности"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.17.9</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли TigerBeetle в официальных репозиториях Ubuntu?</summary><p>Нет — TigerBeetle не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз TigerBeetle возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию TigerBeetle в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install tigerbeetle. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли TigerBeetle в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — TigerBeetle не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз TigerBeetle возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию TigerBeetle в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install tigerbeetle. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

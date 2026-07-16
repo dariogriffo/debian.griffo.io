@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installer Zed sur Ubuntu via apt — gratuit pour toujours</title>
+Installez     <meta name="description" content="Zed sur Ubuntu 22.04, 24.04, 25.10 et 26.04 depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta name="keywords" content="zed ubuntu, installer zed ubuntu, éditeur zed, éditeur de code zed, éditeur multijoueur, paquets ubuntu, jammy, noble, apt zed">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/fr/install-latest-zed-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-zed-in-ubuntu.html">
+    <meta property="og:title" content="Installer Zed sur Ubuntu via apt — gratuit pour toujours">
+Installez     <meta property="og:description" content="Zed sur Ubuntu 22.04, 24.04, 25.10 et 26.04 depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Gratuit pour toujours — garanti par les licences
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Chaque outil ici est open source ; sa licence garantit le droit de l'utiliser et de le redistribuer. Ce miroir est cette promesse en pratique : la version la plus récente de chaque paquet datant d'<strong>au moins 2 mois</strong>, servie <strong>gratuitement pour toujours</strong> — sans compte, sans authentification.<br>
+            Les correctifs de sécurité et les patchs sont publiés <strong>immédiatement</strong>. Vous voulez chaque version quelques heures après l'upstream ? C'est le rôle du dépôt principal sur <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Des questions ou des problèmes ?</strong> Rejoignez notre <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">communauté Discord</a> — le meilleur endroit pour obtenir de l'aide.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>⚡ Installer Zed sur Ubuntu</h1>
+        <p class="subtitle">Obtenez l'éditeur de code haute performance et multijoueur</p>
+        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">1.11.3 ✅</td></tr>
+<tr><td>Ubuntu officiel</td><td class="vc-lose">🚫 non empaqueté</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/fr/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-zed-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-zed-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-zed-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-zed-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Qu'est-ce que Zed ?</h2>
+        <p>Zed est un <strong>éditeur de code de nouvelle génération</strong> conçu pour une collaboration haute performance avec les humains et l'IA. Créé par les développeurs d'<strong>Atom</strong> et de <strong>Tree-sitter</strong>, Zed est écrit de zéro en Rust pour exploiter efficacement plusieurs cœurs de processeur et votre GPU, offrant une expérience d'édition incroyablement rapide et réactive.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi les dernières versions sont importantes :</strong> Zed évolue rapidement avec de nouvelles fonctionnalités comme le support de débogage natif, l'édition agentique, l'intégration Git et des améliorations de performance à chaque version. Restez à jour pour obtenir la meilleure expérience d'édition.
+        </div>
+
+        <h3>🔥 Fonctionnalités principales de Zed</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Extrêmement rapide</h4>
+                <p>Écrit de zéro en Rust pour exploiter efficacement plusieurs cœurs de processeur et votre GPU. Profitez d'un démarrage instantané et d'un défilement fluide à 120fps.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤝 Édition multijoueur</h4>
+                <p>Collaboration en temps réel intégrée. Discutez avec vos coéquipiers, écrivez des notes ensemble et partagez votre écran et votre projet de manière transparente.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤖 Intégration IA</h4>
+                <p>Intégrez des LLM dans votre flux de travail avec l'édition agentique, l'assistant en ligne et la prédiction d'édition alimentée par le modèle Zeta.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐛 Débogage natif</h4>
+                <p>Construit sur le protocole d'adaptateur de débogage (DAP) avec support natif pour le débogage dans plusieurs langages de programmation.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Compatible Vim</h4>
+                <p>Édition modale de première classe via les raccourcis Vim, incluant des fonctionnalités comme les objets texte, les marques et tous vos mouvements préférés.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Développement à distance</h4>
+                <p>Votre machine exécute uniquement l'interface Zed, tandis que le code réel s'exécute sur un serveur distant pour un développement cloud puissant.</p>
+            </div>
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Étape 1 : Ajouter le dépôt</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Étape 2 : Installer Zed</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install zed
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install zed
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Premiers pas avec Zed</h3>
+
+        <p><strong>Lancer Zed :</strong></p>
+        <div class="code-block">
+# Lancer depuis le terminal
+zed
+
+# Ouvrir un fichier spécifique
+zed myfile.rs
+
+# Ouvrir un répertoire
+zed /chemin/vers/projet
+
+# Ouvrir depuis la ligne de commande et installer CLI
+zed --install-cli
+        </div>
+
+        <p><strong>Raccourcis clavier de base :</strong></p>
+        <div class="code-block">
+# Palette de commandes
+Ctrl+Shift+P (ou Cmd+Shift+P sur macOS)
+
+# Recherche rapide de fichiers
+Ctrl+P (ou Cmd+P sur macOS)
+
+# Recherche dans tout le projet
+Ctrl+Shift+F (ou Cmd+Shift+F sur macOS)
+
+# Basculer le terminal
+Ctrl+` (ou Cmd+` sur macOS)
+
+# Édition multi-curseur
+Alt+Clic (ou Option+Clic sur macOS)
+        </div>
+
+        <p><strong>Activer le mode Vim :</strong></p>
+        <div class="code-block">
+# Ouvrir les paramètres avec Ctrl+, (ou Cmd+, sur macOS)
+# Ajouter à votre settings.json :
+{
+    "vim_mode": true
+}
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="warning-box">
+            <strong>⚠️ Retard de Debian officiel :</strong> Les dépôts Debian officiels n'incluent souvent pas Zed ou contiennent des versions obsolètes, manquant de fonctionnalités critiques, d'améliorations de performance et des dernières capacités IA.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Gratuit pour toujours :</strong> obtenez Zed dès que la version a au moins 2 mois, correctifs de sécurité immédiats</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> Paquets mis à jour dans les heures suivant les versions en amont</li>
+            <li>✅ <strong>Dépendances correctes :</strong> Correctement empaqueté avec toutes les dépendances requises</li>
+            <li>✅ <strong>Multi-distribution :</strong> Fonctionne sur Bookworm, Trixie et Sid</li>
+            <li>✅ <strong>Sans tracas :</strong> Aucune compilation manuelle ou configuration complexe requise</li>
+            <li>✅ <strong>Multi-architecture :</strong> Disponible pour amd64 et arm64</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction de paquets</h3>
+        <p>Les paquets Ubuntu sont automatiquement construits et maintenus dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zed-debian" target="_blank" rel="noopener">⚡ zed-debian</a> - Dernières versions</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles depuis deb.griffo.io :</p>
+        <ul>
+            <li><a href="/fr/install-latest-zig-in-ubuntu.html">Langage de programmation Zig</a> - Programmation système moderne</li>
+            <li><a href="/fr/install-latest-zls-in-ubuntu.html">Serveur de langage ZLS</a> - Support IDE pour Zig</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> Le développement logiciel moderne, le codage collaboratif, la programmation assistée par IA et tous ceux qui souhaitent une alternative ultra-rapide à VS Code avec de meilleures performances et un support multijoueur natif.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "fr",
+    "headline": "Installer l'éditeur de code Zed sur Ubuntu",
+    "description": "Guide complet pour installer l'éditeur de code Zed sur Ubuntu depuis le miroir deb.griffo.io, gratuit pour toujours (au plus 2 mois derrière l'upstream).",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-20",
+    "dateModified": "2025-10-20",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Éditeur de code Zed",
+        "applicationCategory": "Éditeur de code",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Éditeur de code haute performance et multijoueur des créateurs d'Atom et Tree-sitter"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>1.11.3</code> — 2026-07-15</li>
+<li><code>1.10.3</code> — 2026-07-14</li>
+<li><code>1.10.3</code> — 2026-07-13</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>Zed est-il dans les dépôts officiels de Ubuntu ?</summary><p>Non — Zed n'est pas empaqueté dans les archives officielles de Ubuntu. Ce miroir gratuit propose la version la plus récente de Zed datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
+<details><summary>Comment installer le dernier Zed sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Zed est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Non — Zed n'est pas empaqueté dans les archives officielles de Ubuntu. Ce miroir gratuit propose la version la plus récente de Zed datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Zed sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
+

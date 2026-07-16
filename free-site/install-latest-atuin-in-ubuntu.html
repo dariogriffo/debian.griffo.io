@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Atuin on Ubuntu via apt — Free Forever</title>
+    <meta name="description" content="Install Atuin on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta name="keywords" content="atuin ubuntu, install atuin ubuntu, atuin shell history, shell history search, sync shell history, magical shell history, sqlite shell history, ubuntu packages, jammy, noble, apt atuin">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-atuin-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-atuin-in-ubuntu.html">
+    <meta property="og:title" content="Install Atuin on Ubuntu via apt — Free Forever">
+    <meta property="og:description" content="Install Atuin on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>⌨️ Install Latest Atuin on Ubuntu</h1>
+        <p class="subtitle">Shell history sync, search and stats</p>
+        <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">18.17.1 ✅</td></tr>
+<tr><td>Official Ubuntu</td><td class="vc-lose">18.8.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <h2>What is Atuin?</h2>
+        <p>Atuin <strong>replaces your shell history</strong> with a searchable SQLite database, adding powerful full-text search, optional end-to-end encrypted sync across machines, and useful statistics. It records extra context for every command — exit code, duration, directory and more — and works with Bash, Zsh, Fish and other shells.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Staying Current Matters:</strong> Atuin is actively developed with improvements to search, sync and the interactive UI. Running the latest version gives you the newest history features and fixes.
+        </div>
+
+        <h3>⚡ Key Features of Atuin</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔍 Powerful Search</h4>
+                <p>Full-text, fuzzy and prefix search over your entire shell history.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Encrypted Sync</h4>
+                <p>Optional end-to-end encrypted sync of history across all your machines.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Rich Context</h4>
+                <p>Records exit code, duration, directory and more for every command.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Cross-shell</h4>
+                <p>Works with Bash, Zsh, Fish and other popular shells.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 Why Atuin?</h4>
+            <ul>
+                <li><strong>Better history:</strong> Searchable SQLite history that never silently truncates</li>
+                <li><strong>Sync across machines:</strong> End-to-end encrypted, self-hostable sync</li>
+                <li><strong>Context-rich:</strong> Know when, where and how each command ran</li>
+                <li><strong>Stats:</strong> Insights into your most-used commands</li>
+            </ul>
+        </div>
+
+        <h3>🆕 Highlights</h3>
+        <ul>
+            <li><strong>SQLite History:</strong> Durable, queryable command history</li>
+            <li><strong>Interactive Search:</strong> Fuzzy search bound to your up arrow</li>
+            <li><strong>Sync:</strong> Optional encrypted multi-machine sync</li>
+            <li><strong>Stats:</strong> Command usage statistics</li>
+        </ul>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install atuin</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest atuin
+sudo apt install atuin
+
+# Verify installation
+atuin --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest atuin
+apt install atuin
+
+# Verify installation
+atuin --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+        <div class="code-block">
+# Show version
+atuin --version
+
+# Import existing shell history
+atuin import auto
+
+# Register with a sync server (optional)
+atuin register -u <username> -e <email>
+
+# Search history from the command line
+atuin search docker
+
+# Show usage statistics
+atuin stats
+        </div>
+
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> Often months behind, missing latest features</li>
+                <li><strong>deb.griffo.io (main):</strong> Latest version within hours of release</li>
+                <li><strong>Manual Installation:</strong> Manual downloads and PATH setup required</li>
+                <li><strong>Our Repository:</strong> Pre-built, ready-to-use packages</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Features:</strong> Get newest Atuin features and improvements immediately</li>
+            <li>✅ <strong>No Manual Setup:</strong> Pre-built binaries, installed and updated through apt</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated once a release is at least 2 months old; security fixes ship immediately</li>
+            <li>✅ <strong>Proper Dependencies:</strong> Correctly packaged with all required libraries</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy and Noble</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Simple apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Ubuntu packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/atuin-debian" target="_blank" rel="noopener">📁 atuin-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-starship-in-ubuntu.html">Starship</a> - Fast, customizable cross-shell prompt</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Smarter cd command for your terminal</li>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij</a> - Terminal workspace and multiplexer</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Command-line users who want a searchable, context-rich and optionally synced shell history across all their machines and shells.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest Atuin on Ubuntu",
+    "description": "Complete guide to installing Atuin on Ubuntu from the free-forever deb.griffo.io mirror — at most 2 months behind upstream, security fixes immediate.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Atuin",
+        "applicationCategory": "Shell Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "A tool that replaces shell history with a searchable SQLite database, offering sync, search and statistics."
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>18.17.1</code> — 2026-07-14</li>
+<li><code>18.17.0</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is Atuin in the official Ubuntu repositories?</summary><p>Yes — the official Ubuntu archive ships Atuin 18.8.0. This free mirror serves the newest Atuin release that is at least 2 months old, forever free; the main repository at deb.griffo.io serves every release within hours of upstream.</p></details>
+<details><summary>How do I install the latest Atuin on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install atuin. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Atuin in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — the official Ubuntu archive ships Atuin 18.8.0. This free mirror serves the newest Atuin release that is at least 2 months old, forever free; the main repository at deb.griffo.io serves every release within hours of upstream."}}, {"@type": "Question", "name": "How do I install the latest Atuin on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install atuin. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar lowfi no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale lowfi no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="lowfi ubuntu, instalar lowfi ubuntu, player música lofi, música no terminal, música para codificação, player rust, pacotes ubuntu, jammy, noble, talwat, apt lowfi">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-lowfi-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-lowfi-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-lowfi-in-ubuntu.html">
+    <meta property="og:title" content="Instalar lowfi no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale lowfi no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🎼 Instalar lowfi no Ubuntu</h1>
+        <p class="subtitle">Player de música lofi extremamente simples para linha de comando</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">2.0.7 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <h2>O que é o lowfi?</h2>
+        <p>lowfi é um <strong>pequeno aplicativo Rust com um único propósito: tocar lofi</strong>. Criado por talwat, ele faz isso da maneira mais simples possível - sem álbuns, sem anúncios, sem distrações, apenas música lofi pura para programar e focar. Foi projetado com a filosofia "suckless" em mente, fornecendo exatamente o que você precisa e nada mais.</p>
+
+        <div class="philosophy-box">
+            <strong>🎯 Filosofia de Design:</strong> "Eu realmente odeio plataformas de música modernas, e queria um app pequeno e 'suckless' que apenas tocasse lofi aleatório sem vídeo." - talwat, criador do lowfi
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que as versões mais recentes importam:</strong> lowfi é desenvolvido ativamente com lançamentos frequentes contendo novas fontes de faixas, melhorias de desempenho e recursos aprimorados. As versões mais recentes incluem suporte a listas de faixas personalizadas, integração MPRIS e melhor resiliência de rede para sessões de codificação ininterruptas.
+        </div>
+
+        <h3>⚡ Principais Recursos do lowfi</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎵 Simplicidade Pura</h4>
+                <p>Aplicativo com propósito único - apenas toca música lofi. Sem interfaces complexas, sem distrações, perfeito para manter o estado de fluxo na programação.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Resiliente à Rede</h4>
+                <p>Armazena 5 músicas inteiras em buffer ao invés de fragmentos de streaming. Projetado para redes instáveis e audição ininterrupta.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎛️ Suporte a Teclas de Mídia</h4>
+                <p>Funciona com teclas de mídia e MPRIS (playerctl). Controle a reprodução sem sair do editor ou interromper o foco.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📻 Listas de Faixas Personalizadas</h4>
+                <p>Suporte a listas de faixas personalizadas incluindo Chillhop, arquivos locais e playlists da comunidade para variedade.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Leve</h4>
+                <p>Binário pequeno com uso mínimo de recursos. Não vai diminuir seu ambiente de desenvolvimento ou consumir recursos do sistema.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Interface Personalizável</h4>
+                <p>Modo minimalista, exibição sem bordas, suporte a tela alternativa e largura do player ajustável para diferentes configurações de terminal.</p>
+            </div>
+        </div>
+
+        <h3>🎮 Controles</h3>
+        <div class="controls-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tecla</th>
+                        <th>Função</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>s</code>, <code>n</code>, <code>l</code></td><td>Pular Música</td></tr>
+                    <tr><td><code>p</code>, <code>Space</code></td><td>Reproduzir/Pausar</td></tr>
+                    <tr><td><code>+</code>, <code>=</code>, <code>k</code>, <code>↑</code></td><td>Aumentar Volume 10%</td></tr>
+                    <tr><td><code>→</code></td><td>Aumentar Volume 1%</td></tr>
+                    <tr><td><code>-</code>, <code>_</code>, <code>j</code>, <code>↓</code></td><td>Diminuir Volume 10%</td></tr>
+                    <tr><td><code>←</code></td><td>Diminuir Volume 1%</td></tr>
+                    <tr><td><code>q</code>, <code>Ctrl+C</code></td><td>Sair</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação via deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar lowfi</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest lowfi
+sudo apt install lowfi
+
+# Verificar instalação
+lowfi --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest lowfi
+apt install lowfi
+
+# Verificar instalação
+lowfi --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Exemplos de uso básico</h3>
+
+        <p><strong>Começar a ouvir:</strong></p>
+        <div class="code-block">
+# Just start lowfi - that's it!
+lowfi
+
+# Start in minimalist mode (no bottom bar)
+lowfi --minimalist
+
+# Start paused
+lowfi --paused
+
+# Use alternate terminal screen
+lowfi --alternate
+        </div>
+
+        <p><strong>Listas de faixas personalizadas:</strong></p>
+        <div class="code-block">
+# Use Chillhop instead of Lofi Girl
+lowfi --track-list chillhop
+
+# Use custom track list file
+lowfi --track-list ~/my-lofi-tracks.txt
+
+# Use community track lists
+lowfi --track-list minipop
+        </div>
+
+        <p><strong>Opções avançadas:</strong></p>
+        <div class="code-block">
+# Borderless UI
+lowfi --borderless
+
+# Custom player width
+lowfi --width 5
+
+# Debug mode (for troubleshooting)
+lowfi --debug
+
+# Custom buffer size
+lowfi --buffer-size 10
+        </div>
+
+        <h2>🚀 Por que escolher deb.griffo.io?</h2>
+
+        <div class="philosophy-box">
+            <strong>📊 Comparação de Instalação:</strong>
+            <ul>
+                <li><strong>Ubuntu oficial:</strong> Não disponível nos repositórios oficiais</li>
+                <li><strong>Cargo Install:</strong> Requer toolchain Rust e compilação</li>
+                <li><strong>Binário Manual:</strong> Atualizações manuais e sem gerenciamento de pacotes</li>
+                <li><strong>deb.griffo.io (repositório principal):</strong> Versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Recursos Mais Recentes:</strong> Obtenha as novas fontes de faixas e melhorias do player</li>
+            <li>✅ <strong>Sem Compilação Rust:</strong> Binários pré-compilados, sem necessidade de toolchain</li>
+            <li>✅ <strong>Atualizações Automáticas:</strong> Nova versão a cada janela de até 2 meses, grátis para sempre; correções de segurança publicadas imediatamente</li>
+            <li>✅ <strong>Configuração de Áudio Correta:</strong> Empacotado corretamente com ALSA e dependências de áudio</li>
+            <li>✅ <strong>Multi-Distribuição:</strong> Funciona no Jammy e Noble</li>
+            <li>✅ <strong>Manutenção Fácil:</strong> Comandos apt padrão para atualizações</li>
+        </ul>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lowfi-debian" target="_blank" rel="noopener">🎼 lowfi-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponível no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-termusic-in-ubuntu.html">termusic</a> - Player de música completo para terminal</li>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Yazi File Manager</a> - Gerenciamento de arquivos no terminal</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> Desenvolvedores que precisam de música para foco ao programar, qualquer pessoa que queira lofi sem distrações, sem anúncios ou interfaces complexas, entusiastas do terminal que apreciam ferramentas minimalistas e usuários que buscam música de fundo consistente para produtividade.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do lowfi Player de Música Lofi no Ubuntu",
+    "description": "Guia completo para instalar o último player de música lowfi no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "lowfi",
+        "applicationCategory": "Media Player",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Player de música lofi extremamente simples para linha de comando escrito em Rust para programação sem distrações"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>2.0.7</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O lowfi está nos repositórios oficiais do Ubuntu?</summary><p>Não — lowfi não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do lowfi com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o lowfi mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install lowfi. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O lowfi está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Não — lowfi não está empacotado nos arquivos oficiais do Ubuntu. Este espelho gratuito oferece a versão mais recente do lowfi com pelo menos 2 meses; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o lowfi mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install lowfi. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar Fastfetch no Ubuntu via apt — grátis para sempre</title>
+    <meta name="description" content="Instale Fastfetch no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta name="keywords" content="fastfetch ubuntu, instalar fastfetch ubuntu, último fastfetch, substituto do neofetch ubuntu, fastfetch ppa, fastfetch apt, ferramenta de informações do sistema, pacotes ubuntu, jammy, noble, questing, resolute, apt fastfetch">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-fastfetch-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-fastfetch-in-ubuntu.html">
+    <meta property="og:title" content="Instalar Fastfetch no Ubuntu via apt — grátis para sempre">
+    <meta property="og:description" content="Instale Fastfetch no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Grátis para sempre — garantido pelas licenças
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Cada ferramenta aqui é open source; sua licença garante o direito de usá-la e redistribuí-la. Este espelho é essa promessa na prática: a versão mais recente de cada pacote com <strong>pelo menos 2 meses</strong>, servida <strong>grátis para sempre</strong> — sem conta, sem autenticação.<br>
+            Correções de segurança e patches são publicados <strong>imediatamente</strong>. Quer cada versão poucas horas após o upstream? Esse é o repositório principal em <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Dúvidas ou problemas?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">comunidade no Discord</a> — o melhor lugar para obter ajuda.
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🖥️ Instalar Fastfetch no Ubuntu</h1>
+        <p class="subtitle">Uma ferramenta de informações do sistema no estilo do neofetch, escrita em C</p>
+        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">2.66.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">2.57.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/pt-br/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-fastfetch-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-fastfetch-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-fastfetch-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-fastfetch-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>O que é o Fastfetch?</h2>
+        <p>O Fastfetch é uma <strong>ferramenta no estilo do neofetch para coletar informações do sistema</strong> e exibi-las de forma bonita no seu terminal — SO, kernel, hardware, tempo de atividade, pacotes, ambiente de desktop e muito mais, ao lado do logo da sua distro. Escrito principalmente em C com foco em desempenho e personalização, tornou-se o sucessor de fato quando o neofetch foi arquivado, e é desenvolvido ativamente com lançamentos frequentes.</p>
+
+        <div class="comparison-box">
+            <strong>😤 O problema da versão do arquivo:</strong> Versões mais antigas do Ubuntu não incluem o fastfetch, e onde o arquivo o tem, ele está congelado no momento da importação. O upstream avança rápido: novos logos, novos módulos de detecção e correções para novos hardwares chegam constantemente, então a versão do arquivo fica silenciosamente para trás. Este repositório fornece compilações upstream atuais mantendo <strong>exatamente o mesmo layout de arquivos do pacote oficial do arquivo</strong>, então a troca é transparente em ambas as direções.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos repositórios oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes a cada lançamento — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você sempre na versão mais recente.
+        </div>
+
+        <h3>⚡ Principais Recursos do Fastfetch</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ Rápido por Design</h4>
+                <p>Escrito em C com detecção concorrente — renderiza as informações completas do sistema em milissegundos, uma fração do tempo de inicialização do neofetch.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Mais de 50 Módulos de Informação</h4>
+                <p>SO, kernel, CPU, GPU, memória, discos, bateria, tela, DE/WM, terminal, pacotes, reprodutor de mídia e muitos outros — cada um configurável individualmente.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Presets Incluídos</h4>
+                <p>Este pacote traz todos os presets integrados em <code>/usr/share/fastfetch/presets/</code> — incluindo um preset <code>neofetch</code> fiel para familiaridade instantânea.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Configuração em JSONC</h4>
+                <p>Um único arquivo de configuração JSONC documentado controla módulos, formatação e logos. Gere um ponto de partida com <code>fastfetch --gen-config</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Flexibilidade de Logos</h4>
+                <p>Centenas de logos de distros integrados, além de logos em imagem via protocolos sixel/kitty/iTerm, ASCII art personalizada, ou nenhum logo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Completions de Shell</h4>
+                <p>Completions para bash, zsh e fish, além de uma página de manual — instalados nos caminhos padrão do Debian, correspondendo ao pacote do arquivo.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Por que este repositório em vez da versão do arquivo?</h4>
+            <ul>
+                <li><strong>Versão atual:</strong> novos lançamentos upstream em poucas horas, sem congelar durante toda a vida útil de um lançamento do Debian</li>
+                <li><strong>Mesmo layout:</strong> alinhado arquivo por arquivo com o pacote oficial do Debian — presets, completions e página de manual nos lugares padrão</li>
+                <li><strong>Troca transparente:</strong> instalar a partir deste repositório simplesmente atualiza o pacote do arquivo; remover o repositório reverte de forma limpa</li>
+                <li><strong>Atualizações automáticas:</strong> novos lançamentos chegam com o seu <code>apt upgrade</code> de sempre</li>
+                <li><strong>Multi-arquitetura:</strong> amd64, arm64, armhf, ppc64el, s390x e riscv64</li>
+            </ul>
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar repositório</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar o Fastfetch</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y fastfetch
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y fastfetch
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Primeira execução</h2>
+        <p>Basta executar <code>fastfetch</code>. Para começar a personalizar, gere uma configuração e experimente os presets incluídos:</p>
+        <div class="code-block">
+fastfetch --gen-config
+fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc
+        </div>
+
+        <h3>📦 Repositório de construção de pacotes</h3>
+        <p>Os pacotes do Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fastfetch-debian" target="_blank" rel="noopener">📂 fastfetch-debian</a> - Compilações de lançamento mais recente</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/pt-br/install-latest-oh-my-posh-in-ubuntu.html">Oh My Posh</a> - Um prompt bonito para acompanhar seu belo fetch</li>
+            <li><a href="/pt-br/install-latest-eza-in-ubuntu.html">eza</a> - Substituto moderno do ls para a repaginação completa do terminal</li>
+            <li><a href="/pt-br/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Filtragem interativa em todo lugar</li>
+            <li><a href="/pt-br/install-latest-yazi-in-ubuntu.html">Gerenciador de Arquivos Yazi</a> - Um gerenciador de arquivos de terminal rápido</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> Entusiastas de ricing e caçadores de screenshots de desktop, sysadmins que querem visões gerais rápidas do sistema, qualquer pessoa migrando do neofetch arquivado, e usuários que querem a detecção de hardware mais recente sem esperar pelo próximo lançamento do Debian.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Apoie Este Projeto</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Se este repositório economiza seu tempo e esforço, considere apoiá-lo!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Dê uma estrela no GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20fastfetch,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Compartilhar no Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Fastfetch Ferramenta de Informações do Sistema no Ubuntu",
+    "description": "Guia completo para instalar a mais recente ferramenta de informações do sistema fastfetch no Ubuntu usando o repositório deb.griffo.io, com o mesmo layout de arquivos do pacote oficial do arquivo.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Fastfetch",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Uma ferramenta no estilo do neofetch para coletar informações do sistema e exibi-las de forma bonita"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>2.66.0</code> — 2026-07-14</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O Fastfetch está nos repositórios oficiais do Ubuntu?</summary><p>Sim — o arquivo oficial do Ubuntu traz Fastfetch 2.57.1. Este espelho gratuito oferece a versão mais recente do Fastfetch com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
+<details><summary>Como instalo o Fastfetch mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install fastfetch. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Fastfetch está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz Fastfetch 2.57.1. Este espelho gratuito oferece a versão mais recente do Fastfetch com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o Fastfetch mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install fastfetch. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

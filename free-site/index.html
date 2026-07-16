@@ -1,0 +1,834 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>deb.griffo.io - Free-Forever Debian & Ubuntu Packages for Modern Development Tools | Zig, Ghostty, TigerBeetle, lazygit, yazi, Forgejo & More</title>
+    <meta name="description" content="Free-forever Debian and Ubuntu packages for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, bun runtime, TigerBeetle database, and more. Source packages (.dsc) also available. Unofficial repository serving the newest release of each tool that is at least 2 months old, forever free, for Bookworm, Trixie, Sid, Jammy, Noble, Questing, and Resolute.">
+    <meta name="keywords" content="debian packages, ubuntu packages, debian source packages, deb-src, apt-get source, dpkg-buildpackage, zig debian, zig ubuntu, ghostty debian, lazygit debian, lazygit ubuntu, yazi debian, yazi ubuntu, eza debian, eza ubuntu, bun debian, bun ubuntu, tigerbeetle debian, tigerbeetle ubuntu, deno debian, deno ubuntu, denort debian, denort ubuntu, apt deno, forgejo debian, forgejo ubuntu, self-hosted git, apt forgejo, development tools, latest versions, unofficial repository, bookworm, trixie, sid, jammy, noble, questing, resolute, apt uv, apt lazydocker, apt lazygit, apt bun, apt ghostty, apt yazi">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://deb.griffo.io">
+    <meta property="og:title" content="deb.griffo.io - Free-Forever Debian & Ubuntu Packages for Development Tools">
+    <meta property="og:description" content="Unofficial repository providing free-forever Debian and Ubuntu packages for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools — no account, no authentication.">
+    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://deb.griffo.io">
+    <meta property="twitter:title" content="deb.griffo.io - Free-Forever Debian & Ubuntu Packages for Development Tools">
+    <meta property="twitter:description" content="Unofficial repository providing free-forever Debian and Ubuntu packages for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools — no account, no authentication.">
+    <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Free forever — and licensed to stay that way
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Every tool here is open source; its license guarantees the right to use and redistribute it. This mirror is that promise in practice: each package's newest release that is <strong>at least 2 months old</strong>, served <strong>free forever</strong> — no account, no authentication.<br>
+            Security and patch fixes are published <strong>immediately</strong>. Want every release within hours of upstream? That's the main repository at <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.
+        </p>
+    </div>
+</div>
+<div class="language-selector">
+    <div class="language-dropdown">
+        <button class="language-button" onclick="toggleLanguageMenu()" aria-label="Select Language">
+            <span class="flag">🌐</span>
+            <span>English</span>
+        </button>
+        <div class="language-menu" id="languageMenu">
+            <a href="/" class="language-option">
+                <span class="flag">🇬🇧</span>
+                <span class="lang-name">English</span>
+            </a>
+            <a href="/cn/" class="language-option">
+                <span class="flag">🇨🇳</span>
+                <span class="lang-name">中文</span>
+            </a>
+            <a href="/de/" class="language-option">
+                <span class="flag">🇩🇪</span>
+                <span class="lang-name">Deutsch</span>
+            </a>
+            <a href="/es/" class="language-option">
+                <span class="flag">🇪🇸</span>
+                <span class="lang-name">Español</span>
+            </a>
+            <a href="/fr/" class="language-option">
+                <span class="flag">🇫🇷</span>
+                <span class="lang-name">Français</span>
+            </a>
+            <a href="/ru/" class="language-option">
+                <span class="flag">🇷🇺</span>
+                <span class="lang-name">Русский</span>
+            </a>
+            <a href="/pt-br/" class="language-option">
+                <span class="flag">🇧🇷</span>
+                <span class="lang-name">Português (Brasil)</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <div>
+            <a href="https://github.com/dariogriffo/" title="Dario Griffo's GitHub Profile" aria-label="Visit Dario Griffo's GitHub">
+                <img src="/logo.webp" alt="Dario Griffo Logo" width="128" style="margin-right: 20px">
+            </a>
+            <a href="https://www.debian.org/" title="Debian Official Website" aria-label="Visit Debian Official Website">
+                <img src="/debian-logo.webp" alt="Debian Logo" width="104" style="margin-left: 20px">
+            </a>
+            <a href="https://ubuntu.com/" title="Ubuntu Official Website" aria-label="Visit Ubuntu Official Website">
+                <img src="/ubuntu-logo.webp" alt="Ubuntu Logo" width="104" style="margin-left: 20px">
+            </a>
+        </div>
+        <h1>deb.griffo.io</h1>
+        <p class="subtitle">Unofficial Repository for Modern Development Tools — Debian &amp; Ubuntu, Free Forever</p>
+
+        <div class="highlight-box">
+            <strong>🆓 Free Forever:</strong> This mirror provides each tool's newest release once it is at least 2 months old, packaged for Debian and Ubuntu — security and patch fixes publish immediately. Supports Debian (Bookworm, Trixie, Forky, Sid) and Ubuntu (Jammy, Noble, Questing, Resolute). <strong>Source packages (.dsc) are also available</strong> — build from source or inspect the packaging on any supported distribution.
+        </div>
+    </header>
+
+    <section id="version-comparison">
+        <h2>🏁 Version Comparison — deb.griffo.io vs Official Archives</h2>
+        <div class="version-compare-index">
+<table>
+<thead><tr><th>Tool</th><th>deb.griffo.io (main)</th><th>Official Debian</th><th>Official Ubuntu</th></tr></thead>
+<tbody>
+<tr><td><a href="install-latest-atuin-in-debian.html"><strong>Atuin</strong></a></td><td class="vc-win">18.17.1 ✅</td><td class="vc-lose">18.8.0 🛑</td><td class="vc-lose">18.8.0 🛑</td></tr>
+<tr><td><a href="install-latest-bun-in-debian.html"><strong>Bun</strong></a></td><td class="vc-win">1.3.14 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-deno-in-debian.html"><strong>Deno</strong></a></td><td class="vc-win">2.9.3 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-eza-in-debian.html"><strong>eza</strong></a></td><td class="vc-win">0.23.5 ✅</td><td class="vc-lose">0.23.4 🛑</td><td class="vc-lose">0.23.4 🛑</td></tr>
+<tr><td><a href="install-latest-fastfetch-in-debian.html"><strong>Fastfetch</strong></a></td><td class="vc-win">2.66.0 ✅</td><td class="vc-lose">2.62.1 🛑</td><td class="vc-lose">2.57.1 🛑</td></tr>
+<tr><td><a href="install-latest-forgejo-in-debian.html"><strong>Forgejo</strong></a></td><td class="vc-win">15.0.2 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-forgejo-runner-in-debian.html"><strong>Forgejo Runner</strong></a></td><td class="vc-win">12.13.0 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-fzf-in-debian.html"><strong>fzf</strong></a></td><td class="vc-win">0.74.0 ✅</td><td class="vc-lose">0.73.1 🛑</td><td class="vc-lose">0.67.0 🛑</td></tr>
+<tr><td><a href="install-latest-garage-in-debian.html"><strong>Garage</strong></a></td><td class="vc-win">2.3.0 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a></td><td class="vc-win">1.3.1 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">1.3.0 🛑</td></tr>
+<tr><td><a href="install-latest-headscale-in-debian.html"><strong>Headscale</strong></a></td><td class="vc-win">0.29.2 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-helix-in-debian.html"><strong>Helix</strong></a></td><td class="vc-win">25.07.1 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-jujutsu-in-debian.html"><strong>Jujutsu</strong></a></td><td class="vc-win">0.43.0 ✅</td><td class="vc-win">0.43.0 ✅</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-just-in-debian.html"><strong>just</strong></a></td><td class="vc-win">1.56.0 ✅</td><td class="vc-lose">1.55.1 🛑</td><td class="vc-lose">1.45.0 🛑</td></tr>
+<tr><td><a href="install-latest-k9s-in-debian.html"><strong>k9s</strong></a></td><td class="vc-win">0.51.0 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-lazydocker-in-debian.html"><strong>lazydocker</strong></a></td><td class="vc-win">0.25.2 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-lazygit-in-debian.html"><strong>lazygit</strong></a></td><td class="vc-win">0.63.1 ✅</td><td class="vc-lose">0.57.0 🛑</td><td class="vc-lose">0.57.0 🛑</td></tr>
+<tr><td><a href="install-latest-lowfi-in-debian.html"><strong>lowfi</strong></a></td><td class="vc-win">2.0.7 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">29.31.1 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-ruff-in-debian.html"><strong>Ruff</strong></a></td><td class="vc-win">0.15.21 ✅</td><td class="vc-lose">0.0.291 🛑</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-starship-in-debian.html"><strong>Starship</strong></a></td><td class="vc-win">1.26.0 ✅</td><td class="vc-lose">1.22.1 🛑</td><td class="vc-lose">1.22.1 🛑</td></tr>
+<tr><td><a href="install-latest-termusic-in-debian.html"><strong>Termusic</strong></a></td><td class="vc-win">0.13.2 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-tigerbeetle-in-debian.html"><strong>TigerBeetle</strong></a></td><td class="vc-win">0.17.9 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-uncloud-in-debian.html"><strong>Uncloud</strong></a></td><td class="vc-win">0.20.0 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-unregistry-in-debian.html"><strong>Unregistry</strong></a></td><td class="vc-win">0.4.3 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-uv-in-debian.html"><strong>uv</strong></a></td><td class="vc-win">0.11.29 ✅</td><td class="vc-lose">0.9.17 🛑</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-viu-in-debian.html"><strong>viu</strong></a></td><td class="vc-win">1.6.1 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-yazi-in-debian.html"><strong>Yazi</strong></a></td><td class="vc-win">26.5.6 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-yq-in-debian.html"><strong>yq</strong></a></td><td class="vc-win">4.53.3 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a></td><td class="vc-win">1.11.3 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-zellij-in-debian.html"><strong>Zellij</strong></a></td><td class="vc-win">0.44.3 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-zig-in-debian.html"><strong>Zig</strong></a></td><td class="vc-win">0.16.0 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-zls-in-debian.html"><strong>ZLS</strong></a></td><td class="vc-win">0.15.1 ✅</td><td class="vc-lose">🚫 not packaged</td><td class="vc-lose">🚫 not packaged</td></tr>
+<tr><td><a href="install-latest-zoxide-in-debian.html"><strong>zoxide</strong></a></td><td class="vc-win">0.10.0 ✅</td><td class="vc-lose">0.9.8 🛑</td><td class="vc-lose">0.9.8 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </section>
+
+    <section id="categories">
+        <h2>🗂️ Browse by Category</h2>
+        <p style="line-height: 2;"><a href="/shell-tools-for-debian-ubuntu.html">🐚 Modern Shell Tools</a> ·
+            <a href="/runtimes-for-debian-ubuntu.html">⚙️ Language Runtimes</a> ·
+            <a href="/git-for-debian-ubuntu.html">🌿 Git Tools</a> ·
+            <a href="/editors-for-debian-ubuntu.html">📝 Editors & Language Servers</a> ·
+            <a href="/devops-for-debian-ubuntu.html">🚀 DevOps & Infrastructure</a> ·
+            <a href="/terminal-for-debian-ubuntu.html">🖥️ Terminals & Multiplexers</a> ·
+            <a href="/storage-for-debian-ubuntu.html">🗄️ Storage & Data</a> ·
+            <a href="/media-for-debian-ubuntu.html">🎵 Terminal Media</a></p>
+    </section>
+
+    <section id="quick-install">
+        <h2>⚡ Quick Installation</h2>
+        <p>Add this repository to your Debian or Ubuntu system and start installing your favorite development tools, free forever:</p>
+
+        <div class="install-section">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="installation-code">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="installation-code">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-section">
+            <h3>Step 2: Install Packages</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="installation-code">
+sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="installation-code">
+apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+                </div>
+            </div>
+        </div>
+
+        <div class="install-section">
+            <h3>Optional: Enable Source Packages</h3>
+            <p style="margin-bottom: 15px; color: #555;">Add the <code>deb-src</code> line to your sources list if you want to download and build packages from source using <code>apt-get source</code>.</p>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-src')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-src')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-src" class="tab-content active">
+                <div class="installation-code">
+echo "deb-src https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-src" class="tab-content">
+                <div class="installation-code">
+echo "deb-src https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="notice-box">
+            <strong>📅 Important Notice:</strong> Public key was updated on March 4th, 2025. Please run the installation commands above to update your system with the new key.
+        </div>
+
+    </section>
+
+    <section>
+        <h2>🔍 Browse the Package Pool</h2>
+        <p>You can browse the package pool directly at <a href="https://deb.griffo.io/apt/dists/" target="_blank" rel="noopener">https://deb.griffo.io/apt/dists/</a>. This lets you explore available distributions, components, and individual package files without needing to add the repository first.</p>
+
+        <h3>Directory Structure</h3>
+        <p>The repository follows the standard Debian repository layout:</p>
+        <div class="installation-code">
+https://deb.griffo.io/apt/dists/                         ← distribution index
+https://deb.griffo.io/apt/dists/bookworm/                ← Debian Bookworm (12)
+https://deb.griffo.io/apt/dists/bookworm/main/binary-amd64/Packages  ← binary index
+https://deb.griffo.io/apt/dists/bookworm/main/source/Sources          ← source index
+https://deb.griffo.io/apt/dists/trixie/                  ← Debian Trixie (13)
+https://deb.griffo.io/apt/dists/forky/                   ← Debian Forky (testing)
+https://deb.griffo.io/apt/dists/sid/                     ← Debian Sid (unstable)
+https://deb.griffo.io/apt/dists/jammy/                   ← Ubuntu Jammy (22.04 LTS)
+https://deb.griffo.io/apt/dists/noble/                   ← Ubuntu Noble (24.04 LTS)
+https://deb.griffo.io/apt/dists/questing/                ← Ubuntu Questing
+https://deb.griffo.io/apt/dists/resolute/                ← Ubuntu Resolute</div>
+
+        <h3>Search Packages After Adding the Repository</h3>
+        <p>Once the repository is added, you can use standard <code>apt</code> tools to explore available packages:</p>
+        <div class="installation-code">
+# List all packages provided by this repository
+apt-cache search --names-only '' | grep -v '^lib'
+
+# Show details for a specific package
+apt-cache show zig
+
+# Check which version will be installed and from which source
+apt-cache policy zig</div>
+    </section>
+
+    <section>
+        <h2>📦 Source Packages</h2>
+        <p>In addition to binary <code>.deb</code> packages, this repository also provides <strong>Debian source packages</strong> for all supported tools. Source packages let you inspect the packaging, rebuild binaries locally, or apply custom patches — all using standard Debian tooling.</p>
+
+        <p>A source package consists of three files:</p>
+        <ul style="margin: 10px 0 20px 0; color: #555;">
+            <li><code>.dsc</code> — description file with checksums and metadata</li>
+            <li><code>.orig.tar.gz</code> — unmodified upstream source tarball</li>
+            <li><code>.debian.tar.xz</code> — Debian-specific packaging overlay (<code>debian/</code> directory)</li>
+        </ul>
+
+        <h3>Step 1: Enable Source Packages</h3>
+        <p>If you haven't already, add the <code>deb-src</code> line (see <a href="#quick-install">Quick Installation</a> above). Then update:</p>
+        <div class="installation-code">
+echo "deb-src https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+sudo apt update</div>
+
+        <h3>Step 2: Download a Source Package</h3>
+        <div class="installation-code">
+# Download source for a package (creates a directory in the current folder)
+apt-get source zig
+
+# Or download without unpacking — just the raw .dsc + tarballs
+apt-get source --download-only zig</div>
+
+        <h3>Step 3: Build from Source</h3>
+        <div class="installation-code">
+# Enter the unpacked source directory (version number will vary)
+cd zig-stable-0.14.0
+
+# Build a binary .deb without signing (suitable for local use)
+dpkg-buildpackage -b --no-sign
+
+# The resulting .deb appears one level up
+ls ../zig-stable_*.deb</div>
+
+        <h3>Alternative: Build Dependencies Only</h3>
+        <div class="installation-code">
+# Install all build dependencies for a package automatically
+sudo apt-get build-dep zig
+
+# Then build with dpkg-buildpackage or debuild
+debuild -b --no-sign</div>
+
+        <h3>Browse Source Packages Directly</h3>
+        <p>Source package index files are published alongside the binary package indexes:</p>
+        <div class="installation-code">
+https://deb.griffo.io/apt/dists/bookworm/main/source/Sources
+https://deb.griffo.io/apt/dists/trixie/main/source/Sources
+https://deb.griffo.io/apt/dists/noble/main/source/Sources</div>
+    </section>
+
+    <header>
+        <h2 style="margin-top: 40px;">📦 Available Packages</h2>
+        <div class="packages-grid">
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">👻</span>Ghostty Terminal</div>
+                <div class="package-description">Fast, feature-rich, cross-platform terminal emulator with platform-native UI and GPU acceleration for superior performance.</div>
+                <div class="package-links">
+                    <a href="/install-latest-ghostty-in-debian.html" class="package-link">🐧 Debian</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>Zig Programming Language</div>
+                <div class="package-description">General-purpose programming language and toolchain for maintaining robust, optimal and reusable software. Available in both stable and nightly builds.</div>
+                <div class="package-links">
+                    <a href="/install-latest-zig-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zig-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>Zed editor</div>
+                <div class="package-description">A high-performance, multiplayer code editor from the creators of Atom Tree-Sitter</div>
+                <div class="package-links">
+                    <a href="/install-latest-zed-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zed-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>ZLS Language Server</div>
+                <div class="package-description">Language Server Protocol implementation for Zig, providing IDE features like autocomplete, go-to-definition, and error checking. Stable and nightly builds available.</div>
+                <div class="package-links">
+                    <a href="/install-latest-zls-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zls-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐋</span>lazydocker</div>
+                <div class="package-description">Simple terminal UI for Docker and docker-compose management, written in Go with an intuitive interface for container operations.</div>
+                <div class="package-links">
+                    <a href="/install-latest-lazydocker-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lazydocker-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐢</span>lazygit</div>
+                <div class="package-description">Simple terminal UI for git commands, making version control operations more visual and user-friendly.</div>
+                <div class="package-links">
+                    <a href="/install-latest-lazygit-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lazygit-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📁</span>eza</div>
+                <div class="package-description">Modern replacement for 'ls' command with improved features, better colors, and enhanced file listing capabilities.</div>
+                <div class="package-links">
+                    <a href="/install-latest-eza-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-eza-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🖥️</span>Fastfetch</div>
+                <div class="package-description">A neofetch-like system information tool written in C — blazing fast, 50+ modules, all presets included, same file layout as the archive package.</div>
+                <div class="package-links">
+                    <a href="/install-latest-fastfetch-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-fastfetch-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🎼</span>lowfi</div>
+                <div class="package-description">Minimalist Rust application for playing lofi music - no albums, no ads, just pure lofi background music for coding.</div>
+                <div class="package-links">
+                    <a href="/install-latest-lowfi-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-lowfi-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🦆</span>Yazi File Manager</div>
+                <div class="package-description">Terminal file manager written in Rust with non-blocking async I/O, providing efficient and customizable file management.</div>
+                <div class="package-links">
+                    <a href="/install-latest-yazi-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-yazi-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📑</span>yq</div>
+                <div class="package-description">A portable command-line YAML, JSON, XML, CSV and TOML processor with jq-like syntax — a single Go binary (mikefarah v4), man page included.</div>
+                <div class="package-links">
+                    <a href="/install-latest-yq-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-yq-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🖼️</span>viu Image Viewer</div>
+                <div class="package-description">Command-line image viewer written in Rust. Displays images directly in the terminal using Kitty, iTerm2, Sixel protocols, or Unicode blocks as fallback.</div>
+                <div class="package-links">
+                    <a href="/install-latest-viu-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-viu-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐍</span>uv Python Manager</div>
+                <div class="package-description">Extremely fast Python package and project manager written in Rust, offering superior performance for Python development workflows.</div>
+                <div class="package-links">
+                    <a href="/install-latest-uv-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-uv-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🔍</span>fzf Fuzzy Finder</div>
+                <div class="package-description">Command-line fuzzy finder written in Go, enabling fast and intuitive file and command searching.</div>
+                <div class="package-links">
+                    <a href="/install-latest-fzf-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-fzf-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📂</span>zoxide</div>
+                <div class="package-description">Smarter cd command for your terminal, learning your habits to help you navigate directories more efficiently.</div>
+                <div class="package-links">
+                    <a href="/install-latest-zoxide-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zoxide-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🎵</span>termusic</div>
+                <div class="package-description">Terminal-based music and podcast player that's both free as in freedom and free of charge.</div>
+                <div class="package-links">
+                    <a href="/install-latest-termusic-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-termusic-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📠</span>unregistry</div>
+                <div class="package-description">Lightweight container image registry that stores and serves images directly from your Docker daemon's storage.</div>
+                <div class="package-links">
+                    <a href="/install-latest-unregistry-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-unregistry-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">📡</span>docker-pussh</div>
+                <div class="package-description">Push Docker images to remote servers over SSH, transferring only missing layers for fast and efficient deployment.</div>
+                <div class="package-links">
+                    <a href="/install-latest-unregistry-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-unregistry-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🌬️</span>uncloud</div>
+                <div class="package-description">Lightweight clustering and container orchestration tool for deploying web apps across cloud VMs and bare metal with minimal overhead.</div>
+                <div class="package-links">
+                    <a href="/install-latest-uncloud-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-uncloud-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🥟</span>Bun Runtime</div>
+                <div class="package-description">Fast all-in-one JavaScript runtime with bundler, test runner, and package manager built from scratch for speed and performance.</div>
+                <div class="package-links">
+                    <a href="/install-latest-bun-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-bun-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐯</span>TigerBeetle</div>
+                <div class="package-description">Distributed financial transactions database designed for mission-critical safety and 1000x faster OLTP performance with strict serializability.</div>
+                <div class="package-links">
+                    <a href="/install-latest-tigerbeetle-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-tigerbeetle-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🦕</span>Deno Runtime</div>
+                <div class="package-description">Secure JavaScript/TypeScript runtime with built-in TypeScript support, web standard APIs, and Node.js compatibility. Includes denort for lightweight production deployments.</div>
+                <div class="package-links">
+                    <a href="/install-latest-deno-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-deno-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">⚒️</span>Forgejo</div>
+                <div class="package-description">Self-hosted lightweight software forge. Host your own git repositories, issue tracker, pull requests, and CI/CD platform. A community-driven Gitea fork you fully control.</div>
+                <div class="package-links">
+                    <a href="/install-latest-forgejo-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-forgejo-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">⚙️</span>Forgejo Runner</div>
+                <div class="package-description">CI runner for Forgejo Actions. Run self-hosted, GitHub Actions-compatible CI/CD pipelines on your own infrastructure using Docker, LXC or the host directly.</div>
+                <div class="package-links">
+                    <a href="/install-latest-forgejo-runner-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-forgejo-runner-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">✏️</span>Helix Editor</div>
+                <div class="package-description">Post-modern modal text editor written in Rust, with tree-sitter highlighting and Language Server support built in — no plugins required. The command is hx.</div>
+                <div class="package-links">
+                    <a href="/install-latest-helix-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-helix-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🥋</span>Jujutsu</div>
+                <div class="package-description">A Git-compatible version control system with a simpler, more powerful model — universal undo and first-class conflicts, while using existing Git remotes. Uses the jj command.</div>
+                <div class="package-links">
+                    <a href="/install-latest-jujutsu-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-jujutsu-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🪟</span>Zellij</div>
+                <div class="package-description">A terminal workspace and multiplexer written in Rust, with panes, tabs, reproducible layouts and a WebAssembly plugin system. A friendly, modern alternative to tmux.</div>
+                <div class="package-links">
+                    <a href="/install-latest-zellij-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-zellij-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🚀</span>Starship</div>
+                <div class="package-description">A fast, customizable cross-shell prompt written in Rust that works with Bash, Zsh, Fish, PowerShell and more, showing git and language context through a single config file.</div>
+                <div class="package-links">
+                    <a href="/install-latest-starship-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-starship-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">💠</span>Oh My Posh</div>
+                <div class="package-description">A prompt theme engine for any shell — bash, zsh, fish, PowerShell and more — with all 125+ built-in themes included in the package.</div>
+                <div class="package-links">
+                    <a href="/install-latest-oh-my-posh-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-oh-my-posh-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🧹</span>Ruff</div>
+                <div class="package-description">An extremely fast Python linter and code formatter from Astral — replaces Flake8, isort and Black at 10-100x the speed, system-wide without pip.</div>
+                <div class="package-links">
+                    <a href="/install-latest-ruff-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-ruff-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">⌨️</span>Atuin</div>
+                <div class="package-description">Shell history sync, search and stats. Replaces your shell history with a searchable SQLite database, with optional end-to-end encrypted sync across machines.</div>
+                <div class="package-links">
+                    <a href="/install-latest-atuin-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-atuin-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🐕</span>k9s</div>
+                <div class="package-description">Terminal UI for managing Kubernetes clusters in real time. Navigate resources, stream logs, exec into pods and apply changes without long kubectl commands.</div>
+                <div class="package-links">
+                    <a href="/install-latest-k9s-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-k9s-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🕸️</span>Headscale</div>
+                <div class="package-description">Self-hosted implementation of the Tailscale control server. Run your own coordination server for a private WireGuard mesh network using the standard Tailscale clients.</div>
+                <div class="package-links">
+                    <a href="/install-latest-headscale-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-headscale-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🗄️</span>Garage</div>
+                <div class="package-description">Lightweight, S3-compatible distributed object storage designed to run across multiple geographically distributed nodes. A self-hosted alternative for backups, static sites and app data.</div>
+                <div class="package-links">
+                    <a href="/install-latest-garage-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-garage-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🤖</span>just</div>
+                <div class="package-description">Handy command runner for saving and running project-specific commands. Recipes live in a justfile with a make-inspired syntax, without make's build-target quirks.</div>
+                <div class="package-links">
+                    <a href="/install-latest-just-in-debian.html" class="package-link">🐧 Debian</a>
+                    <a href="/install-latest-just-in-ubuntu.html" class="package-link package-link-ubuntu">🟠 Ubuntu</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+        <p>This unofficial repository specializes in providing <strong>free-forever, properly packaged</strong> versions of popular development tools as Debian packages. While official Debian repositories often lag behind upstream releases, this free mirror ensures you get:</p>
+
+        <ul style="font-size: 1.1em; margin: 20px 0;">
+            <li>✅ <strong>Newest stable releases</strong>, once at least 2 months old — security fixes published immediately</li>
+            <li>✅ <strong>Nightly builds</strong> for cutting-edge features (Zig, ZLS)</li>
+            <li>✅ <strong>Proper Debian packaging</strong> with correct dependencies</li>
+            <li>✅ <strong>Multiple distribution support</strong> — Debian (Bookworm, Trixie, Forky, Sid) &amp; Ubuntu (Jammy, Noble, Questing, Resolute)</li>
+            <li>✅ <strong>Source packages</strong> — download, inspect, and rebuild any package locally with <code>apt-get source</code></li>
+            <li>✅ <strong>Automated updates</strong> ensuring continuous availability</li>
+        </ul>
+
+        <h3>📦 Available Packages & Build Pipelines</h3>
+        <p>All packages are automatically built and updated through dedicated GitHub repositories:</p>
+
+        <div class="repo-links">
+            <a href="https://github.com/dariogriffo/zig-debian" title="Zig Stable - Latest Debian Packages">🇿 zig-debian (stable)</a>
+            <a href="https://github.com/dariogriffo/zig-master-debian" title="Zig Nightly - Latest Debian Packages">🇿 zig-master-debian (nightly)</a>
+            <a href="https://github.com/dariogriffo/zls-debian" title="ZLS Stable - Latest Debian Packages">🇿 zls-debian (stable)</a>
+            <a href="https://github.com/dariogriffo/zls-master-debian" title="ZLS Nightly - Latest Debian Packages">🇿 zls-master-debian (nightly)</a>
+            <a href="https://github.com/dariogriffo/ghostty-debian" title="Ghostty Terminal - Latest Debian Packages">👻 ghostty-debian</a>
+            <a href="https://github.com/dariogriffo/lazydocker-debian" title="lazydocker - Latest Debian Packages">🐋 lazydocker-debian</a>
+            <a href="https://github.com/dariogriffo/lazygit-debian" title="lazygit - Latest Debian Packages">🐢 lazygit-debian</a>
+            <a href="https://github.com/dariogriffo/eza-debian" title="eza - Latest Debian Packages">📁 eza-debian</a>
+            <a href="https://github.com/dariogriffo/lowfi-debian" title="lowfi - Latest Debian Packages">🎼 lowfi-debian</a>
+            <a href="https://github.com/dariogriffo/yazi-debian" title="Yazi File Manager - Latest Debian Packages">🦆 yazi-debian</a>
+            <a href="https://github.com/dariogriffo/viu-debian" title="viu Image Viewer - Latest Debian Packages">🖼️ viu-debian</a>
+            <a href="https://github.com/dariogriffo/uv-debian" title="uv Python Manager - Latest Debian Packages">🐍 uv-debian</a>
+            <a href="https://github.com/dariogriffo/fzf-debian" title="fzf Fuzzy Finder - Latest Debian Packages">🔍 fzf-debian</a>
+            <a href="https://github.com/dariogriffo/zoxide-debian" title="zoxide - Latest Debian Packages">📂 zoxide-debian</a>
+            <a href="https://github.com/dariogriffo/termusic-debian" title="termusic - Latest Debian Packages">🎵 termusic-debian</a>
+            <a href="https://github.com/dariogriffo/unregistry-debian" title="unregistry - Latest Debian Packages">📠 unregistry-debian</a>
+            <a href="https://github.com/dariogriffo/docker-pussh-debian" title="docker-pussh - Latest Debian Packages">📡 docker-pussh-debian</a>
+            <a href="https://github.com/dariogriffo/uncloud-debian" title="uncloud - Latest Debian Packages">🌬️ uncloud-debian</a>
+            <a href="https://github.com/dariogriffo/bun-debian" title="bun - Latest Debian Packages">📖 bun-debian</a>
+            <a href="https://github.com/dariogriffo/tigerbeetle-debian" title="TigerBeetle - Latest Debian Packages">🐯 tigerbeetle-debian</a>
+            <a href="https://github.com/dariogriffo/deno-debian" title="deno - Latest Debian Packages">🦕 deno-debian</a>
+            <a href="https://github.com/dariogriffo/forgejo-debian" title="Forgejo - Latest Debian Packages">⚒️ forgejo-debian</a>
+            <a href="https://github.com/dariogriffo/forgejo-runner-debian" title="Forgejo Runner - Latest Debian Packages">⚙️ forgejo-runner-debian</a>
+            <a href="https://github.com/dariogriffo/helix-debian" title="Helix Editor - Latest Debian Packages">✏️ helix-debian</a>
+            <a href="https://github.com/dariogriffo/jujutsu-debian" title="Jujutsu - Latest Debian Packages">🥋 jujutsu-debian</a>
+            <a href="https://github.com/dariogriffo/zellij-debian" title="Zellij - Latest Debian Packages">🪟 zellij-debian</a>
+            <a href="https://github.com/dariogriffo/starship-debian" title="Starship - Latest Debian Packages">🚀 starship-debian</a>
+            <a href="https://github.com/dariogriffo/atuin-debian" title="Atuin - Latest Debian Packages">⌨️ atuin-debian</a>
+            <a href="https://github.com/dariogriffo/k9s-debian" title="k9s - Latest Debian Packages">🐕 k9s-debian</a>
+            <a href="https://github.com/dariogriffo/headscale-debian" title="Headscale - Latest Debian Packages">🕸️ headscale-debian</a>
+            <a href="https://github.com/dariogriffo/garage-debian" title="Garage - Latest Debian Packages">🗄️ garage-debian</a>
+            <a href="https://github.com/dariogriffo/just-debian" title="just - Latest Debian Packages">🤖 just-debian</a>
+        </div>
+
+        <h3>🐧 Supported Distributions</h3>
+        <h4 style="color: #667eea; margin: 15px 0 10px;">Debian</h4>
+        <div class="supported-distros">
+            <span class="distro-badge">Bookworm (12)</span>
+            <span class="distro-badge">Trixie (13)</span>
+            <span class="distro-badge">Forky (testing)</span>
+            <span class="distro-badge">Sid (unstable)</span>
+        </div>
+        <h4 style="color: #E95420; margin: 15px 0 10px;">Ubuntu</h4>
+        <div class="supported-distros">
+            <span class="distro-badge-ubuntu">Jammy (22.04 LTS)</span>
+            <span class="distro-badge-ubuntu">Noble (24.04 LTS)</span>
+            <span class="distro-badge-ubuntu">Questing</span>
+            <span class="distro-badge-ubuntu">Resolute</span>
+        </div>
+
+        <p style="vetext-align: center; margin-top: 20px; font-style: italic;">
+            This is an unofficial community project providing packages not available in official Debian repositories.
+        </p>
+    </section>
+
+    <section>
+        <h2>⚠️ Important Information</h2>
+        <p><strong>Scope:</strong> This repository focuses exclusively on <em>unofficial Debian packaging</em>. For issues with the tools themselves, please contact the respective upstream projects.</p>
+
+        <p><strong>Updates:</strong> Packages are refreshed once a new upstream release is at least 2 months old; security and patch fixes for the version already served are published immediately.</p>
+
+        <p><strong>Community:</strong> This is a community-driven project aimed at bridging the gap between fast-moving development tools and Debian's stable packaging cycle.</p>
+    </section>
+
+    <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+        <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+        <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1em; margin-bottom: 25px;">
+            If this repository saves you time and effort, please consider supporting it!
+        </p>
+
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+            <a href="https://github.com/dariogriffo/debian.griffo.io"
+               style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+               onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                ⭐ Star on GitHub
+            </a>
+
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+               style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+               onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                🐦 Share on Twitter
+            </a>
+        </div>
+
+
+    </section>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "deb.griffo.io - Latest Debian Packages Repository",
+    "description": "Unofficial Debian and Ubuntu repository providing free-forever packages for Zig, Ghostty, lazygit, lazydocker, yazi, eza, uv, fzf, zoxide, bun and other modern development tools. Serves the newest release of each tool once it is at least 2 months old, for Bookworm, Trixie, Sid, Jammy, Noble, Questing, and Resolute.",
+    "url": "https://deb.griffo.io",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "keywords": "debian packages, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, bun debian, tigerbeetle debian, development tools, latest versions, unofficial repository",
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "deb.griffo.io Repository",
+        "applicationCategory": "Package Repository",
+        "operatingSystem": "Debian Linux, Ubuntu Linux",
+        "description": "Unofficial repository providing free-forever, newest-release-at-least-2-months-old versions of development tools as Debian and Ubuntu packages",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-section');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function toggleLanguageMenu() {
+        const menu = document.getElementById('languageMenu');
+        menu.classList.toggle('active');
+    }
+
+    // Close language menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.querySelector('.language-dropdown');
+        const menu = document.getElementById('languageMenu');
+        if (dropdown && !dropdown.contains(event.target)) {
+            menu.classList.remove('active');
+        }
+    });
+</script>
+
+</body>
+</html>

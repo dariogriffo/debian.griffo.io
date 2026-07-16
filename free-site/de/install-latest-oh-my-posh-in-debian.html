@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oh My Posh auf Debian installieren via apt — für immer kostenlos</title>
+    <meta name="description" content="Oh My Posh auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta name="keywords" content="oh my posh debian, install oh-my-posh debian, oh-my-posh apt, prompt theme engine, shell prompt debian, oh my posh themes, jandedobbeleer, debian pakete, bookworm, trixie, sid, apt oh-my-posh">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-oh-my-posh-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-oh-my-posh-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-oh-my-posh-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-oh-my-posh-in-debian.html">
+    <meta property="og:title" content="Oh My Posh auf Debian installieren via apt — für immer kostenlos">
+    <meta property="og:description" content="Oh My Posh auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Für immer kostenlos — durch die Lizenzen garantiert
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Jedes Tool hier ist Open Source; seine Lizenz garantiert das Recht, es zu nutzen und weiterzuverteilen. Dieser Spiegel ist dieses Versprechen in der Praxis: das jeweils neueste Release jedes Pakets, das <strong>mindestens 2 Monate alt</strong> ist — <strong>für immer kostenlos</strong>, ohne Konto, ohne Authentifizierung.<br>
+            Sicherheits- und Patch-Fixes werden <strong>sofort</strong> veröffentlicht. Sie möchten jedes Release wenige Stunden nach Upstream? Dafür gibt es das Haupt-Repository auf <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Fragen oder Probleme?</strong> Kommen Sie in unsere <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-Community</a> — der beste Ort für Hilfe.
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>💠 Neueste Oh My Posh auf Debian installieren</h1>
+        <p class="subtitle">Eine Prompt-Theme-Engine für jede Shell</p>
+        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">29.31.1 ✅</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einem bestimmten Release?</strong> <a href="/install-oh-my-posh-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-oh-my-posh-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-oh-my-posh-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-oh-my-posh-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Was ist Oh My Posh?</h2>
+        <p>Oh My Posh ist eine <strong>Prompt-Theme-Engine für jede Shell</strong>, entwickelt von Jan De Dobbeleer und geschrieben in Go. Eine Engine, ein Theme-Format — derselbe schöne, informationsreiche Prompt in bash, zsh, fish, PowerShell, Nushell, elvish, xonsh und cmd. Mit Zehntausenden GitHub-Sternen und einem riesigen Theme-Ökosystem ist es der bevorzugte Weg zu einem konsistenten Prompt auf jeder Maschine und in jeder Shell, die Sie verwenden.</p>
+
+        <div class="comparison-box">
+            <strong>😤 Typische Prompt-Probleme:</strong> Sie basteln <code>PS1</code>-Escape-Codes von Hand? Sie sind an ein Prompt-Framework gebunden, das nur in einer Shell funktioniert? Sie bauen Ihren Prompt jedes Mal neu, wenn Sie zwischen zsh zu Hause und bash auf Servern wechseln? Oh My Posh gibt Ihnen eine Konfiguration, die Ihnen überallhin folgt.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🆓 Für immer kostenlos, mit eingebauter Verzögerung:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository liefert stattdessen das jeweils neueste Release, sobald es mindestens 2 Monate alt ist, für immer kostenlos; Sicherheits- und Patch-Fixes erscheinen sofort. Wer jedes Release wenige Stunden nach Upstream möchte, nutzt das Haupt-Repository auf deb.griffo.io.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von Oh My Posh</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🐚 Jede Shell, eine Konfiguration</h4>
+                <p>Identischer Prompt in bash, zsh, fish, PowerShell, Nushell, elvish, xonsh und cmd. Einmal konfigurieren, überall nutzen — auch über SSH.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 125+ Themes enthalten</h4>
+                <p>Dieses Paket liefert jedes integrierte Theme nach <code>/usr/share/oh-my-posh/themes/</code> — bereit zur Vorschau und offline nutzbar, ohne zusätzliche Downloads.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Umfangreiche Segmente</h4>
+                <p>Git-Status, Exit-Codes, Ausführungszeit, Akku, Kubernetes-Kontext, Cloud-Konten und Sprachversionen (Go, Python, Node, Rust und Dutzende mehr) — nur angezeigt, wenn relevant.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Ihr Theme, Ihr Format</h4>
+                <p>Schreiben Sie eigene Themes in JSON, YAML oder TOML mit einem dokumentierten Schema. Starten Sie mit einem beliebigen integrierten Theme und machen Sie es zu Ihrem eigenen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✨ Transient &amp; Tooltips</h4>
+                <p>Transiente Prompts halten den Verlauf sauber, Tooltips reagieren auf Ihre Eingabe, und rechtsbündige Segmente nutzen die volle Terminalbreite.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Schnell durch Design</h4>
+                <p>Ein einzelnes Go-Binary mit nebenläufigem Segment-Rendering — der Prompt bleibt auch mit vielen aktivierten Segmenten verzögerungsfrei.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Warum mit apt installieren?</h4>
+            <ul>
+                <li><strong>Kein curl-pipe-bash:</strong> ein GPG-signiertes Repository statt Installer-Skripte in Ihre Shell zu leiten</li>
+                <li><strong>Themes enthalten:</strong> alle integrierten Themes landen in <code>/usr/share/oh-my-posh/themes/</code>, versionsgleich mit dem Binary</li>
+                <li><strong>Automatische Updates:</strong> neue Upstream-Versionen kommen mit Ihrem normalen <code>apt upgrade</code></li>
+                <li><strong>Saubere Deinstallation:</strong> <code>apt remove</code> entfernt alles restlos — keine verwaisten Binaries in <code>~/bin</code></li>
+                <li><strong>Multi-Arch:</strong> amd64, arm64 und armhf — dasselbe Setup auf Ihrem Desktop und Ihrem Raspberry Pi</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Oh My Posh installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y oh-my-posh
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y oh-my-posh
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Shell einrichten</h2>
+        <p>Wählen Sie ein Theme aus <code>/usr/share/oh-my-posh/themes/</code> und initialisieren Sie Ihre Shell. Für bash fügen Sie dies zu <code>~/.bashrc</code> hinzu:</p>
+        <div class="code-block">
+eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json)"
+        </div>
+        <p>Für zsh fügen Sie dieselbe Zeile mit <code>zsh</code> zu <code>~/.zshrc</code> hinzu; für fish fügen Sie <code>oh-my-posh init fish --config /usr/share/oh-my-posh/themes/jandedobbeleer.omp.json | source</code> zu <code>~/.config/fish/config.fish</code> hinzu. Die meisten Themes sehen mit einer <a href="https://www.nerdfonts.com/" target="_blank" rel="noopener">Nerd Font</a> am besten aus — oder führen Sie <code>oh-my-posh font install</code> aus.</p>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/oh-my-posh-debian" target="_blank" rel="noopener">📂 oh-my-posh-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-starship-in-debian.html">Starship</a> - Ein weiterer beliebter Cross-Shell-Prompt, falls Sie vergleichen möchten</li>
+            <li><a href="/de/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Interaktives Filtern für Ihr schönes neues Terminal</li>
+            <li><a href="/de/install-latest-zoxide-in-debian.html">zoxide</a> - Smartes cd, das perfekt zu einem schnellen Prompt passt</li>
+            <li><a href="/de/install-latest-atuin-in-debian.html">Atuin</a> - Magische Shell-History, die das Setup vervollständigt</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Entwickler, die mit mehreren Shells und Maschinen arbeiten, Terminal-Customization-Enthusiasten, alle, die Git-Status und Kontext auf einen Blick sehen möchten, und Teams, die ein konsistentes Prompt-Setup wollen, das sich mit einem einzigen apt-Befehl installieren lässt.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Unterstützen Sie dieses Projekt</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Wenn dieses Repository Ihnen Zeit und Aufwand spart, unterstützen Sie es doch bitte!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Auf GitHub mit Stern markieren
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Oh%20My%20Posh,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Auf Twitter teilen
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neueste Oh My Posh Prompt Engine auf Debian installieren",
+    "description": "Vollständige Anleitung zur Installation der neuesten Oh My Posh Prompt-Theme-Engine auf Debian über das deb.griffo.io Repository, mit allen integrierten Themes.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-14",
+    "dateModified": "2026-07-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Oh My Posh",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Eine Prompt-Theme-Engine für jede Shell mit umfangreichen Segmenten und 125+ integrierten Themes"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>29.31.1</code> — 2026-07-16</li>
+<li><code>29.31.0</code> — 2026-07-15</li>
+<li><code>29.30.0</code> — 2026-07-15</li>
+<li><code>29.28.0</code> — 2026-07-14</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Oh My Posh in den offiziellen Debian-Paketquellen?</summary><p>Nein — Oh My Posh ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Oh My Posh-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
+<details><summary>Wie installiere ich das neueste Oh My Posh unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install oh-my-posh. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Oh My Posh in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Oh My Posh ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Oh My Posh-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Oh My Posh unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install oh-my-posh. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

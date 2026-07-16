@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка eza в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите eza в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="eza debian, установить eza debian, замена ls, современная ls, листинг файлов, rust командная строка, debian пакеты, bookworm, trixie, sid, apt eza">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-eza-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-eza-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-eza-in-debian.html">
+    <meta property="og:title" content="Установка eza в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите eza в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📁 Установить eza в Debian</h1>
+        <p class="subtitle">Modern, feature-rich replacement for the ls command</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.23.5 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">0.23.4 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← Вернуться на главную</a>
+
+        <h2>Что такое eza?</h2>
+        <p>eza — это <strong>современная, поддерживаемая замена</strong> для традиционной команды листинга файлов <code>ls</code>, поставляемой с Unix и Linux операционными системами. Написанная на Rust, eza предоставляет больше возможностей и лучшие значения по умолчанию, при этом будучи <strong>маленькой</strong>, <strong>быстрой</strong> и представляя собой всего <strong>один бинарный файл</strong>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> eza активно разрабатывается с частыми выпусками, содержащими новые функции, улучшения производительности и исправления ошибок. Последние версии включают поддержку гиперссылок, пользовательские темы, улучшенную интеграцию Git и множество улучшений удобства использования по сравнению с исходным проектом exa.
+        </div>
+
+        <h3>⚡ Ключевые возможности eza</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Богатый визуальный вывод</h4>
+                <p>Цвета для различения типов файлов, поддержка иконок и настраиваемые темы. Делает просмотр файлов более интуитивным и визуально привлекательным.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔗 Интеграция с Git</h4>
+                <p>Показывает статус Git для файлов и репозиториев, отслеживает игнорируемые файлы и отображает информацию о репозитории прямо в списках.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Расширенные метаданные</h4>
+                <p>Отображает символические ссылки, расширенные атрибуты, точки монтирования, контекст SELinux и человекочитаемые относительные даты.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 Гибкая настройка</h4>
+                <p>Пользовательские темы через theme.yml, обширные параметры командной строки и обратная совместимость с ls и exa.</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🆚 eza vs ls vs exa</h4>
+            <ul>
+                <li><strong>vs ls:</strong> Цвета, иконки, интеграция Git, вид дерева, лучшие значения по умолчанию</li>
+                <li><strong>vs exa:</strong> Активно поддерживается, исправляет "Grid Bug", гиперссылки, темы, исправления безопасности</li>
+                <li><strong>Производительность:</strong> Быстрая реализация на Rust, один бинарный файл, минимальные зависимости</li>
+                <li><strong>Совместимость:</strong> Замена с привычными параметрами</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить eza</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить с root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest eza
+sudo apt install eza
+
+# Проверить установку
+eza --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest eza
+apt install eza
+
+# Проверить установку
+eza --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Замените ls на eza:</strong></p>
+        <div class="code-block">
+# Basic listing with colors and icons
+eza
+
+# Long format with details
+eza -l
+
+# Tree view
+eza --tree
+
+# Show Git status
+eza -l --git
+
+# Grid view with icons
+eza --icons --grid
+        </div>
+
+        <p><strong>Расширенные функции:</strong></p>
+        <div class="code-block">
+# Show all files including hidden
+eza -la
+
+# Sort by size, largest first
+eza -l --sort=size --reverse
+
+# Show only directories
+eza -D
+
+# Recursive listing with depth limit
+eza -R --level=2
+
+# Custom time format
+eza -l --time-style=iso
+        </div>
+
+        <p><strong>Создать псевдоним для постоянного использования:</strong></p>
+        <div class="code-block">
+# Add to ~/.bashrc or ~/.zshrc
+echo 'alias ls="eza"' >> ~/.bashrc
+echo 'alias ll="eza -l"' >> ~/.bashrc
+echo 'alias la="eza -la"' >> ~/.bashrc
+
+# Reload shell
+source ~/.bashrc
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="comparison-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> Часто отстаёт на несколько месяцев, отсутствуют новейшие функции</li>
+                <li><strong>deb.griffo.io (main):</strong> Последняя версия в течение нескольких часов после выпуска</li>
+                <li><strong>Ручная установка:</strong> Требует сложной компиляции Rust</li>
+                <li><strong>Наш репозиторий:</strong> Готовые к использованию пакеты</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие возможности eza — релиз не старше 2 месяцев</li>
+            <li>✅ <strong>Без компиляции:</strong> Готовые бинарные файлы, инструментарий Rust не нужен</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Правильные зависимости:</strong> Корректно упакован со всеми необходимыми библиотеками</li>
+            <li>✅ <strong>Несколько дистрибутивов:</strong> Работает на Bookworm, Trixie и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Простые команды apt для обновлений</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты для Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/eza-debian" target="_blank" rel="noopener">📁 eza-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступно из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-yazi-in-debian.html">Файловый менеджер Yazi</a> - Продвинутый терминальный файловый менеджер</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Нечёткий поиск</a> - Улучшенный поиск файлов и команд</li>
+            <li><a href="/ru/install-latest-zoxide-in-debian.html">zoxide</a> - Умная замена команды cd</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Повседневных пользователей командной строки, разработчиков, желающих лучший листинг файлов, всех, кто хочет модернизировать терминальный рабочий процесс с цветами, иконками и интеграцией Git.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить eza (современная замена ls) в Debian",
+    "description": "Полное руководство по установке утилиты командной строки eza в Debian с использованием репозитория deb.griffo.io — пакеты не более 2 месяцев позади upstream, бесплатно навсегда.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2025-10-01",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "eza",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Modern, maintained replacement for ls with enhanced features, Git integration, and visual improvements"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.23.5</code> — 2026-07-09</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли eza в официальных репозиториях Debian?</summary><p>Да — официальный архив Debian поставляет eza 0.23.4. Это бесплатное зеркало предлагает новейший релиз eza возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию eza в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install eza. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли eza в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Да — официальный архив Debian поставляет eza 0.23.4. Это бесплатное зеркало предлагает новейший релиз eza возрастом не менее 2 месяцев, бесплатно навсегда; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию eza в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install eza. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

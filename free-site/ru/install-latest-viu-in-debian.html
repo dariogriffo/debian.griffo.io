@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка viu в Debian через apt — бесплатно навсегда</title>
+    <meta name="description" content="Установите viu в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta name="keywords" content="viu debian, install viu debian, terminal image viewer, rust image viewer, kitty protocol, sixel debian, debian packages, bookworm, trixie, sid, apt viu">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-viu-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-viu-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-viu-in-debian.html">
+    <meta property="og:title" content="Установка viu в Debian через apt — бесплатно навсегда">
+    <meta property="og:description" content="Установите viu в Bookworm, Trixie, Forky и Sid из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 Бесплатно навсегда — это гарантируют лицензии
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            Каждый инструмент здесь — open source; его лицензия гарантирует право использовать и распространять его. Это зеркало — то самое обещание на практике: новейший релиз каждого пакета возрастом <strong>не менее 2 месяцев</strong>, <strong>бесплатно навсегда</strong> — без аккаунта и аутентификации.<br>
+            Исправления безопасности и патчи публикуются <strong>немедленно</strong>. Нужен каждый релиз через несколько часов после upstream? Для этого есть основной репозиторий <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>. 🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>Вопросы или проблемы?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord-сообществу</a> — лучшее место для помощи.
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🖼️ Установить viu на Debian</h1>
+        <p class="subtitle">Консольный просмотрщик изображений, написанный на Rust</p>
+        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">1.6.1 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← Назад на главную</a>
+
+        <h2>Что такое viu?</h2>
+        <p>viu is a small but powerful <strong>command-line image viewer written in Rust</strong> that displays images directly in your terminal. It adapts to your terminal's capabilities, using the best available protocol — from the high-fidelity Kitty and iTerm2 graphics protocols down to Unicode block characters as a universal fallback.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> viu continuously improves support for new image formats, terminal protocols, and display options. The latest releases include AVIF support, improved Kitty protocol rendering, better GIF animation handling, and performance optimizations for large images.
+        </div>
+
+        <h3>⚡ Key Features of viu</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🖼️ Multiple Display Protocols</h4>
+                <p>Supports Kitty terminal graphics protocol, iTerm2 inline images, Sixel graphics, and Unicode block characters — automatically picks the best one for your terminal.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📦 Wide Format Support</h4>
+                <p>Displays PNG, JPEG, GIF, BMP, ICO, TIFF, WebP, AVIF, and many more formats via Rust's <code>image</code> crate.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🎞️ GIF Animation</h4>
+                <p>Plays animated GIFs directly in the terminal, looping through frames at the correct frame rate.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📏 Flexible Sizing</h4>
+                <p>Control width, height, or let viu auto-fit the image to your terminal window. Useful for pipelines and scripting.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔗 Pipe-Friendly</h4>
+                <p>Reads from stdin or file arguments, making it composable with tools like <code>curl</code>, <code>find</code>, and shell pipelines.</p>
+            </div>
+            <div class="feature-card">
+                <h4>⚡ Fast &amp; Lightweight</h4>
+                <p>Written in Rust — minimal startup time, low memory footprint, and no runtime dependencies beyond the binary.</p>
+            </div>
+        </div>
+
+        <div class="performance-box">
+            <h4>🖥️ Supported Terminal Protocols</h4>
+            <ul>
+                <li><strong>Kitty:</strong> Full-resolution pixel-perfect images (kitty, Ghostty, WezTerm)</li>
+                <li><strong>iTerm2:</strong> Inline image protocol (iTerm2, WezTerm, Tabby, VSCode)</li>
+                <li><strong>Sixel:</strong> Compatible with foot, Windows Terminal, and many classic terminals</li>
+                <li><strong>Unicode blocks:</strong> Universal fallback — works in every terminal</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить с root</button>
+            </div>
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить viu</h3>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить с root</button>
+            </div>
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest viu
+sudo apt install viu
+
+# Verify installation
+viu --version
+                </div>
+            </div>
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest viu
+apt install viu
+
+# Verify installation
+viu --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры использования</h3>
+        <p><strong>Basic usage:</strong></p>
+        <div class="code-block">
+# Display a single image
+viu image.png
+
+# Display multiple images
+viu *.jpg
+
+# Display from stdin
+curl -sL https://example.com/photo.jpg | viu -
+
+# Display a GIF animation
+viu animation.gif
+        </div>
+
+        <p><strong>Sizing options:</strong></p>
+        <div class="code-block">
+# Set width in terminal columns
+viu -w 80 image.png
+
+# Set height in terminal rows
+viu -h 24 image.png
+
+# Disable auto-resizing
+viu -s image.png
+        </div>
+
+        <p><strong>Pipeline examples:</strong></p>
+        <div class="code-block">
+# Browse images in a directory
+for f in ~/Pictures/*.jpg; do viu -w 40 "$f"; done
+
+# Use with fzf to browse and preview
+find . -name "*.png" | fzf --preview "viu -w 60 {}"
+        </div>
+
+        <h2>🚀 Почему deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Официальный Debian: viu не упакован в официальных репозиториях Debian</strong></li>
+                <li><strong>Cargo Install:</strong> Requires Rust toolchain and compilation time</li>
+                <li><strong>deb.griffo.io (main):</strong> Latest version available immediately via <code>apt</code></li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Новейшие функции:</strong> Поддержка AVIF и улучшенных протоколов — релиз не старше 2 месяцев</li>
+            <li>✅ <strong>No Rust Compilation:</strong> Pre-built musl static binary, no toolchain or extra dependencies needed</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются автоматически; в бесплатной линии — не позже 2 месяцев после релиза, исправления безопасности немедленно</li>
+            <li>✅ <strong>Proper Packaging:</strong> Correctly packaged as a package with clean install/remove</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Работает на Bookworm, Trixie, Forky и Sid</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian автоматически собираются и поддерживаются в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/viu-debian" target="_blank" rel="noopener">🖼️ viu-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны на deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-yazi-in-debian.html">Файловый менеджер Yazi</a> - Терминальный файловый менеджер со встроенным предпросмотром изображений</li>
+            <li><a href="/ru/install-latest-eza-in-debian.html">eza</a> - Современная замена ls</li>
+            <li><a href="/ru/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Сочетайте с viu для интерактивного просмотра изображений</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers previewing assets from the terminal, sysadmins checking images over SSH, users of Kitty, Ghostty, or WezTerm who want pixel-perfect image display, and anyone integrating image previews into shell scripts or tools like yazi and fzf.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установить просмотрщик изображений viu на Debian",
+    "description": "Консольный просмотрщик изображений на Rust с поддержкой протоколов Kitty, iTerm2, Sixel и Unicode-символов",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-06-15",
+    "dateModified": "2026-06-15",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "viu",
+        "applicationCategory": "Image Viewer",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Консольный просмотрщик изображений на Rust с поддержкой протоколов Kitty, iTerm2, Sixel и Unicode-символов"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => { content.classList.remove('active'); });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => { button.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>1.6.1</code> — 2026-07-08</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли viu в официальных репозиториях Debian?</summary><p>Нет — viu не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз viu возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
+<details><summary>Как установить последнюю версию viu в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install viu. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли viu в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — viu не упакован в официальных архивах Debian. Это бесплатное зеркало предлагает новейший релиз viu возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию viu в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install viu. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

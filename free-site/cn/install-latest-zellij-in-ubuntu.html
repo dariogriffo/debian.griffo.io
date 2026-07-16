@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Ubuntu 上通过 apt 安装 Zellij — 永久免费</title>
+    <meta name="description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Zellij — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta name="keywords" content="zellij ubuntu, 安装 zellij ubuntu, zellij, 终端复用器, tmux 替代品, 终端工作区, rust 复用器, ubuntu 软件包, jammy, noble, apt zellij">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zellij-in-ubuntu.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-zellij-in-ubuntu.html">
+    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 Zellij — 永久免费">
+    <meta property="og:description" content="从永久免费的 apt 镜像在 Ubuntu 22.04、24.04、25.10 和 26.04 上安装 Zellij — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #66bb6a; box-shadow: 0 4px 24px rgba(102, 187, 106, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #1b5e20; letter-spacing: 0.2px;">
+            🆓 永久免费 — 由开源许可证保障
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #2e7d32; line-height: 1.75;">
+            这里的每个工具都是开源软件；其许可证保障了使用与再分发的权利。本镜像正是这一承诺的实践：提供每个软件包发布<strong>至少 2 个月</strong>的最新版本，<strong>永久免费</strong> — 无需账号，无需认证。<br>
+            安全修复与补丁会<strong>立即</strong>发布。想在上游发布后数小时内获得每个版本？请使用主仓库 <a href="https://deb.griffo.io" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">deb.griffo.io</a>。🚀
+        </p>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #2e7d32; line-height: 1.6;">
+            💬 <strong>有问题或建议？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #1b5e20; font-weight: 700; text-decoration: underline;">Discord 社区</a> — 获取帮助的最佳去处。
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🪟 在 Ubuntu 上安装最新的 Zellij</h1>
+        <p class="subtitle">终端工作区与复用器</p>
+        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io (main)</strong></td><td class="vc-win">0.44.3 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <h2>什么是 Zellij？</h2>
+        <p>Zellij 是一款用 Rust 编写的<strong>终端工作区与复用器</strong>。作为 tmux 和 screen 的现代替代品，它让您可以将终端拆分为多个面板和标签页，保存并恢复布局，并通过 WebAssembly 插件系统进行扩展——所有这一切都配有易于发现的快捷键提示和友好的用户界面，让上手变得轻松。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong>Zellij 正在积极开发中，不断推出新的布局功能、插件能力和性能改进。运行最新版本可以让您第一时间获得最新的工作区功能和修复。
+        </div>
+
+        <h3>⚡ Zellij 的核心功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 面板与标签页</h4>
+                <p>将终端拆分为多个面板，并通过多个标签页组织您的工作。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📐 布局</h4>
+                <p>为您的项目定义并恢复可复现的工作区布局。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 插件系统</h4>
+                <p>通过 WebAssembly 插件扩展 Zellij，实现自定义功能。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧭 易于发现的界面</h4>
+                <p>屏幕提示让快捷键易学易记。</p>
+            </div>
+        </div>
+
+        <div class="comparison-box">
+            <h4>🎯 为什么选择 Zellij？</h4>
+            <ul>
+                <li><strong>新手友好：</strong>屏幕上的快捷键提示降低了学习曲线</li>
+                <li><strong>强大的布局：</strong>通过配置文件定义可复现的工作区</li>
+                <li><strong>可扩展：</strong>WebAssembly 插件系统</li>
+                <li><strong>现代化：</strong>基于 Rust 的快速实现，默认配置合理</li>
+            </ul>
+        </div>
+
+        <h3>🆕 亮点</h3>
+        <ul>
+            <li><strong>复用功能：</strong>在单个终端中使用多个面板和标签页</li>
+            <li><strong>会话管理：</strong>随时从运行中的会话分离并重新连接</li>
+            <li><strong>布局：</strong>保存并加载工作区排列方式</li>
+            <li><strong>插件：</strong>基于 WASM 的可扩展性</li>
+        </ul>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 zellij</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest zellij
+sudo apt install zellij
+
+# Verify installation
+zellij --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest zellij
+apt install zellij
+
+# Verify installation
+zellij --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 基本使用示例</h3>
+        <div class="code-block">
+# Show version
+zellij --version
+
+# Start a new session
+zellij
+
+# Start a named session
+zellij --session work
+
+# List active sessions
+zellij list-sessions
+
+# Attach to an existing session
+zellij attach work
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="comparison-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Ubuntu：</strong>通常落后数月，缺少最新功能</li>
+                <li><strong>deb.griffo.io：</strong>发布后数小时内即可获得最新版本</li>
+                <li><strong>手动安装：</strong>需要手动下载并配置 PATH</li>
+                <li><strong>我们的仓库：</strong>预构建、开箱即用的软件包</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>最新功能：</strong>Zellij 的最新版本最多延迟上游 2 个月，安全修复立即发布</li>
+            <li>✅ <strong>无需手动配置：</strong>预构建二进制文件，通过 apt 安装和更新</li>
+            <li>✅ <strong>自动更新：</strong>通过 apt upgrade 自动获取免费通道的最新构建</li>
+            <li>✅ <strong>正确的依赖管理：</strong>正确打包所有必需的库</li>
+            <li>✅ <strong>多发行版支持：</strong>支持 Jammy 和 Noble</li>
+            <li>✅ <strong>易于维护：</strong>简单的 apt 命令即可完成更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zellij-debian" target="_blank" rel="noopener">📁 zellij-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-starship-in-ubuntu.html">Starship</a> - 快速、可自定义的跨 Shell 提示符</li>
+            <li><a href="/cn/install-latest-atuin-in-ubuntu.html">Atuin</a> - Shell 历史记录同步、搜索与统计</li>
+            <li><a href="/cn/install-latest-helix-in-ubuntu.html">Helix Editor</a> - 后现代模态文本编辑器</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 适用人群：</strong>希望使用一款现代、易上手的复用器来替代 tmux 的终端高级用户，享受面板、标签页、已保存布局和插件带来的便利。
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 支持此项目</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                如果这个仓库为您节省了时间和精力，请考虑支持它！
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ 在 GitHub 上加星
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 在 Twitter 上分享
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "在 Ubuntu 上安装最新的 Zellij 终端工作区与复用器",
+    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新 Zellij 的完整指南，获取最新软件包。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-07-09",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zellij",
+        "applicationCategory": "Terminal Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "一款用 Rust 编写的终端工作区与复用器，具有面板、标签页、布局和插件系统。"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.44.3</code> — 2026-07-09</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Zellij 在官方 Ubuntu 软件源中吗？</summary><p>不在 — 官方 Ubuntu 源没有打包 Zellij。本免费镜像提供发布至少 2 个月的最新 Zellij 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 Zellij？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install zellij。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Zellij 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Ubuntu 源没有打包 Zellij。本免费镜像提供发布至少 2 个月的最新 Zellij 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Zellij？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install zellij。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
