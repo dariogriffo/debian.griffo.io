@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-oh-my-posh-in-ubuntu.html">
     <meta property="og:title" content="Установка Oh My Posh в Ubuntu через apt — бесплатно навсегда">
     <meta property="og:description" content="Установите Oh My Posh в Ubuntu 22.04, 24.04, 25.10 и 26.04 из вечно бесплатного apt-зеркала — пакеты с GPG-подписью, не более 2 месяцев позади upstream, исправления безопасности немедленно. Без аккаунта и аутентификации.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -37,7 +37,8 @@
     <div class="header">
         <h1>💠 Установка Oh My Posh в Ubuntu</h1>
         <p class="subtitle">Движок тем приглашения командной строки для любой оболочки</p>
-        <div class="version-badge">Бесплатная линия: не более 2 месяцев позади upstream · исправления безопасности — немедленно</div>
+        <div class="version-badge">⏳ Пока нет в бесплатном зеркале — доступно в deb.griffo.io (основной)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>Oh My Posh пока нет в бесплатном зеркале.</strong> Сейчас бесплатное зеркало предлагает Ghostty и Zed, скоро будет больше. Получите Oh My Posh из <a href="https://deb.griffo.io/ru/install-latest-oh-my-posh-in-ubuntu.html" style="color: #8d6e00; font-weight: 700;">основного репозитория deb.griffo.io</a> — каждый релиз через несколько часов после upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Источник</th><th>Версия</th></tr></thead>
@@ -122,8 +123,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -131,8 +132,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -199,7 +200,7 @@ eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/jandedobbelee
                     ⭐ Звезда на GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Oh%20My%20Posh,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb-free.griffo.io%20-%20get%20the%20latest%20versions%20of%20Oh%20My%20Posh,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb-free.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -277,11 +278,11 @@ eval "$(oh-my-posh init bash --config /usr/share/oh-my-posh/themes/jandedobbelee
 </ul>
 <h2>❓ Часто задаваемые вопросы</h2>
 <details><summary>Есть ли Oh My Posh в официальных репозиториях Ubuntu?</summary><p>Нет — Oh My Posh не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз Oh My Posh возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream.</p></details>
-<details><summary>Как установить последнюю версию Oh My Posh в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install oh-my-posh. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Как установить последнюю версию Oh My Posh в Ubuntu?</summary><p>Добавьте репозиторий deb-free.griffo.io один раз по инструкции выше, затем выполните: sudo apt install oh-my-posh. Новые версии приходят через обычный sudo apt upgrade.</p></details>
 <details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
 <details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Oh My Posh в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Oh My Posh не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз Oh My Posh возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Oh My Posh в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install oh-my-posh. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Oh My Posh в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Oh My Posh не упакован в официальных архивах Ubuntu. Это бесплатное зеркало предлагает новейший релиз Oh My Posh возрастом не менее 2 месяцев; основной репозиторий deb.griffo.io предлагает каждый релиз через несколько часов после upstream."}}, {"@type": "Question", "name": "Как установить последнюю версию Oh My Posh в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb-free.griffo.io один раз по инструкции выше, затем выполните: sudo apt install oh-my-posh. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>

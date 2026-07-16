@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://deb.griffo.io/install-latest-just-in-ubuntu.html">
     <meta property="og:title" content="Install just on Ubuntu via apt — Free Forever">
     <meta property="og:description" content="Install just on Ubuntu 22.04, 24.04, 25.10 and 26.04 from the free-forever apt mirror — GPG-signed packages, at most 2 months behind upstream, security fixes published immediately. No account, no authentication.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -38,7 +38,8 @@
     <div class="header">
         <h1>🤖 Install Latest just on Ubuntu</h1>
         <p class="subtitle">A handy command runner for your project-specific commands</p>
-        <div class="version-badge">Free lane: at most 2 months behind upstream · security fixes immediate</div>
+        <div class="version-badge">⏳ Not in the free mirror yet — get it from deb.griffo.io (main)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>just is not in the free mirror yet.</strong> The free mirror currently serves Ghostty and Zed, with more on the way. Get just from the <a href="https://deb.griffo.io/install-latest-just-in-ubuntu.html" style="color: #8d6e00; font-weight: 700;">main repository at deb.griffo.io</a> — every release, within hours of upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -125,8 +126,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -134,8 +135,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -291,7 +292,7 @@ just --completions fish
                     ⭐ Star on GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb-free.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb-free.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -374,11 +375,11 @@ just --completions fish
 </ul>
 <h2>❓ Frequently asked questions</h2>
 <details><summary>Is just in the official Ubuntu repositories?</summary><p>Yes — the official Ubuntu archive ships just 1.45.0. This free mirror serves the newest just release that is at least 2 months old, forever free; the main repository at deb.griffo.io serves every release within hours of upstream.</p></details>
-<details><summary>How do I install the latest just on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install just. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>How do I install the latest just on Ubuntu?</summary><p>Add the deb-free.griffo.io repository once using the instructions above, then run: sudo apt install just. New releases arrive through the normal sudo apt upgrade.</p></details>
 <details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
 <details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is just in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — the official Ubuntu archive ships just 1.45.0. This free mirror serves the newest just release that is at least 2 months old, forever free; the main repository at deb.griffo.io serves every release within hours of upstream."}}, {"@type": "Question", "name": "How do I install the latest just on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install just. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is just in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — the official Ubuntu archive ships just 1.45.0. This free mirror serves the newest just release that is at least 2 months old, forever free; the main repository at deb.griffo.io serves every release within hours of upstream."}}, {"@type": "Question", "name": "How do I install the latest just on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb-free.griffo.io repository once using the instructions above, then run: sudo apt install just. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>

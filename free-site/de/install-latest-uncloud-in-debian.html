@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://deb.griffo.io/de/install-latest-uncloud-in-debian.html">
     <meta property="og:title" content="Uncloud auf Debian installieren via apt — für immer kostenlos">
     <meta property="og:description" content="Uncloud auf Bookworm, Trixie, Forky und Sid aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
-    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -40,7 +40,8 @@
     <div class="header">
         <h1>☁️ Neueste installieren uncloud auf Debian</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-badge">⏳ Noch nicht im kostenlosen Spiegel — erhältlich auf deb.griffo.io (Haupt-Repository)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>Uncloud ist noch nicht im kostenlosen Spiegel.</strong> Der kostenlose Spiegel liefert derzeit Ghostty und Zed — weitere folgen. Uncloud gibt es im <a href="https://deb.griffo.io/de/install-latest-uncloud-in-debian.html" style="color: #8d6e00; font-weight: 700;">Haupt-Repository auf deb.griffo.io</a> — jedes Release, wenige Stunden nach Upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Quelle</th><th>Version</th></tr></thead>
@@ -120,8 +121,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -129,8 +130,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -312,11 +313,11 @@ uc machine rm server2
 </ul>
 <h2>❓ Häufig gestellte Fragen</h2>
 <details><summary>Ist Uncloud in den offiziellen Debian-Paketquellen?</summary><p>Nein — Uncloud ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Uncloud-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
-<details><summary>Wie installiere ich das neueste Uncloud unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Wie installiere ich das neueste Uncloud unter Debian?</summary><p>Fügen Sie das deb-free.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
 <details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
 <details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Uncloud in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Uncloud ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Uncloud-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Uncloud unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Uncloud in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Uncloud ist nicht in den offiziellen Debian-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste Uncloud-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Uncloud unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb-free.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uncloud. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>

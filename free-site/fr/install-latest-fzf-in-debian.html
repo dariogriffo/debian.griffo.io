@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-fzf-in-debian.html">
     <meta property="og:title" content="Installer fzf sur Debian via apt — gratuit pour toujours">
     <meta property="og:description" content="Installez fzf sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
-    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -40,7 +40,8 @@
     <div class="header">
         <h1>🔍 Installer fzf sur Debian</h1>
         <p class="subtitle">Command-line fuzzy finder written in Go</p>
-        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-badge">⏳ Pas encore dans le miroir gratuit — disponible sur deb.griffo.io (principal)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>fzf n'est pas encore dans le miroir gratuit.</strong> Le miroir gratuit propose actuellement Ghostty et Zed, d'autres arrivent. Obtenez fzf depuis le <a href="https://deb.griffo.io/fr/install-latest-fzf-in-debian.html" style="color: #8d6e00; font-weight: 700;">dépôt principal sur deb.griffo.io</a> — chaque version, quelques heures après l'upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -114,8 +115,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -123,8 +124,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -331,11 +332,11 @@ find . -type f | fzf -m
 </ul>
 <h2>❓ Questions fréquentes</h2>
 <details><summary>fzf est-il dans les dépôts officiels de Debian ?</summary><p>Oui — l'archive officielle de Debian fournit fzf 0.73.1. Ce miroir gratuit propose la version la plus récente de fzf datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
-<details><summary>Comment installer le dernier fzf sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fzf. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Comment installer le dernier fzf sur Debian ?</summary><p>Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fzf. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
 <details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
 <details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "fzf est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Debian fournit fzf 0.73.1. Ce miroir gratuit propose la version la plus récente de fzf datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier fzf sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fzf. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "fzf est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Debian fournit fzf 0.73.1. Ce miroir gratuit propose la version la plus récente de fzf datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier fzf sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fzf. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>

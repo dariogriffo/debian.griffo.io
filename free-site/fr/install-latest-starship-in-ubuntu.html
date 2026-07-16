@@ -22,7 +22,7 @@
     <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-starship-in-ubuntu.html">
     <meta property="og:title" content="Installer Starship sur Ubuntu via apt — gratuit pour toujours">
     <meta property="og:description" content="Installez Starship sur Ubuntu 22.04, 24.04, 25.10 et 26.04 depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -45,7 +45,8 @@
     <div class="header">
         <h1>🚀 Installer Starship sur Ubuntu</h1>
         <p class="subtitle">Une invite de commande rapide et personnalisable, compatible avec tous les shells</p>
-        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-badge">⏳ Pas encore dans le miroir gratuit — disponible sur deb.griffo.io (principal)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>Starship n'est pas encore dans le miroir gratuit.</strong> Le miroir gratuit propose actuellement Ghostty et Zed, d'autres arrivent. Obtenez Starship depuis le <a href="https://deb.griffo.io/fr/install-latest-starship-in-ubuntu.html" style="color: #8d6e00; font-weight: 700;">dépôt principal sur deb.griffo.io</a> — chaque version, quelques heures après l'upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -121,8 +122,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -130,8 +131,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -190,7 +191,7 @@ starship print-config
             <strong>📊 Comparaison des dépôts :</strong>
             <ul>
                 <li><strong>Ubuntu officiel :</strong> Souvent plusieurs mois de retard, sans les dernières fonctionnalités</li>
-                <li><strong>deb.griffo.io :</strong> Dernière version disponible en quelques heures après sa sortie</li>
+                <li><strong>deb.griffo.io :</strong> version la plus récente datant d'au plus 2 mois, gratuite pour toujours</li>
                 <li><strong>Installation manuelle :</strong> Téléchargements manuels et configuration du PATH requis</li>
                 <li><strong>Notre dépôt :</strong> Paquets précompilés, prêts à l'emploi</li>
             </ul>
@@ -199,7 +200,7 @@ starship print-config
         <ul>
             <li>✅ <strong>Dernières fonctionnalités :</strong> Bénéficiez des fonctionnalités et améliorations de  Starship dès qu'elles datent d'au moins 2 mois</li>
             <li>✅ <strong>Aucune configuration manuelle :</strong> Binaires précompilés, installés et mis à jour via apt</li>
-            <li>✅ <strong>Mises à jour automatiques :</strong> Paquets mis à jour quelques heures après les sorties upstream</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> version la plus récente disponible dès qu'elle a au moins 2 mois ; correctifs de sécurité immédiats</li>
             <li>✅ <strong>Dépendances correctes :</strong> Empaqueté correctement avec toutes les bibliothèques requises</li>
             <li>✅ <strong>Multi-distribution :</strong> Fonctionne sur Jammy et Noble</li>
             <li>✅ <strong>Maintenance facile :</strong> De simples commandes apt pour les mises à jour</li>
@@ -237,7 +238,7 @@ starship print-config
                     ⭐ Étoiler sur GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb-free.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb-free.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -311,11 +312,11 @@ starship print-config
 </ul>
 <h2>❓ Questions fréquentes</h2>
 <details><summary>Starship est-il dans les dépôts officiels de Ubuntu ?</summary><p>Oui — l'archive officielle de Ubuntu fournit Starship 1.22.1. Ce miroir gratuit propose la version la plus récente de Starship datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
-<details><summary>Comment installer le dernier Starship sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install starship. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Comment installer le dernier Starship sur Ubuntu ?</summary><p>Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install starship. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
 <details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
 <details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Starship est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Ubuntu fournit Starship 1.22.1. Ce miroir gratuit propose la version la plus récente de Starship datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Starship sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install starship. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Starship est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Ubuntu fournit Starship 1.22.1. Ce miroir gratuit propose la version la plus récente de Starship datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Starship sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install starship. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>

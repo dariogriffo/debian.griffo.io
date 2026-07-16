@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://deb.griffo.io/de/install-latest-uv-in-ubuntu.html">
     <meta property="og:title" content="uv auf Ubuntu installieren via apt — für immer kostenlos">
     <meta property="og:description" content="uv auf Ubuntu 22.04, 24.04, 25.10 und 26.04 aus dem für immer kostenlosen apt-Spiegel installieren — GPG-signierte Pakete, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Ohne Konto, ohne Authentifizierung.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -40,7 +40,8 @@
     <div class="header">
         <h1>🐍 Neueste installieren uv auf Ubuntu</h1>
         <p class="subtitle">Extremely fast Python package and project manager</p>
-        <div class="version-badge">Kostenloser Spiegel: höchstens 2 Monate hinter Upstream · Sicherheitsfixes sofort</div>
+        <div class="version-badge">⏳ Noch nicht im kostenlosen Spiegel — erhältlich auf deb.griffo.io (Haupt-Repository)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>uv ist noch nicht im kostenlosen Spiegel.</strong> Der kostenlose Spiegel liefert derzeit Ghostty und Zed — weitere folgen. uv gibt es im <a href="https://deb.griffo.io/de/install-latest-uv-in-ubuntu.html" style="color: #8d6e00; font-weight: 700;">Haupt-Repository auf deb.griffo.io</a> — jedes Release, wenige Stunden nach Upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Quelle</th><th>Version</th></tr></thead>
@@ -124,8 +125,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -133,8 +134,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -342,11 +343,11 @@ uv tool list
 </ul>
 <h2>❓ Häufig gestellte Fragen</h2>
 <details><summary>Ist uv in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein — uv ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste uv-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream.</p></details>
-<details><summary>Wie installiere ich das neueste uv unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uv. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Wie installiere ich das neueste uv unter Ubuntu?</summary><p>Fügen Sie das deb-free.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uv. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
 <details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
 <details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist uv in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — uv ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste uv-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste uv unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uv. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist uv in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — uv ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieser kostenlose Spiegel liefert das neueste uv-Release, das mindestens 2 Monate alt ist; das Haupt-Repository auf deb.griffo.io liefert jedes Release wenige Stunden nach Upstream."}}, {"@type": "Question", "name": "Wie installiere ich das neueste uv unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb-free.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install uv. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>

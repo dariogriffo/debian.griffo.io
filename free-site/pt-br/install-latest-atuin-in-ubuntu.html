@@ -22,7 +22,7 @@
     <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-atuin-in-ubuntu.html">
     <meta property="og:title" content="Instalar Atuin no Ubuntu via apt — grátis para sempre">
     <meta property="og:description" content="Instale Atuin no Ubuntu 22.04, 24.04, 25.10 e 26.04 a partir do espelho apt grátis para sempre — pacotes assinados com GPG, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Sem conta, sem autenticação.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/ubuntu-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -45,7 +45,8 @@
     <div class="header">
         <h1>⌨️ Instalar Atuin no Ubuntu</h1>
         <p class="subtitle">Sincronização, busca e estatísticas de histórico do shell</p>
-        <div class="version-badge">Faixa gratuita: no máximo 2 meses atrás do upstream · correções de segurança imediatas</div>
+        <div class="version-badge">⏳ Ainda não está no espelho gratuito — disponível em deb.griffo.io (principal)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>Atuin ainda não está no espelho gratuito.</strong> O espelho gratuito oferece atualmente Ghostty e Zed, com mais a caminho. Obtenha Atuin no <a href="https://deb.griffo.io/pt-br/install-latest-atuin-in-ubuntu.html" style="color: #8d6e00; font-weight: 700;">repositório principal em deb.griffo.io</a> — cada versão, poucas horas após o upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
@@ -121,8 +122,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -130,8 +131,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -237,7 +238,7 @@ atuin stats
                     ⭐ Dar estrela no GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb-free.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb-free.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -312,11 +313,11 @@ atuin stats
 </ul>
 <h2>❓ Perguntas frequentes</h2>
 <details><summary>O Atuin está nos repositórios oficiais do Ubuntu?</summary><p>Sim — o arquivo oficial do Ubuntu traz Atuin 18.8.0. Este espelho gratuito oferece a versão mais recente do Atuin com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream.</p></details>
-<details><summary>Como instalo o Atuin mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install atuin. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Como instalo o Atuin mais recente no Ubuntu?</summary><p>Adicione o repositório deb-free.griffo.io uma única vez com as instruções acima e execute: sudo apt install atuin. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
 <details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
 <details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Atuin está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz Atuin 18.8.0. Este espelho gratuito oferece a versão mais recente do Atuin com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o Atuin mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install atuin. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Atuin está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim — o arquivo oficial do Ubuntu traz Atuin 18.8.0. Este espelho gratuito oferece a versão mais recente do Atuin com pelo menos 2 meses, grátis para sempre; o repositório principal em deb.griffo.io oferece cada versão poucas horas após o upstream."}}, {"@type": "Question", "name": "Como instalo o Atuin mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb-free.griffo.io uma única vez com as instruções acima e execute: sudo apt install atuin. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>

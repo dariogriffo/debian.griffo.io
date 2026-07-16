@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installer Zed sur Debian via apt — gratuit pour toujours</title>
-Installez     <meta name="description" content="Zed sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta name="description" content="Installez Zed sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
     <meta name="keywords" content="zed debian, installer zed debian, éditeur zed, éditeur de code zed, éditeur multijoueur, paquets debian, bookworm, trixie, sid, apt zed">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -14,8 +14,8 @@ Installez     <meta name="description" content="Zed sur Bookworm, Trixie, Forky 
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-zed-in-debian.html">
     <meta property="og:title" content="Installer Zed sur Debian via apt — gratuit pour toujours">
-Installez     <meta property="og:description" content="Zed sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
-    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+    <meta property="og:description" content="Installez Zed sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
+    <meta property="og:image" content="https://deb-free.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -38,7 +38,7 @@ Installez     <meta property="og:description" content="Zed sur Bookworm, Trixie,
     <div class="header">
         <h1>⚡ Installer Zed sur Debian</h1>
         <p class="subtitle">Obtenez l'éditeur de code haute performance et multijoueur</p>
-        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-badge">Version du miroir gratuit : 1.2.6 · correctifs de sécurité immédiats</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -108,8 +108,8 @@ Installez     <meta property="og:description" content="Zed sur Bookworm, Trixie,
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -117,8 +117,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -197,7 +197,7 @@ Alt+Clic (ou Option+Clic sur macOS)
 
         <ul>
             <li>✅ <strong>Gratuit pour toujours :</strong> obtenez Zed dès que la version a au moins 2 mois, correctifs de sécurité immédiats</li>
-            <li>✅ <strong>Mises à jour automatiques :</strong> Paquets mis à jour dans les heures suivant les versions en amont</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> version la plus récente disponible dès qu'elle a au moins 2 mois ; correctifs de sécurité immédiats</li>
             <li>✅ <strong>Dépendances correctes :</strong> Correctement empaqueté avec toutes les dépendances requises</li>
             <li>✅ <strong>Multi-distribution :</strong> Fonctionne sur Bookworm, Trixie et Sid</li>
             <li>✅ <strong>Sans tracas :</strong> Aucune compilation manuelle ou configuration complexe requise</li>
@@ -287,11 +287,11 @@ Alt+Clic (ou Option+Clic sur macOS)
 </ul>
 <h2>❓ Questions fréquentes</h2>
 <details><summary>Zed est-il dans les dépôts officiels de Debian ?</summary><p>Non — Zed n'est pas empaqueté dans les archives officielles de Debian. Ce miroir gratuit propose la version la plus récente de Zed datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
-<details><summary>Comment installer le dernier Zed sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Comment installer le dernier Zed sur Debian ?</summary><p>Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
 <details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
 <details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Zed est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Non — Zed n'est pas empaqueté dans les archives officielles de Debian. Ce miroir gratuit propose la version la plus récente de Zed datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Zed sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Zed est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Non — Zed n'est pas empaqueté dans les archives officielles de Debian. Ce miroir gratuit propose la version la plus récente de Zed datant d'au moins 2 mois ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Zed sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install zed. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>

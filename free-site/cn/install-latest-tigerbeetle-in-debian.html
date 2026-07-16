@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-debian.html">
     <meta property="og:title" content="在 Debian 上通过 apt 安装 TigerBeetle — 永久免费">
     <meta property="og:description" content="从永久免费的 apt 镜像在 Bookworm、Trixie、Forky 和 Sid 上安装 TigerBeetle — GPG 签名的软件包，最多落后上游 2 个月，安全修复立即发布。无需账号，无需认证。">
-    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -40,7 +40,8 @@
     <div class="header">
         <h1>🐯 安装最新的 TigerBeetle 在 Debian 上</h1>
         <p class="subtitle">The financial transactions database designed for mission-critical safety and performance</p>
-        <div class="version-badge">免费通道：最多落后上游 2 个月 · 安全修复立即发布</div>
+        <div class="version-badge">⏳ 尚未加入免费镜像 — 可从主仓库 deb.griffo.io 获取</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>TigerBeetle 尚未加入免费镜像。</strong>免费镜像目前提供 Ghostty 和 Zed，更多工具即将加入。请从<a href="https://deb.griffo.io/cn/install-latest-tigerbeetle-in-debian.html" style="color: #8d6e00; font-weight: 700;">主仓库 deb.griffo.io</a>获取 TigerBeetle — 每个版本在上游发布后数小时内可用。</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
@@ -123,8 +124,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -132,8 +133,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -314,11 +315,11 @@ await client.createTransfers(transfers);
 </ul>
 <h2>❓ 常见问题</h2>
 <details><summary>TigerBeetle 在官方 Debian 软件源中吗？</summary><p>不在 — 官方 Debian 源没有打包 TigerBeetle。本免费镜像提供发布至少 2 个月的最新 TigerBeetle 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。</p></details>
-<details><summary>如何在 Debian 上安装最新版 TigerBeetle？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>如何在 Debian 上安装最新版 TigerBeetle？</summary><p>按上方说明一次性添加 deb-free.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
 <details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
 <details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "TigerBeetle 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Debian 源没有打包 TigerBeetle。本免费镜像提供发布至少 2 个月的最新 TigerBeetle 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 TigerBeetle？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "TigerBeetle 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Debian 源没有打包 TigerBeetle。本免费镜像提供发布至少 2 个月的最新 TigerBeetle 版本；主仓库 deb.griffo.io 在上游发布后数小时内提供每个版本。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 TigerBeetle？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb-free.griffo.io 仓库，然后运行：sudo apt install tigerbeetle。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>

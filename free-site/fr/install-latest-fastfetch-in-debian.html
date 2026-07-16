@@ -17,7 +17,7 @@
     <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-fastfetch-in-debian.html">
     <meta property="og:title" content="Installer Fastfetch sur Debian via apt — gratuit pour toujours">
     <meta property="og:description" content="Installez Fastfetch sur Bookworm, Trixie, Forky et Sid depuis le miroir apt gratuit pour toujours — paquets signés GPG, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Sans compte, sans authentification.">
-    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+    <meta property="og:image" content="https://deb-free.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
 </head>
@@ -39,7 +39,8 @@
     <div class="header">
         <h1>🖥️ Installer Fastfetch sur Debian</h1>
         <p class="subtitle">Un outil d'informations système façon neofetch, écrit en C</p>
-        <div class="version-badge">Miroir gratuit : au plus 2 mois derrière l'upstream · correctifs de sécurité immédiats</div>
+        <div class="version-badge">⏳ Pas encore dans le miroir gratuit — disponible sur deb.griffo.io (principal)</div>
+        <div class="free-notice" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 12px; padding: 14px 20px; margin: 14px auto 0 auto; max-width: 720px; text-align: center; color: #6d5200; line-height: 1.7;">⏳ <strong>Fastfetch n'est pas encore dans le miroir gratuit.</strong> Le miroir gratuit propose actuellement Ghostty et Zed, d'autres arrivent. Obtenez Fastfetch depuis le <a href="https://deb.griffo.io/fr/install-latest-fastfetch-in-debian.html" style="color: #8d6e00; font-weight: 700;">dépôt principal sur deb.griffo.io</a> — chaque version, quelques heures après l'upstream.</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -103,7 +104,7 @@
         <div class="productivity-box">
             <h4>🏆 Pourquoi ce dépôt plutôt que la version de l'archive ?</h4>
             <ul>
-                <li><strong>Version à jour :</strong> les nouvelles versions upstream en quelques heures, pas figées pour toute la durée de vie d'une version de Debian</li>
+                <li><strong>Version à jour :</strong> version la plus récente disponible dès qu'elle a au moins 2 mois, correctifs de sécurité immédiats — pas figée pour toute la durée de vie d'une version de Debian</li>
                 <li><strong>Même disposition :</strong> aligné fichier par fichier sur le paquet Debian officiel — presets, complétions et page man aux emplacements standard</li>
                 <li><strong>Bascule transparente :</strong> installer depuis ce dépôt met simplement à niveau le paquet de l'archive ; retirer le dépôt revient proprement en arrière</li>
                 <li><strong>Mises à jour automatiques :</strong> les nouvelles versions arrivent avec votre <code>apt upgrade</code> habituel</li>
@@ -124,8 +125,8 @@
             <div id="sudo-tab-1" class="tab-content active">
                 <div class="code-block">
 sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
                 </div>
             </div>
@@ -133,8 +134,8 @@ sudo apt update
             <div id="root-tab-1" class="tab-content">
                 <div class="code-block">
 install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 apt update
                 </div>
             </div>
@@ -201,7 +202,7 @@ fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc
                     ⭐ Star sur GitHub
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20fastfetch,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb-free.griffo.io%20-%20get%20the%20latest%20versions%20of%20fastfetch,%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb-free.griffo.io"
                    style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
                    onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
                    onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
@@ -276,11 +277,11 @@ fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc
 </ul>
 <h2>❓ Questions fréquentes</h2>
 <details><summary>Fastfetch est-il dans les dépôts officiels de Debian ?</summary><p>Oui — l'archive officielle de Debian fournit Fastfetch 2.62.1. Ce miroir gratuit propose la version la plus récente de Fastfetch datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream.</p></details>
-<details><summary>Comment installer le dernier Fastfetch sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fastfetch. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Comment installer le dernier Fastfetch sur Debian ?</summary><p>Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fastfetch. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
 <details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
 <details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Fastfetch est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Debian fournit Fastfetch 2.62.1. Ce miroir gratuit propose la version la plus récente de Fastfetch datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Fastfetch sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fastfetch. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Fastfetch est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui — l'archive officielle de Debian fournit Fastfetch 2.62.1. Ce miroir gratuit propose la version la plus récente de Fastfetch datant d'au moins 2 mois, gratuitement pour toujours ; le dépôt principal sur deb.griffo.io propose chaque version quelques heures après l'upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Fastfetch sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb-free.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install fastfetch. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>
