@@ -108,7 +108,7 @@
 
     <section id="free-availability" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 16px; padding: 22px 28px; margin-bottom: 24px;">
         <h2 style="margin-top: 0;">📦 Disponível hoje no espelho gratuito</h2>
-        <p style="margin-bottom: 0; line-height: 1.7;">O espelho gratuito oferece atualmente <a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a> e <a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a> — mais ferramentas estão a caminho. Todas as outras ferramentas deste site estão disponíveis no repositório principal em <a href="https://deb.griffo.io">deb.griffo.io</a>, atualizado poucas horas após cada lançamento.</p>
+        <p style="margin-bottom: 0; line-height: 1.7;">O espelho gratuito oferece atualmente <a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a>, <a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a> e <a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a> — mais ferramentas estão a caminho. Todas as outras ferramentas deste site estão disponíveis no repositório principal em <a href="https://deb.griffo.io">deb.griffo.io</a>, atualizado poucas horas após cada lançamento.</p>
     </section>
 
     <section id="version-comparison">
@@ -135,7 +135,7 @@
 <tr><td><a href="install-latest-lazydocker-in-debian.html"><strong>lazydocker</strong></a></td><td class="vc-win">0.25.2 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-lazydocker-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 não empacotado</td><td class="vc-lose">🚫 não empacotado</td></tr>
 <tr><td><a href="install-latest-lazygit-in-debian.html"><strong>lazygit</strong></a></td><td class="vc-win">0.63.1 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-lazygit-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">0.57.0 🛑</td><td class="vc-lose">0.57.0 🛑</td></tr>
 <tr><td><a href="install-latest-lowfi-in-debian.html"><strong>lowfi</strong></a></td><td class="vc-win">2.0.7 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-lowfi-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 não empacotado</td><td class="vc-lose">🚫 não empacotado</td></tr>
-<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">29.31.1 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-oh-my-posh-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 não empacotado</td><td class="vc-lose">🚫 não empacotado</td></tr>
+<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">29.31.1 ✅</td><td class="vc-lose">29.28.0 🛑</td><td class="vc-lose">🚫 não empacotado</td><td class="vc-lose">🚫 não empacotado</td></tr>
 <tr><td><a href="install-latest-ruff-in-debian.html"><strong>Ruff</strong></a></td><td class="vc-win">0.15.21 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-ruff-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">0.0.291 🛑</td><td class="vc-lose">🚫 não empacotado</td></tr>
 <tr><td><a href="install-latest-starship-in-debian.html"><strong>Starship</strong></a></td><td class="vc-win">1.26.0 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-starship-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">1.22.1 🛑</td><td class="vc-lose">1.22.1 🛑</td></tr>
 <tr><td><a href="install-latest-termusic-in-debian.html"><strong>Termusic</strong></a></td><td class="vc-win">0.13.2 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/pt-br/install-latest-termusic-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 não empacotado</td><td class="vc-lose">🚫 não empacotado</td></tr>
@@ -197,13 +197,13 @@ apt update
 
             <div id="sudo-tab-2" class="tab-content active">
                 <div class="installation-code">
-sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+sudo apt install ghostty zed oh-my-posh
                 </div>
             </div>
 
             <div id="root-tab-2" class="tab-content">
                 <div class="installation-code">
-apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+apt install ghostty zed oh-my-posh
                 </div>
             </div>
         </div>
@@ -236,14 +236,34 @@ https://deb-free.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</di
 apt-cache search --names-only '' | grep -v '^lib'
 
 # Mostrar detalhes de um pacote específico
-apt-cache show zig
+apt-cache show ghostty
 
 # Verificar qual versão será instalada e de qual fonte
-apt-cache policy zig</div>
+apt-cache policy ghostty</div>
     </section>
 
     <header>
-        <h2 style="margin-top: 40px;">📦 Pacotes Disponíveis</h2>
+        <h2 style="margin-top: 40px;">📦 Pacotes no espelho gratuito</h2>
+        <div class="packages-grid">
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">💠</span>Oh My Posh</div>
+                <div class="package-description">Um motor de temas de prompt para qualquer shell — bash, zsh, fish, PowerShell e mais — com todos os mais de 125 temas integrados incluídos no pacote.</div>
+                <a href="/pt-br/install-latest-oh-my-posh-in-debian.html" class="package-link">📖 Installation Guide</a>
+            </div>
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>Zed Editor</div>
+                <div class="package-description">Editor de código multiplayer de alto desempenho, dos criadores do Atom e do Tree-Sitter.</div>
+                <a href="/pt-br/install-latest-zed-in-debian.html" class="package-link">📖 Guia de Instalação</a>
+            </div>
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">👻</span>Terminal Ghostty</div>
+                <div class="package-description">Emulador de terminal rápido, rico em recursos e multiplataforma com interface nativa da plataforma e aceleração GPU para desempenho superior.</div>
+                <a href="/pt-br/install-latest-ghostty-in-debian.html" class="package-link">📖 Guia de Instalação</a>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">🔗 Mais ferramentas no espelho principal (deb.griffo.io)</h2>
+        <p style="color: #666; margin-top: 6px;">Servidas pelo repositório principal — cada versão poucas horas após o upstream. O aviso âmbar em cada página leva ao espelho principal.</p>
         <div class="packages-grid">
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Linguagem de Programação Zig</div>
@@ -251,11 +271,7 @@ apt-cache policy zig</div>
                 <a href="/pt-br/install-latest-zig-in-debian.html" class="package-link">📖 Guia de Instalação</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-name"><span class="package-emoji">🇿</span>Zed Editor</div>
-                <div class="package-description">Editor de código multiplayer de alto desempenho, dos criadores do Atom e do Tree-Sitter.</div>
-                <a href="/pt-br/install-latest-zed-in-debian.html" class="package-link">📖 Guia de Instalação</a>
-            </div>
+            
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Servidor de Linguagem ZLS</div>
@@ -263,11 +279,7 @@ apt-cache policy zig</div>
                 <a href="/pt-br/install-latest-zls-in-debian.html" class="package-link">📖 Guia de Instalação</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-name"><span class="package-emoji">👻</span>Terminal Ghostty</div>
-                <div class="package-description">Emulador de terminal rápido, rico em recursos e multiplataforma com interface nativa da plataforma e aceleração GPU para desempenho superior.</div>
-                <a href="/pt-br/install-latest-ghostty-in-debian.html" class="package-link">📖 Guia de Instalação</a>
-            </div>
+            
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐋</span>lazydocker</div>

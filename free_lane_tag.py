@@ -58,7 +58,11 @@ for v in versions:  # newest first
         candidate = v
         break
 if candidate is None:
-    sys.exit(0)
+    # tool younger than the window: serve the OLDEST available release (the
+    # most-delayed version that exists) so newly enrolled tools are usable
+    if not versions:
+        sys.exit(0)
+    candidate = versions[-1]
 
 series = vkey(candidate)[:2]
 for v in versions:  # newest first: first hit is the newest patch of the series

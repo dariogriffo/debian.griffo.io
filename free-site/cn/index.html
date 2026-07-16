@@ -103,7 +103,7 @@
 
     <section id="free-availability" style="background: #fff8e1; border: 2px solid #f0c36d; border-radius: 16px; padding: 22px 28px; margin-bottom: 24px;">
         <h2 style="margin-top: 0;">📦 免费镜像当前提供</h2>
-        <p style="margin-bottom: 0; line-height: 1.7;">免费镜像目前提供 <a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a> 和 <a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a> — 更多工具即将加入。本站列出的其他工具均可从主仓库 <a href="https://deb.griffo.io">deb.griffo.io</a> 获取，上游发布后数小时内更新。</p>
+        <p style="margin-bottom: 0; line-height: 1.7;">免费镜像目前提供 <a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a>、<a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a> 和 <a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a> — 更多工具即将加入。本站列出的其他工具均可从主仓库 <a href="https://deb.griffo.io">deb.griffo.io</a> 获取，上游发布后数小时内更新。</p>
     </section>
 
     <section id="version-comparison">
@@ -130,7 +130,7 @@
 <tr><td><a href="install-latest-lazydocker-in-debian.html"><strong>lazydocker</strong></a></td><td class="vc-win">0.25.2 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-lazydocker-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 未收录</td><td class="vc-lose">🚫 未收录</td></tr>
 <tr><td><a href="install-latest-lazygit-in-debian.html"><strong>lazygit</strong></a></td><td class="vc-win">0.63.1 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-lazygit-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">0.57.0 🛑</td><td class="vc-lose">0.57.0 🛑</td></tr>
 <tr><td><a href="install-latest-lowfi-in-debian.html"><strong>lowfi</strong></a></td><td class="vc-win">2.0.7 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-lowfi-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 未收录</td><td class="vc-lose">🚫 未收录</td></tr>
-<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">29.31.1 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-oh-my-posh-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 未收录</td><td class="vc-lose">🚫 未收录</td></tr>
+<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">29.31.1 ✅</td><td class="vc-lose">29.28.0 🛑</td><td class="vc-lose">🚫 未收录</td><td class="vc-lose">🚫 未收录</td></tr>
 <tr><td><a href="install-latest-ruff-in-debian.html"><strong>Ruff</strong></a></td><td class="vc-win">0.15.21 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-ruff-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">0.0.291 🛑</td><td class="vc-lose">🚫 未收录</td></tr>
 <tr><td><a href="install-latest-starship-in-debian.html"><strong>Starship</strong></a></td><td class="vc-win">1.26.0 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-starship-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">1.22.1 🛑</td><td class="vc-lose">1.22.1 🛑</td></tr>
 <tr><td><a href="install-latest-termusic-in-debian.html"><strong>Termusic</strong></a></td><td class="vc-win">0.13.2 ✅</td><td class="vc-pending">⏳ <a href="https://deb.griffo.io/cn/install-latest-termusic-in-debian.html">deb.griffo.io</a></td><td class="vc-lose">🚫 未收录</td><td class="vc-lose">🚫 未收录</td></tr>
@@ -192,13 +192,13 @@ apt update
 
             <div id="sudo-tab-2" class="tab-content active">
                 <div class="installation-code">
-sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+sudo apt install ghostty zed oh-my-posh
                 </div>
             </div>
 
             <div id="root-tab-2" class="tab-content">
                 <div class="installation-code">
-apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just
+apt install ghostty zed oh-my-posh
                 </div>
             </div>
         </div>
@@ -241,14 +241,34 @@ https://deb-free.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</di
 apt-cache search --names-only '' | grep -v '^lib'
 
 # 显示特定软件包的详细信息
-apt-cache show zig
+apt-cache show ghostty
 
 # 检查将安装哪个版本以及来自哪个源
-apt-cache policy zig</div>
+apt-cache policy ghostty</div>
     </section>
 
     <header>
-        <h2 style="margin-top: 40px;">📦 可用软件包</h2>
+        <h2 style="margin-top: 40px;">📦 免费镜像中的软件包</h2>
+        <div class="packages-grid">
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">💠</span>Oh My Posh</div>
+                <div class="package-description">适用于任何 shell 的提示符主题引擎 — bash、zsh、fish、PowerShell 等 — 软件包内置全部 125+ 主题。</div>
+                <a href="/cn/install-latest-oh-my-posh-in-debian.html" class="package-link">📖 Installation Guide</a>
+            </div>
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">🇿</span>Zed Editor</div>
+                <div class="package-description">高性能、支持多人协作的代码编辑器，来自 Atom 和 Tree-Sitter 的创建者。</div>
+                <a href="/cn/install-latest-zed-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+            <div class="package-card">
+                <div class="package-name"><span class="package-emoji">👻</span>Ghostty 终端</div>
+                <div class="package-description">快速、功能丰富的跨平台终端模拟器，具有平台原生 UI 和 GPU 加速，性能卓越。</div>
+                <a href="/cn/install-latest-ghostty-in-debian.html" class="package-link">📖 安装指南</a>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 40px;">🔗 更多工具在主镜像（deb.griffo.io）</h2>
+        <p style="color: #666; margin-top: 6px;">由主仓库提供 — 每个版本在上游发布后数小时内可用。每页的琥珀色提示会链接到主镜像。</p>
         <div class="packages-grid">
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>Zig 编程语言</div>
@@ -256,11 +276,7 @@ apt-cache policy zig</div>
                 <a href="/cn/install-latest-zig-in-debian.html" class="package-link">📖 安装指南</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-name"><span class="package-emoji">🇿</span>Zed Editor</div>
-                <div class="package-description">高性能、支持多人协作的代码编辑器，来自 Atom 和 Tree-Sitter 的创建者。</div>
-                <a href="/cn/install-latest-zed-in-debian.html" class="package-link">📖 安装指南</a>
-            </div>
+            
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🇿</span>ZLS 语言服务器</div>
@@ -268,11 +284,7 @@ apt-cache policy zig</div>
                 <a href="/cn/install-latest-zls-in-debian.html" class="package-link">📖 安装指南</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-name"><span class="package-emoji">👻</span>Ghostty 终端</div>
-                <div class="package-description">快速、功能丰富的跨平台终端模拟器，具有平台原生 UI 和 GPU 加速，性能卓越。</div>
-                <a href="/cn/install-latest-ghostty-in-debian.html" class="package-link">📖 安装指南</a>
-            </div>
+            
 
             <div class="package-card">
                 <div class="package-name"><span class="package-emoji">🐋</span>lazydocker</div>
