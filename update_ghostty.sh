@@ -21,3 +21,6 @@ cd ${PWD}
 
 find src/ -type f -name "*ghostty*" -delete 2>/dev/null || true
 ./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ghostty
+
+# Free lane (apt-free): re-stage on every release; never block the paid publish.
+./update_ghostty_free.sh || echo "WARN: free-lane staging failed (paid publish unaffected)"

@@ -32,4 +32,38 @@ for dist in "${DISTS[@]}"; do
 done
 
 cd "$current"
+
+# --- Free lane: staged under free/, indexed into apt-free (own reprepro db) ---
+reprepro_free_dir="$current/reprepro-free"
+if ls "$current/free/deb/"*/*deb >/dev/null 2>&1 || ls "$current/free/src/"*.dsc >/dev/null 2>&1; then
+    mkdir -p "$reprepro_free_dir/db" "$current/apt-free"
+    cd "$current/apt-free"
+
+    for dist in "${DISTS[@]}"; do
+        echo "Processing free-lane distribution: $dist"
+
+        if ls "$current/free/deb/$dist/"*deb >/dev/null 2>&1; then
+            reprepro --dbdir "$reprepro_free_dir/db" --confdir "$reprepro_free_dir/conf" -C main includedeb "$dist" "$current/free/deb/$dist/"*deb
+        else
+            echo "  No free-lane .deb files for $dist, skipping."
+        fi
+
+        if ls "$current/free/src/"*~${dist}.dsc >/dev/null 2>&1; then
+            for dsc in "$current/free/src/"*~${dist}.dsc; do
+                reprepro --dbdir "$reprepro_free_dir/db" --confdir "$reprepro_free_dir/conf" -C main includedsc "$dist" "$dsc"
+            done
+        else
+            echo "  No free-lane .dsc files for $dist, skipping."
+        fi
+
+        if [ -f "dists/$dist/Release" ]; then
+            cd "dists/$dist"
+            cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
+            cd - > /dev/null
+        fi
+    done
+
+    cd "$current"
+fi
+
 echo "Done."

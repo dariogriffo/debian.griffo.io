@@ -1,0 +1,28 @@
+<link rel="stylesheet" href="/css/theme.css">
+<div class="repo-header">
+  <div class="card">
+    <h1>deb.griffo.io &mdash; free apt repository</h1>
+    <p class="subtitle">The <strong>always-free lane</strong> of deb.griffo.io: the same GPG-signed Debian &amp; Ubuntu packages, serving each tool's newest version that is <strong>at least 2 months old</strong>. Patch and security releases of the served version are published <strong>immediately</strong> &mdash; the free lane is never left vulnerable.</p>
+    <p>You are browsing the raw repository. <a href="dists/">dists/</a> holds the signed metadata for each distribution; <a href="pool/">pool/</a> holds the package files themselves. Full package list, install guides and news: <a href="https://deb.griffo.io/">deb.griffo.io</a> &middot; <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a></p>
+    <p class="dists">
+      <span>bookworm</span><span>trixie</span><span>forky</span><span>sid</span>
+      <span>jammy</span><span>noble</span><span>questing</span><span>resolute</span>
+    </p>
+  </div>
+  <div class="card">
+    <strong>&#x1F193; This lane is free forever &mdash; no account, no authentication</strong>
+    <p>Want <strong>every release within hours of upstream</strong> instead of the 2-month lane? A <strong>yearly subscription</strong> (&euro;15 / $15 / &pound;15 per year, US dollars if your currency isn't supported) unlocks the main repository at <a href="https://deb.griffo.io/apt">deb.griffo.io/apt</a> and directly supports the project.</p>
+    <p><strong>&#x1F511; <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01">Get your yearly subscription</a></strong></p>
+    <p>&#x1F4AC; <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy">Discord community</a> &mdash; the best place to get help and connect with other users.</p>
+  </div>
+  <div class="card">
+    <strong>Quick setup (free lane)</strong>
+    <pre><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
+  | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt-free $(lsb_release -sc 2>/dev/null) main" \
+  | sudo tee /etc/apt/sources.list.d/deb.griffo.io-free.list > /dev/null
+sudo apt update</code></pre>
+    <p class="muted">All packages are signed with the same GPG key as the main repository: <a href="/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc"><code>EA0F 721D 231F DD3A 0A17&nbsp;&nbsp;B9AC 7808 B4DD 62C4 1256</code></a>. This lane keeps the newest 2-month-old version of each package, with patch releases of that version published immediately. Packaging issues: <a href="https://github.com/dariogriffo/debian.griffo.io/issues">open an issue</a>. Tool issues: contact the upstream project.</p>
+  </div>
+</div>
