@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckDB 1.5.4 auf Debian installieren via apt (immer aktuell)</title>
+    <meta name="description" content="Offizielles Debian liefert DuckDB 1.5.3, und nur in testing/unstable — dieses Repo bietet DuckDB 1.5.4 für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta name="keywords" content="duckdb debian, install duckdb debian, duckdb apt, duckdb cli, analytical database, in-process sql, olap database, sqlite for analytics, parquet sql, debian pakete, bookworm, trixie, sid, apt duckdb">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-duckdb-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-duckdb-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-duckdb-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-duckdb-in-debian.html">
+    <meta property="og:title" content="DuckDB 1.5.4 auf Debian installieren via apt (immer aktuell)">
+    <meta property="og:description" content="Offizielles Debian liefert DuckDB 1.5.3, und nur in testing/unstable — dieses Repo bietet DuckDB 1.5.4 für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Wichtige Aktualisierung — der Zugang ändert sich am 1. Oktober 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Ab dem <strong>1. Oktober 2026 um 12 Uhr mittags (UK-Zeit)</strong> wird für diesen Spiegel eine Authentifizierung benötigt, damit <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> weiterhin funktioniert.<br>
+            Das Herunterladen der Pakete bleibt <strong>kostenlos</strong> über die GitHub-Repositories, in denen sie gebaut werden.<br>
+            Ein <strong>Jahresabonnement</strong> bietet Ihnen <strong>kostenlose sofortige Updates</strong> über <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> und unterstützt das Projekt direkt. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Jahresabonnement erwerben
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-06-22">22. Juni 2026</time>
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🦆 Neuestes DuckDB auf Debian installieren</h1>
+        <p class="subtitle">Eine schnelle analytische In-Process-SQL-Datenbank — SQLite für Analytics</p>
+        <div class="version-badge">Neueste Version: 1.5.4 · aktualisiert 2026-07-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.5.4 ✅</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">1.5.3 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einem bestimmten Release?</strong> <a href="/install-duckdb-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-duckdb-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-duckdb-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-duckdb-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Was ist DuckDB?</h2>
+        <p>DuckDB ist eine <strong>schnelle, analytische In-Process-SQL-Datenbank</strong> — quasi "SQLite für Analytics". Sie läuft im aufrufenden Prozess, ganz ohne Server-Setup, fragt CSV-, Parquet- und JSON-Dateien direkt ab (<code>SELECT * FROM 'data.parquet'</code>) und spricht einen reichhaltigen, freundlichen SQL-Dialekt mit exzellenter Performance bei analytischen Workloads. Dieses Paket liefert das offizielle <code>duckdb</code>-CLI.</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ Kein Server, kein Daemon:</strong> DuckDB ist eine eingebettete Datenbank — sie läuft in Ihrem Prozess (oder im CLI), es gibt also keinen Dienst zu konfigurieren, keinen Port zu öffnen und keine systemd-Unit. Installieren und <code>duckdb</code> starten. Aus demselben Grund gehört eine Datenbankdatei immer nur einem Prozess gleichzeitig.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer aktueller als die offiziellen Archive:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository veröffentlicht neue Upstream-Versionen in der Regel innerhalb weniger Stunden, für jedes unterstützte Release inklusive Stable. Ein einfaches <code>apt upgrade</code> hält Sie immer auf der neuesten Version.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von DuckDB</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 Gebaut für Analytics</h4>
+                <p>Eine spaltenorientierte, vektorisierte Engine verarbeitet Millionen Zeilen pro Sekunde — Aggregationen, Joins und Window-Funktionen mit OLAP-Geschwindigkeit.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📁 Dateien direkt abfragen</h4>
+                <p><code>SELECT * FROM 'events.parquet'</code> — CSV, Parquet und JSON sind ohne Importschritt abfragbar (und beschreibbar).</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🪶 Null Setup</h4>
+                <p>In-Process wie SQLite: ein einzelnes Binary, eine einzelne optionale Datenbankdatei, nichts zu administrieren.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Runtime-Extensions</h4>
+                <p><code>INSTALL httpfs;</code> lädt signierte Extensions aus dem offiziellen Repository — S3/HTTP-Zugriff, Spatial, Volltextsuche und mehr.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗣️ Freundliches SQL</h4>
+                <p>SELECT * EXCLUDE, GROUP BY ALL, List/Struct-Typen, PIVOT — ein moderner Dialekt, der Boilerplate aus alltäglichen Abfragen entfernt.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤝 Spielt gut mit anderen</h4>
+                <p>Liest SQLite, PostgreSQL und MySQL über Extensions; exportiert Parquet/CSV/JSON — idealer Klebstoff für Daten-Pipelines.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Warum mit apt installieren?</h4>
+            <ul>
+                <li><strong>Extensions funktionieren einfach:</strong> dieses Paket verwendet Upstreams offiziellen glibc-Build, sodass <code>INSTALL httpfs;</code> zum offiziellen <code>linux_amd64</code>/<code>linux_arm64</code>-Extension-Repository passt</li>
+                <li><strong>Jedes Release, inklusive Stable:</strong> die offiziellen Archive führen DuckDB nur in testing/unstable — hier erhalten auch Bookworm und Trixie dieselbe aktuelle Version</li>
+                <li><strong>Kein curl-to-bin:</strong> ein GPG-signiertes Repository statt Binaries von Hand nach <code>/usr/local/bin</code> herunterzuladen</li>
+                <li><strong>Automatische Updates:</strong> neue Upstream-Releases kommen mit Ihrem normalen <code>apt upgrade</code></li>
+                <li><strong>Multi-Arch:</strong> amd64 und arm64 — die Architekturen, für die Upstream Linux-CLI-Binaries veröffentlicht</li>
+            </ul>
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: DuckDB installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y duckdb
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y duckdb
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Erster Start</h2>
+        <div class="code-block">
+duckdb                                        # in-memory interactive shell
+duckdb mydb.duckdb                            # persistent database file
+duckdb -c "SELECT * FROM 'events.parquet' LIMIT 10;"   # query files directly
+duckdb -c "INSTALL httpfs; LOAD httpfs;"      # extensions from the official repo
+        </div>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Debian-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/duckdb-debian" target="_blank" rel="noopener">📂 duckdb-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-garage-in-debian.html">garage</a> - S3-kompatibler Objektspeicher — via httpfs direkt aus DuckDB abfragbar</li>
+            <li><a href="/de/install-latest-tigerbeetle-in-debian.html">tigerbeetle</a> - Eine verteilte Datenbank für Finanztransaktionen</li>
+            <li><a href="/de/install-latest-yq-in-debian.html">yq</a> - YAML/JSON/CSV-Verarbeitung auf der Kommandozeile</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Data Engineers, die Parquet- und CSV-Dateien erkunden, Analysten, die SQL ohne Datenbankserver wollen, Skripte und Pipelines, die schnelle lokale Analytics brauchen, und alle, die pandas-Einzeiler durch pures SQL ersetzen.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Unterstützen Sie dieses Projekt</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Wenn dieses Repository Ihnen Zeit und Aufwand spart, unterstützen Sie es doch bitte!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Auf GitHub mit Stern markieren
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20DuckDB,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Auf Twitter teilen
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neuestes DuckDB auf Debian installieren",
+    "description": "Vollständige Anleitung zur Installation der neuesten analytischen In-Process-SQL-Datenbank DuckDB auf Debian über das deb.griffo.io Repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-18",
+    "dateModified": "2026-07-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "DuckDB",
+        "applicationCategory": "Database",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Eine schnelle analytische In-Process-SQL-Datenbank, die CSV, Parquet und JSON direkt abfragt"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist DuckDB in den offiziellen Debian-Paketquellen?</summary><p>Ja, aber das offizielle Debian-Archiv liefert DuckDB 1.5.3, während dieses Repository DuckDB 1.5.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut.</p></details>
+<details><summary>Wie installiere ich das neueste DuckDB unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install duckdb. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist DuckDB in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, aber das offizielle Debian-Archiv liefert DuckDB 1.5.3, während dieses Repository DuckDB 1.5.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut."}}, {"@type": "Question", "name": "Wie installiere ich das neueste DuckDB unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install duckdb. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка DuckDB 1.5.4 в Debian через apt (всегда свежая версия)</title>
+    <meta name="description" content="Официальный Debian поставляет DuckDB 1.5.3, и только в testing/unstable — в этом репозитории DuckDB 1.5.4 для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta name="keywords" content="duckdb debian, установить duckdb debian, duckdb apt, duckdb cli, аналитическая база данных, внутрипроцессный sql, olap база данных, sqlite для аналитики, parquet sql, пакеты debian, bookworm, trixie, sid, apt duckdb">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-duckdb-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-duckdb-in-debian.html">
+    <meta property="og:title" content="Установка DuckDB 1.5.4 в Debian через apt (всегда свежая версия)">
+    <meta property="og:description" content="Официальный Debian поставляет DuckDB 1.5.3, и только в testing/unstable — в этом репозитории DuckDB 1.5.4 для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Важное обновление — доступ меняется с 1 октября 2026 года
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            С <strong>1 октября 2026 года в полдень (по времени Великобритании)</strong> этот зеркальный репозиторий потребует аутентификации для работы <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Скачивание пакетов остаётся <strong>бесплатным</strong> из репозиториев GitHub, где они собираются.<br>
+            <strong>Годовая подписка</strong> даёт <strong>бесплатные мгновенные обновления</strong> через <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> и напрямую поддерживает проект. Спасибо! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Оформить годовую подписку
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> в год — в долларах США, если ваша валюта не поддерживается.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Вопросы, проблемы или что-то связанное с этим репозиторием?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">сообществу в Discord</a> — лучшее место для получения помощи и общения с другими пользователями.<br>
+            ☕ <strong>Ранее поддерживали через Buy Me a Coffee?</strong> Вы замечательны! Загляните на наш <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>, и мы оформим для вас <strong>бесплатную пожизненную подписку</strong>. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-06-22">22 июня 2026 г.</time>
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🦆 Установка последней версии DuckDB в Debian</h1>
+        <p class="subtitle">Быстрая внутрипроцессная аналитическая SQL-база данных — SQLite для аналитики</p>
+        <div class="version-badge">Последняя версия: 1.5.4 · обновлено 2026-07-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.5.4 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">1.5.3 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-duckdb-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-duckdb-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-duckdb-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-duckdb-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое DuckDB?</h2>
+        <p>DuckDB — это <strong>быстрая внутрипроцессная аналитическая SQL-база данных</strong> — своего рода «SQLite для аналитики». Она работает внутри вызывающего процесса без какого-либо сервера, запрашивает файлы CSV, Parquet и JSON напрямую (<code>SELECT * FROM 'data.parquet'</code>) и говорит на богатом, дружелюбном диалекте SQL с отличной производительностью на аналитических нагрузках. Этот пакет поставляет официальный CLI <code>duckdb</code>.</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ Ни сервера, ни демона:</strong> DuckDB — встраиваемая база данных: она работает внутри вашего процесса (или CLI), поэтому нет сервиса для настройки, нет порта для открытия и нет юнита systemd. Установите и запустите <code>duckdb</code>. По той же причине один файл базы данных принадлежит одному процессу одновременно.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream, для каждого поддерживаемого выпуска, включая stable. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h3>⚡ Ключевые возможности DuckDB</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 Создана для аналитики</h4>
+                <p>Колоночный векторизованный движок обрабатывает миллионы строк в секунду — агрегации, соединения и оконные функции на скорости OLAP.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📁 Запросы к файлам напрямую</h4>
+                <p><code>SELECT * FROM 'events.parquet'</code> — CSV, Parquet и JSON можно запрашивать (и записывать) без какого-либо шага импорта.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🪶 Ноль настройки</h4>
+                <p>Внутрипроцессная, как SQLite: один бинарный файл, один необязательный файл базы данных, нечего администрировать.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Расширения во время выполнения</h4>
+                <p><code>INSTALL httpfs;</code> подтягивает подписанные расширения из официального репозитория — доступ к S3/HTTP, spatial, полнотекстовый поиск и не только.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗣️ Дружелюбный SQL</h4>
+                <p>SELECT * EXCLUDE, GROUP BY ALL, типы list/struct, PIVOT — современный диалект, убирающий шаблонный код из повседневных запросов.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤝 Дружит с другими</h4>
+                <p>Читает SQLite, PostgreSQL и MySQL через расширения; экспортирует Parquet/CSV/JSON — идеальный клей для дата-пайплайнов.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Зачем устанавливать через apt?</h4>
+            <ul>
+                <li><strong>Расширения просто работают:</strong> этот пакет использует официальную glibc-сборку upstream, поэтому <code>INSTALL httpfs;</code> совместим с официальным репозиторием расширений <code>linux_amd64</code>/<code>linux_arm64</code></li>
+                <li><strong>Каждый выпуск, включая stable:</strong> официальные архивы поставляют DuckDB только в testing/unstable — здесь Bookworm и Trixie получают ту же актуальную версию</li>
+                <li><strong>Без curl-to-bin:</strong> репозиторий с GPG-подписью вместо ручной загрузки бинарных файлов в <code>/usr/local/bin</code></li>
+                <li><strong>Автоматические обновления:</strong> новые релизы upstream приходят с обычным <code>apt upgrade</code></li>
+                <li><strong>Мульти-архитектура:</strong> amd64 и arm64 — архитектуры, для которых upstream публикует бинарные файлы CLI под Linux</li>
+            </ul>
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить DuckDB</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y duckdb
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y duckdb
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Первый запуск</h2>
+        <div class="code-block">
+duckdb                                        # in-memory interactive shell
+duckdb mydb.duckdb                            # persistent database file
+duckdb -c "SELECT * FROM 'events.parquet' LIMIT 10;"   # query files directly
+duckdb -c "INSTALL httpfs; LOAD httpfs;"      # extensions from the official repo
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/duckdb-debian" target="_blank" rel="noopener">📂 duckdb-debian</a> - сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-garage-in-debian.html">garage</a> - S3-совместимое объектное хранилище — запрашивайте его из DuckDB через httpfs</li>
+            <li><a href="/ru/install-latest-tigerbeetle-in-debian.html">tigerbeetle</a> - распределённая база данных финансовых транзакций</li>
+            <li><a href="/ru/install-latest-yq-in-debian.html">yq</a> - работа с YAML/JSON/CSV в командной строке</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> дата-инженеров, исследующих файлы Parquet и CSV, аналитиков, которым нужен SQL без сервера базы данных, скриптов и пайплайнов, которым нужна быстрая локальная аналитика, и всех, кто заменяет однострочники pandas обычным SQL.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Поддержите этот проект</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Если этот репозиторий экономит ваше время и усилия, пожалуйста, поддержите его!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Звезда на GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20DuckDB,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Поделиться в Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка последней версии DuckDB в Debian",
+    "description": "Полное руководство по установке последней версии внутрипроцессной аналитической SQL-базы данных DuckDB в Debian с использованием репозитория deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-18",
+    "dateModified": "2026-07-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "DuckDB",
+        "applicationCategory": "Database",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Быстрая внутрипроцессная аналитическая SQL-база данных, запрашивающая CSV, Parquet и JSON напрямую"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли DuckDB в официальных репозиториях Debian?</summary><p>Да, но официальный архив Debian поставляет DuckDB 1.5.3, тогда как этот репозиторий предлагает DuckDB 1.5.4 — пересобирается через несколько часов после каждого релиза.</p></details>
+<details><summary>Как установить последнюю версию DuckDB в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install duckdb. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли DuckDB в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Да, но официальный архив Debian поставляет DuckDB 1.5.3, тогда как этот репозиторий предлагает DuckDB 1.5.4 — пересобирается через несколько часов после каждого релиза."}}, {"@type": "Question", "name": "Как установить последнюю версию DuckDB в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install duckdb. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

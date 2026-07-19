@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка Nushell 0.114.1 в Ubuntu через apt (всегда свежая версия)</title>
+    <meta name="description" content="Nushell нет в официальных архивах Ubuntu — установите nu 0.114.1 через apt для Ubuntu 22.04, 24.04, 25.10 и 26.04. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta name="keywords" content="nushell ubuntu, установить nushell ubuntu, nushell apt, nushell ppa, nu shell, пакет nushell, оболочка структурированных данных, современная оболочка linux, плагины nushell, пакеты ubuntu, jammy, noble, questing, resolute, apt nushell">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-nushell-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-nushell-in-ubuntu.html">
+    <meta property="og:title" content="Установка Nushell 0.114.1 в Ubuntu через apt (всегда свежая версия)">
+    <meta property="og:description" content="Nushell нет в официальных архивах Ubuntu — установите nu 0.114.1 через apt для Ubuntu 22.04, 24.04, 25.10 и 26.04. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Важное обновление — доступ меняется с 1 октября 2026 года
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            С <strong>1 октября 2026 года в полдень (по времени Великобритании)</strong> этот зеркальный репозиторий потребует аутентификации для работы <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Скачивание пакетов остаётся <strong>бесплатным</strong> из репозиториев GitHub, где они собираются.<br>
+            <strong>Годовая подписка</strong> даёт <strong>бесплатные мгновенные обновления</strong> через <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> и напрямую поддерживает проект. Спасибо! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Оформить годовую подписку
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> в год — в долларах США, если ваша валюта не поддерживается.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Вопросы, проблемы или что-то связанное с этим репозиторием?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">сообществу в Discord</a> — лучшее место для получения помощи и общения с другими пользователями.<br>
+            ☕ <strong>Ранее поддерживали через Buy Me a Coffee?</strong> Вы замечательны! Загляните на наш <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>, и мы оформим для вас <strong>бесплатную пожизненную подписку</strong>. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-06-22">22 июня 2026 г.</time>
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🐚 Установка последней версии Nushell в Ubuntu</h1>
+        <p class="subtitle">Новый тип оболочки — пайплайны структурированных типизированных данных вместо сырого текста</p>
+        <div class="version-badge">Последняя версия: 0.114.1 · обновлено 2026-07-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.114.1 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-nushell-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-nushell-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-nushell-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-nushell-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Что такое Nushell?</h2>
+        <p>Nushell (команда <code>nu</code>) — это <strong>современная оболочка, построенная вокруг структурированных данных</strong>. Вместо передачи сырого текста между командами каждый пайплайн несёт типизированные таблицы и записи — <code>ls</code> возвращает строки, которые можно фильтровать, сортировать и суммировать, а JSON, YAML, CSV, TOML и SQLite поддерживаются как полноправные форматы. Nushell сочетает настоящий язык программирования с интерактивной оболочкой, из коробки давая понятные сообщения об ошибках, автодополнение и подсветку синтаксиса.</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ Готов к работе как login-оболочка:</strong> этот пакет регистрирует <code>nu</code> в <code>/etc/shells</code> при установке (и аккуратно удаляет запись при удалении пакета), поэтому <code>chsh -s /usr/bin/nu</code> работает сразу — без ручного редактирования. Бинарный файл статически слинкован (musl), так что ваша оболочка продолжает работать независимо от обновлений библиотек.
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h3>⚡ Ключевые возможности Nushell</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 Структурированные пайплайны</h4>
+                <p>Команды выдают таблицы, а не текст: <code>ls | where size > 1mb | sort-by modified</code> — без гимнастики с awk, cut и sed.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 Любой формат данных</h4>
+                <p>Открывайте и преобразуйте JSON, YAML, CSV, TOML, XML и SQLite нативно: <code>open Cargo.toml | get package.version</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Настоящий язык</h4>
+                <p>Типизированные переменные, замыкания, собственные команды и модули — с сообщениями об ошибках уровня компилятора, указывающими на точное место.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Плагины в комплекте</h4>
+                <p>Поставляет официальные плагины: <code>polars</code> (датафреймы), <code>query</code> (JSON/XML/веб-скрейпинг), <code>formats</code>, <code>gstat</code> и <code>inc</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Готов быть login-оболочкой</h4>
+                <p>Пакет регистрирует его в <code>/etc/shells</code> — переключайтесь командой <code>chsh -s /usr/bin/nu</code>, как только apt закончит установку.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Ноль зависимостей</h4>
+                <p>Один статический бинарный файл (musl). Ни рантайма, ни библиотек, которые могут сломаться — идеально для программы, через которую вы входите в систему.</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 Зачем устанавливать через apt (а не snap или ручную загрузку)?</h4>
+            <ul>
+                <li><strong>Безопасно для оболочки:</strong> статически слинкованные сборки, регистрация и снятие регистрации в <code>/etc/shells</code> скриптами пакета — детали, которые важны, когда это ваша login-оболочка</li>
+                <li><strong>Плагины в комплекте:</strong> официальный набор плагинов поставляется в том же пакете и соответствует точной версии nu (плагины этого требуют)</li>
+                <li><strong>Без curl-to-bin:</strong> репозиторий с GPG-подписью вместо ручной загрузки бинарных файлов в <code>/usr/local/bin</code></li>
+                <li><strong>Автоматические обновления:</strong> новые релизы upstream приходят с обычным <code>apt upgrade</code> — важно, ведь Nushell выпускается ежемесячно</li>
+                <li><strong>Мульти-архитектура:</strong> amd64, arm64, armhf и riscv64</li>
+            </ul>
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить Nushell</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y nushell
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y nushell
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 Первый запуск</h2>
+        <div class="code-block">
+nu                                          # start an interactive session
+ls | where size > 1mb | sort-by modified    # structured pipelines
+open /etc/os-release | lines | parse "{key}={value}"   # parse anything
+chsh -s /usr/bin/nu                         # make it your login shell
+        </div>
+        <p>Плагины регистрируются один раз для каждого пользователя изнутри nu, например:</p>
+        <div class="code-block">
+plugin add /usr/bin/nu_plugin_query
+plugin add /usr/bin/nu_plugin_polars
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/nushell-debian" target="_blank" rel="noopener">📂 nushell-debian</a> - сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-starship-in-ubuntu.html">starship</a> - кросс-оболочечный промпт с первоклассной поддержкой Nushell</li>
+            <li><a href="/ru/install-latest-atuin-in-ubuntu.html">atuin</a> - история оболочки с поиском и синхронизацией — работает внутри nu</li>
+            <li><a href="/ru/install-latest-zoxide-in-ubuntu.html">zoxide</a> - более умный cd, интегрирующийся с Nushell</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> разработчиков, живущих в JSON/YAML/CSV весь день, всех, кто устал от пайплайнов с кавычками и awk, дата-инженеров, желающих иметь датафреймы прямо в оболочке, и энтузиастов, ищущих современную типизированную альтернативу bash и zsh.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Поддержите этот проект</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Если этот репозиторий экономит ваше время и усилия, пожалуйста, поддержите его!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Звезда на GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Nushell,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20and%20Ubuntu%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Поделиться в Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Установка последней версии Nushell в Ubuntu",
+    "description": "Полное руководство по установке последней версии Nushell — оболочки структурированных данных — в Ubuntu с использованием репозитория deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-18",
+    "dateModified": "2026-07-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Nushell",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Новый тип оболочки, где пайплайны несут структурированные типизированные данные вместо сырого текста"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли Nushell в официальных репозиториях Ubuntu?</summary><p>Нет — Nushell не упакован в официальных архивах Ubuntu. Этот репозиторий сейчас единственный источник apt и предлагает Nushell 0.114.1.</p></details>
+<details><summary>Как установить последнюю версию Nushell в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install nushell. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли Nushell в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — Nushell не упакован в официальных архивах Ubuntu. Этот репозиторий сейчас единственный источник apt и предлагает Nushell 0.114.1."}}, {"@type": "Question", "name": "Как установить последнюю версию Nushell в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install nushell. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

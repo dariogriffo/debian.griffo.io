@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckDB PPA for Ubuntu? Use This APT Repository Instead</title>
+    <meta name="description" content="Looking for a DuckDB PPA? deb.griffo.io is an actively maintained APT repository serving the latest DuckDB for every current Ubuntu release (jammy, noble, questing, resolute) — same convenience as a PPA, updated within hours of upstream.">
+    <meta name="keywords" content="duckdb ppa, duckdb ubuntu ppa, ppa duckdb, install duckdb ubuntu, duckdb apt repository, add-apt-repository duckdb, latest duckdb ubuntu">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/duckdb-ppa.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/duckdb-ppa.html">
+    <meta property="og:title" content="DuckDB PPA for Ubuntu? Use This APT Repository Instead">
+    <meta property="og:description" content="The latest DuckDB for every current Ubuntu release, PPA-style convenience via a plain APT repository.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 Important update — access is changing on 1 October 2026
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Starting <strong>1 October 2026 at noon (UK time)</strong>, this mirror will require authentication to keep <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> working.<br>
+            Downloading packages stays <strong>free</strong> from the GitHub repositories where they are built.<br>
+            A <strong>yearly subscription</strong> gets you <strong>free immediate updates</strong> through <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> and directly supports keeping this project alive. Thank you! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 Get Your Yearly Subscription
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> per year — US dollars if your currency isn't supported.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.<br>
+            ☕ <strong>Previously supported via Buy Me a Coffee?</strong> You are wonderful! Head over to our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> and we will sort out a <strong>free lifetime subscription</strong> for you. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-06-22">22 June 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🦆 DuckDB PPA for Ubuntu — the APT Repository Alternative</h1>
+        <p class="subtitle">A fast in-process analytical SQL database — SQLite for analytics</p>
+    </div>
+
+    <div class="content">
+        <a href="/install-latest-duckdb-in-ubuntu.html" class="back-link">← DuckDB overview</a>
+
+        <div class="highlight-box">
+            <strong>🔍 Searching for a DuckDB PPA?</strong> deb.griffo.io gives you exactly what a PPA
+            would: <code>apt install duckdb</code>, automatic updates through <code>apt upgrade</code>, and
+            builds for every current Ubuntu release — currently serving <code>duckdb 1.5.4-1~noble</code>
+            (updated 2026-07-18). It's a plain APT repository rather than a Launchpad PPA, which means it also
+            works identically on Debian and on Ubuntu derivatives like Mint and Pop!_OS.
+        </div>
+
+        <h2>⚡ Add the repository (works like <code>add-apt-repository</code>)</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add repository &amp; key</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install DuckDB</h3>
+            <div class="code-block">
+sudo apt install -y duckdb
+            </div>
+        </div>
+
+        <h2>📋 DuckDB versions per Ubuntu release</h2>
+        <table class="controls-table">
+            <tr><th>Ubuntu release</th><th>Suite</th><th>DuckDB version</th></tr>
+            <tr><td>Ubuntu 22.04 LTS “Jammy Jellyfish”</td><td><a href="/install-duckdb-on-ubuntu-22-04-jammy.html">jammy</a></td><td><span class="version-badge">1.5.4-1~jammy</span></td></tr>
+            <tr><td>Ubuntu 24.04 LTS “Noble Numbat”</td><td><a href="/install-duckdb-on-ubuntu-24-04-noble.html">noble</a></td><td><span class="version-badge">1.5.4-1~noble</span></td></tr>
+            <tr><td>Ubuntu 25.10 “Questing Quokka”</td><td><a href="/install-duckdb-on-ubuntu-25-10-questing.html">questing</a></td><td><span class="version-badge">1.5.4-1~questing</span></td></tr>
+            <tr><td>Ubuntu 26.04 LTS “Resolute”</td><td><a href="/install-duckdb-on-ubuntu-26-04-resolute.html">resolute</a></td><td><span class="version-badge">1.5.4-1~resolute</span></td></tr>
+        </table>
+
+        <h2>❓ PPA questions, answered</h2>
+
+        <h3>Is this a PPA?</h3>
+        <p>Technically no — it's a plain signed APT repository, which is what a PPA is under the hood.
+        You get the same workflow (<code>apt install</code>, <code>apt upgrade</code>) without Launchpad,
+        and unlike a PPA it serves Debian and Ubuntu derivatives too.</p>
+
+        <h3>Is there an official DuckDB PPA?</h3>
+        <p>The DuckDB project does not maintain an official PPA. Community PPAs come and go and often lag behind; this repository is updated automatically within hours of each official release, and the packaging is public.</p>
+
+        <h3>Is this repository trustworthy?</h3>
+        <p>It's an unofficial repository maintained by
+        <a href="https://github.com/dariogriffo" rel="noopener">Dario Griffo</a>. Packages are built
+        automatically from official upstream DuckDB releases, the packaging is open source at
+        <a href="https://github.com/dariogriffo/duckdb-debian" rel="noopener">dariogriffo/duckdb-debian</a>, and the whole
+        archive is GPG-signed. Several upstream projects link to it from their official installation docs.</p>
+
+        <h3>How fast do new releases arrive?</h3>
+        <p>Typically within hours of the upstream release — usually faster than community PPAs, and years
+        ahead of the frozen Ubuntu archive. Follow the <a href="/rss.xml">release feed</a> to watch updates land.</p>
+
+        <h2>🔗 Related</h2>
+        <ul>
+            <li><a href="/install-latest-duckdb-in-ubuntu.html">DuckDB on Ubuntu — overview and features</a></li>
+            <li><a href="/garage-ppa.html">garage PPA alternative</a></li>
+            <li><a href="/tigerbeetle-ppa.html">tigerbeetle PPA alternative</a></li>
+            <li><a href="/">All packages served by deb.griffo.io</a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "DuckDB",
+     "item": "https://deb.griffo.io/install-latest-duckdb-in-ubuntu.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "DuckDB PPA alternative",
+     "item": "https://deb.griffo.io/duckdb-ppa.html"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Is there an official DuckDB PPA?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The DuckDB project does not maintain an official PPA. Community PPAs come and go and often lag behind; this repository is updated automatically within hours of each official release, and the packaging is public."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I install DuckDB on Ubuntu without a PPA?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Add the deb.griffo.io APT repository and run: sudo apt install duckdb. Updates then arrive via apt upgrade, exactly like a PPA."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

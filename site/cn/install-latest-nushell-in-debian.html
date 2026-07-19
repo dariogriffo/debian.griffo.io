@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 Debian 上通过 apt 安装 Nushell 0.114.1（始终最新版）</title>
+    <meta name="description" content="官方 Debian 软件源中没有 Nushell — 本仓库通过 apt 提供 nu 0.114.1，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，每次发布后数小时内重新构建。">
+    <meta name="keywords" content="nushell debian, install nushell debian, nushell apt, nu shell, nushell package, structured data shell, modern shell linux, nushell plugins, debian packages, bookworm, trixie, sid, apt nushell">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-nushell-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-nushell-in-debian.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-nushell-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-nushell-in-debian.html">
+    <meta property="og:title" content="在 Debian 上通过 apt 安装 Nushell 0.114.1（始终最新版）">
+    <meta property="og:description" content="官方 Debian 软件源中没有 Nushell — 本仓库通过 apt 提供 nu 0.114.1，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，每次发布后数小时内重新构建。">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            📣 重要更新 — 访问方式将于 2026 年 10 月 1 日更改
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            从 <strong>2026 年 10 月 1 日中午（英国时间）</strong>起，此镜像源将需要身份验证以保持 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> 正常运行。<br>
+            从构建这些软件包的 GitHub 仓库下载软件包始终<strong>免费</strong>。<br>
+            订阅<strong>年度套餐</strong>即可通过 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code> <strong>免费即时获取更新</strong>，同时直接支持本项目的持续运营。感谢您的支持！🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            🔑 获取年度订阅
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> 每年 — 不支持您的货币时以美元计费。</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>有关此仓库的问题、反馈或其他事项？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord 社区</a> — 获取帮助并与其他用户交流的最佳场所。<br>
+            ☕ <strong>曾通过 Buy Me a Coffee 支持过我们？</strong>您太棒了！前往我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>，我们将为您安排<strong>终身免费订阅</strong>。💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-06-22">2026 年 6 月 22 日</time>
+        </p>
+    </div>
+</div><div class="container">
+    <div class="header">
+        <h1>🐚 安装最新的 Nushell 在 Debian 上</h1>
+        <p class="subtitle">全新类型的 shell——以结构化、带类型的数据管道取代纯文本</p>
+        <div class="version-badge">最新版本：0.114.1 · 更新于 2026-07-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.114.1 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/cn/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 在特定发行版本上安装？</strong> <a href="/install-nushell-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-nushell-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-nushell-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-nushell-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>什么是 Nushell？</h2>
+        <p>Nushell（即 <code>nu</code> 命令）是一款<strong>围绕结构化数据构建的现代 shell</strong>。命令之间传递的不再是纯文本，而是带类型的表格和记录——<code>ls</code> 返回的行可以直接过滤、排序和求和，JSON、YAML、CSV、TOML 和 SQLite 都是一等公民。它将一门真正的编程语言与交互式 shell 结合在一起，开箱即用地提供清晰的错误信息、自动补全和语法高亮。</p>
+
+        <div class="comparison-box">
+            <strong>⚠️ 可直接用作登录 shell：</strong>本软件包在安装时会把 <code>nu</code> 注册到 <code>/etc/shells</code>（卸载时干净移除），因此 <code>chsh -s /usr/bin/nu</code> 立即可用——无需手动编辑。二进制文件为静态链接（musl），无论系统库如何升级，您的 shell 都能正常工作。
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong>Debian 和 Ubuntu 在发布时会冻结软件包版本——本仓库通常在上游发布后数小时内即发布新版本。只需 <code>apt upgrade</code> 即可始终保持最新版本。
+        </div>
+
+        <h3>⚡ Nushell 的主要特性</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📊 结构化管道</h4>
+                <p>命令输出的是表格而非文本：<code>ls | where size > 1mb | sort-by modified</code>——无需 awk、cut 或 sed 的各种技巧。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔄 支持各种数据格式</h4>
+                <p>原生打开并转换 JSON、YAML、CSV、TOML、XML 和 SQLite：<code>open Cargo.toml | get package.version</code>。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 真正的编程语言</h4>
+                <p>带类型的变量、闭包、自定义命令和模块——错误信息达到编译级质量，直接指向出错的确切位置。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 内置插件</h4>
+                <p>附带官方插件：<code>polars</code>（dataframe）、<code>query</code>（JSON/XML/网页抓取）、<code>formats</code>、<code>gstat</code> 和 <code>inc</code>。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 登录 shell 就绪</h4>
+                <p>软件包自动注册到 <code>/etc/shells</code>——apt 安装完成的那一刻即可用 <code>chsh -s /usr/bin/nu</code> 切换。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 零依赖</h4>
+                <p>单个静态 musl 二进制文件。没有运行时、没有会损坏的库——对于您每天登录使用的程序来说再理想不过。</p>
+            </div>
+        </div>
+
+        <div class="productivity-box">
+            <h4>🏆 为什么用 apt 安装？</h4>
+            <ul>
+                <li><strong>作为 shell 足够安全：</strong>静态链接构建，由软件包脚本负责在 <code>/etc/shells</code> 中注册和注销——当它是您的登录 shell 时，这些细节至关重要</li>
+                <li><strong>内置插件：</strong>官方插件集随同一软件包一起提供，与 nu 的确切版本相匹配（插件对此有要求）</li>
+                <li><strong>告别 curl 下载二进制：</strong>使用 GPG 签名的仓库，而不是手动把二进制文件下载到 <code>/usr/local/bin</code></li>
+                <li><strong>自动更新：</strong>上游新版本随您日常的 <code>apt upgrade</code> 一同到达——这很重要，因为 Nushell 每月发布新版</li>
+                <li><strong>多架构支持：</strong>amd64、arm64、armhf 和 riscv64</li>
+            </ul>
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装 Nushell</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+sudo apt install -y nushell
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+apt install -y nushell
+                </div>
+            </div>
+        </div>
+
+        <h2>🚀 首次运行</h2>
+        <div class="code-block">
+nu                                          # start an interactive session
+ls | where size > 1mb | sort-by modified    # structured pipelines
+open /etc/os-release | lines | parse "{key}={value}"   # parse anything
+chsh -s /usr/bin/nu                         # make it your login shell
+        </div>
+        <p>插件在 nu 内按用户注册一次即可，例如：</p>
+        <div class="code-block">
+plugin add /usr/bin/nu_plugin_query
+plugin add /usr/bin/nu_plugin_polars
+        </div>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在此 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/nushell-debian" target="_blank" rel="noopener">📂 nushell-debian</a> - 最新发布版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>也可从 deb.griffo.io 获取：</p>
+        <ul>
+            <li><a href="/cn/install-latest-starship-in-debian.html">starship</a> - 跨 shell 提示符，对 Nushell 提供一流支持</li>
+            <li><a href="/cn/install-latest-atuin-in-debian.html">atuin</a> - 可搜索、可同步的 shell 历史记录——在 nu 中同样可用</li>
+            <li><a href="/cn/install-latest-zoxide-in-debian.html">zoxide</a> - 更智能的 cd，与 Nushell 深度集成</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 适合人群：</strong>整天与 JSON/YAML/CSV 打交道的开发者、受够了引号加 awk 管道的用户、希望在 shell 中直接使用 dataframe 的数据处理者，以及寻找 bash 和 zsh 的现代化、带类型替代品的折腾爱好者。
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 支持本项目</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                如果这个仓库为您节省了时间和精力，请考虑支持它！
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ 在 GitHub 上加星
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Nushell,%20uv,%20Zig,%20Ghostty,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 在 Twitter 上分享
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "安装最新的 Nushell 在 Debian 上",
+    "description": "在 Debian 上使用 deb.griffo.io 仓库安装最新 Nushell 结构化数据 shell 的完整指南。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-18",
+    "dateModified": "2026-07-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Nushell",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "A new type of shell where pipelines carry structured, typed data instead of raw text"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ 常见问题</h2>
+<details><summary>Nushell 在官方 Debian 软件源中吗？</summary><p>不在 — 官方 Debian 源没有打包 Nushell。本仓库目前是唯一的 apt 来源，提供 Nushell 0.114.1。</p></details>
+<details><summary>如何在 Debian 上安装最新版 Nushell？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install nushell。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Nushell 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Debian 源没有打包 Nushell。本仓库目前是唯一的 apt 来源，提供 Nushell 0.114.1。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 Nushell？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install nushell。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
