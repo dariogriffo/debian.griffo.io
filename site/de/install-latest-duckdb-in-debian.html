@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DuckDB 1.5.4 auf Debian installieren via apt (immer aktuell)</title>
-    <meta name="description" content="Offizielles Debian liefert DuckDB 1.5.3, und nur in testing/unstable — dieses Repo bietet DuckDB 1.5.4 für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta name="description" content="DuckDB ist nicht in den offiziellen Debian-Archiven — DuckDB 1.5.4 via apt für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
     <meta name="keywords" content="duckdb debian, install duckdb debian, duckdb apt, duckdb cli, analytical database, in-process sql, olap database, sqlite for analytics, parquet sql, debian pakete, bookworm, trixie, sid, apt duckdb">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://deb.griffo.io/de/install-latest-duckdb-in-debian.html">
     <meta property="og:title" content="DuckDB 1.5.4 auf Debian installieren via apt (immer aktuell)">
-    <meta property="og:description" content="Offizielles Debian liefert DuckDB 1.5.3, und nur in testing/unstable — dieses Repo bietet DuckDB 1.5.4 für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta property="og:description" content="DuckDB ist nicht in den offiziellen Debian-Archiven — DuckDB 1.5.4 via apt für Bookworm, Trixie, Forky und Sid. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
     <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
@@ -59,13 +59,13 @@
     <div class="header">
         <h1>🦆 Neuestes DuckDB auf Debian installieren</h1>
         <p class="subtitle">Eine schnelle analytische In-Process-SQL-Datenbank — SQLite für Analytics</p>
-        <div class="version-badge">Neueste Version: 1.5.4 · aktualisiert 2026-07-18</div>
+        <div class="version-badge">Neueste Version: 1.5.4 · aktualisiert 2026-07-19</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Quelle</th><th>Version</th></tr></thead>
 <tbody>
 <tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.5.4 ✅</td></tr>
-<tr><td>Offizielles Debian</td><td class="vc-lose">1.5.3 🛑</td></tr>
+<tr><td>Offizielles Debian</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
 </tbody>
 </table>
 </div>
@@ -290,13 +290,17 @@ duckdb -c "INSTALL httpfs; LOAD httpfs;"      # extensions from the official rep
 </script>
 <div class="tool-extras">
 <section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>1.5.4</code> — 2026-07-19</li>
+</ul>
 <h2>❓ Häufig gestellte Fragen</h2>
-<details><summary>Ist DuckDB in den offiziellen Debian-Paketquellen?</summary><p>Ja, aber das offizielle Debian-Archiv liefert DuckDB 1.5.3, während dieses Repository DuckDB 1.5.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut.</p></details>
+<details><summary>Ist DuckDB in den offiziellen Debian-Paketquellen?</summary><p>Nein — DuckDB ist nicht in den offiziellen Debian-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert DuckDB 1.5.4.</p></details>
 <details><summary>Wie installiere ich das neueste DuckDB unter Debian?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install duckdb. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
 <details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
 <details><summary>Welche Debian-Versionen werden unterstützt?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist DuckDB in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, aber das offizielle Debian-Archiv liefert DuckDB 1.5.3, während dieses Repository DuckDB 1.5.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut."}}, {"@type": "Question", "name": "Wie installiere ich das neueste DuckDB unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install duckdb. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist DuckDB in den offiziellen Debian-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — DuckDB ist nicht in den offiziellen Debian-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert DuckDB 1.5.4."}}, {"@type": "Question", "name": "Wie installiere ich das neueste DuckDB unter Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install duckdb. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Debian-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky und Sid."}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>

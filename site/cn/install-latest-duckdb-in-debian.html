@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在 Debian 上通过 apt 安装 DuckDB 1.5.4（始终最新版）</title>
-    <meta name="description" content="官方 Debian 仅在 testing/unstable 中提供 DuckDB 1.5.3，本仓库为 Bookworm、Trixie、Forky 和 Sid 提供 DuckDB 1.5.4。GPG 签名，每次发布后数小时内重新构建。">
+    <meta name="description" content="官方 Debian 软件源中没有 DuckDB — 本仓库通过 apt 提供 DuckDB 1.5.4，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，每次发布后数小时内重新构建。">
     <meta name="keywords" content="duckdb debian, install duckdb debian, duckdb apt, duckdb cli, analytical database, in-process sql, olap database, sqlite for analytics, parquet sql, debian packages, bookworm, trixie, sid, apt duckdb">
     <meta name="author" content="Dario Griffo">
     <meta name="robots" content="index, follow">
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-duckdb-in-debian.html">
     <meta property="og:title" content="在 Debian 上通过 apt 安装 DuckDB 1.5.4（始终最新版）">
-    <meta property="og:description" content="官方 Debian 仅在 testing/unstable 中提供 DuckDB 1.5.3，本仓库为 Bookworm、Trixie、Forky 和 Sid 提供 DuckDB 1.5.4。GPG 签名，每次发布后数小时内重新构建。">
+    <meta property="og:description" content="官方 Debian 软件源中没有 DuckDB — 本仓库通过 apt 提供 DuckDB 1.5.4，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，每次发布后数小时内重新构建。">
     <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
 
     <link rel="stylesheet" href="/css/theme.css">
@@ -59,13 +59,13 @@
     <div class="header">
         <h1>🦆 安装最新的 DuckDB 在 Debian 上</h1>
         <p class="subtitle">快速的进程内分析型 SQL 数据库——分析领域的 SQLite</p>
-        <div class="version-badge">最新版本：1.5.4 · 更新于 2026-07-18</div>
+        <div class="version-badge">最新版本：1.5.4 · 更新于 2026-07-19</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
 <tbody>
 <tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.5.4 ✅</td></tr>
-<tr><td>官方 Debian</td><td class="vc-lose">1.5.3 🛑</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
 </tbody>
 </table>
 </div>
@@ -290,13 +290,17 @@ duckdb -c "INSTALL httpfs; LOAD httpfs;"      # extensions from the official rep
 </script>
 <div class="tool-extras">
 <section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>1.5.4</code> — 2026-07-19</li>
+</ul>
 <h2>❓ 常见问题</h2>
-<details><summary>DuckDB 在官方 Debian 软件源中吗？</summary><p>在，但官方 Debian 源只提供 DuckDB 1.5.3，而本仓库提供 DuckDB 1.5.4，每次上游发布后数小时内重新构建。</p></details>
+<details><summary>DuckDB 在官方 Debian 软件源中吗？</summary><p>不在 — 官方 Debian 源没有打包 DuckDB。本仓库目前是唯一的 apt 来源，提供 DuckDB 1.5.4。</p></details>
 <details><summary>如何在 Debian 上安装最新版 DuckDB？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install duckdb。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
 <details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
 <details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "DuckDB 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在，但官方 Debian 源只提供 DuckDB 1.5.3，而本仓库提供 DuckDB 1.5.4，每次上游发布后数小时内重新构建。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 DuckDB？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install duckdb。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "DuckDB 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Debian 源没有打包 DuckDB。本仓库目前是唯一的 apt 来源，提供 DuckDB 1.5.4。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 DuckDB？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install duckdb。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
 </div>
 <footer>
     <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
