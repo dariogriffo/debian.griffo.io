@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Neovim 0.12.4 on Debian via apt (Latest Version)</title>
+    <meta name="description" content="Official Debian ships Neovim 0.10.4 — this repo has Neovim 0.12.4. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.">
+    <meta name="keywords" content="neovim debian, install neovim debian, latest neovim version, vim fork, lua text editor, built-in lsp, treesitter, debian packages, bookworm, trixie, sid, apt neovim">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/install-latest-neovim-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/install-latest-neovim-in-debian.html">
+    <meta property="og:title" content="Install Neovim 0.12.4 on Debian via apt (Latest Version)">
+    <meta property="og:description" content="Official Debian ships Neovim 0.10.4 — this repo has Neovim 0.12.4. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Your tools, always current — automatically
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian and Ubuntu freeze package versions for years. This mirror tracks <strong>30+ developer tools</strong> and publishes each new upstream release <strong>within hours</strong> — GPG-signed, straight into <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            One <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> and everything is current. No release pages to watch, no versions to compare, no manual <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            A <strong>yearly subscription</strong> keeps that automation running. Prefer to update by hand? Every .deb stays free on GitHub. Thank you! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Keep my tools updated automatically
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> per year — US dollars if your currency isn't supported.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.<br>
+            ☕ <strong>Previously supported via Buy Me a Coffee?</strong> You are wonderful! Head over to our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> and we will sort out a <strong>free lifetime subscription</strong> for you. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20 July 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📝 Install Latest Neovim</h1>
+        <p class="subtitle">Hyperextensible Vim-based text editor with built-in LSP, Treesitter and Lua</p>
+        <div class="version-badge">Latest version: 0.12.4 · updated 2026-07-20</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.12.4 ✅</td></tr>
+<tr><td>Official Debian</td><td class="vc-lose">0.10.4 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <h2>What is Neovim?</h2>
+        <p>Neovim is a <strong>hyperextensible, Vim-based text editor</strong> that refactors the classic Vim codebase for modern development. It ships a built-in Language Server Protocol client, Treesitter-powered syntax and code understanding, an asynchronous job engine, and first-class Lua scripting — so plugins and configuration are fast, programmable and maintainable.</p>
+
+        <div class="highlight-box">
+            <strong>Official Debian trixie ships Neovim 0.10.4</strong>, and Bookworm is stuck far further back. This repository serves Neovim 0.12.4 across Bookworm, Trixie, Forky and Sid alike.
+        </div>
+
+
+        <h3>⚡ Key Features of Neovim</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌙 Lua Configuration</h4>
+                <p>Configure and script the editor in Lua with a rich, stable API. A real programming language instead of Vimscript for fast, maintainable setups.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Built-in LSP</h4>
+                <p>A native Language Server Protocol client brings completion, diagnostics, go-to-definition and refactoring to any language with a server.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌳 Treesitter</h4>
+                <p>Incremental parsing for accurate syntax highlighting, indentation and structural selections — far beyond regex-based highlighting.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🚀 Async &amp; Plugins</h4>
+                <p>A non-blocking job and event loop keeps the UI responsive, powering a huge ecosystem of modern Lua plugins and remote UIs.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add Repository</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: Install Neovim</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Neovim
+sudo apt install neovim-latest
+
+# Verify installation
+nvim --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Neovim
+apt install neovim-latest
+
+# Verify installation
+nvim --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+
+        <p><strong>Launch Neovim:</strong></p>
+        <div class="code-block">
+# Open a file
+nvim file.txt
+
+# Open Neovim and run a health check
+nvim +checkhealth
+
+# Use nvim as your default editor
+export EDITOR=nvim
+        </div>
+
+        <p><strong>Configuration Example:</strong></p>
+        <div class="code-block">
+# Create the config directory
+mkdir -p ~/.config/nvim
+
+# Minimal init.lua (~/.config/nvim/init.lua)
+vim.opt.number = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.g.mapleader = " "
+        </div>
+
+        <div class="highlight-box">
+            <strong>🧩 Optional debug build:</strong> the same upstream binary with debug symbols kept is available as <code>neovim-latest-unstripped</code>. Install it alongside and switch with <code>sudo update-alternatives --config nvim</code>.
+        </div>
+
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>⚠️ Official Debian Status:</strong> Neovim <em>is</em> in the official Debian archives, but frozen — trixie ships 0.10.4 and older releases lag further behind. deb.griffo.io tracks upstream and serves 0.12.4 today.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Immediate Access:</strong> Get Neovim 0.12.4 right now, no waiting for the next Debian release</li>
+            <li>✅ <strong>Latest Features:</strong> Newest LSP, Treesitter and Lua API improvements as they ship</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages rebuilt within hours of every upstream release</li>
+            <li>✅ <strong>Official Upstream Binary:</strong> Repackaged from the upstream prebuilt release, not a separate rebuild</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Bookworm, Trixie, Forky and Sid</li>
+            <li>✅ <strong>No Compilation:</strong> Pre-built binary, no need to compile from source</li>
+        </ul>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Debian packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/neovim-debian" target="_blank" rel="noopener">📝 neovim-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-helix-in-debian.html">Helix Editor</a> - A post-modern modal editor</li>
+            <li><a href="/install-latest-zed-in-debian.html">Zed Editor</a> - High-performance collaborative editor</li>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - A perfect companion for Neovim workflows</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> Developers who want the newest Neovim on a stable Debian, anyone building a Lua-based configuration, and users who need up-to-date LSP and Treesitter without compiling from source.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Neovim,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest Neovim on Debian",
+    "description": "Complete guide to installing the latest Neovim text editor on Debian using the deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-20",
+    "dateModified": "2026-07-20",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Neovim",
+        "applicationCategory": "Text Editor",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Hyperextensible Vim-based text editor with built-in LSP, Treesitter and Lua scripting"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is Neovim in the official Debian repositories?</summary><p>Yes, but the official Debian archive ships Neovim 0.10.4, while this repository serves Neovim 0.12.4 — rebuilt within hours of each upstream release.</p></details>
+<details><summary>How do I install the latest Neovim on Debian?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install neovim-latest. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Debian releases are supported?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Neovim in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Debian archive ships Neovim 0.10.4, while this repository serves Neovim 0.12.4 — rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest Neovim on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install neovim-latest. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
