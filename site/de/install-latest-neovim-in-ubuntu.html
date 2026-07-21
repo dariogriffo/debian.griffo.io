@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neovim 0.12.4 auf Ubuntu installieren via apt (neueste Version)</title>
+    <meta name="description" content="Offizielles Ubuntu liefert Neovim 0.11.6 — dieses Repo bietet Neovim 0.12.4. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta name="keywords" content="neovim ubuntu, install neovim ubuntu, latest neovim version, vim fork, lua text editor, built-in lsp, treesitter, ubuntu packages, jammy, noble, apt neovim">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-neovim-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-neovim-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-neovim-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-neovim-in-ubuntu.html">
+    <meta property="og:title" content="Neovim 0.12.4 auf Ubuntu installieren via apt (neueste Version)">
+    <meta property="og:description" content="Offizielles Ubuntu liefert Neovim 0.11.6 — dieses Repo bietet Neovim 0.12.4. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Deine Werkzeuge, immer aktuell — automatisch
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian und Ubuntu frieren Paketversionen für Jahre ein. Dieser Spiegel verfolgt <strong>über 30 Entwickler-Werkzeuge</strong> und veröffentlicht jede neue Upstream-Version <strong>innerhalb von Stunden</strong> — GPG-signiert, direkt in <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Ein <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> und alles ist aktuell. Keine Release-Seiten beobachten, keine Versionen vergleichen, kein manuelles <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            Ein <strong>Jahresabonnement</strong> hält diese Automatisierung am Laufen. Lieber von Hand aktualisieren? Jedes .deb bleibt kostenlos auf GitHub. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Meine Werkzeuge automatisch aktuell halten
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20. Juli 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📝 Neuestes Neovim installieren</h1>
+        <p class="subtitle">Hyper-erweiterbarer Vim-basierter Texteditor mit integriertem LSP, Treesitter und Lua</p>
+        <div class="version-badge">Neueste Version: 0.12.4 · aktualisiert 2026-07-21</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.12.4 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">0.11.6 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/de/" class="back-link">← Zurück zur Startseite</a>
+
+        <h2>Was ist Neovim?</h2>
+        <p>Neovim ist ein <strong>hyper-erweiterbarer, Vim-basierter Texteditor</strong>, der die klassische Vim-Codebasis für die moderne Entwicklung überarbeitet. Er bringt einen integrierten Language-Server-Protocol-Client, Treesitter-gestützte Syntax- und Code-Analyse, eine asynchrone Job-Engine und erstklassiges Lua-Skripting mit — so werden Plugins und Konfiguration schnell, programmierbar und wartbar.</p>
+
+        <div class="highlight-box">
+            <strong>Das offizielle Ubuntu-Archiv liefert Neovim 0.11.6</strong>, und ältere Releases hängen noch deutlich weiter zurück. Dieses Repository stellt Neovim 0.12.4 für Ubuntu 22.04, 24.04, 25.10 und 26.04 gleichermaßen bereit.
+        </div>
+
+
+        <h3>⚡ Wichtigste Funktionen von Neovim</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌙 Lua-Konfiguration</h4>
+                <p>Konfigurieren und skripten Sie den Editor in Lua mit einer umfangreichen, stabilen API. Eine echte Programmiersprache statt Vimscript für schnelle, wartbare Setups.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Integriertes LSP</h4>
+                <p>Ein nativer Language-Server-Protocol-Client bringt Autovervollständigung, Diagnosen, Sprung-zur-Definition und Refactoring in jede Sprache mit einem Server.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌳 Treesitter</h4>
+                <p>Inkrementelles Parsing für präzise Syntaxhervorhebung, Einrückung und strukturelle Selektionen — weit über regex-basierte Hervorhebung hinaus.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🚀 Async &amp; Plugins</h4>
+                <p>Eine nicht-blockierende Job- und Event-Loop hält die Oberfläche reaktionsfähig und treibt ein riesiges Ökosystem moderner Lua-Plugins und Remote-UIs an.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer aktueller als die offiziellen Archive:</strong> Debian und Ubuntu frieren Paketversionen mit jedem Release ein — dieses Repository veröffentlicht neue Upstream-Versionen in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält Sie immer auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Neovim installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest Neovim
+sudo apt install neovim-latest
+
+# Installation überprüfen
+nvim --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest Neovim
+apt install neovim-latest
+
+# Installation überprüfen
+nvim --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Neovim starten:</strong></p>
+        <div class="code-block">
+# Open a file
+nvim file.txt
+
+# Open Neovim and run a health check
+nvim +checkhealth
+
+# Use nvim as your default editor
+export EDITOR=nvim
+        </div>
+
+        <p><strong>Konfigurationsbeispiel:</strong></p>
+        <div class="code-block">
+# Create the config directory
+mkdir -p ~/.config/nvim
+
+# Minimal init.lua (~/.config/nvim/init.lua)
+vim.opt.number = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.g.mapleader = " "
+        </div>
+
+        <div class="highlight-box">
+            <strong>🧩 Optionaler Debug-Build:</strong> dieselbe Upstream-Binärdatei mit erhaltenen Debug-Symbolen ist als <code>neovim-latest-unstripped</code> verfügbar. Installieren Sie sie zusätzlich und wechseln Sie mit <code>sudo update-alternatives --config nvim</code>.
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+
+        <div class="performance-box">
+            <strong>⚠️ Offizieller Ubuntu-Status:</strong> Neovim <em>ist</em> in den offiziellen Ubuntu-Archiven enthalten, aber eingefroren — das aktuelle Release liefert 0.11.6 und ältere Releases hängen noch weiter zurück. deb.griffo.io folgt dem Upstream und stellt 0.12.4 schon heute bereit.
+        </div>
+
+        <ul>
+            <li>✅ <strong>Sofortiger Zugriff:</strong> Erhalten Sie Neovim 0.12.4 sofort, ohne auf das nächste Ubuntu-Release zu warten</li>
+            <li>✅ <strong>Neueste Funktionen:</strong> Die neuesten Verbesserungen bei LSP, Treesitter und der Lua-API, sobald sie erscheinen</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden innerhalb weniger Stunden nach jedem Upstream-Release neu erstellt</li>
+            <li>✅ <strong>Offizielle Upstream-Binärdatei:</strong> Neu paketiert aus dem vorgefertigten Upstream-Release, kein separater Rebuild</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Funktioniert auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Keine Kompilierung:</strong> Vorgefertigte Binärdatei, kein Kompilieren aus dem Quellcode nötig</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden automatisch in diesem GitHub-Repository erstellt und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/neovim-debian" target="_blank" rel="noopener">📝 neovim-debian</a> - Neueste Release-Builds</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Auch verfügbar von deb.griffo.io:</p>
+        <ul>
+            <li><a href="/de/install-latest-helix-in-ubuntu.html">Helix Editor</a> - Ein post-moderner modaler Editor</li>
+            <li><a href="/de/install-latest-zed-in-ubuntu.html">Zed Editor</a> - Hochleistungsfähiger kollaborativer Editor</li>
+            <li><a href="/de/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Ein perfekter Begleiter für Neovim-Workflows</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> Entwickler, die das neueste Neovim auf einem stabilen Ubuntu möchten, alle, die eine Lua-basierte Konfiguration aufbauen, und Nutzer, die aktuelles LSP und Treesitter ohne Kompilieren aus dem Quellcode brauchen.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Dieses Projekt unterstützen</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                Wenn Ihnen dieses Repository Zeit und Mühe erspart, unterstützen Sie es doch bitte!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Auf GitHub mit Stern markieren
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Neovim,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Auf Twitter teilen
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest Neovim on Ubuntu",
+    "description": "Vollständige Anleitung zur Installation des neuesten Neovim-Texteditors auf Ubuntu mit dem deb.griffo.io-Repository für aktuelle Pakete.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-20",
+    "dateModified": "2026-07-21",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Neovim",
+        "applicationCategory": "Text Editor",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Hyper-erweiterbarer Vim-basierter Texteditor mit integriertem LSP, Treesitter und Lua-Skripting"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.12.4</code> — 2026-07-21</li>
+<li><code>0.12.4</code> — 2026-07-21</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Neovim in den offiziellen Ubuntu-Paketquellen?</summary><p>Ja, aber das offizielle Ubuntu-Archiv liefert Neovim 0.11.6, während dieses Repository Neovim 0.12.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut.</p></details>
+<details><summary>Wie installiere ich das neueste Neovim unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install neovim-latest. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Neovim in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, aber das offizielle Ubuntu-Archiv liefert Neovim 0.11.6, während dieses Repository Neovim 0.12.4 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Neovim unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install neovim-latest. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
