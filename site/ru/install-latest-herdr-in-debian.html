@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка herdr 0.7.5 в Debian через apt (всегда свежая версия)</title>
+    <meta name="description" content="herdr нет в официальных архивах Debian — установите herdr 0.7.5 через apt для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta name="keywords" content="herdr debian, install herdr debian, terminal workspace manager, ai coding agents, agent multiplexer, terminal multiplexer, debian packages, bookworm, trixie, sid, ogulcancelik, apt herdr">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-herdr-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-herdr-in-debian.html">
+    <meta property="og:title" content="Установка herdr 0.7.5 в Debian через apt (всегда свежая версия)">
+    <meta property="og:description" content="herdr нет в официальных архивах Debian — установите herdr 0.7.5 через apt для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Ваши инструменты всегда актуальны — автоматически
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian и Ubuntu замораживают версии пакетов на годы. Это зеркало отслеживает <strong>более 30 инструментов</strong> и публикует каждый новый релиз <strong>в течение нескольких часов</strong> — с подписью GPG, сразу в <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Одна команда <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> — и всё актуально. Не нужно следить за страницами релизов, сравнивать версии и вручную запускать <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            <strong>Годовая подписка</strong> поддерживает работу этой автоматизации. Предпочитаете обновлять вручную? Каждый .deb остаётся бесплатным на GitHub. Спасибо! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Обновлять мои инструменты автоматически
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> в год — в долларах США, если ваша валюта не поддерживается.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Вопросы, проблемы или что-то связанное с этим репозиторием?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">сообществу в Discord</a> — лучшее место для получения помощи и общения с другими пользователями.<br>
+            ☕ <strong>Ранее поддерживали через Buy Me a Coffee?</strong> Вы замечательны! Загляните на наш <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>, и мы оформим для вас <strong>бесплатную пожизненную подписку</strong>. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20 июля 2026 года</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐑 Установка последней версии herdr в Debian</h1>
+        <p class="subtitle">Менеджер терминальных рабочих пространств для AI-агентов кодирования</p>
+        <div class="version-badge">Последняя версия: 0.7.5 · обновлено 2026-07-23</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.7.5 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-herdr-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-herdr-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-herdr-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-herdr-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое herdr?</h2>
+        <p>herdr — это <strong>мультиплексор агентов, который живёт в вашем терминале</strong> — менеджер рабочих пространств для запуска и оркестрации нескольких AI-агентов кодирования бок о бок. Написанный на Rust и поставляемый как единый статический бинарный файл, он позволяет управлять целым парком агентов (Claude Code, Codex, Gemini, Aider и другими) из одного удобного для клавиатуры TUI, с постоянными сессиями, git worktree и удалённым доступом по SSH.</p>
+
+        <div class="benchmark-box">
+            <strong>🤖 Создан для AI-агентов кодирования:</strong>
+            <ul>
+                <li><strong>Запускайте много агентов сразу</strong> — каждый в своей панели, вкладке и рабочем пространстве</li>
+                <li><strong>Постоянные сессии</strong>, переживающие отключения, как мультиплексор для агентов</li>
+                <li><strong>Осведомлён о git worktree</strong> — изолируйте каждого агента на своей ветке</li>
+                <li><strong>Удалённо по SSH</strong> — подключайтесь к серверу herdr, работающему где угодно</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> herdr развивается быстро, со стабильным и предварительным каналами и частыми релизами, добавляющими новые интеграции с агентами, функции рабочих пространств и улучшения TUI. Установка из deb.griffo.io держит вас на новейшем релизе без запуска встроенного самообновления.
+        </div>
+
+        <h3>⚡ Ключевые возможности herdr</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🤖 Несколько агентов бок о бок</h4>
+                <p>Запускайте и оркеструйте сразу несколько AI-агентов кодирования, каждый в своей панели и вкладке, и переключайтесь между ними, не покидая терминал.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Рабочие пространства и сессии</h4>
+                <p>Группируйте работу в именованные постоянные сессии и рабочие пространства, которые продолжают работать в фоне и мгновенно переподключаются.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌿 Git worktree</h4>
+                <p>Дайте каждому агенту собственный git worktree и ветку, чтобы параллельная работа никогда не пересекалась, а диффы оставались чистыми и удобными для ревью.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Удалённо по SSH</h4>
+                <p>Подключайтесь по SSH к серверу herdr, работающему на любой машине, и управляйте удалёнными сессиями, как если бы они были локальными.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ TUI с управлением с клавиатуры</h4>
+                <p>Быстрый терминальный интерфейс с опциональной мышью, настраиваемыми сочетаниями клавиш, вкладками и панелями — всё в одном нажатии клавиши.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Интеграции и расширяемость</h4>
+                <p>Встроенные интеграции с агентами плюс socket API и файл конфигурации, с растущей экосистемой первоклассных плагинов вокруг.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить herdr</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest herdr
+sudo apt install herdr
+
+# Проверить установку
+herdr --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest herdr
+apt install herdr
+
+# Проверить установку
+herdr --version
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Примеры базового использования</h3>
+
+        <p><strong>Запуск и подключение к сессии:</strong></p>
+        <div class="code-block">
+# Launch or attach to the persistent session
+herdr
+
+# Use or create a named session
+herdr --session work
+
+# Attach to a named session
+herdr session attach work
+        </div>
+
+        <p><strong>Работа с удалёнными серверами:</strong></p>
+        <div class="code-block">
+# Attach through SSH to a remote herdr server
+herdr --remote user@server
+
+# Open a named session on a remote host
+herdr --remote user@server --session build
+        </div>
+
+        <p><strong>Управление рабочими пространствами, worktree и агентами:</strong></p>
+        <div class="code-block">
+# Workspace, worktree and agent helpers over the socket API
+herdr workspace list
+herdr worktree list
+herdr agent list
+
+# Show local client and running server status
+herdr status
+        </div>
+
+        <p><strong>Каналы, конфигурация и автодополнение оболочки:</strong></p>
+        <div class="code-block">
+# Choose the stable or preview update channel
+herdr channel set stable
+
+# Generate shell completions for zsh
+herdr completion zsh
+
+# Print the default configuration
+herdr --default-config
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Сравнение методов установки:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> herdr не упакован — устанавливать нечего</li>
+                <li><strong>Curl / самообновление:</strong> Ручная настройка, обновления вне менеджера пакетов</li>
+                <li><strong>Сборка из исходников:</strong> Требует набор инструментов Rust и времени</li>
+                <li><strong>deb.griffo.io:</strong> Последняя версия с автоматическими обновлениями apt</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последние функции:</strong> Получайте новейшие интеграции с агентами и улучшения TUI</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после релиза upstream</li>
+            <li>✅ <strong>Без ручной настройки:</strong> Готовый статический бинарный файл, компиляция Rust не нужна</li>
+            <li>✅ <strong>Правильная интеграция:</strong> Корректно упакован и установлен в /usr/bin</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie, Forky и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <div class="benchmark-box">
+            <h4>🏆 Чем herdr отличается</h4>
+            <ul>
+                <li><strong>Ориентирован на агентов:</strong> Создан специально для запуска множества AI-агентов кодирования параллельно</li>
+                <li><strong>Постоянство:</strong> Модель сервер/клиент сохраняет сессии живыми при отключениях</li>
+                <li><strong>Нативная работа с git:</strong> Worktree изолируют каждого агента на своей ветке</li>
+                <li><strong>Готовность к удалённой работе:</strong> Подключайтесь к серверу herdr где угодно по SSH</li>
+                <li><strong>Единый бинарный файл:</strong> Статическая сборка на Rust без зависимостей времени выполнения</li>
+            </ul>
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/herdr-debian" target="_blank" rel="noopener">🐑 herdr-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-zellij-in-debian.html">Мультиплексер Zellij</a> — терминальный мультиплексер рабочих пространств</li>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — быстрый терминал с GPU-ускорением</li>
+            <li><a href="/ru/install-latest-neovim-in-debian.html">Редактор Neovim</a> — гиперрасширяемый редактор на основе Vim</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> разработчиков, работающих с AI-агентами кодирования, всех, кто запускает несколько агентов параллельно, команд, которым нужны постоянные удалённые сессии, и опытных пользователей терминала, предпочитающих управление с клавиатуры.
+        </div>
+
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Установка последней версии менеджера терминальных рабочих пространств herdr в Debian",
+    "description": "Полное руководство по установке последней версии менеджера терминальных рабочих пространств herdr для AI-агентов кодирования в Debian с использованием репозитория deb.griffo.io для получения актуальных пакетов.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-23",
+    "dateModified": "2026-07-23",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "herdr",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Terminal workspace manager for AI coding agents — run and orchestrate multiple agents side by side, written in Rust"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>0.7.5</code> — 2026-07-23</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли herdr в официальных репозиториях Debian?</summary><p>Нет — herdr не упакован в официальных архивах Debian. Этот репозиторий сейчас единственный источник apt и предлагает herdr 0.7.5.</p></details>
+<details><summary>Как установить последнюю версию herdr в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install herdr. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли herdr в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — herdr не упакован в официальных архивах Debian. Этот репозиторий сейчас единственный источник apt и предлагает herdr 0.7.5."}}, {"@type": "Question", "name": "Как установить последнюю версию herdr в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install herdr. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Все права защищены. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Условия использования</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
