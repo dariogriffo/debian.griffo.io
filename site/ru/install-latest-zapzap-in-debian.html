@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка ZapZap 7.0.3 в Debian через apt (всегда свежая версия)</title>
+    <meta name="description" content="ZapZap нет в официальных архивах Debian — установите десктопный клиент WhatsApp ZapZap 7.0.3 через apt для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta name="keywords" content="zapzap debian, install zapzap debian, whatsapp debian, whatsapp desktop linux, whatsapp client linux, pyqt6 whatsapp, whatsapp for debian, bookworm, trixie, sid, apt zapzap">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/ru/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="zh" href="https://deb.griffo.io/cn/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zapzap-in-debian.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zapzap-in-debian.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/ru/install-latest-zapzap-in-debian.html">
+    <meta property="og:title" content="Установка ZapZap 7.0.3 в Debian через apt (всегда свежая версия)">
+    <meta property="og:description" content="ZapZap нет в официальных архивах Debian — установите десктопный клиент WhatsApp ZapZap 7.0.3 через apt для Bookworm, Trixie, Forky и Sid. GPG-подпись, пересборка через несколько часов после релиза.">
+    <meta property="og:image" content="https://deb.griffo.io/debian-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Ваши инструменты всегда актуальны — автоматически
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian и Ubuntu замораживают версии пакетов на годы. Это зеркало отслеживает <strong>более 30 инструментов</strong> и публикует каждый новый релиз <strong>в течение нескольких часов</strong> — с подписью GPG, сразу в <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Одна команда <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> — и всё актуально. Не нужно следить за страницами релизов, сравнивать версии и вручную запускать <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            <strong>Годовая подписка</strong> поддерживает работу этой автоматизации. Предпочитаете обновлять вручную? Каждый .deb остаётся бесплатным на GitHub. Спасибо! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Обновлять мои инструменты автоматически
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> в год — в долларах США, если ваша валюта не поддерживается.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Вопросы, проблемы или что-то связанное с этим репозиторием?</strong> Присоединяйтесь к нашему <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">сообществу в Discord</a> — лучшее место для получения помощи и общения с другими пользователями.<br>
+            ☕ <strong>Ранее поддерживали через Buy Me a Coffee?</strong> Вы замечательны! Загляните на наш <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>, и мы оформим для вас <strong>бесплатную пожизненную подписку</strong>. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20 июля 2026 года</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>💬 Установка последней версии ZapZap в Debian</h1>
+        <p class="subtitle">Неофициальный десктопный клиент WhatsApp для Linux, созданный на Python и PyQt6</p>
+        <div class="version-badge">Последняя версия: 7.0.3 · обновлено 2026-07-24</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">7.0.3 ✅</td></tr>
+<tr><td>Официальный Debian</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/ru/" class="back-link">← На главную</a>
+
+        <div class="notice-box"><strong>📌 Установка на конкретный выпуск?</strong> <a href="/install-zapzap-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-zapzap-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-zapzap-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-zapzap-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Что такое ZapZap?</h2>
+        <p>ZapZap — это <strong>неофициальный десктопный клиент WhatsApp для Linux</strong>, написанный на Python с использованием PyQt6 и QtWebEngine. Он оборачивает WhatsApp Web в полноценное нативное окно рабочего стола с интеграцией в системный трей, уведомлениями рабочего стола, проверкой орфографии, темами и поддержкой нескольких аккаунтов — гораздо приятнее, чем вкладка браузера.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важны последние версии:</strong> ZapZap выпускает частые релизы с новыми функциями, вариантами оформления, улучшениями производительности и исправлениями, которые поддерживают его в соответствии с WhatsApp Web. Последние версии приносят улучшенные уведомления, лучшую поддержку Wayland и обновлённое оформление — этот репозиторий пересобирает их в течение нескольких часов после каждого релиза upstream.
+        </div>
+
+        <h3>⚡ Ключевые возможности ZapZap</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔔 Трей и уведомления</h4>
+                <p>Значок в системном трее со счётчиком непрочитанных и нативные уведомления рабочего стола, чтобы сообщения доходили до вас без открытого браузера.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👥 Несколько аккаунтов</h4>
+                <p>Запускайте несколько аккаунтов WhatsApp одновременно в одном окне, каждый в своей изолированной сессии.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Темы и оформление</h4>
+                <p>Светлые, тёмные и пользовательские темы с настройками оформления, которые адаптируют WhatsApp Web под ваш рабочий стол.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✍️ Проверка орфографии</h4>
+                <p>Встроенная проверка орфографии на нескольких языках во время набора сообщений.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Wayland и X11</h4>
+                <p>Работает нативно как в современных сессиях Wayland, так и в X11, с интеграцией рабочего стола Qt6.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Настройки конфиденциальности</h4>
+                <p>Настраивайте предпросмотр уведомлений, поведение трея и системную интеграцию так, как вам нужно от WhatsApp.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов после релиза upstream. Простой <code>apt upgrade</code> всегда держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Шаг 1: Добавить репозиторий</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 2: Установить ZapZap</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Установить с sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Установить от root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest ZapZap
+sudo apt install zapzap
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest ZapZap
+apt install zapzap
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Запуск ZapZap</h3>
+
+        <p><strong>С рабочего стола:</strong> откройте меню приложений и запустите <strong>ZapZap</strong> — затем отсканируйте QR-код телефоном (WhatsApp → Связанные устройства), чтобы подключиться.</p>
+        <div class="code-block">
+# Or launch it from a terminal
+zapzap
+        </div>
+
+        <p><strong>Поддержание в актуальном состоянии:</strong> новые релизы приходят через обычное обновление системы.</p>
+        <div class="code-block">
+# Update ZapZap along with the rest of the system
+sudo apt update
+sudo apt upgrade
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Сравнение методов установки:</strong>
+            <ul>
+                <li><strong>Официальный Debian:</strong> ZapZap не упакован — apt install вообще недоступен</li>
+                <li><strong>Flatpak / Snap:</strong> Дополнительная среда выполнения, особенности песочницы и более крупные загрузки</li>
+                <li><strong>Ручной .deb:</strong> Нет автоматических обновлений, легко отстать</li>
+                <li><strong>deb.griffo.io:</strong> Нативный apt-пакет с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Последний релиз:</strong> Новейшие функции и исправления ZapZap с точным отслеживанием upstream</li>
+            <li>✅ <strong>Автоматические обновления:</strong> Пакеты обновляются в течение нескольких часов после выпуска upstream</li>
+            <li>✅ <strong>Без ручной настройки:</strong> Правильный .deb со всеми зависимостями Qt6 и WhatsApp</li>
+            <li>✅ <strong>Правильная интеграция:</strong> Ярлык приложения, значок, трей и уведомления работают из коробки</li>
+            <li>✅ <strong>Мульти-дистрибутив:</strong> Работает на Bookworm, Trixie, Forky и Sid</li>
+            <li>✅ <strong>Простое обслуживание:</strong> Стандартные команды apt для обновлений</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🔓 Свободный и открытый исходный код:</strong> ZapZap распространяется под лицензией GNU GPL-3.0. Соответствующие пакеты с исходным кодом публикуются вместе с каждой сборкой, поэтому репозиторий полностью соответствует GPL.
+        </div>
+
+        <h3>📦 Репозиторий сборки пакетов</h3>
+        <p>Пакеты Debian собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zapzap-debian" target="_blank" rel="noopener">💬 zapzap-debian</a> — сборки последних релизов</li>
+        </ul>
+
+        <h3>🔗 Связанные пакеты</h3>
+        <p>Также доступны из deb.griffo.io:</p>
+        <ul>
+            <li><a href="/ru/install-latest-ghostty-in-debian.html">Терминал Ghostty</a> — быстрый терминал с GPU-ускорением</li>
+            <li><a href="/ru/install-latest-neovim-in-debian.html">Neovim</a> — гиперрасширяемый текстовый редактор</li>
+            <li><a href="/ru/install-latest-termusic-in-debian.html">Termusic</a> — терминальный музыкальный плеер</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально для:</strong> Пользователей настольного Linux, которым нужен WhatsApp в отдельном окне, тех, кто не любит держать открытой вкладку браузера, и всех, кто управляет несколькими аккаунтами WhatsApp в Debian.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "ru",
+    "headline": "Install Latest ZapZap WhatsApp Desktop Client on Debian",
+    "description": "Complete guide to installing the latest ZapZap WhatsApp desktop client on Debian using the deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-24",
+    "dateModified": "2026-07-24",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ZapZap",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "An unofficial WhatsApp desktop client for Linux, built with Python and PyQt6"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли ZapZap в официальных репозиториях Debian?</summary><p>Нет — ZapZap не упакован в официальных архивах Debian. Этот репозиторий сейчас единственный источник apt и предлагает ZapZap 7.0.3.</p></details>
+<details><summary>Как установить последнюю версию ZapZap в Debian?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zapzap. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Debian поддерживаются?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли ZapZap в официальных репозиториях Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Нет — ZapZap не упакован в официальных архивах Debian. Этот репозиторий сейчас единственный источник apt и предлагает ZapZap 7.0.3."}}, {"@type": "Question", "name": "Как установить последнюю версию ZapZap в Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install zapzap. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Debian поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky и Sid."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>

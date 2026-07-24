@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalar ZapZap 7.0.3 en Ubuntu vía apt (siempre actualizado)</title>
+    <meta name="description" content="ZapZap no está en los archivos oficiales de Ubuntu — consigue el cliente de escritorio de WhatsApp ZapZap 7.0.3 vía apt para Jammy, Noble, Questing y Resolute. Firmado con GPG, recompilado pocas horas después de cada versión.">
+    <meta name="keywords" content="zapzap ubuntu, install zapzap ubuntu, whatsapp ubuntu, whatsapp desktop linux, whatsapp client linux, pyqt6 whatsapp, whatsapp ppa, jammy, noble, questing, apt zapzap">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/es/install-latest-zapzap-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zapzap-in-ubuntu.html">
+    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zapzap-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/es/install-latest-zapzap-in-ubuntu.html">
+    <meta property="og:title" content="Instalar ZapZap 7.0.3 en Ubuntu vía apt (siempre actualizado)">
+    <meta property="og:description" content="ZapZap no está en los archivos oficiales de Ubuntu — consigue el cliente de escritorio de WhatsApp ZapZap 7.0.3 vía apt para Jammy, Noble, Questing y Resolute. Firmado con GPG, recompilado pocas horas después de cada versión.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Tus herramientas, siempre al día — automáticamente
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian y Ubuntu congelan las versiones de los paquetes durante años. Este espejo sigue <strong>más de 30 herramientas</strong> y publica cada nueva versión upstream <strong>en cuestión de horas</strong>, firmada con GPG y directa a <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Un solo <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> y todo queda actualizado. Sin páginas de lanzamientos que vigilar, sin versiones que comparar, sin <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code> manual.<br>
+            Una <strong>suscripción anual</strong> mantiene esa automatización en marcha. ¿Prefieres actualizar a mano? Cada .deb sigue siendo gratis en GitHub. ¡Gracias! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Mantener mis herramientas actualizadas
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> al año — en dólares (USD) si tu moneda no está soportada.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>¿Preguntas, problemas o cualquier cosa sobre este repositorio?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda y conectar con otros usuarios.<br>
+            ☕ <strong>¿Apoyaste anteriormente a través de Buy Me a Coffee?</strong> ¡Eres increíble! Pásate por nuestro <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> y te gestionaremos una <strong>suscripción vitalicia gratuita</strong>. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20 de julio de 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>💬 Instalar la última versión de ZapZap en Ubuntu</h1>
+        <p class="subtitle">An unofficial WhatsApp desktop client for Linux, built with Python and PyQt6</p>
+        <div class="version-badge">Última versión: 7.0.3 · actualizado 2026-07-24</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">7.0.3 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 no empaquetado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/es/" class="back-link">← Volver al inicio</a>
+
+        <div class="notice-box"><strong>📌 ¿Instalando en una versión específica?</strong> <a href="/install-zapzap-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-zapzap-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-zapzap-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-zapzap-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>¿Qué es ZapZap?</h2>
+        <p>ZapZap is an <strong>unofficial WhatsApp desktop client for Linux</strong>, written in Python with PyQt6 and QtWebEngine. It wraps WhatsApp Web in a proper native-feeling desktop window with system tray integration, desktop notifications, spell check, themes and multi-account support — a far nicer experience than a browser tab.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importan las últimas versiones:</strong> ZapZap ships frequent releases with new features, appearance options, performance work and fixes that keep it in step with WhatsApp Web. The latest versions bring improved notifications, better Wayland support and refreshed theming — this repository rebuilds them within hours of each upstream release.
+        </div>
+
+        <h3>⚡ Key Features of ZapZap</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔔 Tray &amp; Notifications</h4>
+                <p>System tray icon with unread badge and native desktop notifications, so messages reach you without keeping a browser open.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👥 Multiple Accounts</h4>
+                <p>Run several WhatsApp accounts side by side in a single window, each kept in its own isolated session.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Themes &amp; Appearance</h4>
+                <p>Light, dark and custom themes, with appearance controls that make WhatsApp Web fit your desktop.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✍️ Spell Check</h4>
+                <p>Built-in spell checking across multiple languages while you type your messages.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Wayland &amp; X11</h4>
+                <p>Runs natively on modern Wayland sessions as well as X11, with Qt6 desktop integration.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Privacy Controls</h4>
+                <p>Tune notification previews, tray behaviour and system integration to match how you want WhatsApp to behave.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes al publicar cada versión — este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene siempre en la última versión.
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Paso 1: Agregar repositorio</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 2: Instalar ZapZap</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Install latest ZapZap
+sudo apt install zapzap
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Install latest ZapZap
+apt install zapzap
+                </div>
+            </div>
+        </div>
+
+        <h3>🎯 Iniciar ZapZap</h3>
+
+        <p><strong>From your desktop:</strong> open your application menu and start <strong>ZapZap</strong> — then scan the QR code with your phone (WhatsApp → Linked devices) to connect.</p>
+        <div class="code-block">
+# Or launch it from a terminal
+zapzap
+        </div>
+
+        <p><strong>Keeping it up to date:</strong> new releases arrive through the normal system upgrade.</p>
+        <div class="code-block">
+# Update ZapZap along with the rest of the system
+sudo apt update
+sudo apt upgrade
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="performance-box">
+            <strong>📊 Installation Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> ZapZap is not packaged — no apt install at all</li>
+                <li><strong>Snap / Flatpak:</strong> Extra runtime, sandbox quirks and larger downloads</li>
+                <li><strong>Manual .deb:</strong> No automatic updates, easy to fall behind</li>
+                <li><strong>deb.griffo.io:</strong> Native apt package with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Latest Release:</strong> Newest ZapZap features and fixes, tracking upstream closely</li>
+            <li>✅ <strong>Automatic Updates:</strong> Packages updated within hours of upstream releases</li>
+            <li>✅ <strong>No Manual Setup:</strong> Proper .deb with all Qt6 and WhatsApp dependencies pulled in</li>
+            <li>✅ <strong>Proper Integration:</strong> Desktop entry, icon, tray and notifications work out of the box</li>
+            <li>✅ <strong>Multi-Distribution:</strong> Works on Jammy, Noble, Questing and Resolute</li>
+            <li>✅ <strong>Easy Maintenance:</strong> Standard apt commands for updates</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🔓 Libre y de código abierto:</strong> ZapZap is licensed under the GNU GPL-3.0. The corresponding source packages are published alongside every build, so the repository ships fully GPL-compliant.
+        </div>
+
+        <h3>📦 Repositorio de construcción de paquetes</h3>
+        <p>Los paquetes de Ubuntu se construyen y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/zapzap-debian" target="_blank" rel="noopener">💬 zapzap-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponible desde deb.griffo.io:</p>
+        <ul>
+            <li><a href="/es/install-latest-ghostty-in-ubuntu.html">Ghostty Terminal</a> - Fast GPU-accelerated terminal</li>
+            <li><a href="/es/install-latest-neovim-in-ubuntu.html">Neovim</a> - Hyperextensible text editor</li>
+            <li><a href="/es/install-latest-termusic-in-ubuntu.html">Termusic</a> - Terminal music player</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfecto para:</strong> Linux desktop users who want WhatsApp in its own window, people who dislike keeping a browser tab open, and anyone juggling multiple WhatsApp accounts on Ubuntu.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Install Latest ZapZap WhatsApp Desktop Client on Ubuntu",
+    "description": "Complete guide to installing the latest ZapZap WhatsApp desktop client on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-24",
+    "dateModified": "2026-07-24",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ZapZap",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "An unofficial WhatsApp desktop client for Linux, built with Python and PyQt6"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está ZapZap en los repositorios oficiales de Ubuntu?</summary><p>No — ZapZap no está empaquetado en los archivos oficiales de Ubuntu. Este repositorio es actualmente la única fuente apt y ofrece ZapZap 7.0.3.</p></details>
+<details><summary>¿Cómo instalo el último ZapZap en Ubuntu?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install zapzap. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Ubuntu son compatibles?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing y 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está ZapZap en los repositorios oficiales de Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "No — ZapZap no está empaquetado en los archivos oficiales de Ubuntu. Este repositorio es actualmente la única fuente apt y ofrece ZapZap 7.0.3."}}, {"@type": "Question", "name": "¿Cómo instalo el último ZapZap en Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install zapzap. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Ubuntu son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing y 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
