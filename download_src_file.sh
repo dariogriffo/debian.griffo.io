@@ -57,10 +57,18 @@ download_src_pair() {
     done
 }
 
-# .orig.tar.gz is shared across all distributions — download once
-ORIG_FILE="${PACKAGE_NAME}_${PACKAGE_VERSION}.orig.tar.gz"
+# The orig tarball is shared across all distributions — download once. Its
+# compression follows whatever upstream ships (fish, for instance, releases a
+# .tar.xz), so try each in turn and stop at the one that exists.
 echo "Downloading orig tarball..."
-download_file "${BASE_URL}/${ORIG_FILE}" "${ORIG_FILE}"
+for ext in gz xz bz2; do
+    ORIG_FILE="${PACKAGE_NAME}_${PACKAGE_VERSION}.orig.tar.${ext}"
+    if [ "$(http_status "${BASE_URL}/${ORIG_FILE}")" = "200" ]; then
+        download_file "${BASE_URL}/${ORIG_FILE}" "${ORIG_FILE}"
+        break
+    fi
+    echo "  [SKIP]   ${ORIG_FILE} (not published)"
+done
 echo ""
 
 declare -a DEBIAN_DISTS=("bookworm" "trixie" "forky" "sid")
