@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ripgrep 15.2.0 unter Ubuntu mit apt installieren (neueste Version)</title>
+    <meta name="description" content="Das offizielle Ubuntu liefert ripgrep 15.1.0 — dieses Repository hat ripgrep 15.2.0. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta name="keywords" content="ripgrep ubuntu, ripgrep ubuntu installieren, rg Befehl, rekursives grep, grep Alternative, Rust Suchwerkzeug, ubuntu Pakete, jammy, noble, burntsushi, apt ripgrep">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-ripgrep-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-ripgrep-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-ripgrep-in-ubuntu.html">
+    <meta property="og:title" content="ripgrep 15.2.0 unter Ubuntu mit apt installieren (neueste Version)">
+    <meta property="og:description" content="Das offizielle Ubuntu liefert ripgrep 15.1.0 — dieses Repository hat ripgrep 15.2.0. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Deine Werkzeuge, immer aktuell — automatisch
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian und Ubuntu frieren Paketversionen für Jahre ein. Dieser Spiegel verfolgt <strong>über 30 Entwickler-Werkzeuge</strong> und veröffentlicht jede neue Upstream-Version <strong>innerhalb von Stunden</strong> — GPG-signiert, direkt in <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Ein <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> und alles ist aktuell. Keine Release-Seiten beobachten, keine Versionen vergleichen, kein manuelles <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            Ein <strong>Jahresabonnement</strong> hält diese Automatisierung am Laufen. Lieber von Hand aktualisieren? Jedes .deb bleibt kostenlos auf GitHub. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Meine Werkzeuge automatisch aktuell halten
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20. Juli 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🔎 Neuestes ripgrep unter Ubuntu installieren</h1>
+        <p class="subtitle">Durchsucht Verzeichnisse rekursiv nach einem Regex-Muster und respektiert dabei deine gitignore</p>
+        <div class="version-badge">Neueste Version: 15.2.0 · aktualisiert 2026-08-10</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">15.2.0 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">15.1.0 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-ripgrep-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-ripgrep-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-ripgrep-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-ripgrep-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist ripgrep?</h2>
+        <p>ripgrep (der Befehl <code>rg</code>) ist ein <strong>zeilenorientiertes Suchwerkzeug</strong>, geschrieben in Rust von Andrew Gallant. Es durchsucht das aktuelle Verzeichnis rekursiv nach einem Regex-Muster, respektiert dabei deine <code>.gitignore</code>-Regeln und überspringt versteckte, ignorierte und binäre Dateien automatisch. Es ist die Suchmaschine hinter Editoren wie VS Code und in der Regel schneller als GNU grep, The Silver Searcher und ack.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> ripgrep gewinnt zwischen Releases echte Funktionalität — Hyperlinks, um direkt in den Editor zu springen, <code>--engine auto</code> für transparenten PCRE2-Fallback, reichhaltigere <code>--json</code>-Ausgabe und stetige Durchsatzgewinne in der Regex-Engine. Die Archivversion ist älter als das meiste davon.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von ripgrep</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🚀 Extrem schnell</h4>
+                <p>Eine Regex-Engine auf Basis endlicher Automaten, SIMD-Literalsuche, Memory Maps und paralleles Durchlaufen von Verzeichnissen machen es auf großen Bäumen schneller als grep.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🙈 Respektiert .gitignore</h4>
+                <p>Überspringt standardmäßig ignorierte, versteckte und binäre Dateien, sodass die Treffer die sind, die dich interessieren. Mit <code>-u</code>, <code>-uu</code> oder <code>-uuu</code> übersteuerbar.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌍 Volle Unicode-Unterstützung</h4>
+                <p>Standardmäßig Unicode-fähig — Zeichenklassen, Groß-/Kleinschreibung, Wortgrenzen und Graphem-Behandlung funktionieren korrekt, ohne nennenswerten Geschwindigkeitsverlust.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 PCRE2-Regex</h4>
+                <p><code>-P</code> aktiviert Look-around und Rückwärtsreferenzen. In diesem Build ist PCRE2 einkompiliert, es funktioniert also sofort und mit JIT.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📄 Filtern nach Dateityp</h4>
+                <p>Beschränke die Suche mit <code>-t rust</code> auf eine Sprache, schließe mit <code>-T html</code> aus oder definiere eigene Typen. Über 800 Globs sind eingebaut.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔁 Mehrzeilig &amp; Ersetzen</h4>
+                <p>Suche über Zeilengrenzen hinweg mit <code>-U</code>, sieh dir Ersetzungen mit <code>-r</code> an und gib strukturierte Ergebnisse mit <code>--json</code> aus.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer den offiziellen Archiven voraus:</strong> Debian und Ubuntu frieren Paketversionen beim Release ein — dieses Repository veröffentlicht neue Upstream-Releases typischerweise innerhalb von Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: ripgrep installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Neuestes ripgrep installieren
+sudo apt install ripgrep
+
+# Installation überprüfen
+rg --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Neuestes ripgrep installieren
+apt install ripgrep
+
+# Installation überprüfen
+rg --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: Shell-Vervollständigung</h3>
+            <div class="code-block">
+# Vervollständigungen für bash, zsh und fish liegen dem Paket bei —
+# nichts zu konfigurieren. Öffne eine neue Shell und drücke Tab:
+rg --ty&lt;Tab&gt;
+
+# Die Handbuchseite wird ebenfalls installiert
+man rg
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Alltägliche Suche:</strong></p>
+        <div class="code-block">
+# Aktuellen Verzeichnisbaum durchsuchen
+rg 'TODO'
+
+# Groß-/Kleinschreibung ignorieren, ganzes Wort
+rg -i -w 'timeout'
+
+# 3 Zeilen Kontext um jeden Treffer anzeigen
+rg -C 3 'panic!'
+
+# Nur die Dateien mit Treffern auflisten
+rg -l 'BurntSushi'
+        </div>
+
+        <p><strong>Eingrenzen, was durchsucht wird:</strong></p>
+        <div class="code-block">
+# Nur Rust-Dateien
+rg -t rust 'unsafe'
+
+# Alles außer HTML und CSS
+rg -T html -T css 'font-size'
+
+# Ignorierte und versteckte Dateien einbeziehen
+rg -uu 'password'
+
+# Mit einem Glob eingrenzen
+rg -g '*.toml' 'version'
+        </div>
+
+        <p><strong>Mehr als nur grep:</strong></p>
+        <div class="code-block">
+# Look-around und Rückwärtsreferenzen via PCRE2
+rg -P '(?&lt;=fn )\w+' src/
+
+# Über Zeilengrenzen hinweg suchen
+rg -U 'struct \w+ \{\n[^}]*pub'
+
+# Ersetzung ansehen (schreibt keine Dateien)
+rg 'v(\d+)\.(\d+)' -r 'v$1.$2.0'
+
+# Strukturierte Ausgabe für Skripte
+rg --json 'error' | jq -r 'select(.type=="match") | .data.path.text'
+        </div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrationen</h4>
+            <p>ripgrep ist das Such-Backend, das viele andere Werkzeuge erwarten:</p>
+            <ul>
+                <li><strong>fzf:</strong> interaktives grep mit Live-Reload und <code>rg</code> als Quelle</li>
+                <li><strong>Neovim / Telescope:</strong> <code>live_grep</code> nutzt ripgrep, wenn es im PATH liegt</li>
+                <li><strong>Helix:</strong> die globale Suche basiert auf denselben Bibliotheken</li>
+                <li><strong>bat:</strong> syntaxhervorgehobene Vorschauen der Treffer</li>
+                <li><strong>Yazi:</strong> Dateimanager-Suche auf Basis von ripgrep</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> verfügbar, aber eingefroren auf der Version, mit der das Release erschien</li>
+                <li><strong>Manuelle Installation:</strong> erfordert eine Rust-Toolchain oder das händische Verwalten von Binary und Vervollständigungen</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Neueste Funktionen:</strong> die aktuellsten Optionen, Engine-Verbesserungen und Performance-Arbeit</li>
+            <li>✅ <strong>Keine manuelle Einrichtung:</strong> vorgefertigte Binaries, kein cargo build nötig</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden wenige Stunden nach Upstream-Releases aktualisiert</li>
+            <li>✅ <strong>Vollständiges Paket:</strong> <code>rg</code>, die Handbuchseite <code>rg.1</code> und Vervollständigungen für bash/zsh/fish</li>
+            <li>✅ <strong>Keine Abhängigkeiten:</strong> statisch gelinkter musl-Build mit einkompiliertem PCRE2</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Standard-apt-Befehle für Updates</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ripgrep-debian" target="_blank" rel="noopener">🔎 ripgrep-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls verfügbar auf deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf</a> - Fuzzy-Finder, der sich mit ripgrep zur interaktiven Suche kombinieren lässt</li>
+            <li><a href="/install-latest-eza-in-ubuntu.html">eza</a> - Moderner ls-Ersatz</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Intelligenter cd-Befehl</li>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - Nutzt ripgrep für die Dateisuche</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal für:</strong> Entwickler, die große Codebasen durchsuchen, alle, die ein grep wollen, das <code>.gitignore</code> standardmäßig beachtet, Editor- und Tooling-Setups, die <code>rg</code> aufrufen, und Nutzer, denen Suchgeschwindigkeit auf großen Verzeichnisbäumen wichtig ist.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Neuestes ripgrep unter Ubuntu installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten rekursiven Suchwerkzeugs ripgrep unter Ubuntu über das deb.griffo.io-Repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-10",
+    "dateModified": "2026-08-10",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ripgrep",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Zeilenorientiertes rekursives Suchwerkzeug, das gitignore-Regeln beachtet, mit Unicode-Unterstützung und optionalem PCRE2-Regex"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>15.2.0</code> — 2026-08-10</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist ripgrep in den offiziellen Ubuntu-Paketquellen?</summary><p>Ja, aber das offizielle Ubuntu-Archiv liefert ripgrep 15.1.0, während dieses Repository ripgrep 15.2.0 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut.</p></details>
+<details><summary>Wie installiere ich das neueste ripgrep unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install ripgrep. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist ripgrep in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, aber das offizielle Ubuntu-Archiv liefert ripgrep 15.1.0, während dieses Repository ripgrep 15.2.0 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut."}}, {"@type": "Question", "name": "Wie installiere ich das neueste ripgrep unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install ripgrep. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Alle Rechte vorbehalten. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
