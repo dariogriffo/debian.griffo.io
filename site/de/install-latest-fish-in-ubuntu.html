@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fish 4.8.1 unter Ubuntu mit apt installieren (neueste Version)</title>
+    <meta name="description" content="Das offizielle Ubuntu liefert fish 4.2.1 — dieses Repository hat fish 4.8.1. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta name="keywords" content="fish ubuntu, fish ubuntu installieren, fish Shell, benutzerfreundliche Shell, ubuntu Pakete, jammy, noble, fish-shell, apt fish">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-fish-in-ubuntu.html">
+    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-fish-in-ubuntu.html">
+    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-fish-in-ubuntu.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-fish-in-ubuntu.html">
+    <meta property="og:title" content="fish 4.8.1 unter Ubuntu mit apt installieren (neueste Version)">
+    <meta property="og:description" content="Das offizielle Ubuntu liefert fish 4.2.1 — dieses Repository hat fish 4.8.1. Ein apt-Befehl für Ubuntu 22.04, 24.04, 25.10 und 26.04; GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Deine Werkzeuge, immer aktuell — automatisch
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian und Ubuntu frieren Paketversionen für Jahre ein. Dieser Spiegel verfolgt <strong>über 30 Entwickler-Werkzeuge</strong> und veröffentlicht jede neue Upstream-Version <strong>innerhalb von Stunden</strong> — GPG-signiert, direkt in <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            Ein <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> und alles ist aktuell. Keine Release-Seiten beobachten, keine Versionen vergleichen, kein manuelles <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            Ein <strong>Jahresabonnement</strong> hält diese Automatisierung am Laufen. Lieber von Hand aktualisieren? Jedes .deb bleibt kostenlos auf GitHub. Vielen Dank! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Meine Werkzeuge automatisch aktuell halten
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
+            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20. Juli 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>🐟 Neuestes fish unter Ubuntu installieren</h1>
+        <p class="subtitle">Die freundliche interaktive Shell</p>
+        <div class="version-badge">Neueste Version: 4.8.1 · aktualisiert 2026-08-11</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">4.8.1 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">4.2.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-fish-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-fish-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-fish-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-fish-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist fish?</h2>
+        <p>fish ist eine <strong>intelligente und benutzerfreundliche Kommandozeilen-Shell</strong>. Sie schlägt beim Tippen den Rest des Befehls aus deiner History und den Vervollständigungen vor, hebt die Syntax sofort hervor, erzeugt Tab-Vervollständigungen aus den installierten Handbuchseiten und verzichtet auf die kryptischen Quoting-Regeln, die andere Shells geerbt haben. Alles funktioniert sofort — es muss nichts konfiguriert werden, damit fish angenehm ist.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> fish 4 wurde in Rust neu geschrieben und entwickelt sich seitdem schnell weiter: schnellerer Start, bessere Vervollständigungen und laufend Feinschliff bei der Bedienung. Die im Archiv eingefrorene Version ist älter als vieles davon.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von fish</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>💡 Autovorschläge</h4>
+                <p>Beim Tippen schlägt fish den Rest des Befehls aus History und Vervollständigungen vor. Mit → übernimmst du ihn.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Syntaxhervorhebung</h4>
+                <p>Befehle werden beim Schreiben eingefärbt, sodass ein Tippfehler oder ein offenes Anführungszeichen vor dem Enter auffällt.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ Vervollständigung aus Handbuchseiten</h4>
+                <p>fish wertet die installierten Manpages aus und erzeugt daraus Vervollständigungen — selbst exotische Tools vervollständigen ihre Optionen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Vernünftiges Skripting</h4>
+                <p>Keine Überraschungen durch Wortauftrennung, kein <code>[[ ]]</code> gegen <code>[ ]</code>, und echte Listen. Skripte lesen sich so, wie sie sich verhalten.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Durchsuchbare History</h4>
+                <p>Präfix tippen und ↑ drücken, um nur die passenden Befehle durchzugehen — inklusive Teilstring-Suche.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Konfiguration im Browser</h4>
+                <p><code>fish_config</code> öffnet eine Oberfläche für Prompts, Farben, Funktionen und Tastenbelegungen — ohne Dotfile-Archäologie.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer den offiziellen Archiven voraus:</strong> Debian und Ubuntu frieren Paketversionen beim Release ein — dieses Repository veröffentlicht neue Upstream-Releases typischerweise innerhalb von Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository hinzufügen</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: fish installieren</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
+            </div>
+
+            <div id="sudo-tab-2" class="tab-content active">
+                <div class="code-block">
+# Neuestes fish installieren
+sudo apt install fish
+
+# Installation überprüfen
+fish --version
+                </div>
+            </div>
+
+            <div id="root-tab-2" class="tab-content">
+                <div class="code-block">
+# Neuestes fish installieren
+apt install fish
+
+# Installation überprüfen
+fish --version
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: fish zur Shell machen</h3>
+            <div class="code-block">
+# fish als Login-Shell setzen — das Paket hat sie bereits in /etc/shells eingetragen
+chsh -s /usr/bin/fish
+
+# Oder einfach nur für diese Sitzung starten
+exec fish
+
+# Prompt, Farben und Tastenbelegung anpassen
+fish_config
+            </div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Alltägliche interaktive Nutzung:</strong></p>
+        <div class="code-block">
+# Den ausgegrauten Vorschlag übernehmen
+→   # oder Ctrl-F
+
+# Die History nach allen Befehlen durchsuchen, die mit git beginnen
+git↑
+
+# In ein Verzeichnis wechseln, ohne cd zu tippen
+/etc/apt
+
+# Die browserbasierte Konfiguration öffnen
+fish_config
+        </div>
+
+        <p><strong>Skripting ohne Fallstricke:</strong></p>
+        <div class="code-block">
+# Listen sind echte Listen — keine Wortauftrennung
+set files *.txt; echo (count $files) Dateien
+
+# Befehlssubstitution braucht keine Backticks
+echo "heute ist "(date +%A)
+
+# Bedingungen lesen sich wie Text
+if test -f /etc/os-release; echo gefunden; end
+
+# Über eine Liste iterieren
+for f in *.md; echo verarbeite $f; end
+        </div>
+
+        <p><strong>Anpassen:</strong></p>
+        <div class="code-block">
+# Eine Funktion definieren und dauerhaft speichern
+function ll; ls -lh $argv; end; funcsave ll
+
+# Abkürzungen expandieren beim Tippen, anders als Aliase
+abbr -a gco git checkout
+
+# Dauerhaft zum PATH hinzufügen, ohne Dotfile-Bearbeitung
+fish_add_path ~/.local/bin
+
+# Eine universelle Variable setzen, die alle Sitzungen teilen
+set -U EDITOR nvim
+        </div>
+
+        <div class="integration-box">
+            <h4>🔧 Passt gut zu</h4>
+            <p>fish ist im modernen Terminal-Werkzeugkasten erstklassig unterstützt:</p>
+            <ul>
+                <li><strong>starship:</strong> Shell-übergreifender Prompt mit nativer fish-Unterstützung</li>
+                <li><strong>zoxide:</strong> <code>zoxide init fish</code> und per Frecency in Verzeichnisse springen</li>
+                <li><strong>fzf:</strong> bringt fish-Tastenbelegungen für History und Dateisuche mit</li>
+                <li><strong>atuin:</strong> ersetzt fish' History durch eine durchsuchbare, synchronisierte Datenbank</li>
+                <li><strong>Oh My Posh:</strong> eine weitere Prompt-Engine mit fish-Initialisierung</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io wählen?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> verfügbar, aber eingefroren auf der Version, mit der das Release erschien</li>
+                <li><strong>Manuelle Installation:</strong> erfordert eine Rust-Toolchain und CMake oder das händische Verwalten eines Binaries</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Neueste Funktionen:</strong> die aktuellsten Verbesserungen bei Bedienung und Performance</li>
+            <li>✅ <strong>Keine manuelle Einrichtung:</strong> vorgefertigte Binaries, kein cargo build nötig</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden wenige Stunden nach Upstream-Releases aktualisiert</li>
+            <li>✅ <strong>Vollständiges Paket:</strong> <code>fish</code>, <code>fish_indent</code>, <code>fish_key_reader</code> und die Handbuchseiten</li>
+            <li>✅ <strong>Keine Abhängigkeiten:</strong> statisch gelinkter musl-Build; Funktionen und Vervollständigungen sind eingebettet, ein fish-common entfällt</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Standard-apt-Befehle für Updates</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fish-shell-debian" target="_blank" rel="noopener">🐟 fish-shell-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls verfügbar auf deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-starship-in-ubuntu.html">Starship</a> - Shell-übergreifender Prompt mit nativer fish-Unterstützung</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Schlaueres cd, mit fish-Initialisierung</li>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf</a> - Fuzzy-Finder mit fish-Tastenbelegungen</li>
+            <li><a href="/install-latest-atuin-in-ubuntu.html">Atuin</a> - Shell-History, die sich wirklich durchsuchen lässt</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal für:</strong> alle, die eine Shell wollen, die von Haus aus hilfreich ist, Entwickler, die keine Lust mehr haben, Vervollständigungen und Prompts von Hand einzurichten, und alle, die oft genug Shell-Skripte schreiben, um POSIX-Quoting zu verabscheuen.
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Neuestes fish unter Ubuntu installieren",
+    "description": "Vollständige Anleitung zur Installation der neuesten fish-Shell unter Ubuntu über das deb.griffo.io-Repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-10",
+    "dateModified": "2026-08-11",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "fish",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Benutzerfreundliche interaktive Shell mit Autovorschlägen, Syntaxhervorhebung und Vervollständigungen aus Handbuchseiten"
+    }
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>4.8.1</code> — 2026-08-11</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist fish in den offiziellen Ubuntu-Paketquellen?</summary><p>Ja, aber das offizielle Ubuntu-Archiv liefert fish 4.2.1, während dieses Repository fish 4.8.1 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut.</p></details>
+<details><summary>Wie installiere ich das neueste fish unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install fish. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist fish in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, aber das offizielle Ubuntu-Archiv liefert fish 4.2.1, während dieses Repository fish 4.8.1 bereitstellt — wenige Stunden nach jedem Upstream-Release neu gebaut."}}, {"@type": "Question", "name": "Wie installiere ich das neueste fish unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install fish. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+<footer>
+    <p>&copy; 2025 Dario Griffo. Alle Rechte vorbehalten. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
