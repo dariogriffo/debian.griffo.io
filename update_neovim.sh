@@ -7,19 +7,19 @@ PWD=$(pwd)
 find deb/ -mindepth 2 -type f -name "neovim-latest*" -delete
 
 # amd64 binary packages — Debian and Ubuntu
-PACKAGE_NAME=neovim-latest
+PACKAGE_NAME=neovim
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
-PACKAGE_NAME=neovim-latest-unstripped
+PACKAGE_NAME=neovim-unstripped
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 
 # architecture-independent runtime (arch: all)
-PACKAGE_NAME=neovim-latest-runtime
+PACKAGE_NAME=neovim-runtime
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} all
 ./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} all
 
-PACKAGE_NAME=neovim-latest
+PACKAGE_NAME=neovim
 cd ${PWD}
 
 find src/ -type f -name "*${PACKAGE_NAME}*" -delete 2>/dev/null || true
