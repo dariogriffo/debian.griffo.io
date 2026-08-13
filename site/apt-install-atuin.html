@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>apt install atuin on Debian and Ubuntu — Always the Latest Release</title>
+    <meta name="description" content="How to apt install atuin on Debian and Ubuntu and always get the latest release. The official Debian and Ubuntu archives freeze package versions for years; this signed APT repository rebuilds atuin within hours of every upstream release, so apt upgrade keeps it current.">
+    <meta name="keywords" content="apt install atuin, apt install latest atuin, apt-get install atuin, apt atuin, install atuin debian ubuntu, atuin apt repository, latest atuin apt">
+    <meta name="author" content="Dario Griffo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://deb.griffo.io/apt-install-atuin.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://deb.griffo.io/apt-install-atuin.html">
+    <meta property="og:title" content="apt install atuin on Debian and Ubuntu — Always the Latest Release">
+    <meta property="og:description" content="One apt command for atuin on Debian and Ubuntu, kept current within hours of every upstream release.">
+    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
+    <div style="max-width: 860px; margin: 0 auto;">
+        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
+            ⚡ Your tools, always current — automatically
+        </p>
+        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
+            Debian and Ubuntu freeze package versions for years. This mirror tracks <strong>30+ developer tools</strong> and publishes each new upstream release <strong>within hours</strong> — GPG-signed, straight into <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
+            One <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> and everything is current. No release pages to watch, no versions to compare, no manual <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
+            A <strong>yearly subscription</strong> keeps that automation running. Prefer to update by hand? Every .deb stays free on GitHub. Thank you! 🙏
+        </p>
+        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
+           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
+           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
+            ⚡ Keep my tools updated automatically
+        </a>
+        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> per year — US dollars if your currency isn't supported.</p>
+        <script>
+        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
+        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
+        if(tz==="Europe/London"){v="\u00a315";}
+        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
+        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
+        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
+        </script>
+        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
+            💬 <strong>Questions, issues or anything about this repo?</strong> Join our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord community</a> — the best place to get help and connect with other users.<br>
+            ☕ <strong>Previously supported via Buy Me a Coffee?</strong> You are wonderful! Head over to our <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> and we will sort out a <strong>free lifetime subscription</strong> for you. 💜
+        </p>
+        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
+            <time datetime="2026-07-20">20 July 2026</time>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="header">
+        <h1>📦 apt install atuin</h1>
+        <p class="subtitle">Install the latest Atuin on Debian — shell history sync, search and stats. Get up-to-date, pre-built packages from deb.griffo.io.</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> On a stock system <code>apt install atuin</code> works, but installs a frozen version (Debian ships 18.6.1, Ubuntu ships 18.8.0) rather than the current 18.19.0. Add the deb.griffo.io
+            repository below and <code>sudo apt install atuin</code> gives you the current
+            release on Debian and Ubuntu alike — currently <code>atuin 18.19.0</code>
+            (updated 2026-08-13).
+        </div>
+
+        <h2>📦 Add the repository, then apt install atuin</h2>
+
+        <div class="install-steps">
+            <h3>Step 1: Add repository &amp; key</h3>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+            </div>
+
+            <div id="sudo-tab-1" class="tab-content active">
+                <div class="code-block">
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-1" class="tab-content">
+                <div class="code-block">
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 2: apt install atuin</h3>
+            <div class="code-block">
+sudo apt install -y atuin
+            </div>
+        </div>
+
+        <h2>🔄 How to apt install the latest atuin</h2>
+        <p>Once the repository is added there is no separate "install latest" command — <code>apt</code>
+        already resolves to the newest version this repository serves, and that is rebuilt within hours of
+        every upstream atuin release. To move an existing install up to the latest version:</p>
+        <div class="code-block">
+sudo apt update &amp;&amp; sudo apt install --only-upgrade atuin
+        </div>
+        <p>Or upgrade everything on the machine at once with <code>sudo apt update &amp;&amp; sudo apt upgrade</code>.
+        To see which version you would get before installing, run <code>apt policy atuin</code>.</p>
+
+        <h2>📋 atuin versions available right now</h2>
+        <h3>Debian</h3>
+        <table class="controls-table">
+            <tr><th>Debian release</th><th>Suite</th><th>atuin version</th></tr>
+            <tr><td>Debian 12 “Bookworm”</td><td>bookworm</td><td><span class="version-badge">18.19.0-1~bookworm</span></td></tr>
+            <tr><td>Debian 13 “Trixie”</td><td>trixie</td><td><span class="version-badge">18.19.0-1~trixie</span></td></tr>
+            <tr><td>Debian 14 “Forky”</td><td>forky</td><td><span class="version-badge">18.19.0-1~forky</span></td></tr>
+            <tr><td>Debian Sid</td><td>sid</td><td><span class="version-badge">18.19.0-1~sid</span></td></tr>
+        </table>
+        <h3>Ubuntu</h3>
+        <table class="controls-table">
+            <tr><th>Ubuntu release</th><th>Suite</th><th>atuin version</th></tr>
+            <tr><td>Ubuntu 22.04 LTS “Jammy Jellyfish”</td><td>jammy</td><td><span class="version-badge">18.19.0-1~jammy</span></td></tr>
+            <tr><td>Ubuntu 24.04 LTS “Noble Numbat”</td><td>noble</td><td><span class="version-badge">18.19.0-1~noble</span></td></tr>
+            <tr><td>Ubuntu 25.10 “Questing Quokka”</td><td>questing</td><td><span class="version-badge">18.19.0-1~questing</span></td></tr>
+            <tr><td>Ubuntu 26.04 LTS “Resolute”</td><td>resolute</td><td><span class="version-badge">18.19.0-1~resolute</span></td></tr>
+        </table>
+
+        <h2>❓ Common questions</h2>
+
+        <h3>Does <code>apt-get install atuin</code> work too?</h3>
+        <p>Yes. <code>apt</code> and <code>apt-get</code> read the same sources, so
+        <code>sudo apt-get install atuin</code> is equivalent. <code>apt</code> is the friendlier
+        front-end; <code>apt-get</code> is the stable one to prefer inside scripts.</p>
+
+        <h3>Why doesn't <code>apt install atuin</code> work out of the box?</h3>
+        <p>It does work, but not with the version most people want: Debian ships 18.6.1, Ubuntu ships 18.8.0, because Debian and Ubuntu freeze package versions when a release ships and afterwards take mostly security fixes. This repository tracks upstream atuin releases instead, rebuilding within hours of each one.</p>
+
+        <h3>Which Debian and Ubuntu releases are supported?</h3>
+        <p>Every currently supported release listed in the table above. The
+        <code>$(lsb_release -sc)</code> in the setup command picks the right suite for the machine you
+        run it on, so the same three lines work everywhere.</p>
+
+        <h3>Is this repository trustworthy?</h3>
+        <p>It's an unofficial repository maintained by
+        <a href="https://github.com/dariogriffo" rel="noopener">Dario Griffo</a>. Packages are built
+        automatically from official upstream atuin releases, the packaging is open source at
+        <a href="https://github.com/dariogriffo/atuin-debian" rel="noopener">dariogriffo/atuin-debian</a>, and the whole
+        archive is GPG-signed. Several upstream projects link to it from their official installation docs.</p>
+
+        <h2>🔗 Related</h2>
+        <ul>
+            <li><a href="/install-latest-atuin-in-debian.html">atuin on Debian — overview and features</a></li>
+            <li><a href="/install-latest-atuin-in-ubuntu.html">atuin on Ubuntu — overview and features</a></li>
+            <li><a href="/atuin-ppa.html">atuin PPA alternative for Ubuntu</a></li>
+            <li><a href="/apt-install-eza.html">apt install eza</a></li>
+            <li><a href="/apt-install-fastfetch.html">apt install fastfetch</a></li>
+            <li><a href="/apt-install-fish.html">apt install fish</a></li>
+            <li><a href="/apt-install-fzf.html">apt install fzf</a></li>
+            <li><a href="/apt-install-just.html">apt install just</a></li>
+            <li><a href="/apt-install-nushell.html">apt install nushell</a></li>
+            <li><a href="/apt-install-oh-my-posh.html">apt install oh-my-posh</a></li>
+            <li><a href="/apt-install-ripgrep.html">apt install ripgrep</a></li>
+            <li><a href="/apt-install-starship.html">apt install starship</a></li>
+            <li><a href="/apt-install-zoxide.html">apt install zoxide</a></li>
+            <li><a href="/">All packages served by deb.griffo.io</a></li>
+        </ul>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "atuin",
+     "item": "https://deb.griffo.io/install-latest-atuin-in-debian.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "apt install atuin",
+     "item": "https://deb.griffo.io/apt-install-atuin.html"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "How do I apt install atuin?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Add the deb.griffo.io APT repository and its GPG key, run sudo apt update, then sudo apt install atuin. It works the same on Debian and Ubuntu."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I apt install the latest atuin?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "There is no separate command \u2014 once this repository is added, apt resolves atuin to the newest release it serves, rebuilt within hours of upstream. Use sudo apt update && sudo apt install --only-upgrade atuin to move an existing install up."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does apt-get install atuin work as well?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. apt and apt-get read the same sources, so sudo apt-get install atuin is equivalent."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<script>
+    function switchTab(event, tabId) {
+        const container = event.target.closest('.install-steps');
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+<footer>
+    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Terms &amp; Conditions</a></p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+</body>
+</html>
