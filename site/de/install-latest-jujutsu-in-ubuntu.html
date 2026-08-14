@@ -1,71 +1,146 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jujutsu auf Ubuntu installieren via apt (immer aktuell)</title>
-    <meta name="description" content="Jujutsu ist nicht in den offiziellen Ubuntu-Archiven — Jujutsu 0.44.0 via apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
-    <meta name="keywords" content="jujutsu ubuntu, jujutsu ubuntu installieren, jujutsu vcs, jj versionskontrolle, git-kompatibles vcs, jj vcs, jujutsu git, ubuntu pakete, jammy, noble, apt jujutsu">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
-    <meta property="og:title" content="Jujutsu auf Ubuntu installieren via apt (immer aktuell)">
-    <meta property="og:description" content="Jujutsu ist nicht in den offiziellen Ubuntu-Archiven — Jujutsu 0.44.0 via apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Jujutsu auf Ubuntu installieren via apt (immer aktuell)</title>
+<meta name="description" content="Jujutsu ist nicht in den offiziellen Ubuntu-Archiven — Jujutsu 0.44.0 via apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta name="keywords" content="jujutsu ubuntu, jujutsu ubuntu installieren, jujutsu vcs, jj versionskontrolle, git-kompatibles vcs, jj vcs, jujutsu git, ubuntu pakete, jammy, noble, apt jujutsu">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 
-    <link rel="stylesheet" href="/css/theme.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+<meta property="og:title" content="Jujutsu auf Ubuntu installieren via apt (immer aktuell)">
+<meta property="og:description" content="Jujutsu ist nicht in den offiziellen Ubuntu-Archiven — Jujutsu 0.44.0 via apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+<meta property="twitter:title" content="Jujutsu auf Ubuntu installieren via apt (immer aktuell)">
+<meta property="twitter:description" content="Jujutsu ist nicht in den offiziellen Ubuntu-Archiven — Jujutsu 0.44.0 via apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-jujutsu-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-jujutsu-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ Deine Werkzeuge, immer aktuell — automatisch
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian und Ubuntu frieren Paketversionen für Jahre ein. Dieser Spiegel verfolgt <strong>über 30 Entwickler-Werkzeuge</strong> und veröffentlicht jede neue Upstream-Version <strong>innerhalb von Stunden</strong> — GPG-signiert, direkt in <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
-            Ein <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> und alles ist aktuell. Keine Release-Seiten beobachten, keine Versionen vergleichen, kein manuelles <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>.<br>
-            Ein <strong>Jahresabonnement</strong> hält diese Automatisierung am Laufen. Lieber von Hand aktualisieren? Jedes .deb bleibt kostenlos auf GitHub. Vielen Dank! 🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ Meine Werkzeuge automatisch aktuell halten
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> pro Jahr — in US-Dollar, falls Ihre Währung nicht unterstützt wird.</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>Fragen, Probleme oder sonstiges zu diesem Repository?</strong> Tritt unserer <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord-Community</a> bei — der beste Ort für Hilfe und den Austausch mit anderen Nutzern.<br>
-            ☕ <strong>Früher über Buy Me a Coffee unterstützt?</strong> Das ist wunderbar! Komm auf unseren <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> und wir sorgen für ein <strong>kostenloses lebenslanges Abonnement</strong> für dich. 💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">20. Juli 2026</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
 </div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="${home}#pricing">Preise ansehen</a>
+    </p>
+  </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>🥋 Neuestes Jujutsu auf Ubuntu installieren</h1>
         <p class="subtitle">Ein Git-kompatibles Versionskontrollsystem</p>
-        <div class="version-badge">Neueste Version: 0.44.0 · aktualisiert 2026-08-13</div>
+        <div class="version-badge">Neueste Version: 0.44.0 · aktualisiert 2026-08-14</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Quelle</th><th>Version</th></tr></thead>
@@ -130,82 +205,49 @@
 
         <h2>📦 Installation von deb.griffo.io</h2>
 
-        <div class="install-steps">
-            <h3>Schritt 1: Repository hinzufügen</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installation mit sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installation mit root</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="code-block">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Schritt 1: Repository hinzufügen</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="code-block">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="install-steps">
-            <h3>Schritt 2: jujutsu installieren</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installation mit sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installation mit root</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="code-block">
-# Install latest jujutsu
+        <div class="install-block">
+            <h3 class="block-title">Schritt 2: jujutsu installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Install latest jujutsu</span>
 sudo apt install jujutsu
 
-# Verify installation
-jj --version
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="code-block">
-# Install latest jujutsu
+<span class="comment"># Verify installation</span>
+jj --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Install latest jujutsu</span>
 apt install jujutsu
 
-# Verify installation
-jj --version
-                </div>
-            </div>
+<span class="comment"># Verify installation</span>
+jj --version</code></pre></div>
         </div>
 
         <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
-        <div class="code-block">
-# Show version
+        <div class="code-block"><pre><code><span class="comment"># Show version</span>
 jj --version
 
-# Initialize jj in an existing Git repo
+<span class="comment"># Initialize jj in an existing Git repo</span>
 jj git init --colocate
 
-# Clone a Git repository
+<span class="comment"># Clone a Git repository</span>
 jj git clone https://github.com/user/repo.git
 
-# Show the working-copy status
+<span class="comment"># Show the working-copy status</span>
 jj status
 
-# Describe the current change
-jj describe -m "My change"
+<span class="comment"># Describe the current change</span>
+jj describe -m &quot;My change&quot;
 
-# Undo the last operation
-jj undo
-        </div>
+<span class="comment"># Undo the last operation</span>
+jj undo</code></pre></div>
 
         <h2>🚀 Warum deb.griffo.io wählen?</h2>
 
@@ -273,34 +315,6 @@ jj undo
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "inLanguage": "de",
-    "headline": "Neuestes Jujutsu auf Ubuntu installieren",
-    "description": "Vollständige Anleitung zur Installation des neuesten Jujutsu auf Ubuntu mit dem deb.griffo.io-Repository für aktuelle Pakete.",
-    "author": {
-        "@type": "Person",
-        "name": "Dario Griffo",
-        "url": "https://github.com/dariogriffo"
-    },
-    "datePublished": "2026-07-09",
-    "dateModified": "2026-08-13",
-    "publisher": {
-        "@type": "Organization",
-        "name": "deb.griffo.io"
-    },
-    "mainEntity": {
-        "@type": "SoftwareApplication",
-        "name": "Jujutsu",
-        "applicationCategory": "Version Control Tool",
-        "operatingSystem": "Ubuntu Linux",
-        "description": "Ein Git-kompatibles Versionskontrollsystem mit einem einfacheren, leistungsfähigeren Modell, das den Befehl jj verwendet."
-    }
-}
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
@@ -311,21 +325,6 @@ jj undo
   gtag('config', 'G-FKYKE1SD5C');
 </script>
 
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.install-steps');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-</script>
 <div class="tool-extras">
 <section>
 <h2>📦 Neueste Releases aus diesem Repository</h2>
@@ -341,10 +340,52 @@ jj undo
 </section>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Jujutsu in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — Jujutsu ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert Jujutsu 0.44.0."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Jujutsu unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install jujutsu. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Nutzungsbedingungen</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Alle Rechte vorbehalten. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">Nutzungsbedingungen</a> |
+    <span class="footer-credit">Design: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "de",
+    "headline": "Neuestes Jujutsu auf Ubuntu installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten Jujutsu auf Ubuntu mit dem deb.griffo.io-Repository für aktuelle Pakete.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-08-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Jujutsu",
+        "applicationCategory": "Version Control Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Ein Git-kompatibles Versionskontrollsystem mit einem einfacheren, leistungsfähigeren Modell, das den Befehl jj verwendet."
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
 </body>
 </html>

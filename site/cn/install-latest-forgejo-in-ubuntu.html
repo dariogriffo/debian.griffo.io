@@ -1,66 +1,146 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在 Ubuntu 上通过 apt 安装 Forgejo（始终最新版）</title>
-    <meta name="description" content="官方 Ubuntu 软件源中没有 Forgejo — 本仓库通过 apt 提供 Forgejo 15.0.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，每次发布后数小时内重新构建。">
-    <meta name="keywords" content="forgejo ubuntu, 安装 forgejo ubuntu, 自托管 git, gitea fork, git 代码托管, ubuntu 软件包, jammy, noble, apt forgejo, 自托管 github">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
-    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 Forgejo（始终最新版）">
-    <meta property="og:description" content="官方 Ubuntu 软件源中没有 Forgejo — 本仓库通过 apt 提供 Forgejo 15.0.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，每次发布后数小时内重新构建。">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上通过 apt 安装 Forgejo（始终最新版）</title>
+<meta name="description" content="官方 Ubuntu 软件源中没有 Forgejo — 本仓库通过 apt 提供 Forgejo 15.0.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，每次发布后数小时内重新构建。">
+<meta name="keywords" content="forgejo ubuntu, 安装 forgejo ubuntu, 自托管 git, gitea fork, git 代码托管, ubuntu 软件包, jammy, noble, apt forgejo, 自托管 github">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 
-    <link rel="stylesheet" href="/css/theme.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上通过 apt 安装 Forgejo（始终最新版）">
+<meta property="og:description" content="官方 Ubuntu 软件源中没有 Forgejo — 本仓库通过 apt 提供 Forgejo 15.0.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，每次发布后数小时内重新构建。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上通过 apt 安装 Forgejo（始终最新版）">
+<meta property="twitter:description" content="官方 Ubuntu 软件源中没有 Forgejo — 本仓库通过 apt 提供 Forgejo 15.0.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，每次发布后数小时内重新构建。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-forgejo-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-forgejo-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ 你的工具始终最新 —— 全自动
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian 和 Ubuntu 会将软件包版本冻结数年。本镜像源跟踪 <strong>30 多款开发工具</strong>，在上游发布后<strong>数小时内</strong>即发布新版本 —— 经 GPG 签名，直接进入 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>。<br>
-            一条 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code>，全部更新到位。无需盯着发布页面，无需比对版本，无需手动 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>。<br>
-            <strong>年度订阅</strong>维持这套自动化的运转。更喜欢手动更新？每个 .deb 在 GitHub 上始终免费。感谢您的支持！🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ 让我的工具自动保持最新
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> 每年 — 不支持您的货币时以美元计费。</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>有关此仓库的问题、反馈或其他事项？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord 社区</a> — 获取帮助并与其他用户交流的最佳场所。<br>
-            ☕ <strong>曾通过 Buy Me a Coffee 支持过我们？</strong>您太棒了！前往我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>，我们将为您安排<strong>终身免费订阅</strong>。💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">2026 年 7 月 20 日</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+  </div>
 </div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="${home}#pricing">查看价格</a>
+    </p>
+  </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>⚒️ 在 Ubuntu 上安装最新的 Forgejo</h1>
         <p class="subtitle">自托管轻量级软件代码托管平台 — 超越编程，我们锻造未来。</p>
-        <div class="version-badge">最新版本：15.0.2 · 更新于 2026-08-13</div>
+        <div class="version-badge">最新版本：15.0.2 · 更新于 2026-08-14</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
@@ -132,60 +212,29 @@
 
         <h2>📦 从 deb.griffo.io 安装</h2>
 
-        <div class="install-steps">
-            <h3>步骤 1：添加仓库</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="code-block">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">步骤 1：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="code-block">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="install-steps">
-            <h3>步骤 2：安装 Forgejo</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="code-block">
-# Install latest Forgejo (also installs git and git-lfs)
+        <div class="install-block">
+            <h3 class="block-title">步骤 2：安装 Forgejo</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Install latest Forgejo (also installs git and git-lfs)</span>
 sudo apt install forgejo
 
-# Verify installation
-forgejo --version
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="code-block">
-# Install latest Forgejo (also installs git and git-lfs)
+<span class="comment"># Verify installation</span>
+forgejo --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Install latest Forgejo (also installs git and git-lfs)</span>
 apt install forgejo
 
-# Verify installation
-forgejo --version
-                </div>
-            </div>
+<span class="comment"># Verify installation</span>
+forgejo --version</code></pre></div>
         </div>
 
         <div class="notice-box">
@@ -195,43 +244,59 @@ forgejo --version
         <h3>🚀 初始配置</h3>
         <p>软件包会自动创建 <code>git</code> 系统用户、<code>/var/lib/forgejo</code> 数据目录以及 <code>/etc/forgejo</code> 配置目录。请按以下步骤完成配置：</p>
 
-        <div class="code-block">
-# Start the Forgejo service
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Start the Forgejo service</span>
 sudo systemctl start forgejo
 
-# Open http://localhost:3000 in your browser to complete initial configuration
-# (configure database, admin account, domain, etc.)
+<span class="comment"># Open http://localhost:3000 in your browser to complete initial configuration</span>
+<span class="comment"># (configure database, admin account, domain, etc.)</span>
 
-# After the web setup is complete, enable Forgejo on boot:
+<span class="comment"># After the web setup is complete, enable Forgejo on boot:</span>
 sudo systemctl enable forgejo
 
-# Check service status
-sudo systemctl status forgejo
-        </div>
+<span class="comment"># Check service status</span>
+sudo systemctl status forgejo</code></pre><pre class="variant variant-root"><code><span class="comment"># Start the Forgejo service</span>
+systemctl start forgejo
+
+<span class="comment"># Open http://localhost:3000 in your browser to complete initial configuration</span>
+<span class="comment"># (configure database, admin account, domain, etc.)</span>
+
+<span class="comment"># After the web setup is complete, enable Forgejo on boot:</span>
+systemctl enable forgejo
+
+<span class="comment"># Check service status</span>
+systemctl status forgejo</code></pre></div>
 
         <h3>🛡️ 配置完成后的安全加固</h3>
         <p>完成基于 Web 的初始配置后，将配置文件设为只读以增强安全性：</p>
-        <div class="code-block">
-# Lock down the config directory and app.ini after initial configuration
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Lock down the config directory and app.ini after initial configuration</span>
 sudo systemctl stop forgejo
 sudo chmod 750 /etc/forgejo
 sudo chmod 640 /etc/forgejo/app.ini
-sudo systemctl start forgejo
-        </div>
+sudo systemctl start forgejo</code></pre><pre class="variant variant-root"><code><span class="comment"># Lock down the config directory and app.ini after initial configuration</span>
+systemctl stop forgejo
+chmod 750 /etc/forgejo
+chmod 640 /etc/forgejo/app.ini
+systemctl start forgejo</code></pre></div>
 
         <h3>🔧 命令行管理</h3>
         <p>Forgejo 提供 CLI 用于管理任务。请以 <code>git</code> 用户身份运行命令：</p>
-        <div class="code-block">
-# List all users
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># List all users</span>
 sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user list
 
-# Create admin user
+<span class="comment"># Create admin user</span>
 sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user create \
   --username admin --password changeme --email admin@example.com --admin
 
-# Regenerate Git hooks (useful after upgrades)
-sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks
-        </div>
+<span class="comment"># Regenerate Git hooks (useful after upgrades)</span>
+sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks</code></pre><pre class="variant variant-root"><code><span class="comment"># List all users</span>
+-u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user list
+
+<span class="comment"># Create admin user</span>
+-u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin user create \
+  --username admin --password changeme --email admin@example.com --admin
+
+<span class="comment"># Regenerate Git hooks (useful after upgrades)</span>
+-u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate hooks</code></pre></div>
 
         <h2>🚀 为什么选择 deb.griffo.io？</h2>
 
@@ -296,35 +361,6 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "inLanguage": "zh-CN",
-    "headline": "在 Ubuntu 上安装最新的 Forgejo 自托管 Git 代码托管平台",
-    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新 Forgejo 的完整指南，获取最新软件包。",
-    "author": {
-        "@type": "Person",
-        "name": "Dario Griffo",
-        "url": "https://github.com/dariogriffo"
-    },
-    "datePublished": "2025-05-27",
-    "dateModified": "2026-08-13",
-    "publisher": {
-        "@type": "Organization",
-        "name": "deb.griffo.io"
-    },
-    "mainEntity": {
-        "@type": "SoftwareApplication",
-        "name": "Forgejo",
-        "applicationCategory": "Software Forge",
-        "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "latest",
-        "description": "具有 git 托管、问题追踪、Pull Request 和 CI/CD 的自托管轻量级软件代码托管平台"
-    }
-}
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
@@ -335,21 +371,6 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
   gtag('config', 'G-FKYKE1SD5C');
 </script>
 
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.install-steps');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-</script>
 <div class="tool-extras">
 <section>
 <h2>📦 本仓库最近发布</h2>
@@ -364,10 +385,53 @@ sudo -u git forgejo -w /var/lib/forgejo -c /etc/forgejo/app.ini admin regenerate
 </section>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Forgejo 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在 — 官方 Ubuntu 源没有打包 Forgejo。本仓库目前是唯一的 apt 来源，提供 Forgejo 15.0.2。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Forgejo？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install forgejo。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款和条件</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. 保留所有权利。 |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">条款和条件</a> |
+    <span class="footer-credit">设计: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "zh-CN",
+    "headline": "在 Ubuntu 上安装最新的 Forgejo 自托管 Git 代码托管平台",
+    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新 Forgejo 的完整指南，获取最新软件包。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-05-27",
+    "dateModified": "2026-08-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Forgejo",
+        "applicationCategory": "Software Forge",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "具有 git 托管、问题追踪、Pull Request 和 CI/CD 的自托管轻量级软件代码托管平台"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
 </body>
 </html>

@@ -1,104 +1,139 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>deb.griffo.io - Paquetes Debian más recientes para herramientas de desarrollo modernas</title>
-    <meta name="description" content="Obtenga los paquetes de Debian más actualizados for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, bun runtime, TigerBeetle database, and more. Unofficial repository with latest versions para Bookworm, Trixie y Sid.">
-    <meta name="keywords" content="debian Paquetes, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, bun debian, tigerbeetle debian, development tools, latest versions, unofficial repository, bookworm, trixie, sid, apt uv, apt lazydocker, apt lazygit, apt bun, apt ghostty, apt yazi">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://deb.griffo.io">
-    <meta property="og:title" content="deb.griffo.io - Github for Development Tools">
-    <meta property="og:description" content="Repositorio no oficial que proporciona the most up-to-date Debian Paquetes for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools.">
-    <meta property="og:image" content="https://deb.griffo.io/logo.webp">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>deb.griffo.io - Paquetes Debian más recientes para herramientas de desarrollo modernas</title>
+<meta name="description" content="Obtenga los paquetes de Debian más actualizados for popular development tools including Zig, ZLS, Ghostty terminal, lazygit, lazydocker, yazi file manager, eza, fzf, uv Python manager, bun runtime, TigerBeetle database, and more. Unofficial repository with latest versions para Bookworm, Trixie y Sid.">
+<meta name="keywords" content="debian Paquetes, zig debian, ghostty debian, lazygit debian, yazi debian, eza debian, bun debian, tigerbeetle debian, development tools, latest versions, unofficial repository, bookworm, trixie, sid, apt uv, apt lazydocker, apt lazygit, apt bun, apt ghostty, apt yazi">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://deb.griffo.io">
-    <meta property="twitter:title" content="deb.griffo.io - Github for Development Tools">
-    <meta property="twitter:description" content="Repositorio no oficial que proporciona the most up-to-date Debian Paquetes for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools.">
-    <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
-    <link rel="stylesheet" href="/css/theme.css">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://deb.griffo.io">
+<meta property="og:title" content="deb.griffo.io - Github for Development Tools">
+<meta property="og:description" content="Repositorio no oficial que proporciona the most up-to-date Debian Paquetes for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io">
+<meta property="twitter:title" content="deb.griffo.io - Github for Development Tools">
+<meta property="twitter:description" content="Repositorio no oficial que proporciona the most up-to-date Debian Paquetes for Zig, Ghostty, lazygit, yazi, eza, bun, TigerBeetle and other modern development tools.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ Tus herramientas, siempre al día — automáticamente
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian y Ubuntu congelan las versiones de los paquetes durante años. Este espejo sigue <strong>más de 30 herramientas</strong> y publica cada nueva versión upstream <strong>en cuestión de horas</strong>, firmada con GPG y directa a <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
-            Un solo <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> y todo queda actualizado. Sin páginas de lanzamientos que vigilar, sin versiones que comparar, sin <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code> manual.<br>
-            Una <strong>suscripción anual</strong> mantiene esa automatización en marcha. ¿Prefieres actualizar a mano? Cada .deb sigue siendo gratis en GitHub. ¡Gracias! 🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ Mantener mis herramientas actualizadas
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> al año — en dólares (USD) si tu moneda no está soportada.</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>¿Preguntas, problemas o cualquier cosa sobre este repositorio?</strong> Únete a nuestra <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidad de Discord</a> — el mejor lugar para obtener ayuda y conectar con otros usuarios.<br>
-            ☕ <strong>¿Apoyaste anteriormente a través de Buy Me a Coffee?</strong> ¡Eres increíble! Pásate por nuestro <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> y te gestionaremos una <strong>suscripción vitalicia gratuita</strong>. 💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">20 de julio de 2026</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/es/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/es/#packages">Paquetes</a></li>
+    <li><a href="/es/#install">Instalación</a></li>
+    <li><a href="/es/#versions">Versiones</a></li>
+    <li><a href="/es/#source">Código fuente</a></li>
+    <li><a href="/es/#pricing">Precios</a></li>
+    <li><a href="/es/#faq">Preguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Seleccionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Español</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/es/#pricing" class="nav-cta">Obtener suscripción</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menú" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/es/#packages" class="mobile-menu-link" data-index="01">Paquetes</a>
+      <a href="/es/#install" class="mobile-menu-link" data-index="02">Instalación</a>
+      <a href="/es/#versions" class="mobile-menu-link" data-index="03">Versiones</a>
+      <a href="/es/#source" class="mobile-menu-link" data-index="04">Código fuente</a>
+      <a href="/es/#pricing" class="mobile-menu-link" data-index="05">Precios</a>
+      <a href="/es/#faq" class="mobile-menu-link" data-index="06">Preguntas</a>
+    </div>
+  </div>
 </div>
-<div class="language-selector">
-    <div class="language-dropdown">
-        <button class="language-button" onclick="toggleLanguageMenu()" aria-label="Select Language">
-            <span class="flag">🌐</span>
-            <span>Español</span>
-        </button>
-        <div class="language-menu" id="languageMenu">
-            <a href="/" class="language-option">
-                <span class="flag">🇬🇧</span>
-                <span class="lang-name">English</span>
-            </a>
-            <a href="/cn/" class="language-option">
-                <span class="flag">🇨🇳</span>
-                <span class="lang-name">中文</span>
-            </a>
-            <a href="/de/" class="language-option">
-                <span class="flag">🇩🇪</span>
-                <span class="lang-name">Deutsch</span>
-            </a>
-            <a href="/es/" class="language-option">
-                <span class="flag">🇪🇸</span>
-                <span class="lang-name">Español</span>
-            </a>
-            <a href="/fr/" class="language-option">
-                <span class="flag">🇫🇷</span>
-                <span class="lang-name">Français</span>
-            </a>
-            <a href="/ru/" class="language-option">
-                <span class="flag">🇷🇺</span>
-                <span class="lang-name">Русский</span>
-            </a>
-            <a href="/pt-br/" class="language-option">
-                <span class="flag">🇧🇷</span>
-                <span class="lang-name">Português (Brasil)</span>
-            </a>
-        </div>
-    </div>
+
+<nav class="side-panel left" aria-label="Progreso de desplazamiento">
+  <span class="side-label">Desplazar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Estado">
+  <span class="side-label">Estado</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 herramientas de desarrollo, siempre actualizadas</strong> — cada nueva versión upstream llega a <code>apt</code> en cuestión de horas.
+      <a href="https://discord.gg/E2yHQNkuZy">Únete al Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 A partir del <strong><time datetime="2026-10-01T12:00:00+01:00">1 de octubre de 2026, 12:00 hora del Reino Unido</time></strong>, el mirror de apt requerirá una suscripción.
+      <a href="${home}#pricing">Ver precios</a>
+    </p>
+  </div>
 </div>
 
 <div class="container">
@@ -122,106 +157,34 @@
 
     <section id="version-comparison">
         <h2>🏁 Comparación de versiones — deb.griffo.io vs archivos oficiales</h2>
-        <div class="version-compare-index">
-<table>
-<thead><tr><th>Herramienta</th><th>deb.griffo.io</th><th>Debian oficial</th><th>Ubuntu oficial</th></tr></thead>
-<tbody>
-<tr><td><a href="install-latest-atuin-in-debian.html"><strong>Atuin</strong></a></td><td class="vc-win">18.19.0 ✅</td><td class="vc-lose">18.6.1 🛑</td><td class="vc-lose">18.8.0 🛑</td></tr>
-<tr><td><a href="install-latest-bun-in-debian.html"><strong>Bun</strong></a></td><td class="vc-win">1.3.14 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-deno-in-debian.html"><strong>Deno</strong></a></td><td class="vc-win">2.9.5 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-duckdb-in-debian.html"><strong>DuckDB</strong></a></td><td class="vc-win">1.5.5 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-eza-in-debian.html"><strong>eza</strong></a></td><td class="vc-win">0.23.5 ✅</td><td class="vc-lose">0.21.0 🛑</td><td class="vc-lose">0.23.4 🛑</td></tr>
-<tr><td><a href="install-latest-fastfetch-in-debian.html"><strong>Fastfetch</strong></a></td><td class="vc-win">2.66.0 ✅</td><td class="vc-lose">2.40.4 🛑</td><td class="vc-lose">2.57.1 🛑</td></tr>
-<tr><td><a href="install-latest-fish-in-debian.html"><strong>fish</strong></a></td><td class="vc-win">4.8.1 ✅</td><td class="vc-lose">4.0.2 🛑</td><td class="vc-lose">4.2.1 🛑</td></tr>
-<tr><td><a href="install-latest-forgejo-in-debian.html"><strong>Forgejo</strong></a></td><td class="vc-win">15.0.2 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-forgejo-runner-in-debian.html"><strong>Forgejo Runner</strong></a></td><td class="vc-win">13.0.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-fzf-in-debian.html"><strong>fzf</strong></a></td><td class="vc-win">0.74.2 ✅</td><td class="vc-lose">0.60.3 🛑</td><td class="vc-lose">0.67.0 🛑</td></tr>
-<tr><td><a href="install-latest-garage-in-debian.html"><strong>Garage</strong></a></td><td class="vc-win">2.3.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-ghostty-in-debian.html"><strong>Ghostty</strong></a></td><td class="vc-win">1.3.1 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">1.3.0 🛑</td></tr>
-<tr><td><a href="install-latest-headscale-in-debian.html"><strong>Headscale</strong></a></td><td class="vc-win">0.29.3 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-helix-in-debian.html"><strong>Helix</strong></a></td><td class="vc-win">25.07.1 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-herdr-in-debian.html"><strong>herdr</strong></a></td><td class="vc-win">0.8.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-jujutsu-in-debian.html"><strong>Jujutsu</strong></a></td><td class="vc-win">0.44.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-just-in-debian.html"><strong>just</strong></a></td><td class="vc-win">1.58.0 ✅</td><td class="vc-lose">1.40.0 🛑</td><td class="vc-lose">1.45.0 🛑</td></tr>
-<tr><td><a href="install-latest-k9s-in-debian.html"><strong>k9s</strong></a></td><td class="vc-win">0.51.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-lazydocker-in-debian.html"><strong>lazydocker</strong></a></td><td class="vc-win">0.25.2 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-lazygit-in-debian.html"><strong>lazygit</strong></a></td><td class="vc-win">0.64.1 ✅</td><td class="vc-lose">0.50.0 🛑</td><td class="vc-lose">0.57.0 🛑</td></tr>
-<tr><td><a href="install-latest-lowfi-in-debian.html"><strong>lowfi</strong></a></td><td class="vc-win">2.0.7 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-neovim-in-debian.html"><strong>Neovim</strong></a></td><td class="vc-win">0.12.4 ✅</td><td class="vc-lose">0.10.4 🛑</td><td class="vc-lose">0.11.6 🛑</td></tr>
-<tr><td><a href="install-latest-nushell-in-debian.html"><strong>Nushell</strong></a></td><td class="vc-win">0.114.1 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-oh-my-posh-in-debian.html"><strong>Oh My Posh</strong></a></td><td class="vc-win">30.6.5 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-ripgrep-in-debian.html"><strong>ripgrep</strong></a></td><td class="vc-win">15.2.0 ✅</td><td class="vc-lose">14.1.1 🛑</td><td class="vc-lose">15.1.0 🛑</td></tr>
-<tr><td><a href="install-latest-ruff-in-debian.html"><strong>Ruff</strong></a></td><td class="vc-win">0.16.3 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-starship-in-debian.html"><strong>Starship</strong></a></td><td class="vc-win">1.26.0 ✅</td><td class="vc-lose">1.22.1 🛑</td><td class="vc-lose">1.22.1 🛑</td></tr>
-<tr><td><a href="install-latest-termusic-in-debian.html"><strong>Termusic</strong></a></td><td class="vc-win">0.13.2 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-tigerbeetle-in-debian.html"><strong>TigerBeetle</strong></a></td><td class="vc-win">0.17.9 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-uncloud-in-debian.html"><strong>Uncloud</strong></a></td><td class="vc-win">0.20.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-unregistry-in-debian.html"><strong>Unregistry</strong></a></td><td class="vc-win">0.4.3 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-uv-in-debian.html"><strong>uv</strong></a></td><td class="vc-win">0.12.4 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-viu-in-debian.html"><strong>viu</strong></a></td><td class="vc-win">1.6.1 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-yazi-in-debian.html"><strong>Yazi</strong></a></td><td class="vc-win">26.5.6 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-yq-in-debian.html"><strong>yq</strong></a></td><td class="vc-win">4.53.3 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zapzap-in-debian.html"><strong>ZapZap</strong></a></td><td class="vc-win">7.4 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zed-in-debian.html"><strong>Zed</strong></a></td><td class="vc-win">1.15.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zellij-in-debian.html"><strong>Zellij</strong></a></td><td class="vc-win">0.44.3 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zig-in-debian.html"><strong>Zig</strong></a></td><td class="vc-win">0.16.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zls-in-debian.html"><strong>ZLS</strong></a></td><td class="vc-win">0.16.0 ✅</td><td class="vc-lose">🚫 no empaquetado</td><td class="vc-lose">🚫 no empaquetado</td></tr>
-<tr><td><a href="install-latest-zoxide-in-debian.html"><strong>zoxide</strong></a></td><td class="vc-win">0.10.0 ✅</td><td class="vc-lose">0.9.7 🛑</td><td class="vc-lose">0.9.8 🛑</td></tr>
-</tbody>
-</table>
-</div>
+        <p class="request-note reveal reveal-d3">
+  ¿No encuentras el paquete que necesitas?
+  <a href="https://discord.gg/62fCKbr5C">Solicítalo en Discord</a>
+  <span class="request-sep">o</span>
+  <a href="https://github.com/dariogriffo/debian.griffo.io/issues" target="_blank" rel="noopener">abre una incidencia en GitHub</a>
+</p>
+<div class="version-compare-index"></div>
     </section>
 
     <section>
         <h2>⚡ Instalación rápida</h2>
         <p>Agregue este repositorio a su sistema Debian y comience a instalar las últimas versiones de sus herramientas de desarrollo favoritas:</p>
 
-        <div class="install-section">
-            <h3>Paso 1: Agregar repositorio</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar con sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar con root</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="installation-code">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="Elige cómo ejecutar los comandos"><span class="variant-toggle-label">Ejecutar los comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">con sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Paso 1: Agregar repositorio</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="installation-code">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="install-section">
-            <h3>Paso 2: Instalar Paquetes</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar con sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar con root</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="installation-code">
-sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="installation-code">
-apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish
-                </div>
-            </div>
+        <div class="install-block">
+            <h3 class="block-title">Paso 2: Instalar Paquetes</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div>
         </div>
 
         <div class="notice-box">
@@ -236,26 +199,24 @@ apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle forge
 
         <h3>Estructura de directorios</h3>
         <p>El repositorio sigue el diseño estándar de repositorios Debian:</p>
-        <div class="installation-code">
-https://deb.griffo.io/apt/dists/           ← índice de distribuciones
+        <div class="code-block"><pre><code>https://deb.griffo.io/apt/dists/           ← índice de distribuciones
 https://deb.griffo.io/apt/dists/bookworm/  ← Debian Bookworm (12)
 https://deb.griffo.io/apt/dists/trixie/    ← Debian Trixie (13)
 https://deb.griffo.io/apt/dists/forky/     ← Debian Forky (testing)
 https://deb.griffo.io/apt/dists/sid/       ← Debian Sid (unstable)
 https://deb.griffo.io/apt/dists/jammy/     ← Ubuntu Jammy (22.04 LTS)
-https://deb.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</div>
+https://deb.griffo.io/apt/dists/noble/     ← Ubuntu Noble (24.04 LTS)</code></pre></div>
 
         <h3>Buscar paquetes tras agregar el repositorio</h3>
         <p>Una vez agregado el repositorio, puede usar las herramientas estándar de <code>apt</code> para explorar los paquetes disponibles:</p>
-        <div class="installation-code">
-# Listar todos los paquetes de este repositorio
-apt-cache search --names-only '' | grep -v '^lib'
+        <div class="code-block"><pre><code><span class="comment"># Listar todos los paquetes de este repositorio</span>
+apt-cache search --names-only &#039;&#039; | grep -v &#039;^lib&#039;
 
-# Mostrar detalles de un paquete específico
+<span class="comment"># Mostrar detalles de un paquete específico</span>
 apt-cache show zig
 
-# Verificar qué versión se instalará y desde qué fuente
-apt-cache policy zig</div>
+<span class="comment"># Verificar qué versión se instalará y desde qué fuente</span>
+apt-cache policy zig</code></pre></div>
     </section>
 
     <header>
@@ -655,6 +616,8 @@ apt-cache policy zig</div>
         </p>
 
         <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+
+            <a href="#pricing" class="btn-primary">⚡ Obtener suscripción</a>
             <a href="https://github.com/dariogriffo/debian.griffo.io"
                style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
                onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
@@ -675,10 +638,52 @@ apt-cache policy zig</div>
         </p>
     </section>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. Todos los derechos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Términos y Condiciones</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<section class="section section-center" id="pricing">
+  <h2 class="section-title reveal reveal-d1"><span class="section-tag">Precios</span>Paga una vez al año, <strong>o nunca más</strong></h2>
+  <p class="section-body reveal reveal-d2">Debian y Ubuntu congelan las versiones de los paquetes durante años. Este mirror sigue cada herramienta que distribuye y publica cada nueva versión upstream en cuestión de horas — firmada con GPG, directamente en <code class="inline-code">apt</code>. Una suscripción mantiene esa automatización en marcha. ¿Prefieres actualizar a mano? Todos los .deb siguen siendo gratuitos en <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a>.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card reveal reveal-d1">
+      <div class="pricing-tier">Anual</div>
+      <div class="pricing-price">
+        <span class="price-value" data-amount="20">€20</span>
+        <span class="price-period">al año</span>
+      </div>
+      <p class="pricing-note">Se renueva cada año. Cancela cuando quieras.</p>
+      <p class="pricing-desc">La automatización que mantiene tus herramientas al día, facturada una vez al año.</p>
+      <ul class="pricing-features"><li>Todas las herramientas del repositorio</li><li>Nuevas versiones upstream en horas</li><li>Firmado con GPG, directo a apt</li><li>Las 8 suites de Debian y Ubuntu</li><li>Paquetes fuente incluidos</li></ul>
+      <a href="https://buy.stripe.com/28EaEW8hr7Ojdlm4a2enS03" class="btn-secondary">Suscribirse</a>
+    </div>
+
+    <div class="pricing-card featured reveal reveal-d2">
+      <div class="pricing-badge">Mejor valor</div>
+      <div class="pricing-tier">De por vida</div>
+      <div class="pricing-price">
+        <span class="price-value" data-amount="150">€150</span>
+        <span class="price-period">pago único</span>
+      </div>
+      <p class="pricing-note">Se amortiza a los 7 años.</p>
+      <p class="pricing-desc">Paga una vez, mientras el repositorio siga funcionando. Sin renovaciones.</p>
+      <ul class="pricing-features"><li>Todo lo del plan Anual</li><li>Un solo pago, sin renovaciones que recordar</li><li>Todas las herramientas que se añadan</li><li>Inmune a cambios de precio</li><li>Financia directamente la infraestructura</li></ul>
+      <a href="https://buy.stripe.com/3cI28q1T31pVepq21UenS02" class="btn-primary">Obtener de por vida</a>
+    </div>
+  </div>
+
+  <p class="pricing-foot reveal">Los precios se muestran en tu moneda local donde sea posible; en caso contrario, en dólares estadounidenses. ¿Nos apoyaste antes en Buy Me a Coffee? Pásate por <a href="https://discord.gg/E2yHQNkuZy">Discord</a> y te daremos una suscripción de por vida gratuita. 💜</p>
+</section>
+
+
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Todos los derechos reservados. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">Términos y Condiciones</a> |
+    <span class="footer-credit">Diseño: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
 
 <script type="application/ld+json">
@@ -708,46 +713,13 @@ apt-cache policy zig</div>
     }
 }
 </script>
-
-<!-- Google tag (gtag.js) -->
+<script src="/assets/js/site.js" defer></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-FKYKE1SD5C');
 </script>
-
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.install-section');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-
-    function toggleLanguageMenu() {
-        const menu = document.getElementById('languageMenu');
-        menu.classList.toggle('active');
-    }
-
-    // Close language menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const dropdown = document.querySelector('.language-dropdown');
-        const menu = document.getElementById('languageMenu');
-        if (dropdown && !dropdown.contains(event.target)) {
-            menu.classList.remove('active');
-        }
-    });
-</script>
-
 </body>
 </html>

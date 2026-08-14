@@ -1,66 +1,146 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Installer Uncloud sur Ubuntu via apt (toujours à jour)</title>
-    <meta name="description" content="Uncloud est absent des archives officielles de Ubuntu — obtenez Uncloud 0.20.0 via apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04. Signé GPG, reconstruit quelques heures après chaque version.">
-    <meta name="keywords" content="uncloud ubuntu, installer uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, paquets ubuntu, jammy, noble, psviderski, apt uncloud">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-uncloud-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
-    <meta property="og:title" content="Installer Uncloud sur Ubuntu via apt (toujours à jour)">
-    <meta property="og:description" content="Uncloud est absent des archives officielles de Ubuntu — obtenez Uncloud 0.20.0 via apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04. Signé GPG, reconstruit quelques heures après chaque version.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <link rel="stylesheet" href="/css/theme.css">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Installer Uncloud sur Ubuntu via apt (toujours à jour)</title>
+<meta name="description" content="Uncloud est absent des archives officielles de Ubuntu — obtenez Uncloud 0.20.0 via apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04. Signé GPG, reconstruit quelques heures après chaque version.">
+<meta name="keywords" content="uncloud ubuntu, installer uncloud ubuntu, container orchestration, docker clustering, multi-machine deployment, paquets ubuntu, jammy, noble, psviderski, apt uncloud">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
+<meta property="og:title" content="Installer Uncloud sur Ubuntu via apt (toujours à jour)">
+<meta property="og:description" content="Uncloud est absent des archives officielles de Ubuntu — obtenez Uncloud 0.20.0 via apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04. Signé GPG, reconstruit quelques heures après chaque version.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
+<meta property="twitter:title" content="Installer Uncloud sur Ubuntu via apt (toujours à jour)">
+<meta property="twitter:description" content="Uncloud est absent des archives officielles de Ubuntu — obtenez Uncloud 0.20.0 via apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04. Signé GPG, reconstruit quelques heures après chaque version.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-uncloud-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-uncloud-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ Vos outils, toujours à jour — automatiquement
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian et Ubuntu figent les versions des paquets pendant des années. Ce miroir suit <strong>plus de 30 outils</strong> et publie chaque nouvelle version upstream <strong>en quelques heures</strong> — signée avec GPG, directement dans <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
-            Un seul <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> et tout est à jour. Aucune page de version à surveiller, aucune version à comparer, aucun <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code> manuel.<br>
-            Un <strong>abonnement annuel</strong> fait vivre cette automatisation. Vous préférez mettre à jour à la main ? Chaque .deb reste gratuit sur GitHub. Merci ! 🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ Garder mes outils à jour automatiquement
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> par an — en dollars US si votre devise n'est pas prise en charge.</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>Des questions, problèmes ou tout autre sujet concernant ce dépôt ?</strong> Rejoignez notre <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">communauté Discord</a> — le meilleur endroit pour obtenir de l'aide et échanger avec d'autres utilisateurs.<br>
-            ☕ <strong>Vous avez déjà soutenu via Buy Me a Coffee ?</strong> Vous êtes formidable ! Rendez-vous sur notre <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> et nous vous arrangerons un <strong>abonnement gratuit à vie</strong>. 💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">20 juillet 2026</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/fr/#pricing" class="nav-cta">S'abonner</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="05">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
 </div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 À partir du <strong><time datetime="2026-10-01T12:00:00+01:00">1er octobre 2026, 12h00 heure du Royaume-Uni</time></strong>, le miroir apt nécessitera un abonnement.
+      <a href="${home}#pricing">Voir les tarifs</a>
+    </p>
+  </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>☁️ Installer la dernière version de uncloud sur Ubuntu</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Dernière version : 0.20.0 · mis à jour le 2026-08-13</div>
+        <div class="version-badge">Dernière version : 0.20.0 · mis à jour le 2026-08-14</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -129,105 +209,68 @@
 
         <h2>📦 Installation depuis deb.griffo.io</h2>
         
-        <div class="installer-steps">
-            <h3>Étape 1 : Ajouter le dépôt</h3>
-            
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Installer avec sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Installer avec root</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="code-block">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Étape 1 : Ajouter le dépôt</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="code-block">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="installer-steps">
-            <h3>Étape 2 : Installer uncloud</h3>
-            
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Installer avec sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Installer avec root</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="code-block">
-# Install latest uncloud
+        <div class="install-block">
+            <h3 class="block-title">Étape 2 : Installer uncloud</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Install latest uncloud</span>
 sudo apt installer uncloud
 
-# Vérifier l'installeration
-uc --version
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="code-block">
-# Install latest uncloud
+<span class="comment"># Vérifier l&#039;installeration</span>
+uc --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Install latest uncloud</span>
 apt installer uncloud
 
-# Vérifier l'installeration
-uc --version
-                </div>
-            </div>
+<span class="comment"># Vérifier l&#039;installeration</span>
+uc --version</code></pre></div>
         </div>
 
         <h3>🎯 Exemples d'utilisation de base</h3>
         
         <p><strong>Initialize your first cluster:</strong></p>
-        <div class="code-block">
-# Initialize cluster on first machine
+        <div class="code-block"><pre><code><span class="comment"># Initialize cluster on first machine</span>
 uc machine init root@your-server-ip
 
-# Add more machines to cluster
+<span class="comment"># Add more machines to cluster</span>
 uc machine add --name server2 root@second-server-ip
 
-# List cluster machines
-uc machine ls
-        </div>
+<span class="comment"># List cluster machines</span>
+uc machine ls</code></pre></div>
 
         <p><strong>Deploy applications:</strong></p>
-        <div class="code-block">
-# Deploy from Docker image with HTTPS
+        <div class="code-block"><pre><code><span class="comment"># Deploy from Docker image with HTTPS</span>
 uc run -p app.example.com:8000/https image/my-app
 
-# Deploy from Docker Compose file
+<span class="comment"># Deploy from Docker Compose file</span>
 uc compose up -f compose.yaml
 
-# Scale service across machines
+<span class="comment"># Scale service across machines</span>
 uc scale my-app 3
 
-# List running services
-uc ls
-        </div>
+<span class="comment"># List running services</span>
+uc ls</code></pre></div>
 
         <p><strong>Manage deployments:</strong></p>
-        <div class="code-block">
-# Update service with new image
+        <div class="code-block"><pre><code><span class="comment"># Update service with new image</span>
 uc update my-app image/my-app:v2
 
-# View service logs
+<span class="comment"># View service logs</span>
 uc logs my-app
 
-# Remove service
+<span class="comment"># Remove service</span>
 uc rm my-app
 
-# Clean up cluster
-uc machine rm server2
-        </div>
+<span class="comment"># Clean up cluster</span>
+uc machine rm server2</code></pre></div>
 
         <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
         
@@ -270,35 +313,6 @@ uc machine rm server2
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "inLanguage": "fr",
-    "headline": "Installer la dernière version de uncloud sur Ubuntu",
-    "description": "Complete guide to installering the latest uncloud orchestration tool sur Ubuntu using deb.griffo.io repository for up-to-date packages.",
-    "author": {
-        "@type": "Person",
-        "name": "Dario Griffo",
-        "url": "https://github.com/dariogriffo"
-    },
-    "datePublished": "2025-10-01",
-    "dateModified": "2026-08-13",
-    "publisher": {
-        "@type": "Organization",
-        "name": "deb.griffo.io"
-    },
-    "mainEntity": {
-        "@type": "SoftwareApplication",
-        "name": "uncloud",
-        "applicationCategory": "Development Tool",
-        "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "latest",
-        "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
-    }
-}
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
@@ -309,21 +323,6 @@ uc machine rm server2
   gtag('config', 'G-FKYKE1SD5C');
 </script>
 
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.installer-steps');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-</script>
 <div class="tool-extras">
 <section>
 <h2>📦 Dernières versions publiées par ce dépôt</h2>
@@ -338,10 +337,53 @@ uc machine rm server2
 </section>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Uncloud est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Non — Uncloud n'est pas empaqueté dans les archives officielles de Ubuntu. Ce dépôt est actuellement la seule source apt et propose Uncloud 0.20.0."}}, {"@type": "Question", "name": "Comment installer le dernier Uncloud sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install uncloud. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. All rights reserved. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Conditions Générales</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Tous droits réservés. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">Conditions Générales</a> |
+    <span class="footer-credit">Design: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "fr",
+    "headline": "Installer la dernière version de uncloud sur Ubuntu",
+    "description": "Complete guide to installering the latest uncloud orchestration tool sur Ubuntu using deb.griffo.io repository for up-to-date packages.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2025-10-01",
+    "dateModified": "2026-08-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "uncloud",
+        "applicationCategory": "Development Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
 </body>
 </html>

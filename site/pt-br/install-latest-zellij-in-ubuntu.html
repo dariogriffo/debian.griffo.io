@@ -1,71 +1,146 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instalar Zellij no Ubuntu via apt (sempre atualizado)</title>
-    <meta name="description" content="Zellij não está nos arquivos oficiais do Ubuntu — obtenha Zellij 0.44.3 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04. Assinado com GPG, recompilado poucas horas após cada lançamento.">
-    <meta name="keywords" content="zellij ubuntu, instalar zellij ubuntu, zellij, multiplexador de terminal, alternativa ao tmux, workspace de terminal, multiplexador rust, pacotes ubuntu, jammy, noble, apt zellij">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zellij-in-ubuntu.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
-    <meta property="og:title" content="Instalar Zellij no Ubuntu via apt (sempre atualizado)">
-    <meta property="og:description" content="Zellij não está nos arquivos oficiais do Ubuntu — obtenha Zellij 0.44.3 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04. Assinado com GPG, recompilado poucas horas após cada lançamento.">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar Zellij no Ubuntu via apt (sempre atualizado)</title>
+<meta name="description" content="Zellij não está nos arquivos oficiais do Ubuntu — obtenha Zellij 0.44.3 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04. Assinado com GPG, recompilado poucas horas após cada lançamento.">
+<meta name="keywords" content="zellij ubuntu, instalar zellij ubuntu, zellij, multiplexador de terminal, alternativa ao tmux, workspace de terminal, multiplexador rust, pacotes ubuntu, jammy, noble, apt zellij">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 
-    <link rel="stylesheet" href="/css/theme.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+<meta property="og:title" content="Instalar Zellij no Ubuntu via apt (sempre atualizado)">
+<meta property="og:description" content="Zellij não está nos arquivos oficiais do Ubuntu — obtenha Zellij 0.44.3 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04. Assinado com GPG, recompilado poucas horas após cada lançamento.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+<meta property="twitter:title" content="Instalar Zellij no Ubuntu via apt (sempre atualizado)">
+<meta property="twitter:description" content="Zellij não está nos arquivos oficiais do Ubuntu — obtenha Zellij 0.44.3 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04. Assinado com GPG, recompilado poucas horas após cada lançamento.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-zellij-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-zellij-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ Suas ferramentas sempre atualizadas — automaticamente
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian e Ubuntu congelam as versões dos pacotes por anos. Este espelho acompanha <strong>mais de 30 ferramentas</strong> e publica cada nova versão upstream <strong>em poucas horas</strong> — assinada com GPG, direto no <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>.<br>
-            Um <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code> e tudo fica atualizado. Sem páginas de lançamento para acompanhar, sem versões para comparar, sem <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code> manual.<br>
-            Uma <strong>assinatura anual</strong> mantém essa automação funcionando. Prefere atualizar na mão? Cada .deb continua gratuito no GitHub. Obrigado! 🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ Manter minhas ferramentas atualizadas
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> por ano — em dólares americanos se a sua moeda não for suportada.</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>Dúvidas, problemas ou qualquer coisa sobre este repositório?</strong> Junte-se à nossa <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">comunidade do Discord</a> — o melhor lugar para obter ajuda e se conectar com outros usuários.<br>
-            ☕ <strong>Apoiou anteriormente via Buy Me a Coffee?</strong> Você é incrível! Venha para o nosso <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a> e resolveremos uma <strong>assinatura vitalícia gratuita</strong> para você. 💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">20 de julho de 2026</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="05">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="06">Perguntas</a>
+    </div>
+  </div>
 </div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 A partir de <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exigirá uma assinatura.
+      <a href="${home}#pricing">Ver preços</a>
+    </p>
+  </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>🪟 Instalar a última versão do Zellij no Ubuntu</h1>
         <p class="subtitle">Um workspace de terminal e multiplexador</p>
-        <div class="version-badge">Última versão: 0.44.3 · atualizado em 2026-08-13</div>
+        <div class="version-badge">Última versão: 0.44.3 · atualizado em 2026-08-14</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
@@ -130,79 +205,46 @@
 
         <h2>📦 Instalação a partir do deb.griffo.io</h2>
 
-        <div class="install-steps">
-            <h3>Passo 1: Adicionar repositório</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="code-block">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar repositório</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="code-block">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="install-steps">
-            <h3>Passo 2: Instalar zellij</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">Instalar com sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">Instalar com root</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="code-block">
-# Install latest zellij
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar zellij</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Install latest zellij</span>
 sudo apt install zellij
 
-# Verificar instalação
-zellij --version
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="code-block">
-# Install latest zellij
+<span class="comment"># Verificar instalação</span>
+zellij --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Install latest zellij</span>
 apt install zellij
 
-# Verificar instalação
-zellij --version
-                </div>
-            </div>
+<span class="comment"># Verificar instalação</span>
+zellij --version</code></pre></div>
         </div>
 
         <h3>🎯 Exemplos Básicos de Uso</h3>
-        <div class="code-block">
-# Show version
+        <div class="code-block"><pre><code><span class="comment"># Show version</span>
 zellij --version
 
-# Start a new session
+<span class="comment"># Start a new session</span>
 zellij
 
-# Start a named session
+<span class="comment"># Start a named session</span>
 zellij --session work
 
-# List active sessions
+<span class="comment"># List active sessions</span>
 zellij list-sessions
 
-# Attach to an existing session
-zellij attach work
-        </div>
+<span class="comment"># Attach to an existing session</span>
+zellij attach work</code></pre></div>
 
         <h2>🚀 Por que escolher o deb.griffo.io?</h2>
 
@@ -270,34 +312,6 @@ zellij attach work
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "inLanguage": "pt-BR",
-    "headline": "Instalar a última versão do Zellij no Ubuntu",
-    "description": "Guia completo para instalar o Zellij mais recente no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
-    "author": {
-        "@type": "Person",
-        "name": "Dario Griffo",
-        "url": "https://github.com/dariogriffo"
-    },
-    "datePublished": "2026-07-09",
-    "dateModified": "2026-08-13",
-    "publisher": {
-        "@type": "Organization",
-        "name": "deb.griffo.io"
-    },
-    "mainEntity": {
-        "@type": "SoftwareApplication",
-        "name": "Zellij",
-        "applicationCategory": "Terminal Tool",
-        "operatingSystem": "Ubuntu Linux",
-        "description": "Um workspace de terminal e multiplexador com painéis, abas, layouts e um sistema de plugins, escrito em Rust."
-    }
-}
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
@@ -308,21 +322,6 @@ zellij attach work
   gtag('config', 'G-FKYKE1SD5C');
 </script>
 
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.install-steps');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-</script>
 <div class="tool-extras">
 <section>
 <h2>📦 Últimos lançamentos deste repositório</h2>
@@ -337,10 +336,52 @@ zellij attach work
 </section>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Zellij está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Não — Zellij não está empacotado nos arquivos oficiais do Ubuntu. Este repositório é atualmente a única fonte apt, oferecendo Zellij 0.44.3."}}, {"@type": "Question", "name": "Como instalo o Zellij mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install zellij. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. Todos os direitos reservados. | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">Termos e Condições</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Todos os direitos reservados. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">Termos e Condições</a> |
+    <span class="footer-credit">Design: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "inLanguage": "pt-BR",
+    "headline": "Instalar a última versão do Zellij no Ubuntu",
+    "description": "Guia completo para instalar o Zellij mais recente no Ubuntu usando o repositório deb.griffo.io para pacotes atualizados.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-07-09",
+    "dateModified": "2026-08-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Zellij",
+        "applicationCategory": "Terminal Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "description": "Um workspace de terminal e multiplexador com painéis, abas, layouts e um sistema de plugins, escrito em Rust."
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
 </body>
 </html>

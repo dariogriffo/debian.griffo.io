@@ -1,66 +1,146 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-install-variant="sudo">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在 Ubuntu 上通过 apt 安装 ripgrep（始终最新版）</title>
-    <meta name="description" content="官方 Ubuntu 仅提供 ripgrep 15.1.0，本仓库提供 ripgrep 15.2.0。一条 apt 命令支持 Ubuntu 22.04、24.04、25.10 和 26.04；GPG 签名，每次发布后数小时内重新构建。">
-    <meta name="keywords" content="ripgrep ubuntu, 安装 ripgrep ubuntu, rg 命令, 递归 grep, grep 替代, rust 搜索工具, ubuntu 软件包, jammy, noble, burntsushi, apt ripgrep">
-    <meta name="author" content="Dario Griffo">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
-    <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
-    <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
-    <meta property="og:title" content="在 Ubuntu 上通过 apt 安装 ripgrep（始终最新版）">
-    <meta property="og:description" content="官方 Ubuntu 仅提供 ripgrep 15.1.0，本仓库提供 ripgrep 15.2.0。一条 apt 命令支持 Ubuntu 22.04、24.04、25.10 和 26.04；GPG 签名，每次发布后数小时内重新构建。">
-    <meta property="og:image" content="https://deb.griffo.io/ubuntu-logo.webp">
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上通过 apt 安装 ripgrep（始终最新版）</title>
+<meta name="description" content="官方 Ubuntu 仅提供 ripgrep 15.1.0，本仓库提供 ripgrep 15.2.0。一条 apt 命令支持 Ubuntu 22.04、24.04、25.10 和 26.04；GPG 签名，每次发布后数小时内重新构建。">
+<meta name="keywords" content="ripgrep ubuntu, 安装 ripgrep ubuntu, rg 命令, 递归 grep, grep 替代, rust 搜索工具, ubuntu 软件包, jammy, noble, burntsushi, apt ripgrep">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
 
-    <link rel="stylesheet" href="/css/theme.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上通过 apt 安装 ripgrep（始终最新版）">
+<meta property="og:description" content="官方 Ubuntu 仅提供 ripgrep 15.1.0，本仓库提供 ripgrep 15.2.0。一条 apt 命令支持 Ubuntu 22.04、24.04、25.10 和 26.04；GPG 签名，每次发布后数小时内重新构建。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上通过 apt 安装 ripgrep（始终最新版）">
+<meta property="twitter:description" content="官方 Ubuntu 仅提供 ripgrep 15.1.0，本仓库提供 ripgrep 15.2.0。一条 apt 命令支持 Ubuntu 22.04、24.04、25.10 和 26.04；GPG 签名，每次发布后数小时内重新构建。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-ripgrep-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-ripgrep-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
-<div style="background: linear-gradient(135deg, #fff8e7 0%, #ffe0b2 100%); padding: 26px 24px; text-align: center; border-bottom: 3px solid #ffb74d; box-shadow: 0 4px 24px rgba(255, 167, 38, 0.25);">
-    <div style="max-width: 860px; margin: 0 auto;">
-        <p style="margin: 0 0 4px 0; font-size: 1.25em; font-weight: 800; color: #5d3a00; letter-spacing: 0.2px;">
-            ⚡ 你的工具始终最新 —— 全自动
-        </p>
-        <p style="margin: 0 0 6px 0; font-size: 0.98em; color: #6d4100; line-height: 1.75;">
-            Debian 和 Ubuntu 会将软件包版本冻结数年。本镜像源跟踪 <strong>30 多款开发工具</strong>，在上游发布后<strong>数小时内</strong>即发布新版本 —— 经 GPG 签名，直接进入 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt</code>。<br>
-            一条 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">apt upgrade</code>，全部更新到位。无需盯着发布页面，无需比对版本，无需手动 <code style="background: rgba(0,0,0,0.08); padding: 1px 6px; border-radius: 4px;">dpkg -i</code>。<br>
-            <strong>年度订阅</strong>维持这套自动化的运转。更喜欢手动更新？每个 .deb 在 GitHub 上始终免费。感谢您的支持！🙏
-        </p>
-        <a href="https://buy.stripe.com/aFa28q8hr0lRdlm4a2enS01"
-           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; font-size: 1.05em; font-weight: 700; padding: 13px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 18px rgba(102, 126, 234, 0.45); margin: 14px 0 18px 0; transition: transform 0.2s, box-shadow 0.2s;"
-           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 26px rgba(102,126,234,0.55)'"
-           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px rgba(102,126,234,0.45)'">
-            ⚡ 让我的工具自动保持最新
-        </a>
-        <p id="sub-price" style="margin: 2px 0 0 0; font-size: 0.95em; font-weight: 700; color: #5d3a00;"><span id="sub-price-amt">€15 / $15 / £15</span> 每年 — 不支持您的货币时以美元计费。</p>
-        <script>
-        (function(){try{var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone)||"";var v="";
-        var noneuro=["Europe/London","Europe/Zurich","Europe/Warsaw","Europe/Prague","Europe/Budapest","Europe/Bucharest","Europe/Sofia","Europe/Stockholm","Europe/Copenhagen","Europe/Oslo","Europe/Istanbul","Europe/Kyiv","Europe/Kiev","Europe/Moscow","Europe/Minsk","Europe/Belgrade","Europe/Reykjavik","Europe/Chisinau","Europe/Tirane","Europe/Skopje","Europe/Sarajevo","Europe/Vaduz","Europe/Gibraltar","Europe/Isle_of_Man","Europe/Jersey","Europe/Guernsey"];
-        if(tz==="Europe/London"){v="\u00a315";}
-        else if(/^America\/(New_York|Detroit|Chicago|Denver|Phoenix|Los_Angeles|Anchorage|Boise|Juneau|Indiana|Kentucky|Menominee|North_Dakota|Sitka|Yakutat|Nome|Adak|Metlakatla)/.test(tz)||tz==="Pacific/Honolulu"){v="$15";}
-        else if(tz.indexOf("Europe/")===0&&noneuro.indexOf(tz)===-1){v="\u20ac15";}
-        if(v){document.getElementById("sub-price-amt").textContent=v;}}catch(e){}})();
-        </script>
-        <p style="margin: 10px 0 0 0; font-size: 0.88em; color: #6d4100; line-height: 1.6;">
-            💬 <strong>有关此仓库的问题、反馈或其他事项？</strong>加入我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord 社区</a> — 获取帮助并与其他用户交流的最佳场所。<br>
-            ☕ <strong>曾通过 Buy Me a Coffee 支持过我们？</strong>您太棒了！前往我们的 <a href="https://discord.gg/E2yHQNkuZy" style="color: #5048a8; font-weight: 600; text-decoration: underline;">Discord</a>，我们将为您安排<strong>终身免费订阅</strong>。💜
-        </p>
-        <p style="margin: 8px 0 0 0; font-size: 0.75em; color: #8a6d3b; text-align: right;">
-            <time datetime="2026-07-20">2026 年 7 月 20 日</time>
-        </p>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
     </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+  </div>
 </div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>41 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="${home}#pricing">查看价格</a>
+    </p>
+  </div>
+</div>
+
 <div class="container">
     <div class="header">
         <h1>🔎 在 Ubuntu 上安装最新版 ripgrep</h1>
         <p class="subtitle">按正则表达式递归搜索目录，并遵循你的 gitignore 规则</p>
-        <div class="version-badge">最新版本：15.2.0 · 更新于 2026-08-13</div>
+        <div class="version-badge">最新版本：15.2.0 · 更新于 2026-08-14</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
@@ -123,120 +203,81 @@
 
         <h2>📦 从 deb.griffo.io 安装</h2>
 
-        <div class="install-steps">
-            <h3>步骤 1：添加仓库</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
-            </div>
-
-            <div id="sudo-tab-1" class="tab-content active">
-                <div class="code-block">
-sudo install -d -m 0755 /etc/apt/keyrings
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">步骤 1：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-sudo apt update
-                </div>
-            </div>
-
-            <div id="root-tab-1" class="tab-content">
-                <div class="code-block">
-install -d -m 0755 /etc/apt/keyrings
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | tee /etc/apt/sources.list.d/deb.griffo.io.list > /dev/null
-apt update
-                </div>
-            </div>
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
         </div>
 
-        <div class="install-steps">
-            <h3>步骤 2：安装 ripgrep</h3>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-2')">使用 sudo 安装</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-2')">使用 root 安装</button>
-            </div>
-
-            <div id="sudo-tab-2" class="tab-content active">
-                <div class="code-block">
-# 安装最新版 ripgrep
+        <div class="install-block">
+            <h3 class="block-title">步骤 2：安装 ripgrep</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 ripgrep</span>
 sudo apt install ripgrep
 
-# 验证安装
-rg --version
-                </div>
-            </div>
-
-            <div id="root-tab-2" class="tab-content">
-                <div class="code-block">
-# 安装最新版 ripgrep
+<span class="comment"># 验证安装</span>
+rg --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 ripgrep</span>
 apt install ripgrep
 
-# 验证安装
-rg --version
-                </div>
-            </div>
+<span class="comment"># 验证安装</span>
+rg --version</code></pre></div>
         </div>
 
         <div class="install-steps">
             <h3>步骤 3：Shell 补全</h3>
-            <div class="code-block">
-# bash、zsh 和 fish 的补全已随软件包提供——
-# 无需配置。打开新的 shell 并按 Tab：
+            <div class="code-block"><pre><code><span class="comment"># bash、zsh 和 fish 的补全已随软件包提供——</span>
+<span class="comment"># 无需配置。打开新的 shell 并按 Tab：</span>
 rg --ty&lt;Tab&gt;
 
-# 手册页也会一并安装
-man rg
-            </div>
+<span class="comment"># 手册页也会一并安装</span>
+man rg</code></pre></div>
         </div>
 
         <h3>🎯 基本使用示例</h3>
 
         <p><strong>日常搜索：</strong></p>
-        <div class="code-block">
-# 搜索当前目录树
-rg 'TODO'
+        <div class="code-block"><pre><code><span class="comment"># 搜索当前目录树</span>
+rg &#039;TODO&#039;
 
-# 忽略大小写、全词匹配
-rg -i -w 'timeout'
+<span class="comment"># 忽略大小写、全词匹配</span>
+rg -i -w &#039;timeout&#039;
 
-# 显示每个匹配前后 3 行上下文
-rg -C 3 'panic!'
+<span class="comment"># 显示每个匹配前后 3 行上下文</span>
+rg -C 3 &#039;panic!&#039;
 
-# 只列出包含匹配的文件
-rg -l 'BurntSushi'
-        </div>
+<span class="comment"># 只列出包含匹配的文件</span>
+rg -l &#039;BurntSushi&#039;</code></pre></div>
 
         <p><strong>限定搜索范围：</strong></p>
-        <div class="code-block">
-# 仅 Rust 文件
-rg -t rust 'unsafe'
+        <div class="code-block"><pre><code><span class="comment"># 仅 Rust 文件</span>
+rg -t rust &#039;unsafe&#039;
 
-# 排除 HTML 和 CSS
-rg -T html -T css 'font-size'
+<span class="comment"># 排除 HTML 和 CSS</span>
+rg -T html -T css &#039;font-size&#039;
 
-# 包含被忽略和隐藏的文件
-rg -uu 'password'
+<span class="comment"># 包含被忽略和隐藏的文件</span>
+rg -uu &#039;password&#039;
 
-# 用 glob 限定
-rg -g '*.toml' 'version'
-        </div>
+<span class="comment"># 用 glob 限定</span>
+rg -g &#039;*.toml&#039; &#039;version&#039;</code></pre></div>
 
         <p><strong>超越普通 grep：</strong></p>
-        <div class="code-block">
-# 通过 PCRE2 使用环视和反向引用
-rg -P '(?&lt;=fn )\w+' src/
+        <div class="code-block"><pre><code><span class="comment"># 通过 PCRE2 使用环视和反向引用</span>
+rg -P &#039;(?&lt;=fn )\w+&#039; src/
 
-# 跨行搜索
-rg -U 'struct \w+ \{\n[^}]*pub'
+<span class="comment"># 跨行搜索</span>
+rg -U &#039;struct \w+ \{\n[^}]*pub&#039;
 
-# 预览替换（不写入文件）
-rg 'v(\d+)\.(\d+)' -r 'v$1.$2.0'
+<span class="comment"># 预览替换（不写入文件）</span>
+rg &#039;v(\d+)\.(\d+)&#039; -r &#039;v$1.$2.0&#039;
 
-# 供脚本使用的结构化输出
-rg --json 'error' | jq -r 'select(.type=="match") | .data.path.text'
-        </div>
+<span class="comment"># 供脚本使用的结构化输出</span>
+rg --json &#039;error&#039; | jq -r &#039;select(.type==&quot;match&quot;) | .data.path.text&#039;</code></pre></div>
 
         <div class="integration-box">
             <h4>🔧 工具集成</h4>
@@ -292,34 +333,6 @@ rg --json 'error' | jq -r 'select(.type=="match") | .data.path.text'
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "在 Ubuntu 上安装最新版 ripgrep",
-    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新版递归搜索工具 ripgrep 的完整指南。",
-    "author": {
-        "@type": "Person",
-        "name": "Dario Griffo",
-        "url": "https://github.com/dariogriffo"
-    },
-    "datePublished": "2026-08-10",
-    "dateModified": "2026-08-13",
-    "publisher": {
-        "@type": "Organization",
-        "name": "deb.griffo.io"
-    },
-    "mainEntity": {
-        "@type": "SoftwareApplication",
-        "name": "ripgrep",
-        "applicationCategory": "Command Line Tool",
-        "operatingSystem": "Ubuntu Linux",
-        "softwareVersion": "latest",
-        "description": "面向行的递归搜索工具，遵循 gitignore 规则，支持 Unicode 并可选用 PCRE2 正则"
-    }
-}
-</script>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
@@ -330,21 +343,6 @@ rg --json 'error' | jq -r 'select(.type=="match") | .data.path.text'
   gtag('config', 'G-FKYKE1SD5C');
 </script>
 
-<script>
-    function switchTab(event, tabId) {
-        const container = event.target.closest('.install-steps');
-        const tabContents = container.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        const tabButtons = container.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
-    }
-</script>
 <div class="tool-extras">
 <section>
 <h2>📦 本仓库最近发布</h2>
@@ -359,10 +357,52 @@ rg --json 'error' | jq -r 'select(.type=="match") | .data.path.text'
 </section>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ripgrep 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在，但官方 Ubuntu 源只提供 ripgrep 15.1.0，而本仓库提供 ripgrep 15.2.0，每次上游发布后数小时内重新构建。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 ripgrep？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install ripgrep。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
 </div>
-<footer>
-    <p>&copy; 2025 Dario Griffo. 保留所有权利。 | <a href="https://github.com/dariogriffo">GitHub</a> | <a href="/terms.html">条款与条件</a></p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
-    <p style="font-size: 0.85em;">deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. 保留所有权利。 |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/terms.html">条款和条件</a> |
+    <span class="footer-credit">设计: <a href="https://templatemo.com" target="_blank" rel="nofollow noopener">TemplateMo</a></span>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "在 Ubuntu 上安装最新版 ripgrep",
+    "description": "使用 deb.griffo.io 仓库在 Ubuntu 上安装最新版递归搜索工具 ripgrep 的完整指南。",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-10",
+    "dateModified": "2026-08-14",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "ripgrep",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "面向行的递归搜索工具，遵循 gitignore 规则，支持 Unicode 并可选用 PCRE2 正则"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
 </body>
 </html>
