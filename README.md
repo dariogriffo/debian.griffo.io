@@ -37,6 +37,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Zellij](https://zellij.dev/) - Terminal workspace and multiplexer
 - [Starship](https://starship.rs/) - Minimal, fast shell prompt
 - [Atuin](https://atuin.sh/) - Magical shell history
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp/) - Feature-rich command-line audio/video downloader
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -73,6 +74,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [zellij-debian](https://github.com/dariogriffo/zellij-debian) - Terminal workspace and multiplexer
 - [starship-debian](https://github.com/dariogriffo/starship-debian) - Shell prompt
 - [atuin-debian](https://github.com/dariogriffo/atuin-debian) - Shell history
+- [yt-dlp-debian](https://github.com/dariogriffo/yt-dlp-debian) - Audio/video downloader
 
 ## 🐧 Supported Debian Distributions
 
@@ -121,6 +123,7 @@ sudo apt install -y uv           # Fast Python package manager
 # Media & Entertainment
 sudo apt install -y lowfi        # Lofi music player
 sudo apt install -y termusic     # Terminal music player
+sudo apt install -y yt-dlp       # Audio/video downloader
 
 # Container & Cloud Tools
 sudo apt install -y unregistry   # Container registry
@@ -148,7 +151,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin
 ```
 
 ## ⚠️ Important Information
