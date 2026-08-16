@@ -33,11 +33,26 @@
   onScroll();
 
   // ── Smooth scroll for in-page anchors ──
-  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+  // Nav links are written absolute ("/#pricing") so they work from sub-pages;
+  // when we are already on that page they are still same-document jumps and
+  // must be treated like a bare "#pricing".
+  function sameDocumentHash(link) {
+    var href = link.getAttribute('href');
+    if (!href || href.indexOf('#') === -1) { return null; }
+    if (href.charAt(0) === '#') { return href; }
+    if (link.host !== window.location.host) { return null; }
+    if (link.pathname !== window.location.pathname) { return null; }
+    return link.hash;
+  }
+
+  document.querySelectorAll('a[href*="#"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
-      var href = link.getAttribute('href');
-      if (href === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-      var target = document.querySelector(href);
+      var hash = sameDocumentHash(link);
+      if (!hash) { return; }
+      if (hash === '#') {
+        e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); closeMobileMenu(); return;
+      }
+      var target = document.querySelector(hash);
       if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); closeMobileMenu(); }
     });
   });
@@ -95,6 +110,14 @@
       navToggle.classList.toggle('active', open);
       navToggle.setAttribute('aria-expanded', String(open));
       document.body.style.overflow = open ? 'hidden' : '';
+    });
+    // Any link in the panel dismisses it — cross-page links too, so the panel
+    // is not still open when the browser restores the page from bfcache.
+    mobileMenu.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a')) { closeMobileMenu(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeMobileMenu(); }
     });
   }
 
