@@ -38,6 +38,12 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Starship](https://starship.rs/) - Minimal, fast shell prompt
 - [Atuin](https://atuin.sh/) - Magical shell history
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp/) - Feature-rich command-line audio/video downloader
+- [bottom](https://github.com/ClementTsang/bottom) - Graphical process/system monitor for the terminal (btm)
+- [difftastic](https://difftastic.wilfred.me.uk/) - Structural diff that compares syntax, not lines (difft)
+- [GitUI](https://github.com/gitui-org/gitui) - Blazing fast terminal UI for git
+- [rclone](https://rclone.org) - rsync for cloud storage, with mount and serve
+- [Serie](https://github.com/lusingander/serie) - Rich git commit graph in your terminal
+- [Television](https://github.com/alexpasmantier/television) - Very fast, hackable fuzzy finder (tv)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -75,6 +81,12 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [starship-debian](https://github.com/dariogriffo/starship-debian) - Shell prompt
 - [atuin-debian](https://github.com/dariogriffo/atuin-debian) - Shell history
 - [yt-dlp-debian](https://github.com/dariogriffo/yt-dlp-debian) - Audio/video downloader
+- [bottom-debian](https://github.com/dariogriffo/bottom-debian) - Process/system monitor
+- [difftastic-debian](https://github.com/dariogriffo/difftastic-debian) - Structural diff tool
+- [gitui-debian](https://github.com/dariogriffo/gitui-debian) - Terminal UI for git
+- [rclone-debian](https://github.com/dariogriffo/rclone-debian) - Cloud storage sync
+- [serie-debian](https://github.com/dariogriffo/serie-debian) - Git commit graph viewer
+- [television-debian](https://github.com/dariogriffo/television-debian) - Fuzzy finder
 
 ## 🐧 Supported Debian Distributions
 
@@ -114,11 +126,16 @@ sudo apt install -y eza          # Modern ls replacement
 sudo apt install -y yazi         # Terminal file manager
 sudo apt install -y fzf          # Fuzzy finder
 sudo apt install -y zoxide       # Smart cd command
+sudo apt install -y television   # Fuzzy finder (command: tv)
+sudo apt install -y btm          # Process/system monitor
 
 # Development Tools
 sudo apt install -y lazygit      # Git terminal UI
 sudo apt install -y lazydocker   # Docker terminal UI
 sudo apt install -y uv           # Fast Python package manager
+sudo apt install -y gitui        # Terminal UI for git
+sudo apt install -y difftastic   # Structural diff (command: difft)
+sudo apt install -y serie        # Git commit graph viewer
 
 # Media & Entertainment
 sudo apt install -y lowfi        # Lofi music player
@@ -129,6 +146,7 @@ sudo apt install -y yt-dlp       # Audio/video downloader
 sudo apt install -y unregistry   # Container registry
 sudo apt install -y uncloud      # Container orchestration
 sudo apt install -y docker-pussh # Docker over SSH
+sudo apt install -y rclone       # Sync files with cloud storage
 
 # Application Launchers & Runtimes
 sudo apt install -y ulauncher    # Application launcher
@@ -151,7 +169,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone
 ```
 
 ## ⚠️ Important Information
