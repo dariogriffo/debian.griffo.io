@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Установка rclone в Ubuntu — последняя версия</title>
+<meta name="description" content="Официальный Ubuntu поставляет rclone 1.60.1 — в этом репозитории rclone 1.75.0. Одна команда apt для Ubuntu 22.04, 24.04, 25.10 и 26.04; подписано GPG, пересобирается через несколько часов после каждого релиза.">
+<meta name="keywords" content="rclone ubuntu, установить rclone ubuntu, rclone облако, rsync для облака, инструмент синхронизации s3, rclone ppa, пакеты ubuntu, jammy, noble, questing, apt rclone">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ru/install-latest-rclone-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ru/install-latest-rclone-in-ubuntu.html">
+<meta property="og:title" content="Установка rclone в Ubuntu — последняя версия">
+<meta property="og:description" content="Официальный Ubuntu поставляет rclone 1.60.1 — в этом репозитории rclone 1.75.0. Одна команда apt для Ubuntu 22.04, 24.04, 25.10 и 26.04; подписано GPG, пересобирается через несколько часов после каждого релиза.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ru/install-latest-rclone-in-ubuntu.html">
+<meta property="twitter:title" content="Установка rclone в Ubuntu — последняя версия">
+<meta property="twitter:description" content="Официальный Ubuntu поставляет rclone 1.60.1 — в этом репозитории rclone 1.75.0. Одна команда apt для Ubuntu 22.04, 24.04, 25.10 и 26.04; подписано GPG, пересобирается через несколько часов после каждого релиза.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-rclone-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ru/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ru/#packages">Пакеты</a></li>
+    <li><a href="/ru/#install">Установка</a></li>
+    <li><a href="/ru/#versions">Версии</a></li>
+    <li><a href="/ru/#source">Исходники</a></li>
+    <li><a href="/ru/#pricing">Цены</a></li>
+    <li><a href="/ru/#faq">Вопросы</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Выбрать язык"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Русский</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ru/#pricing" class="nav-cta">Оформить подписку</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ru/#packages" class="mobile-menu-link" data-index="01">Пакеты</a>
+      <a href="/ru/#install" class="mobile-menu-link" data-index="02">Установка</a>
+      <a href="/ru/#versions" class="mobile-menu-link" data-index="03">Версии</a>
+      <a href="/ru/#source" class="mobile-menu-link" data-index="04">Исходники</a>
+      <a href="/ru/#pricing" class="mobile-menu-link" data-index="05">Цены</a>
+      <a href="/ru/#faq" class="mobile-menu-link" data-index="06">Вопросы</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Прогресс прокрутки">
+  <span class="side-label">Прокрутка</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Статус">
+  <span class="side-label">Статус</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>49 инструментов разработчика, всегда актуальны</strong> — новые выпуски появляются в <code>apt</code> в течение нескольких часов.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Присоединиться к Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 С <strong><time datetime="2026-10-01T12:00:00+01:00">1 октября 2026 года, 12:00 по времени Великобритании</time></strong> для доступа к apt-зеркалу потребуется подписка.
+      <a href="/ru/#pricing">Посмотреть цены</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Есть вечно бесплатное зеркало</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>☁️ Установка последней версии rclone в Ubuntu</h1>
+        <p class="subtitle">rsync для облачных хранилищ — синхронизация, монтирование и раздача 70+ провайдеров</p>
+        <div class="version-badge">Последняя версия: 1.75.0 · обновлено 2026-08-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.75.0 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">1.60.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Вернуться на главную</a>
+
+        <div class="notice-box"><strong>📌 Устанавливаете на конкретный выпуск?</strong> <a href="/install-rclone-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-rclone-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-rclone-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-rclone-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Что такое rclone?</h2>
+        <p>rclone — это <strong>консольный менеджер файлов в облачных хранилищах</strong>. Он работает более чем с семьюдесятью провайдерами: S3 и всё S3-совместимое, Google Drive, Dropbox, OneDrive и SharePoint, Backblaze B2, Google Cloud Storage, Swift, SFTP, FTP, WebDAV и обычный HTTP — с одним и тем же набором команд. Он копирует, синхронизирует и переносит с контрольными суммами, монтирует любой удалённый ресурс как файловую систему, раздаёт его по полудюжине протоколов и передаёт данные напрямую между двумя облаками, не пропуская их через ваш диск.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важна последняя версия:</strong> rclone общается с API, которые меняются, не спрашивая вас. Провайдеры меняют схемы аутентификации, отключают endpoint-ы и добавляют регионы, а исправление выходит в следующем релизе rclone — там же появляются новые бэкенды и целые подкоманды. Версия из официальных архивов старше нескольких лет этой работы, и «в прошлом году работало» — ровно тот сбой, которого избегает свежий rclone.
+        </div>
+
+        <h3>⚡ Ключевые возможности rclone</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>☁️ Более семидесяти бэкендов</h4>
+                <p>S3-совместимые объектные хранилища, потребительские облака, корпоративные пакеты и простые протоколы (SFTP, FTP, WebDAV, HTTP) — за одним набором команд.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔁 Синхронизация с контрольными суммами</h4>
+                <p><code>copy</code>, <code>sync</code> и <code>move</code> сравнивают размер, время и хеши, а <code>--dry-run</code> заранее показывает, что именно изменится.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Монтирование как файловой системы</h4>
+                <p><code>rclone mount</code> подключает удалённый ресурс в каталог с VFS-кешем, чтобы обычные программы могли читать и писать.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Раздача обратно</h4>
+                <p><code>rclone serve</code> публикует любой ресурс по HTTP, WebDAV, SFTP, FTP, DLNA, NFS или как S3-endpoint — удобно для устройств, знающих лишь один протокол.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Шифрование на стороне клиента</h4>
+                <p>Обёртка <code>crypt</code> шифрует содержимое и имена файлов до отправки, а сам файл конфигурации с токенами тоже можно зашифровать.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Рассчитан на объёмы</h4>
+                <p>Параллельные передачи и проверки, расписание ограничения полосы, фильтры и серверные копии, которые не тянут байты через вашу машину.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов. Простое <code>apt upgrade</code> держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Выберите способ запуска команд"><span class="variant-toggle-label">Запуск команд</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">через sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">от root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Шаг 1: Добавить репозиторий</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там Ghostty, Oh My Posh и Zed; rclone среди них нет, поэтому репозиторий выше — единственный способ установить его сегодня; попросите, и его можно добавить.</p>
+  <p class="free-lane-more"><a href="/free.html">Как работает бесплатное зеркало →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Шаг 2: Установить rclone</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Установить последнюю версию rclone</span>
+sudo apt install rclone
+
+<span class="comment"># Проверить установку</span>
+rclone version</code></pre><pre class="variant variant-root"><code><span class="comment"># Установить последнюю версию rclone</span>
+apt install rclone
+
+<span class="comment"># Проверить установку</span>
+rclone version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 3: Настроить первый удалённый ресурс</h3>
+            <div class="code-block"><pre><code><span class="comment"># Интерактивный мастер: выбрать провайдера, авторизоваться, задать имя</span>
+rclone config
+
+<span class="comment"># Показать настроенные ресурсы</span>
+rclone listremotes
+
+<span class="comment"># Осмотреться в одном из них</span>
+rclone lsd mydrive:
+
+<span class="comment"># Man-страница и дополнения для bash, zsh и fish входят в пакет</span>
+man rclone</code></pre></div>
+        </div>
+
+        <h3>🎯 Базовые примеры использования</h3>
+
+        <p><strong>Копирование и синхронизация:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Загрузить папку с отображением прогресса</span>
+rclone copy -P ~/Documents mydrive:Documents
+
+<span class="comment"># Привести приёмник к состоянию источника — всегда сначала пробный прогон</span>
+rclone sync --dry-run ~/site remote:bucket/site
+rclone sync -P ~/site remote:bucket/site
+
+<span class="comment"># Напрямую из одного облака в другое, без локальной копии</span>
+rclone copy s3:bucket/data b2:backup/data
+
+<span class="comment"># Проверить, что пришло именно то, что отправляли</span>
+rclone check ~/site remote:bucket/site</code></pre></div>
+
+        <p><strong>Монтирование и раздача:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Смонтировать ресурс как файловую систему (нужен FUSE)</span>
+sudo apt install fuse3
+rclone mount mydrive: ~/mnt/drive --vfs-cache-mode writes
+
+<span class="comment"># Раздать ресурс в локальную сеть по HTTP или WebDAV</span>
+rclone serve http remote:public --addr :8080
+rclone serve webdav remote:docs --addr :8081
+
+<span class="comment"># Посмотреть, что занимает место, в стиле ncdu</span>
+rclone ncdu remote:
+
+<span class="comment"># Просто общий размер бакета</span>
+rclone size remote:bucket</code></pre><pre class="variant variant-root"><code><span class="comment"># Смонтировать ресурс как файловую систему (нужен FUSE)</span>
+apt install fuse3
+rclone mount mydrive: ~/mnt/drive --vfs-cache-mode writes
+
+<span class="comment"># Раздать ресурс в локальную сеть по HTTP или WebDAV</span>
+rclone serve http remote:public --addr :8080
+rclone serve webdav remote:docs --addr :8081
+
+<span class="comment"># Посмотреть, что занимает место, в стиле ncdu</span>
+rclone ncdu remote:
+
+<span class="comment"># Просто общий размер бакета</span>
+rclone size remote:bucket</code></pre></div>
+
+        <p><strong>Настройка, фильтры и шифрование:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Больше параллелизма для множества мелких файлов</span>
+rclone sync -P --transfers 8 --checkers 16 src: dst:
+
+<span class="comment"># Расписание полосы, чтобы бэкапы не съедали рабочий день</span>
+rclone sync -P --bwlimit &quot;08:00,512k 23:00,off&quot; ~/photos remote:photos
+
+<span class="comment"># Фильтры вместо копирования всего подряд</span>
+rclone copy src: dst: --exclude &quot;*.tmp&quot; --filter-from filters.txt
+
+<span class="comment"># Обернуть существующий ресурс клиентским шифрованием</span>
+rclone config create secret crypt remote=mydrive:vault</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Интеграция с другими инструментами</h4>
+            <p>rclone — та деталь, на которую опираются другие инструменты:</p>
+            <ul>
+                <li><strong>FUSE:</strong> <code>fuse3</code> (или <code>fuse</code>) превращает <code>rclone mount</code> в настоящий каталог для программ, которые понимают только файлы</li>
+                <li><strong>systemd:</strong> юнит на каждый mount или <code>serve</code> и таймер для ночного <code>sync</code> — обычный способ запускать это без присмотра</li>
+                <li><strong>Инструменты бэкапа:</strong> restic и подобные умеют работать с rclone как с удалённым хранилищем и сразу получают все поддерживаемые им бэкенды</li>
+                <li><strong>Удалённое управление:</strong> <code>rclone rcd --rc-web-gui</code> даёт HTTP-API и веб-интерфейс для долгих передач</li>
+                <li><strong>Файл конфигурации:</strong> <code>~/.config/rclone/rclone.conf</code> хранит описания ресурсов и может быть зашифрован, чтобы учётные данные не лежали открытым текстом</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальный Ubuntu:</strong> содержит rclone в universe, замороженный на момент выпуска, так что новых провайдеров и подкоманд там просто нет</li>
+                <li><strong>Установочный скрипт upstream:</strong> свежая версия, но кладёт бинарник в <code>/usr/bin</code> в обход apt и дальше рассчитывает на <code>rclone selfupdate</code></li>
+                <li><strong>Snap:</strong> изолированный пакет: FUSE-монтирование и пути вне домашнего каталога требуют лишних усилий</li>
+                <li><strong>deb.griffo.io:</strong> последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Рабочие бэкенды:</strong> самый свежий выпуск с исправлениями для провайдеров и новыми бэкендами, которых замороженная версия из архива так и не получила</li>
+            <li>✅ <strong>apt держит версию свежей:</strong> никакого <code>selfupdate</code> и скриптов, пишущих в <code>/usr/bin</code> в обход пакетного менеджера</li>
+            <li>✅ <strong>Автоматические обновления:</strong> пакеты обновляются в течение нескольких часов после релиза upstream</li>
+            <li>✅ <strong>Полный пакет:</strong> официальный бинарник upstream плюс man-страница <code>rclone.1</code> и дополнения для bash, zsh и fish</li>
+            <li>✅ <strong>Четыре архитектуры:</strong> amd64, arm64, armhf и i386 — на NAS и Raspberry Pi тот же rclone, что и на рабочей станции</li>
+            <li>✅ <strong>Много дистрибутивов:</strong> работает на Ubuntu 22.04, 24.04, 25.10 и 26.04</li>
+            <li>✅ <strong>Простое обслуживание:</strong> обновления обычными командами apt</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакета</h3>
+        <p>Пакеты для Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/rclone-debian" target="_blank" rel="noopener">☁️ rclone-debian</a> - Сборки последних выпусков</li>
+        </ul>
+
+        <h3>🔗 Похожие пакеты</h3>
+        <p>Также доступны в deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-garage-in-ubuntu.html">Garage</a> - Собственное S3-хранилище, куда синхронизировать</li>
+            <li><a href="/install-latest-duckdb-in-ubuntu.html">DuckDB</a> - Запросы к Parquet и CSV прямо в объектном хранилище</li>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - Терминальный файловый менеджер для локальной стороны</li>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij</a> - Мультиплексор, чтобы долгая передача не прервалась</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Идеально подходит для:</strong> ночных бэкапов в объектное хранилище, переезда бакета между провайдерами без локальной копии, монтирования папки Drive на машине без графики, раздачи медиатеки устройству, знающему только WebDAV, и любого скрипта, которому нужно положить файлы в облако.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Последние релизы этого репозитория</h2>
+<ul class="release-list">
+<li><code>1.75.0</code> — 2026-08-18</li>
+</ul>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли rclone в официальных репозиториях Ubuntu?</summary><p>Да, но официальный архив Ubuntu поставляет rclone 1.60.1, тогда как этот репозиторий предлагает rclone 1.75.0 — пересобирается через несколько часов после каждого релиза.</p></details>
+<details><summary>Как установить последнюю версию rclone в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install rclone. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли rclone в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Да, но официальный архив Ubuntu поставляет rclone 1.60.1, тогда как этот репозиторий предлагает rclone 1.75.0 — пересобирается через несколько часов после каждого релиза."}}, {"@type": "Question", "name": "Как установить последнюю версию rclone в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install rclone. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Все права защищены. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Бесплатное зеркало</a> |
+    <a href="/how-packages-are-built.html">Как собираются пакеты</a> |
+    <a href="/ru/how-subscriptions-work.html">Как устроен доступ</a> |
+    <a href="/terms.html">Условия использования</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Установка последней версии rclone в Ubuntu",
+    "description": "Полное руководство по установке последней версии менеджера облачных хранилищ rclone в Ubuntu через репозиторий deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "rclone",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Консольная программа для синхронизации, копирования, монтирования и раздачи файлов в более чем семидесяти облачных хранилищах, с контрольными суммами, фильтрами и клиентским шифрованием"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

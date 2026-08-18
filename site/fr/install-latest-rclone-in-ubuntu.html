@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Installer rclone sur Ubuntu — dernière version</title>
+<meta name="description" content="Le Ubuntu officiel fournit rclone 1.60.1 — ce dépôt propose rclone 1.75.0. Une seule commande apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04 ; signé GPG, reconstruit quelques heures après chaque version.">
+<meta name="keywords" content="rclone ubuntu, installer rclone ubuntu, rclone cloud, rsync pour le cloud, outil de synchronisation s3, rclone ppa, paquets ubuntu, jammy, noble, questing, apt rclone">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/install-latest-rclone-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/install-latest-rclone-in-ubuntu.html">
+<meta property="og:title" content="Installer rclone sur Ubuntu — dernière version">
+<meta property="og:description" content="Le Ubuntu officiel fournit rclone 1.60.1 — ce dépôt propose rclone 1.75.0. Une seule commande apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04 ; signé GPG, reconstruit quelques heures après chaque version.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-rclone-in-ubuntu.html">
+<meta property="twitter:title" content="Installer rclone sur Ubuntu — dernière version">
+<meta property="twitter:description" content="Le Ubuntu officiel fournit rclone 1.60.1 — ce dépôt propose rclone 1.75.0. Une seule commande apt pour Ubuntu 22.04, 24.04, 25.10 et 26.04 ; signé GPG, reconstruit quelques heures après chaque version.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-rclone-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-rclone-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/fr/#pricing" class="nav-cta">S'abonner</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="05">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>49 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 À partir du <strong><time datetime="2026-10-01T12:00:00+01:00">1er octobre 2026, 12h00 heure du Royaume-Uni</time></strong>, le miroir apt nécessitera un abonnement.
+      <a href="/fr/#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>☁️ Installer le dernier rclone sur Ubuntu</h1>
+        <p class="subtitle">rsync pour le stockage cloud — synchroniser, monter et servir plus de 70 fournisseurs</p>
+        <div class="version-badge">Dernière version : 1.75.0 · mis à jour le 2026-08-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.75.0 ✅</td></tr>
+<tr><td>Ubuntu officiel</td><td class="vc-lose">1.60.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-rclone-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-rclone-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-rclone-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-rclone-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Qu'est-ce que rclone ?</h2>
+        <p>rclone est un <strong>gestionnaire de fichiers en ligne de commande pour le stockage cloud</strong>. Il parle à plus de soixante-dix fournisseurs — S3 et tout ce qui est compatible S3, Google Drive, Dropbox, OneDrive et SharePoint, Backblaze B2, Google Cloud Storage, Swift, SFTP, FTP, WebDAV et HTTP simple — avec un seul jeu de commandes cohérent. Il copie, synchronise et déplace avec des sommes de contrôle, monte n'importe quel dépôt distant comme un système de fichiers, le sert via une demi-douzaine de protocoles et transfère directement entre deux dépôts distants sans passer par votre disque.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi les dernières versions comptent :</strong> rclone dialogue avec des API qui changent sans vous demander votre avis. Les fournisseurs modifient les flux d'authentification, suppriment des points d'accès et ajoutent des régions ; le correctif arrive dans la version suivante de rclone, celle où apparaissent aussi de nouveaux backends et des sous-commandes entières. La version des archives officielles est antérieure à plusieurs années de ce travail : « ça marchait l'an dernier » est exactement la panne qu'un rclone à jour évite.
+        </div>
+
+        <h3>⚡ Fonctionnalités clés de rclone</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>☁️ Plus de soixante-dix backends</h4>
+                <p>Stockages objet compatibles S3, clouds grand public, suites d'entreprise et les protocoles classiques (SFTP, FTP, WebDAV, HTTP) derrière un même jeu de commandes.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔁 Synchroniser avec sommes de contrôle</h4>
+                <p><code>copy</code>, <code>sync</code> et <code>move</code> comparent taille, date et empreintes, et <code>--dry-run</code> montre exactement ce qui changerait avant que quoi que ce soit change.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Monter comme système de fichiers</h4>
+                <p><code>rclone mount</code> place un dépôt distant sous un répertoire, avec un cache VFS, pour que des programmes ordinaires y lisent et y écrivent.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Le resservir</h4>
+                <p><code>rclone serve</code> expose n'importe quel dépôt distant en HTTP, WebDAV, SFTP, FTP, DLNA, NFS ou en point d'accès S3 — pratique pour les appareils qui ne parlent qu'un protocole.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Chiffrement côté client</h4>
+                <p>La surcouche <code>crypt</code> chiffre le contenu et les noms de fichiers avant l'envoi, et le fichier de configuration contenant vos jetons peut lui-même être chiffré.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Conçu pour le volume</h4>
+                <p>Transferts et vérifications en parallèle, plages horaires de bande passante, filtres et copies côté serveur qui ne font jamais transiter les octets par votre machine.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les archives officielles :</strong> Debian et Ubuntu figent les versions des paquets à la sortie d'une release — ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous maintient à jour.
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Étape 1 : ajouter le dépôt</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui Ghostty, Oh My Posh et Zed ; rclone n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
+  <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Étape 2 : installer rclone</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Installer le dernier rclone</span>
+sudo apt install rclone
+
+<span class="comment"># Vérifier l&#039;installation</span>
+rclone version</code></pre><pre class="variant variant-root"><code><span class="comment"># Installer le dernier rclone</span>
+apt install rclone
+
+<span class="comment"># Vérifier l&#039;installation</span>
+rclone version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Étape 3 : configurer votre premier dépôt distant</h3>
+            <div class="code-block"><pre><code><span class="comment"># Assistant interactif : choisir un fournisseur, autoriser, nommer le dépôt distant</span>
+rclone config
+
+<span class="comment"># Lister les dépôts distants configurés</span>
+rclone listremotes
+
+<span class="comment"># Jeter un œil à l&#039;un d&#039;eux</span>
+rclone lsd mydrive:
+
+<span class="comment"># La page de manuel et les complétions bash, zsh et fish sont dans le paquet</span>
+man rclone</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+
+        <p><strong>Copier et synchroniser :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Envoyer un dossier, avec affichage de la progression</span>
+rclone copy -P ~/Documents mydrive:Documents
+
+<span class="comment"># Aligner la destination sur la source — toujours un essai à blanc d&#039;abord</span>
+rclone sync --dry-run ~/site remote:bucket/site
+rclone sync -P ~/site remote:bucket/site
+
+<span class="comment"># D&#039;un cloud à l&#039;autre directement, sans copie locale</span>
+rclone copy s3:bucket/data b2:backup/data
+
+<span class="comment"># Vérifier que ce qui est arrivé correspond à ce qui a été envoyé</span>
+rclone check ~/site remote:bucket/site</code></pre></div>
+
+        <p><strong>Monter et servir :</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Monter un dépôt distant comme système de fichiers (FUSE nécessaire)</span>
+sudo apt install fuse3
+rclone mount mydrive: ~/mnt/drive --vfs-cache-mode writes
+
+<span class="comment"># Servir un dépôt distant sur le réseau local en HTTP ou WebDAV</span>
+rclone serve http remote:public --addr :8080
+rclone serve webdav remote:docs --addr :8081
+
+<span class="comment"># Explorer ce qui occupe la place, façon ncdu</span>
+rclone ncdu remote:
+
+<span class="comment"># Juste la taille totale d&#039;un bucket</span>
+rclone size remote:bucket</code></pre><pre class="variant variant-root"><code><span class="comment"># Monter un dépôt distant comme système de fichiers (FUSE nécessaire)</span>
+apt install fuse3
+rclone mount mydrive: ~/mnt/drive --vfs-cache-mode writes
+
+<span class="comment"># Servir un dépôt distant sur le réseau local en HTTP ou WebDAV</span>
+rclone serve http remote:public --addr :8080
+rclone serve webdav remote:docs --addr :8081
+
+<span class="comment"># Explorer ce qui occupe la place, façon ncdu</span>
+rclone ncdu remote:
+
+<span class="comment"># Juste la taille totale d&#039;un bucket</span>
+rclone size remote:bucket</code></pre></div>
+
+        <p><strong>Réglages, filtres et chiffrement :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Plus de parallélisme pour beaucoup de petits fichiers</span>
+rclone sync -P --transfers 8 --checkers 16 src: dst:
+
+<span class="comment"># Une plage horaire de bande passante, pour que les sauvegardes ne mangent pas la journée</span>
+rclone sync -P --bwlimit &quot;08:00,512k 23:00,off&quot; ~/photos remote:photos
+
+<span class="comment"># Des filtres plutôt que tout copier</span>
+rclone copy src: dst: --exclude &quot;*.tmp&quot; --filter-from filters.txt
+
+<span class="comment"># Envelopper un dépôt distant existant dans un chiffrement côté client</span>
+rclone config create secret crypt remote=mydrive:vault</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Intégrations avec d'autres outils</h4>
+            <p>rclone est la brique sur laquelle s'appuient d'autres outils :</p>
+            <ul>
+                <li><strong>FUSE :</strong> <code>fuse3</code> (ou <code>fuse</code>) transforme <code>rclone mount</code> en vrai répertoire pour les programmes qui ne comprennent que des fichiers</li>
+                <li><strong>systemd :</strong> une unité par montage ou par <code>serve</code>, et un timer pour le <code>sync</code> nocturne : c'est ainsi qu'on le fait tourner sans surveillance</li>
+                <li><strong>Outils de sauvegarde :</strong> restic et consorts utilisent rclone comme dépôt distant et héritent aussitôt de tous les backends qu'il gère</li>
+                <li><strong>Contrôle à distance :</strong> <code>rclone rcd --rc-web-gui</code> expose une API HTTP et une interface web pour les transferts au long cours</li>
+                <li><strong>Fichier de configuration :</strong> <code>~/.config/rclone/rclone.conf</code> contient les dépôts distants et peut être chiffré, pour que les identifiants ne soient jamais en clair</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparatif des dépôts :</strong>
+            <ul>
+                <li><strong>Ubuntu officiel :</strong> fournit rclone dans universe, figé le jour de la release : les fournisseurs et sous-commandes récents n'y sont tout simplement pas</li>
+                <li><strong>Script d'installation upstream :</strong> à jour, mais il dépose un binaire dans <code>/usr/bin</code> hors d'apt et compte ensuite sur <code>rclone selfupdate</code></li>
+                <li><strong>Snap :</strong> confiné, ce qui rend les montages FUSE et les chemins hors du dossier personnel plus pénibles qu'ils ne devraient l'être</li>
+                <li><strong>deb.griffo.io :</strong> dernière version avec mises à jour automatiques</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Des backends qui marchent encore :</strong> la version la plus récente, avec les correctifs fournisseurs et les nouveaux backends que la version figée de l'archive n'a jamais reçus</li>
+            <li>✅ <strong>apt le garde à jour :</strong> pas de <code>selfupdate</code>, pas de script d'installation qui écrit dans <code>/usr/bin</code> dans le dos du gestionnaire de paquets</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> les paquets sont mis à jour quelques heures après chaque version upstream</li>
+            <li>✅ <strong>Paquet complet :</strong> le binaire officiel upstream plus la page de manuel <code>rclone.1</code> et les complétions bash, zsh et fish</li>
+            <li>✅ <strong>Quatre architectures :</strong> amd64, arm64, armhf et i386 : le NAS et le Raspberry Pi reçoivent le même rclone que le poste de travail</li>
+            <li>✅ <strong>Multi-distribution :</strong> fonctionne sur Ubuntu 22.04, 24.04, 25.10 et 26.04</li>
+            <li>✅ <strong>Maintenance simple :</strong> des mises à jour avec les commandes apt habituelles</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction du paquet</h3>
+        <p>Les paquets Ubuntu sont construits et maintenus automatiquement dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/rclone-debian" target="_blank" rel="noopener">☁️ rclone-debian</a> - Constructions des dernières versions</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles sur deb.griffo.io :</p>
+        <ul>
+            <li><a href="/install-latest-garage-in-ubuntu.html">Garage</a> - Stockage S3 auto-hébergé vers lequel synchroniser</li>
+            <li><a href="/install-latest-duckdb-in-ubuntu.html">DuckDB</a> - Interroger du Parquet et du CSV directement dans le stockage objet</li>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - Gestionnaire de fichiers en terminal pour le côté local</li>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij</a> - Multiplexeur pour laisser tourner un long transfert</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> les sauvegardes nocturnes vers du stockage objet, le déménagement d'un bucket d'un fournisseur à un autre sans copie locale, le montage d'un dossier Drive sur une machine sans écran, la mise à disposition d'une médiathèque pour un appareil qui ne parle que WebDAV, et tout script qui doit déposer des fichiers quelque part dans le cloud.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>1.75.0</code> — 2026-08-18</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>rclone est-il dans les dépôts officiels de Ubuntu ?</summary><p>Oui, mais l&#x27;archive officielle de Ubuntu fournit rclone 1.60.1, alors que ce dépôt propose rclone 1.75.0, reconstruit quelques heures après chaque version upstream.</p></details>
+<details><summary>Comment installer le dernier rclone sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rclone. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "rclone est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Ubuntu fournit rclone 1.60.1, alors que ce dépôt propose rclone 1.75.0, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier rclone sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rclone. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Tous droits réservés. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Miroir gratuit</a> |
+    <a href="/how-packages-are-built.html">Comment les paquets sont construits</a> |
+    <a href="/fr/how-subscriptions-work.html">Comment fonctionne l'accès</a> |
+    <a href="/terms.html">Conditions Générales</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Installer le dernier rclone sur Ubuntu",
+    "description": "Guide complet pour installer le dernier gestionnaire de stockage cloud rclone sur Ubuntu via le dépôt deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "rclone",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Programme en ligne de commande pour synchroniser, copier, monter et servir des fichiers chez plus de soixante-dix fournisseurs de stockage cloud, avec sommes de contrôle, filtres et chiffrement côté client"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
