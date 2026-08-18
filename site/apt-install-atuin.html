@@ -22,8 +22,8 @@
   } catch (e) {}
 })();
 </script>
-<title>apt install atuin on Debian and Ubuntu — Always the Latest Release</title>
-<meta name="description" content="How to apt install atuin on Debian and Ubuntu and always get the latest release. The official Debian and Ubuntu archives freeze package versions for years; this signed APT repository rebuilds atuin within hours of every upstream release, so apt upgrade keeps it current.">
+<title>apt install atuin on Debian and Ubuntu — latest release</title>
+<meta name="description" content="Debian ships 18.6.1, Ubuntu ships 18.8.0 — this repository serves atuin 18.19.0, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta name="keywords" content="apt install atuin, apt install latest atuin, apt-get install atuin, apt atuin, install atuin debian ubuntu, atuin apt repository, latest atuin apt">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -32,13 +32,13 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/apt-install-atuin.html">
-<meta property="og:title" content="apt install atuin on Debian and Ubuntu — Always the Latest Release">
-<meta property="og:description" content="One apt command for atuin on Debian and Ubuntu, kept current within hours of every upstream release.">
+<meta property="og:title" content="apt install atuin on Debian and Ubuntu — latest release">
+<meta property="og:description" content="Debian ships 18.6.1, Ubuntu ships 18.8.0 — this repository serves atuin 18.19.0, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/apt-install-atuin.html">
-<meta property="twitter:title" content="apt install atuin on Debian and Ubuntu — Always the Latest Release">
-<meta property="twitter:description" content="One apt command for atuin on Debian and Ubuntu, kept current within hours of every upstream release.">
+<meta property="twitter:title" content="apt install atuin on Debian and Ubuntu — latest release">
+<meta property="twitter:description" content="Debian ships 18.6.1, Ubuntu ships 18.8.0 — this repository serves atuin 18.19.0, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -138,7 +138,7 @@
 <div class="container">
     <div class="header">
         <h1>📦 apt install atuin</h1>
-        <p class="subtitle">{IF_ARCHIVED}Official Debian ships Atuin {ARCHIVE_VERSION} — this repo has Atuin {VERSION}. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.{ELSE_ARCHIVED}Atuin isn't in the official Debian archives — get Atuin {VERSION} via apt for Bookworm, Trixie, Forky and Sid. GPG-signed, rebuilt within hours of every release.{END_ARCHIVED}</p>
+        <p class="subtitle">Official Debian ships Atuin 18.6.1 — this repo has Atuin 18.19.0. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.</p>
     </div>
 
     <div class="content">
@@ -280,6 +280,64 @@ apt update</code></pre></div>
      "position": 3,
      "name": "apt install atuin",
      "item": "https://deb.griffo.io/apt-install-atuin.html"
+    }
+   ]
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "atuin",
+   "applicationCategory": "DeveloperApplication",
+   "operatingSystem": "Debian 12 \u201cBookworm\u201d, Debian 13 \u201cTrixie\u201d, Debian 14 \u201cForky\u201d, Debian Sid, Ubuntu 22.04 LTS \u201cJammy Jellyfish\u201d, Ubuntu 24.04 LTS \u201cNoble Numbat\u201d, Ubuntu 25.10 \u201cQuesting Quokka\u201d, Ubuntu 26.04 LTS \u201cResolute\u201d",
+   "softwareVersion": "18.19.0",
+   "url": "https://deb.griffo.io/apt-install-atuin.html",
+   "downloadUrl": "https://deb.griffo.io/apt/",
+   "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/dariogriffo/atuin-debian"
+   },
+   "description": "Debian ships 18.6.1, Ubuntu ships 18.8.0 \u2014 this repository serves atuin 18.19.0, rebuilt within hours of each release. One apt command, GPG-signed."
+  },
+  {
+   "@type": "HowTo",
+   "name": "Install atuin on Debian and Ubuntu with apt",
+   "description": "Debian ships 18.6.1, Ubuntu ships 18.8.0 \u2014 this repository serves atuin 18.19.0, rebuilt within hours of each release. One apt command, GPG-signed.",
+   "totalTime": "PT2M",
+   "dateModified": "2026-08-18",
+   "tool": [
+    {
+     "@type": "HowToTool",
+     "name": "apt"
+    },
+    {
+     "@type": "HowToTool",
+     "name": "curl"
+    },
+    {
+     "@type": "HowToTool",
+     "name": "gpg"
+    }
+   ],
+   "step": [
+    {
+     "@type": "HowToStep",
+     "position": 1,
+     "name": "Add the signing key",
+     "text": "sudo install -d -m 0755 /etc/apt/keyrings && curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg",
+     "url": "https://deb.griffo.io/apt-install-atuin.html"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 2,
+     "name": "Add the repository",
+     "text": "echo \"deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main\" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list",
+     "url": "https://deb.griffo.io/apt-install-atuin.html"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 3,
+     "name": "Install atuin",
+     "text": "sudo apt update && sudo apt install atuin",
+     "url": "https://deb.griffo.io/apt-install-atuin.html"
     }
    ]
   },

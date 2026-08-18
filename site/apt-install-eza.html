@@ -22,8 +22,8 @@
   } catch (e) {}
 })();
 </script>
-<title>apt install eza on Debian and Ubuntu — Always the Latest Release</title>
-<meta name="description" content="How to apt install eza on Debian and Ubuntu and always get the latest release. The official Debian and Ubuntu archives freeze package versions for years; this signed APT repository rebuilds eza within hours of every upstream release, so apt upgrade keeps it current.">
+<title>apt install eza on Debian and Ubuntu — latest release</title>
+<meta name="description" content="Debian ships 0.21.0, Ubuntu ships 0.23.4 — this repository serves eza 0.23.5, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta name="keywords" content="apt install eza, apt install latest eza, apt-get install eza, apt eza, install eza debian ubuntu, eza apt repository, latest eza apt">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -32,13 +32,13 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/apt-install-eza.html">
-<meta property="og:title" content="apt install eza on Debian and Ubuntu — Always the Latest Release">
-<meta property="og:description" content="One apt command for eza on Debian and Ubuntu, kept current within hours of every upstream release.">
+<meta property="og:title" content="apt install eza on Debian and Ubuntu — latest release">
+<meta property="og:description" content="Debian ships 0.21.0, Ubuntu ships 0.23.4 — this repository serves eza 0.23.5, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/apt-install-eza.html">
-<meta property="twitter:title" content="apt install eza on Debian and Ubuntu — Always the Latest Release">
-<meta property="twitter:description" content="One apt command for eza on Debian and Ubuntu, kept current within hours of every upstream release.">
+<meta property="twitter:title" content="apt install eza on Debian and Ubuntu — latest release">
+<meta property="twitter:description" content="Debian ships 0.21.0, Ubuntu ships 0.23.4 — this repository serves eza 0.23.5, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -138,7 +138,7 @@
 <div class="container">
     <div class="header">
         <h1>📦 apt install eza</h1>
-        <p class="subtitle">{IF_ARCHIVED}Official Debian ships eza {ARCHIVE_VERSION} — this repo has eza {VERSION}. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.{ELSE_ARCHIVED}eza isn't in the official Debian archives — get eza {VERSION} via apt for Bookworm, Trixie, Forky and Sid. GPG-signed, rebuilt within hours of every release.{END_ARCHIVED}</p>
+        <p class="subtitle">Official Debian ships eza 0.21.0 — this repo has eza 0.23.5. One apt command for Bookworm, Trixie, Forky and Sid; GPG-signed, rebuilt within hours of every release.</p>
     </div>
 
     <div class="content">
@@ -278,6 +278,64 @@ apt update</code></pre></div>
      "position": 3,
      "name": "apt install eza",
      "item": "https://deb.griffo.io/apt-install-eza.html"
+    }
+   ]
+  },
+  {
+   "@type": "SoftwareApplication",
+   "name": "eza",
+   "applicationCategory": "DeveloperApplication",
+   "operatingSystem": "Debian 12 \u201cBookworm\u201d, Debian 13 \u201cTrixie\u201d, Debian 14 \u201cForky\u201d, Debian Sid, Ubuntu 22.04 LTS \u201cJammy Jellyfish\u201d, Ubuntu 24.04 LTS \u201cNoble Numbat\u201d",
+   "softwareVersion": "0.23.5",
+   "url": "https://deb.griffo.io/apt-install-eza.html",
+   "downloadUrl": "https://deb.griffo.io/apt/",
+   "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/dariogriffo/eza-debian"
+   },
+   "description": "Debian ships 0.21.0, Ubuntu ships 0.23.4 \u2014 this repository serves eza 0.23.5, rebuilt within hours of each release. One apt command, GPG-signed."
+  },
+  {
+   "@type": "HowTo",
+   "name": "Install eza on Debian and Ubuntu with apt",
+   "description": "Debian ships 0.21.0, Ubuntu ships 0.23.4 \u2014 this repository serves eza 0.23.5, rebuilt within hours of each release. One apt command, GPG-signed.",
+   "totalTime": "PT2M",
+   "dateModified": "2026-08-18",
+   "tool": [
+    {
+     "@type": "HowToTool",
+     "name": "apt"
+    },
+    {
+     "@type": "HowToTool",
+     "name": "curl"
+    },
+    {
+     "@type": "HowToTool",
+     "name": "gpg"
+    }
+   ],
+   "step": [
+    {
+     "@type": "HowToStep",
+     "position": 1,
+     "name": "Add the signing key",
+     "text": "sudo install -d -m 0755 /etc/apt/keyrings && curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg",
+     "url": "https://deb.griffo.io/apt-install-eza.html"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 2,
+     "name": "Add the repository",
+     "text": "echo \"deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main\" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list",
+     "url": "https://deb.griffo.io/apt-install-eza.html"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 3,
+     "name": "Install eza",
+     "text": "sudo apt update && sudo apt install eza",
+     "url": "https://deb.griffo.io/apt-install-eza.html"
     }
    ]
   },
