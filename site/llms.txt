@@ -33,7 +33,7 @@ sudo apt update
 A second, always-free apt repository serves the same packages on a delay: the newest upstream version that is at least 2 months old, with patch releases of that version's series promoted immediately (so security and bugfix updates do not wait). No account and no authentication are needed, and it is signed with the same GPG key. Nightly/tip channels (e.g. `ghostty-tip`) are not in the free lane.
 
 - Free repository URL: https://deb-free.griffo.io/apt (same suites and component as above)
-- Currently enrolled packages: `ghostty`, `oh-my-posh`, `zed` — more are being added; the live list is at https://deb-free.griffo.io/apt/dists/
+- Currently enrolled packages: `ghostty`, `oh-my-posh`, `zed` — any other tool can be enrolled on request (ask in Discord); the live list is at https://deb-free.griffo.io/apt/dists/
 - Explanation page: https://deb.griffo.io/free.html
 - Everything else in the catalogue is served by https://deb.griffo.io/apt only
 
@@ -45,6 +45,29 @@ sudo apt update
 ```
 
 Configure one repository or the other, not both: with both enabled apt simply installs the higher version.
+
+## Subscription, and the 401 Unauthorized error
+
+From 1 October 2026, 12:00 UK time, downloading packages from https://deb.griffo.io/apt requires a subscription. `apt update`, `apt policy` and browsing the repository stay free for everyone; `apt install` and `apt upgrade` need credentials. Packages already installed are unaffected — a .deb does not expire, phone home or check a licence.
+
+If apt reports `E: Failed to fetch https://deb.griffo.io/apt/... 401 Unauthorized`, nothing is broken and no package was removed; the request was simply not authenticated. There are three ways forward:
+
+1. Store subscription credentials in a file under `/etc/apt/auth.conf.d/` ending in `.conf`, mode 600, root-owned. The `machine` line takes the bare host with no scheme and no path.
+2. Switch to the always-free lane at https://deb-free.griffo.io/apt (see the section above).
+3. Download the .deb directly from the package's public GitHub release, which is free and unauthenticated: https://github.com/dariogriffo/<tool>-debian/releases
+
+```sh
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf > /dev/null <<'EOF'
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+```
+
+- Full explanation with troubleshooting: https://deb.griffo.io/apt-401-unauthorized.html
+- Pricing: https://deb.griffo.io/#pricing
+- How every package is built, and how to verify it: https://deb.griffo.io/how-packages-are-built.html
 
 ## Available packages (exact apt package names)
 
