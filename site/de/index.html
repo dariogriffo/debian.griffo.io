@@ -1484,6 +1484,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     </div>
   </div>
 
+  <p class="pricing-access reveal">Sie fragen sich, was nach der Zahlung passiert? <a href="/de/how-subscriptions-work.html">Wie das Abonnement funktioniert</a> erklärt es vor dem Kauf: Zugangsdaten per E-Mail, wie sich <code class="inline-code">apt</code> authentifiziert, unbegrenzt viele Rechner und wie Verlängerung, Kündigung und Erstattung genau ablaufen.</p>
   <p class="pricing-terms reveal"><span class="pricing-star" aria-hidden="true">*</span> Mit dem Abschluss eines Abonnements akzeptieren Sie die am Seitenende verlinkten <a href="/terms.html">Nutzungsbedingungen</a>.</p>
   <p class="pricing-foot reveal">Alle Preise verstehen sich inklusive MwSt., soweit anwendbar. Preise werden, wo unterstützt, in Ihrer Landeswährung angezeigt, sonst in US-Dollar. Früher über Buy Me a Coffee unterstützt? Kommen Sie in unseren <a href="https://discord.gg/E2yHQNkuZy">Discord</a>, wir richten Ihnen ein kostenloses lebenslanges Abo ein. 💜</p>
 </section>
@@ -1498,6 +1499,10 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       <div class="faq-item">
         <button type="button" class="faq-question">Warum für Open-Source-Software bezahlen?<span class="faq-icon"></span></button>
         <div class="faq-answer"><div class="faq-answer-inner">Sie bezahlen nicht für die Software. Jedes Tool hier ist Open Source, und dieses Repository ändert weder seine Lizenz noch das, was es Sie kostet, es selbst zu bauen. Das Abo bezahlt die Paketierung drumherum: ordentliche Debian-Pakete für Tools zu erstellen, deren Autoren keine ausliefern, sie innerhalb von Stunden nach jedem Upstream-Release automatisch neu zu bauen und diese Builds auch für ältere Debian- und Ubuntu-Releases verfügbar zu machen, die sonst jahrelang hinterherhinken würden. Das ist laufende Wartung und Infrastruktur, keine Softwarelizenz. Und wenn Sie lieber nicht dafür bezahlen möchten: Jedes .deb bleibt kostenlos auf <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> herunterladbar — Sie aktualisieren es dann eben selbst.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question">Was passiert nach der Zahlung? Wie authentifiziert sich apt?<span class="faq-icon"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Innerhalb weniger Minuten erhalten Sie eine E-Mail mit einem Login — der Adresse, mit der Sie bezahlt haben — und einem generierten Passwort. Beides kommt nach <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>, und <code>apt</code> sendet es bei jedem Download über HTTPS mit: schlichte HTTP-Basic-Authentifizierung, die apt seit Jahren nativ unterstützt. Es gibt kein Portal zum Einloggen, kein Token zum Rotieren und keine Begrenzung, auf wie vielen Rechnern dieselben Zugangsdaten laufen. Die Verlängerung geschieht stillschweigend und ändert nichts; bei einer Kündigung bleibt der Zugang bis zum Ende des bereits bezahlten Zeitraums. <a href="/de/how-subscriptions-work.html">Wie das Abonnement funktioniert, im Detail →</a></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">Was ist, wenn apt 401 Unauthorized meldet?<span class="faq-icon"></span></button>
@@ -1545,6 +1550,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     <a href="https://github.com/dariogriffo">GitHub</a> |
     <a href="/free.html">Kostenloser Spiegel</a> |
     <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a> |
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a> |
     <a href="/terms.html">Nutzungsbedingungen</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

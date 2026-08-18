@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>How the subscription works — payment, credentials and apt authentication</title>
+<meta name="description" content="What happens after you pay for deb.griffo.io: an email with your apt credentials, HTTP Basic auth stored in /etc/apt/auth.conf.d, no seat limits, and exactly how renewal, cancellation, refunds and lost passwords are handled.">
+<meta name="keywords" content="deb.griffo.io subscription, apt authentication, apt basic auth, apt auth.conf.d credentials, private apt repository login, apt repository password, stripe subscription apt, deb.griffo.io credentials">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/how-subscriptions-work.html">
+<meta property="og:title" content="How the deb.griffo.io subscription works">
+<meta property="og:description" content="Before you pay: how credentials are issued, how apt authenticates, and what happens on renewal, cancellation and refund.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/how-subscriptions-work.html">
+<meta property="twitter:title" content="How the deb.griffo.io subscription works">
+<meta property="twitter:description" content="Before you pay: how credentials are issued, how apt authenticates, and what happens on renewal, cancellation and refund.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/how-subscriptions-work.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/how-subscriptions-work.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/how-subscriptions-work.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/how-subscriptions-work.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/how-subscriptions-work.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="/#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔑 How the subscription works</h1>
+        <p class="subtitle">What happens after you pay, how <code>apt</code> authenticates, and how the subscription is handled from renewal to cancellation</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> You pay through Stripe. Within a couple of
+            minutes an email arrives with two things: a <strong>login</strong> — the email
+            address you used at checkout — and a <strong>generated password</strong>. You put
+            those in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> and
+            <code>apt</code> sends them over HTTPS with every download. There is no account
+            portal to log into, no token to rotate, no licence file, and no limit on how many
+            machines use the same credentials.
+        </div>
+
+        <h2>🧾 1. What happens when you pay</h2>
+
+        <ol>
+            <li>You complete checkout on <strong>Stripe</strong>. Card details go to Stripe and
+                never touch this server.</li>
+            <li>Stripe confirms the payment and notifies the repository. This is the moment
+                access is created — not the moment the checkout page closes, so a payment still
+                being authorised takes a little longer.</li>
+            <li>Your account is created and a password is generated for it, at random, on the
+                server.</li>
+            <li>An email is sent to <strong>the address you gave Stripe</strong>, containing your
+                login, your password, and the four setup commands. It is the only time that
+                password is ever transmitted.</li>
+        </ol>
+
+        <p>If it has not arrived within a few minutes, check spam first, then
+        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">ask in Discord</a> — that is the
+        fastest way to get it sorted, and the account can be looked up by the email you paid
+        with.</p>
+
+        <h2>🔐 2. What the credentials are</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Field</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Login</td><td>The email address used at checkout — nothing to choose or remember</td></tr>
+                <tr><td>Password</td><td>24 random characters, generated server-side, never chosen by you</td></tr>
+                <tr><td>Stored as</td><td>A bcrypt hash. The plaintext is not kept — it cannot be looked up later, by me or by anyone else</td></tr>
+                <tr><td>Expiry</td><td>None. The password does not rotate or time out; only the subscription behind it decides access</td></tr>
+                <tr><td>Machines</td><td>Unlimited. No seat count, no activation, no device registration</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>Because only the hash is stored, a lost password cannot be recovered — but a new one
+        can be issued on request. Reply to the welcome email or ask in Discord, and you get
+        fresh credentials; the old password stops working the moment the new one is issued.
+        Keep the welcome email, or better, put the password in your password manager.</p>
+
+        <h2>🖥️ 3. How apt authenticates</h2>
+
+        <p>Plain <strong>HTTP Basic authentication over HTTPS</strong> — the mechanism
+        <code>apt</code> has supported natively for years, with no plugin, no helper binary and
+        no extra package. Credentials belong in <code>/etc/apt/auth.conf.d/</code>, never in the
+        <code>sources.list</code> line, where every user on the machine could read them and apt
+        would leak them in error messages:</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+apt update</code></pre></div>
+        </div>
+
+        <p>That is the whole integration. Three details matter, and they are the three things
+        that go wrong: the <code>machine</code> line is bare —
+        <code>deb.griffo.io</code>, with no <code>https://</code>, no trailing slash and no
+        <code>/apt</code> path; the filename ends in <code>.conf</code>, because apt silently
+        ignores any other extension; and the file is root-owned and mode <code>600</code>,
+        because apt refuses to read credentials other users can read — which is why the file is
+        created empty at mode <code>600</code> above, before the password is written into it.
+        <a href="/apt-401-unauthorized.html">If apt returns 401, the full checklist is here →</a></p>
+
+        <p>Every request is checked against the database at the moment it is made: the login,
+        the password hash, and whether a subscription behind that account is currently active.
+        Nothing is cached and nothing is issued to your machine, which is why a renewal, a
+        cancellation or a new password takes effect immediately, with no action on your side.</p>
+
+        <h2>🏗️ 4. Servers, containers and CI</h2>
+
+        <p>One set of credentials covers every machine you run — workstation, laptops, servers,
+        build agents. Drop the same <code>auth.conf.d</code> file on each, or mount it as a
+        secret in CI. What you should not do is bake it into a container image that gets pushed
+        to a public registry: it is a password in a file, and it travels with whatever you copy
+        it into. For images, prefer a build secret, or install the <code>.deb</code> from its
+        public GitHub release, which needs no credentials at all.</p>
+
+        <h2>🔄 5. Yearly subscription — the full lifecycle</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>What happens</th><th>Effect on your access</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Renewal, once a year</td><td>Silent. Stripe charges the card, the period extends, <strong>your credentials do not change</strong> — nothing to do, nothing to re-run</td></tr>
+                <tr><td>You cancel</td><td>Via the cancellation link in your welcome email. Access continues to the <strong>end of the period you already paid for</strong>, then stops</td></tr>
+                <tr><td>A payment fails</td><td>Access stops. Fixing the card and paying restores it — ask in Discord if you get stuck</td></tr>
+                <tr><td>You resubscribe later</td><td>The same account and the <strong>same password</strong> are reactivated. No new email is sent, because nothing changed</td></tr>
+                <tr><td>You request a refund</td><td>Access is revoked immediately when the refund is issued</td></tr>
+                <tr><td>Access ends</td><td>You get an email saying so, and <code>apt install</code> starts returning 401. Packages already installed are untouched</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>♾️ 6. Lifetime — what is different</h2>
+
+        <p>Lifetime is a single payment, not a subscription. There is nothing to renew and
+        nothing to cancel, no card on file to expire, and price changes do not reach you. The
+        credentials work exactly the same way — same login, same
+        <code>auth.conf.d</code> file, same everything. If you already had a yearly subscription
+        and upgrade, you keep the credentials you have; you get a confirmation email rather than
+        a new password. The one thing that ends lifetime access is a refund.</p>
+
+        <h2>🚦 7. What needs no subscription at all</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Command</th><th>Needs credentials?</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>No — the indexes stay open to everyone</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>No</td></tr>
+                <tr><td>Browsing <a href="/apt/dists/">/apt/dists/</a></td><td>No</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Yes</strong></td></tr>
+                <tr><td>Packages already installed</td><td>No — they never expire or check a licence</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No — free forever, no account</td></tr>
+                <tr><td>The <code>.deb</code> files on GitHub</td><td>No — free forever</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>So you can add the repository, run <code>apt update</code> and see exactly which
+        versions are on offer before paying anything. <a href="/free.html">The always-free
+        mirror is explained here →</a></p>
+
+        <h2>🗃️ 8. What is stored about you</h2>
+
+        <p>Your email address, the Stripe customer reference, the bcrypt hash of your password,
+        and the dates of your subscription. That is the entire record. Payment details are
+        handled by Stripe and never reach this server. The only emails sent are the ones the
+        service itself requires: your credentials, a confirmation when lifetime access is
+        activated, and a notice when access ends. No marketing, no list.
+        <a href="/terms.html">Terms &amp; Conditions →</a></p>
+
+        <h2>❓ Still unsure?</h2>
+
+        <p>Ask before you pay — <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">the
+        Discord</a> is the fastest way to reach me, and questions about how any of this works
+        are welcome. If you supported the project on Buy Me a Coffee in the past, come and say
+        so there: you get a free lifetime subscription.</p>
+
+        <p class="back-link"><a href="/#pricing">← Back to pricing</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. All rights reserved. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Free mirror</a> |
+    <a href="/how-packages-are-built.html">How packages are built</a> |
+    <a href="/how-subscriptions-work.html">How access works</a> |
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How is access authenticated after paying for deb.griffo.io?",
+     "acceptedAnswer": {"@type": "Answer", "text": "With HTTP Basic authentication over HTTPS, which apt supports natively. After payment an email is sent with a login — the email address used at Stripe checkout — and a randomly generated password. Those two lines go in a file under /etc/apt/auth.conf.d/ named deb.griffo.io.conf, owned by root with mode 600, and apt sends them with every package download. There is no account portal, no token to rotate and no licence file."}},
+    {"@type": "Question", "name": "How soon after payment do the credentials arrive?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Within a couple of minutes. The account is created when Stripe confirms the payment rather than when the checkout page closes, so a payment still being authorised takes a little longer. The email goes to the address given at checkout; if it has not arrived, check spam and then ask in the project Discord."}},
+    {"@type": "Question", "name": "How many machines can use one subscription?",
+     "acceptedAnswer": {"@type": "Answer", "text": "As many as you run. There is no seat count, no activation and no device registration — the same credentials work on every workstation, server and build agent. They should not be baked into a container image pushed to a public registry, since they are a password in a file; use a build secret or install the .deb from its public GitHub release instead."}},
+    {"@type": "Question", "name": "What happens when a yearly subscription renews?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Nothing on your side. Stripe charges the card, the subscription period is extended and the credentials stay exactly the same — no new email, no file to update, no command to re-run."}},
+    {"@type": "Question", "name": "What happens if I cancel the subscription?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Cancelling through the link in the welcome email stops the next payment. Access continues until the end of the period already paid for, then the credentials stop working and apt install returns 401. Packages already installed are unaffected — they never expire or check a licence. A refund, unlike a cancellation, revokes access immediately."}},
+    {"@type": "Question", "name": "What if I lose the password?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Only a bcrypt hash of the password is stored, so it cannot be looked up or recovered. A new password can be issued on request — reply to the welcome email or ask in Discord — and the old one stops working as soon as the new one is issued."}},
+    {"@type": "Question", "name": "Is lifetime access authenticated differently?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. Lifetime uses the same login, the same auth.conf.d file and the same mechanism as the yearly plan. The difference is billing: one payment, nothing to renew, nothing to cancel, and no exposure to future price changes. Only a refund ends lifetime access."}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>So funktioniert das Abonnement — Zahlung, Zugangsdaten und apt-Authentifizierung</title>
+<meta name="description" content="Was nach der Zahlung bei deb.griffo.io passiert: eine E-Mail mit Ihren apt-Zugangsdaten, HTTP-Basic-Authentifizierung in /etc/apt/auth.conf.d, keine Rechnerbegrenzung und wie Verlängerung, Kündigung, Erstattung und vergessene Passwörter genau gehandhabt werden.">
+<meta name="keywords" content="deb.griffo.io abonnement, apt authentifizierung, apt basic auth, apt auth.conf.d zugangsdaten, privates apt repository login, apt repository passwort, stripe abonnement apt">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/how-subscriptions-work.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/how-subscriptions-work.html">
+<meta property="og:title" content="So funktioniert das Abonnement bei deb.griffo.io">
+<meta property="og:description" content="Vor dem Kauf: wie Zugangsdaten ausgestellt werden, wie apt sich authentifiziert und was bei Verlängerung, Kündigung und Erstattung passiert.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/how-subscriptions-work.html">
+<meta property="twitter:title" content="So funktioniert das Abonnement bei deb.griffo.io">
+<meta property="twitter:description" content="Vor dem Kauf: wie Zugangsdaten ausgestellt werden, wie apt sich authentifiziert und was bei Verlängerung, Kündigung und Erstattung passiert.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/how-subscriptions-work.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/how-subscriptions-work.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/how-subscriptions-work.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/how-subscriptions-work.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/how-subscriptions-work.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔑 So funktioniert das Abonnement</h1>
+        <p class="subtitle">Was nach der Zahlung passiert, wie sich <code>apt</code> authentifiziert und wie das Abonnement von der Verlängerung bis zur Kündigung gehandhabt wird</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ Die kurze Antwort.</strong> Sie zahlen über Stripe. Innerhalb weniger Minuten kommt eine E-Mail mit zwei Dingen: einem <strong>Login</strong> — der E-Mail-Adresse, mit der Sie bezahlt haben — und einem <strong>generierten Passwort</strong>. Beides tragen Sie in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> ein, und <code>apt</code> sendet es bei jedem Download über HTTPS mit. Es gibt kein Kundenportal, kein Token zum Rotieren, keine Lizenzdatei und keine Begrenzung, auf wie vielen Rechnern dieselben Zugangsdaten laufen.
+        </div>
+
+        <h2>🧾 1. Was bei der Zahlung passiert</h2>
+
+        <ol>
+            <li>Sie schließen die Zahlung bei <strong>Stripe</strong> ab. Kartendaten gehen an Stripe und erreichen diesen Server nie.</li>
+            <li>Stripe bestätigt die Zahlung und benachrichtigt das Repository. In diesem Moment entsteht der Zugang — nicht beim Schließen der Bezahlseite; eine noch in Autorisierung befindliche Zahlung dauert deshalb etwas länger.</li>
+            <li>Ihr Konto wird angelegt und dafür auf dem Server ein zufälliges Passwort erzeugt.</li>
+            <li>Eine E-Mail geht an <strong>die Adresse, die Sie bei Stripe angegeben haben</strong>, mit Ihrem Login, Ihrem Passwort und den Einrichtungsbefehlen. Das ist das einzige Mal, dass dieses Passwort übertragen wird.</li>
+        </ol>
+
+        <p>Kommt sie nicht innerhalb weniger Minuten an, sehen Sie zuerst im Spam nach und fragen dann <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">im Discord</a> — das ist der schnellste Weg, und das Konto lässt sich über die Zahlungs-E-Mail-Adresse finden.</p>
+
+        <h2>🔐 2. Was die Zugangsdaten sind</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Feld</th><th>Wert</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Login</td><td>Die beim Bezahlen verwendete E-Mail-Adresse — nichts auszuwählen, nichts zu merken</td></tr>
+                <tr><td>Passwort</td><td>24 zufällige Zeichen, serverseitig erzeugt, nie von Ihnen gewählt</td></tr>
+                <tr><td>Gespeichert als</td><td>Ein bcrypt-Hash. Der Klartext wird nicht aufbewahrt — er ist später nicht abrufbar, weder für mich noch für sonst jemanden</td></tr>
+                <tr><td>Ablauf</td><td>Keiner. Das Passwort rotiert nicht und läuft nicht ab; über den Zugang entscheidet allein das dahinterliegende Abonnement</td></tr>
+                <tr><td>Rechner</td><td>Unbegrenzt. Keine Platzzahl, keine Aktivierung, keine Geräteregistrierung</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>Da nur der Hash gespeichert wird, lässt sich ein verlorenes Passwort nicht wiederherstellen — ein neues kann aber auf Anfrage ausgestellt werden. Antworten Sie auf die Willkommens-E-Mail oder fragen Sie im Discord, und Sie erhalten neue Zugangsdaten; das alte Passwort gilt ab dem Moment der Ausstellung nicht mehr. Bewahren Sie die Willkommens-E-Mail auf, besser noch: legen Sie das Passwort in Ihren Passwortmanager.</p>
+
+        <h2>🖥️ 3. Wie sich apt authentifiziert</h2>
+
+        <p>Schlichte <strong>HTTP-Basic-Authentifizierung über HTTPS</strong> — der Mechanismus, den <code>apt</code> seit Jahren nativ unterstützt, ohne Plugin, ohne Hilfsprogramm, ohne Zusatzpaket. Zugangsdaten gehören nach <code>/etc/apt/auth.conf.d/</code> und nie in die <code>sources.list</code>-Zeile, wo jeder Benutzer des Rechners sie lesen könnte und apt sie in Fehlermeldungen ausplaudert:</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+apt update</code></pre></div>
+        </div>
+
+        <p>Das ist die gesamte Einbindung. Drei Details zählen, und genau diese drei gehen schief: die <code>machine</code>-Zeile enthält nur den Host — <code>deb.griffo.io</code>, ohne <code>https://</code>, ohne Schrägstrich am Ende und ohne <code>/apt</code>-Pfad; der Dateiname endet auf <code>.conf</code>, weil apt jede andere Endung stillschweigend ignoriert; und die Datei gehört root und hat den Modus <code>600</code>, weil apt Zugangsdaten verweigert, die andere Benutzer lesen können — deshalb wird die Datei oben leer mit Modus <code>600</code> angelegt, bevor das Passwort hineingeschrieben wird. <a href="/apt-401-unauthorized.html">Wenn apt 401 meldet, steht hier die vollständige Checkliste →</a></p>
+
+        <p>Jede Anfrage wird im Moment des Zugriffs gegen die Datenbank geprüft: Login, Passwort-Hash und ob dahinter gerade ein aktives Abonnement steht. Nichts wird zwischengespeichert und nichts auf Ihren Rechner ausgestellt — deshalb wirken Verlängerung, Kündigung oder ein neues Passwort sofort, ohne Ihr Zutun.</p>
+
+        <h2>🏗️ 4. Server, Container und CI</h2>
+
+        <p>Ein Satz Zugangsdaten deckt jeden Rechner ab, den Sie betreiben — Arbeitsplatz, Laptops, Server, Build-Agents. Legen Sie dieselbe <code>auth.conf.d</code>-Datei überall ab oder binden Sie sie in der CI als Secret ein. Was Sie nicht tun sollten: sie in ein Container-Image backen, das in eine öffentliche Registry geschoben wird — es ist ein Passwort in einer Datei und reist mit allem mit, wohin Sie es kopieren. Für Images nehmen Sie besser ein Build-Secret, oder installieren Sie das <code>.deb</code> aus dem öffentlichen GitHub-Release, das ganz ohne Zugangsdaten auskommt.</p>
+
+        <h2>🔄 5. Jahresabo — der vollständige Ablauf</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Was passiert</th><th>Auswirkung auf Ihren Zugang</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Verlängerung, einmal im Jahr</td><td>Stillschweigend. Stripe belastet die Karte, der Zeitraum verlängert sich, <strong>Ihre Zugangsdaten ändern sich nicht</strong> — nichts zu tun, nichts erneut auszuführen</td></tr>
+                <tr><td>Sie kündigen</td><td>Über den Kündigungslink in Ihrer Willkommens-E-Mail. Der Zugang läuft bis <strong>zum Ende des bereits bezahlten Zeitraums</strong> weiter und endet dann</td></tr>
+                <tr><td>Eine Zahlung schlägt fehl</td><td>Der Zugang endet. Karte korrigieren und zahlen stellt ihn wieder her — fragen Sie im Discord, wenn es hakt</td></tr>
+                <tr><td>Sie abonnieren später erneut</td><td>Dasselbe Konto und <strong>dasselbe Passwort</strong> werden reaktiviert. Es kommt keine neue E-Mail, weil sich nichts geändert hat</td></tr>
+                <tr><td>Sie fordern eine Erstattung</td><td>Der Zugang wird mit der Erstattung sofort entzogen</td></tr>
+                <tr><td>Der Zugang endet</td><td>Sie bekommen eine E-Mail darüber, und <code>apt install</code> liefert 401. Bereits installierte Pakete bleiben unangetastet</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>♾️ 6. Lifetime — was anders ist</h2>
+
+        <p>Lifetime ist eine einmalige Zahlung, kein Abonnement. Es gibt nichts zu verlängern und nichts zu kündigen, keine hinterlegte Karte, die ablaufen kann, und Preisänderungen erreichen Sie nicht. Die Zugangsdaten funktionieren exakt gleich — gleicher Login, gleiche <code>auth.conf.d</code>-Datei, alles gleich. Hatten Sie zuvor ein Jahresabo und wechseln, behalten Sie Ihre Zugangsdaten; Sie erhalten eine Bestätigung statt eines neuen Passworts. Das Einzige, was Lifetime-Zugang beendet, ist eine Erstattung.</p>
+
+        <h2>🚦 7. Was ganz ohne Abonnement geht</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Befehl</th><th>Zugangsdaten nötig?</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>Nein — die Indexdateien bleiben für alle offen</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>Nein</td></tr>
+                <tr><td>Stöbern in <a href="/apt/dists/">/apt/dists/</a></td><td>Nein</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Ja</strong></td></tr>
+                <tr><td>Bereits installierte Pakete</td><td>Nein — sie laufen weiter, nichts läuft ab und nichts prüft eine Lizenz</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>Nein — für immer kostenlos, ohne Konto</td></tr>
+                <tr><td>Die <code>.deb</code>-Dateien auf GitHub</td><td>Nein — für immer kostenlos</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>Sie können also das Repository einbinden, <code>apt update</code> ausführen und genau sehen, welche Versionen es gibt, bevor Sie etwas bezahlen. <a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
+
+        <h2>🗃️ 8. Was über Sie gespeichert wird</h2>
+
+        <p>Ihre E-Mail-Adresse, die Stripe-Kundenreferenz, der bcrypt-Hash Ihres Passworts und die Daten Ihres Abonnements. Das ist der gesamte Datensatz. Zahlungsdaten verarbeitet Stripe; sie erreichen diesen Server nie. Versendet werden nur die E-Mails, die der Dienst selbst braucht: Ihre Zugangsdaten, eine Bestätigung bei Aktivierung des Lifetime-Zugangs und eine Mitteilung, wenn der Zugang endet. Keine Werbung, kein Verteiler. <a href="/terms.html">Nutzungsbedingungen →</a></p>
+
+        <h2>❓ Noch unsicher?</h2>
+
+        <p>Fragen Sie vor dem Kauf — <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">der Discord</a> ist der schnellste Weg zu mir, und Fragen dazu, wie das alles funktioniert, sind willkommen. Wenn Sie das Projekt früher über Buy Me a Coffee unterstützt haben, sagen Sie dort Bescheid: Sie bekommen ein kostenloses Lifetime-Abo.</p>
+
+        <p class="back-link"><a href="/de/#pricing">← Zurück zu den Preisen</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Alle Rechte vorbehalten. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Kostenloser Spiegel</a> |
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a> |
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a> |
+    <a href="/terms.html">Nutzungsbedingungen</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "de",
+  "mainEntity": [
+    {"@type": "Question", "name": "Wie wird der Zugang nach der Zahlung bei deb.griffo.io authentifiziert?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Mit HTTP-Basic-Authentifizierung über HTTPS, die apt nativ unterstützt. Nach der Zahlung kommt eine E-Mail mit einem Login — der beim Stripe-Checkout verwendeten E-Mail-Adresse — und einem zufällig erzeugten Passwort. Beide Zeilen kommen in eine Datei unter /etc/apt/auth.conf.d/ namens deb.griffo.io.conf, root gehörend mit Modus 600, und apt sendet sie bei jedem Paket-Download mit. Es gibt kein Kundenportal, kein Token zum Rotieren und keine Lizenzdatei."}},
+    {"@type": "Question", "name": "Wie schnell kommen die Zugangsdaten nach der Zahlung an?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Innerhalb weniger Minuten. Das Konto entsteht, wenn Stripe die Zahlung bestätigt, nicht wenn die Bezahlseite schließt — eine noch in Autorisierung befindliche Zahlung dauert deshalb etwas länger. Die E-Mail geht an die beim Bezahlen angegebene Adresse; kommt sie nicht an, prüfen Sie den Spam-Ordner und fragen dann im Discord des Projekts."}},
+    {"@type": "Question", "name": "Auf wie vielen Rechnern darf ein Abonnement genutzt werden?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Auf so vielen, wie Sie betreiben. Es gibt keine Platzzahl, keine Aktivierung und keine Geräteregistrierung — dieselben Zugangsdaten funktionieren auf jedem Arbeitsplatz, Server und Build-Agent. Sie sollten nicht in ein Container-Image gebacken werden, das in eine öffentliche Registry geschoben wird, denn sie sind ein Passwort in einer Datei; nehmen Sie dort ein Build-Secret oder installieren Sie das .deb aus dem öffentlichen GitHub-Release."}},
+    {"@type": "Question", "name": "Was passiert bei der Verlängerung eines Jahresabos?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Auf Ihrer Seite nichts. Stripe belastet die Karte, der Abozeitraum verlängert sich, und die Zugangsdaten bleiben exakt dieselben — keine neue E-Mail, keine Datei zu ändern, kein Befehl erneut auszuführen."}},
+    {"@type": "Question", "name": "Was passiert, wenn ich das Abonnement kündige?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Eine Kündigung über den Link in der Willkommens-E-Mail stoppt die nächste Zahlung. Der Zugang läuft bis zum Ende des bereits bezahlten Zeitraums weiter, danach funktionieren die Zugangsdaten nicht mehr und apt install liefert 401. Bereits installierte Pakete sind nicht betroffen — sie laufen nicht ab und prüfen keine Lizenz. Eine Erstattung entzieht den Zugang dagegen sofort."}},
+    {"@type": "Question", "name": "Was, wenn ich das Passwort verliere?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Gespeichert wird nur ein bcrypt-Hash des Passworts, es lässt sich also weder nachschlagen noch wiederherstellen. Ein neues Passwort kann auf Anfrage ausgestellt werden — antworten Sie auf die Willkommens-E-Mail oder fragen Sie im Discord — und das alte gilt ab dem Moment der Ausstellung nicht mehr."}},
+    {"@type": "Question", "name": "Wird Lifetime-Zugang anders authentifiziert?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Nein. Lifetime nutzt denselben Login, dieselbe auth.conf.d-Datei und denselben Mechanismus wie das Jahresabo. Der Unterschied liegt in der Abrechnung: eine Zahlung, nichts zu verlängern, nichts zu kündigen und keine Betroffenheit von künftigen Preisänderungen. Nur eine Erstattung beendet den Lifetime-Zugang."}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

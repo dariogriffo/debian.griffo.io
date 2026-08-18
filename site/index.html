@@ -1484,6 +1484,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     </div>
   </div>
 
+  <p class="pricing-access reveal">Wondering what happens after you pay? <a href="/how-subscriptions-work.html">How the subscription works</a> explains it before you buy: credentials by email, how <code class="inline-code">apt</code> authenticates, unlimited machines, and exactly how renewal, cancellation and refunds are handled.</p>
   <p class="pricing-terms reveal"><span class="pricing-star" aria-hidden="true">*</span> By subscribing you accept the <a href="/terms.html">Terms &amp; Conditions</a> linked at the bottom of this page.</p>
   <p class="pricing-foot reveal">All prices include VAT where applicable. Prices are shown in your local currency where supported, otherwise US dollars. Previously supported via Buy Me a Coffee? Head to <a href="https://discord.gg/E2yHQNkuZy">Discord</a> and we will sort out a free lifetime subscription for you. 💜</p>
 </section>
@@ -1498,6 +1499,10 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       <div class="faq-item">
         <button type="button" class="faq-question">Why pay for open source software?<span class="faq-icon"></span></button>
         <div class="faq-answer"><div class="faq-answer-inner">You are not paying for the software. Every tool here is open source, and nothing about this repository changes its licence or what it costs you to build yourself. The subscription pays for the packaging around it: producing proper Debian packages for tools whose authors ship none, rebuilding them automatically within hours of each upstream release, and making those builds available on older Debian and Ubuntu releases that would otherwise be stuck years behind. That is ongoing maintenance and infrastructure, not a software licence. And if you would rather not pay for it, every .deb stays free to download from <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> — you just update them yourself.</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question">What happens after I pay? How does apt authenticate?<span class="faq-icon"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Within a couple of minutes you get an email with a login — the address you paid with — and a generated password. They go in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>, and <code>apt</code> sends them over HTTPS with every download: plain HTTP Basic auth, which apt has supported natively for years. There is no portal to log into, no token to rotate and no limit on how many machines use the same credentials. Renewal is silent and changes nothing; cancelling keeps your access until the end of the period you already paid for. <a href="/how-subscriptions-work.html">How the subscription works, in full →</a></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">What happens if apt says 401 Unauthorized?<span class="faq-icon"></span></button>
@@ -1545,6 +1550,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     <a href="https://github.com/dariogriffo">GitHub</a> |
     <a href="/free.html">Free mirror</a> |
     <a href="/how-packages-are-built.html">How packages are built</a> |
+    <a href="/how-subscriptions-work.html">How access works</a> |
     <a href="/terms.html">Terms &amp; Conditions</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

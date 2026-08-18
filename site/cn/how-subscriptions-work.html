@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>订阅如何运作 — 付款、凭据与 apt 认证</title>
+<meta name="description" content="在 deb.griffo.io 付款之后会发生什么：一封包含 apt 凭据的邮件、存放在 /etc/apt/auth.conf.d 的 HTTP Basic 认证、机器数量不限，以及续订、取消、退款和丢失密码的具体处理方式。">
+<meta name="keywords" content="deb.griffo.io 订阅, apt 认证, apt basic auth, apt auth.conf.d 凭据, 私有 apt 仓库登录, apt 仓库密码, stripe 订阅 apt">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<meta property="og:title" content="deb.griffo.io 的订阅如何运作">
+<meta property="og:description" content="购买之前先看：凭据如何发放、apt 如何认证，以及续订、取消和退款时会发生什么。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<meta property="twitter:title" content="deb.griffo.io 的订阅如何运作">
+<meta property="twitter:description" content="购买之前先看：凭据如何发放、apt 如何认证，以及续订、取消和退款时会发生什么。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/how-subscriptions-work.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/how-subscriptions-work.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/how-subscriptions-work.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/how-subscriptions-work.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/how-subscriptions-work.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔑 订阅如何运作</h1>
+        <p class="subtitle">付款之后会发生什么、<code>apt</code> 如何认证，以及从续订到取消订阅是怎么处理的</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 简短回答。</strong> 你通过 Stripe 付款。几分钟内会收到一封邮件，里面有两样东西：<strong>登录名</strong>——你付款时使用的邮箱地址——以及一个<strong>系统生成的密码</strong>。把它们写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>，<code>apt</code> 会在每次下载时通过 HTTPS 一并发送。没有需要登录的用户面板，没有要轮换的令牌，没有许可证文件，也不限制同一套凭据用在多少台机器上。
+        </div>
+
+        <h2>🧾 1. 付款时会发生什么</h2>
+
+        <ol>
+            <li>你在 <strong>Stripe</strong> 完成结账。银行卡信息只交给 Stripe，从不经过这台服务器。</li>
+            <li>Stripe 确认付款并通知仓库。访问权限就是在这一刻创建的——不是结账页面关闭的那一刻，所以仍在授权中的付款会稍慢一些。</li>
+            <li>系统创建你的账户，并在服务器上为它随机生成一个密码。</li>
+            <li>邮件发送到<strong>你在 Stripe 填写的地址</strong>，内含登录名、密码和配置命令。这是该密码唯一一次被传输。</li>
+        </ol>
+
+        <p>如果几分钟内没有收到，先看垃圾邮件，然后<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">到 Discord 提问</a>——这是最快的途径，账户可以通过付款邮箱查到。</p>
+
+        <h2>🔐 2. 凭据到底是什么</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>项目</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>登录名</td><td>付款时使用的邮箱地址——无需选择，也无需记忆</td></tr>
+                <tr><td>密码</td><td>24 个随机字符，在服务器端生成，不由你设定</td></tr>
+                <tr><td>存储方式</td><td>bcrypt 哈希。明文不会保留——之后谁也查不到，包括我</td></tr>
+                <tr><td>有效期</td><td>没有。密码不轮换、不过期；决定访问权限的只有背后的订阅</td></tr>
+                <tr><td>机器数量</td><td>不限。没有席位计数、没有激活、没有设备注册</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>因为只存哈希，丢失的密码无法找回——但可以按需重新签发。回复欢迎邮件或在 Discord 提出，就能拿到新凭据；新密码签发的那一刻，旧密码即失效。请保存好欢迎邮件，更好的做法是把密码存进密码管理器。</p>
+
+        <h2>🖥️ 3. apt 如何认证</h2>
+
+        <p>就是普通的 <strong>HTTPS 上的 HTTP Basic 认证</strong>——<code>apt</code> 多年来原生支持的机制，不需要插件、不需要辅助程序、不需要额外软件包。凭据应放在 <code>/etc/apt/auth.conf.d/</code>，绝不要写进 <code>sources.list</code> 那一行：那样机器上任何用户都能读到，apt 还会在错误信息里把它泄露出来：</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+apt update</code></pre></div>
+        </div>
+
+        <p>这就是全部的接入工作。有三个细节要注意，出问题的也正是这三处：<code>machine</code> 行只写主机名——<code>deb.griffo.io</code>，不带 <code>https://</code>、不带结尾斜杠、不带 <code>/apt</code> 路径；文件名以 <code>.conf</code> 结尾，因为其他扩展名会被 apt 静默忽略；文件属于 root 且权限为 <code>600</code>，因为 apt 拒绝读取其他用户可读的凭据——所以上面先以 <code>600</code> 创建空文件，再往里写入密码。 <a href="/apt-401-unauthorized.html">如果 apt 返回 401，完整的排查清单在这里 →</a></p>
+
+        <p>每一次请求都会在发生的当下核对数据库：登录名、密码哈希，以及该账户背后的订阅当前是否有效。什么都不缓存，也不会往你的机器上下发任何东西——正因如此，续订、取消或更换密码都会立即生效，你无需做任何操作。</p>
+
+        <h2>🏗️ 4. 服务器、容器与 CI</h2>
+
+        <p>一套凭据覆盖你运行的所有机器——工作站、笔记本、服务器、构建代理。把同一个 <code>auth.conf.d</code> 文件放到每台机器上，或在 CI 中以密文形式挂载。不该做的是把它打进会推送到公共镜像仓库的容器镜像里：它就是文件里的一个密码，会随着复制它的一切一起流传。构建镜像时请使用构建密文，或者直接从公开的 GitHub release 安装 <code>.deb</code>，那完全不需要凭据。</p>
+
+        <h2>🔄 5. 年度订阅——完整生命周期</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>发生了什么</th><th>对访问权限的影响</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>每年续订一次</td><td>静默完成。Stripe 扣款，周期顺延，<strong>你的凭据不会改变</strong>——无需操作，也无需重新执行任何命令</td></tr>
+                <tr><td>你取消订阅</td><td>通过欢迎邮件中的取消链接。访问权限持续到<strong>你已付费周期的结束</strong>，之后停止</td></tr>
+                <tr><td>扣款失败</td><td>访问权限停止。更换银行卡并完成付款即可恢复——卡住了就到 Discord 询问</td></tr>
+                <tr><td>你之后重新订阅</td><td>同一账户与<strong>同一密码</strong>被重新启用。不会再发新邮件，因为什么都没有改变</td></tr>
+                <tr><td>你申请退款</td><td>退款一经办理，访问权限立即被撤销</td></tr>
+                <tr><td>访问权限结束</td><td>你会收到一封说明邮件，<code>apt install</code> 开始返回 401。已安装的软件包不受影响</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>♾️ 6. 终身版——有何不同</h2>
+
+        <p>终身版是一次性付款，不是订阅。没有要续订的，也没有要取消的，没有会过期的绑定银行卡，价格调整也影响不到你。凭据的用法完全一样——同样的登录名、同样的 <code>auth.conf.d</code> 文件，一切照旧。如果你原本是年度订阅后来升级，则沿用现有凭据；你会收到一封确认邮件，而不是新密码。唯一会终止终身访问的，是退款。</p>
+
+        <h2>🚦 7. 哪些完全不需要订阅</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>命令</th><th>需要凭据吗？</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>不需要——索引对所有人开放</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>不需要</td></tr>
+                <tr><td>浏览 <a href="/apt/dists/">/apt/dists/</a></td><td>不需要</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>需要</strong></td></tr>
+                <tr><td>已经安装的软件包</td><td>不需要——它们永不过期，也不检查许可证</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>不需要——永久免费，无需账户</td></tr>
+                <tr><td>GitHub 上的 <code>.deb</code> 文件</td><td>不需要——永久免费</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>所以你可以先添加仓库、运行 <code>apt update</code>，在付任何钱之前就看清楚提供的是哪些版本。 <a href="/free.html">永久免费镜像的完整说明 →</a></p>
+
+        <h2>🗃️ 8. 关于你会保存哪些信息</h2>
+
+        <p>你的邮箱地址、Stripe 客户标识、你密码的 bcrypt 哈希，以及订阅的起止日期。整条记录就这些。支付信息由 Stripe 处理，从不会到达这台服务器。发出的邮件只有服务本身需要的那几封：你的凭据、终身访问激活时的确认，以及访问结束时的通知。没有营销，没有邮件列表。 <a href="/terms.html">条款和条件 →</a></p>
+
+        <h2>❓ 还是拿不准？</h2>
+
+        <p>付款之前尽管问——<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord</a>是联系我最快的方式，关于这一切如何运作的问题都很欢迎。如果你以前在 Buy Me a Coffee 支持过这个项目，去那里说一声：你可以获得免费的终身订阅。</p>
+
+        <p class="back-link"><a href="/cn/#pricing">← 返回价格</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. 保留所有权利。 |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">免费镜像</a> |
+    <a href="/how-packages-are-built.html">软件包如何构建</a> |
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a> |
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "zh-CN",
+  "mainEntity": [
+    {"@type": "Question", "name": "在 deb.griffo.io 付款之后，访问是如何认证的？",
+     "acceptedAnswer": {"@type": "Answer", "text": "使用 HTTPS 上的 HTTP Basic 认证，apt 原生支持。付款后会收到一封邮件，包含登录名（即 Stripe 结账时使用的邮箱地址）和一个随机生成的密码。这两行写入 /etc/apt/auth.conf.d/ 下名为 deb.griffo.io.conf 的文件，属主为 root、权限 600，apt 会在每次下载软件包时发送它们。没有用户面板，没有需要轮换的令牌，也没有许可证文件。"}},
+    {"@type": "Question", "name": "付款后多久能收到凭据？",
+     "acceptedAnswer": {"@type": "Answer", "text": "几分钟之内。账户是在 Stripe 确认付款时创建的，而不是结账页面关闭时，因此仍在授权中的付款会稍慢一些。邮件发往结账时填写的地址；如果没收到，先查看垃圾邮件，然后到项目的 Discord 询问。"}},
+    {"@type": "Question", "name": "一份订阅可以在多少台机器上使用？",
+     "acceptedAnswer": {"@type": "Answer", "text": "你有多少台就能用多少台。没有席位计数、没有激活、没有设备注册——同一套凭据在任何工作站、服务器和构建代理上都有效。不要把它打进会推送到公共镜像仓库的容器镜像里，因为它就是文件中的一个密码；请改用构建密文，或从公开的 GitHub release 安装 .deb。"}},
+    {"@type": "Question", "name": "年度订阅续订时会发生什么？",
+     "acceptedAnswer": {"@type": "Answer", "text": "你这边什么都不用做。Stripe 扣款，订阅周期顺延，凭据保持完全不变——没有新邮件，没有要更新的文件，也没有要重新执行的命令。"}},
+    {"@type": "Question", "name": "取消订阅之后会怎样？",
+     "acceptedAnswer": {"@type": "Answer", "text": "通过欢迎邮件中的链接取消会停止下一次扣款。访问权限持续到已付费周期结束，之后凭据失效，apt install 返回 401。已安装的软件包不受影响——它们不会过期，也不检查许可证。与取消不同，退款会立即撤销访问权限。"}},
+    {"@type": "Question", "name": "密码丢了怎么办？",
+     "acceptedAnswer": {"@type": "Answer", "text": "服务器只保存密码的 bcrypt 哈希，因此无法查询或找回。可以按需重新签发一个——回复欢迎邮件或在 Discord 提出——新密码一经签发，旧密码立即失效。"}},
+    {"@type": "Question", "name": "终身访问的认证方式不同吗？",
+     "acceptedAnswer": {"@type": "Answer", "text": "不同的只有计费。终身版使用与年度方案相同的登录名、相同的 auth.conf.d 文件和相同的认证机制。区别在于：一次付款，无需续订、无需取消，也不受未来价格调整影响。只有退款会终止终身访问。"}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

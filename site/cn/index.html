@@ -1484,6 +1484,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     </div>
   </div>
 
+  <p class="pricing-access reveal">想知道付款之后会怎样？<a href="/cn/how-subscriptions-work.html">订阅如何运作</a>在你购买之前就讲清楚：凭据通过邮件发送、<code class="inline-code">apt</code> 如何认证、机器数量不限，以及续订、取消和退款的具体处理方式。</p>
   <p class="pricing-terms reveal"><span class="pricing-star" aria-hidden="true">*</span> 订阅即表示你接受本页底部链接的<a href="/terms.html">条款和条件</a>。</p>
   <p class="pricing-foot reveal">所有价格均含增值税（如适用）。 在支持的地区以当地货币显示价格，否则以美元显示。此前通过 Buy Me a Coffee 支持过？请前往 <a href="https://discord.gg/E2yHQNkuZy">Discord</a>，我们会为你安排免费的终身订阅。💜</p>
 </section>
@@ -1498,6 +1499,10 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       <div class="faq-item">
         <button type="button" class="faq-question">为什么要为开源软件付费？<span class="faq-icon"></span></button>
         <div class="faq-answer"><div class="faq-answer-inner">你付费的对象不是软件本身。这里的每个工具都是开源的，本仓库既不会改变它们的许可证，也不会改变你自己动手构建所需的成本。订阅费用支付的是围绕软件的打包工作：为作者本身不提供 Debian 包的工具制作规范的 Debian 软件包，在上游每次发布后数小时内自动重新构建，并让这些构建产物能用在原本要落后好几年的旧版 Debian 和 Ubuntu 上。这是持续的维护与基础设施投入，而不是软件许可证。如果你不愿意为此付费，每个 .deb 依然可以从 <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> 免费下载 —— 只是需要你自己更新。</div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-question">付款之后会发生什么？apt 如何认证？<span class="faq-icon"></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">几分钟内你会收到一封邮件，里面有登录名（即你付款时用的邮箱）和一个系统生成的密码。把它们写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>，<code>apt</code> 就会在每次下载时通过 HTTPS 一并发送：就是 apt 多年来原生支持的 HTTP Basic 认证。没有需要登录的面板，没有要轮换的令牌，也不限制同一套凭据用在多少台机器上。续订是静默的，什么都不会改变；取消订阅后，访问权限会保留到你已付费周期的结束。 <a href="/cn/how-subscriptions-work.html">订阅如何运作，完整说明 →</a></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-question">如果 apt 报 401 Unauthorized 怎么办？<span class="faq-icon"></span></button>
@@ -1545,6 +1550,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     <a href="https://github.com/dariogriffo">GitHub</a> |
     <a href="/free.html">免费镜像</a> |
     <a href="/how-packages-are-built.html">软件包如何构建</a> |
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a> |
     <a href="/terms.html">条款和条件</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
