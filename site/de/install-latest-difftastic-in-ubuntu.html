@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>difftastic auf Ubuntu installieren — immer aktuell</title>
+<meta name="description" content="difftastic ist nicht in den offiziellen Ubuntu-Archiven — hole dir difftastic 0.70.0 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta name="keywords" content="difftastic ubuntu, difftastic ubuntu installieren, difft, struktureller Diff, git Diff-Tool, difftastic ppa, ubuntu Pakete, jammy, noble, questing, apt difftastic">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-latest-difftastic-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-latest-difftastic-in-ubuntu.html">
+<meta property="og:title" content="difftastic auf Ubuntu installieren — immer aktuell">
+<meta property="og:description" content="difftastic ist nicht in den offiziellen Ubuntu-Archiven — hole dir difftastic 0.70.0 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-latest-difftastic-in-ubuntu.html">
+<meta property="twitter:title" content="difftastic auf Ubuntu installieren — immer aktuell">
+<meta property="twitter:description" content="difftastic ist nicht in den offiziellen Ubuntu-Archiven — hole dir difftastic 0.70.0 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-difftastic-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-difftastic-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔀 Neuestes difftastic unter Ubuntu installieren</h1>
+        <p class="subtitle">Ein struktureller Diff, der Dateien nach Syntax vergleicht statt Zeile für Zeile</p>
+        <div class="version-badge">Neueste Version: 0.70.0 · aktualisiert 2026-08-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.70.0 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-difftastic-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-difftastic-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-difftastic-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-difftastic-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist difftastic?</h2>
+        <p>difftastic — der Befehl heißt <code>difft</code> — ist ein <strong>struktureller Diff</strong>. Statt Zeilen zu vergleichen, parst es beide Dateien mit tree-sitter, baut für jede Seite einen Syntaxbaum und zeigt, welche Syntax sich wirklich geändert hat. Neu eingerückte Blöcke, umgebrochene Argumentlisten oder eine verschobene Klammer sind kein Diff mehr — während eine umbenannte Variable in neu formatiertem Code sofort auffällt.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> difftastic versteht Code über tree-sitter-Grammatiken, und die kommen mit jedem Release. Ein ein Jahr alter Build parst die Sprachen von letztem Jahr: neuere Syntax wird zu Parse-Fehlern, und eine Datei mit zu vielen Parse-Fehlern fällt still auf einen normalen zeilenbasierten Diff zurück — genau das Verhalten, gegen das du difftastic installiert hast. Jedes Release verbessert außerdem Algorithmus und Speicherverbrauch bei großen Dateien.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von difftastic</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌳 Syntaxbewusste Diffs</h4>
+                <p>Beide Seiten werden zu Syntaxbäumen geparst und als Struktur verglichen — Formatierungsrauschen verschwindet, echte Änderungen treten hervor.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Über 30 Sprachen</h4>
+                <p>Rust, Python, TypeScript, Go, C, C++, Java, Ruby, YAML, JSON, HTML, CSS, Markdown und viele mehr — <code>difft --list-languages</code> zeigt die vollständige Liste mit Endungen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🪟 Nebeneinander oder inline</h4>
+                <p><code>--display</code> wählt side-by-side, side-by-side-show-both, inline oder maschinenlesbares JSON.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔗 Drop-in für Git</h4>
+                <p>Funktioniert als externer Diff-Befehl für git und genauso für Mercurial, Jujutsu und Fossil.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🚦 Ehrlicher Fallback</h4>
+                <p>Unbekannte Endung, riesige Datei oder zu viele Parse-Fehler: dann ein zeilenbasierter Diff mit Wort-Hervorhebung statt eines Fehlers.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ Verzeichnisse und Konflikte</h4>
+                <p>Zwei Verzeichnisse in einem Befehl vergleichen — oder difftastic eine Datei mit Merge-Konfliktmarkierungen geben und den Konflikt als Diff lesen.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer den offiziellen Archiven voraus:</strong> Debian und Ubuntu frieren Paketversionen zum Release-Zeitpunkt ein — dieses Repository veröffentlicht neue Upstream-Releases in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation aus deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Schritt 1: Repository hinzufügen</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Es gibt einen für immer kostenlosen Spiegel.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> liefert Pakete für immer kostenlos — ohne Konto, ohne Abo, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Derzeit enthält er Ghostty, Oh My Posh und Zed; difftastic ist nicht dabei, deshalb führt heute nur das Repository oben dorthin — auf Anfrage kann es aufgenommen werden.</p>
+  <p class="free-lane-more"><a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Schritt 2: difftastic installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Neuestes difftastic installieren</span>
+sudo apt install difftastic
+
+<span class="comment"># Installation überprüfen</span>
+difft --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Neuestes difftastic installieren</span>
+apt install difftastic
+
+<span class="comment"># Installation überprüfen</span>
+difft --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: In git einbinden</h3>
+            <div class="code-block"><pre><code><span class="comment"># Zwei Dateien direkt vergleichen</span>
+difft old.py new.py
+
+<span class="comment"># Oder git difftastic für jeden Diff aufrufen lassen</span>
+git config --global diff.external difft
+
+<span class="comment"># Der normale git diff ist weiter nur eine Option entfernt</span>
+git --no-ext-diff diff
+
+<span class="comment"># Die Handbuchseite liegt dem Paket bei</span>
+man difft</code></pre></div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Dateien und Verzeichnisse vergleichen:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Zwei Dateien, nebeneinander</span>
+difft before.rs after.rs
+
+<span class="comment"># Eine Spalte, näher an klassischer Diff-Ausgabe</span>
+difft --display inline before.ts after.ts
+
+<span class="comment"># Zwei Verzeichnisse, unveränderte Dateien überspringen</span>
+difft old/ new/ --skip-unchanged --sort-paths
+
+<span class="comment"># Welche Sprachen versteht dieser Build?</span>
+difft --list-languages</code></pre></div>
+
+        <p><strong>Als git-Diff verwenden:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Einmalig: difftastic nur für diesen Diff</span>
+GIT_EXTERNAL_DIFF=difft git diff
+
+<span class="comment"># Strukturelle Diffs durch die gesamte Historie</span>
+GIT_EXTERNAL_DIFF=difft git log -p --ext-diff
+
+<span class="comment"># Als difftool registrieren</span>
+git config --global difftool.difftastic.cmd &#039;difft &quot;$LOCAL&quot; &quot;$REMOTE&quot;&#039;
+git difftool --tool difftastic
+
+<span class="comment"># Ein git-Alias für ein strukturelles Log</span>
+git config --global alias.dlog &#039;!GIT_EXTERNAL_DIFF=difft git log -p --ext-diff&#039;</code></pre></div>
+
+        <p><strong>Ausgabe anpassen:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Änderungen nur in Kommentaren ignorieren</span>
+difft --ignore-comments a.go b.go
+
+<span class="comment"># Mehr Kontext, Tabs als zwei Leerzeichen</span>
+difft --context 5 --tab-width 2 a.py b.py
+
+<span class="comment"># Für Skripte: gab es überhaupt eine syntaktische Änderung?</span>
+difft --check-only --exit-code a.json b.json
+
+<span class="comment"># Standardwerte für jeden Aufruf über die Umgebung</span>
+export DFT_DISPLAY=inline DFT_BACKGROUND=light</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Tool-Integrationen</h4>
+            <p>difftastic fügt sich in die Werkzeuge ein, die dir schon Diffs zeigen:</p>
+            <ul>
+                <li><strong>git:</strong> <code>GIT_EXTERNAL_DIFF</code>, <code>diff.external</code> oder ein <code>difftool</code>-Eintrag — mit <code>--ext-diff</code> auch für <code>git log -p</code> und <code>git show</code></li>
+                <li><strong>Jujutsu:</strong> als Diff-Befehl in <code>jj</code> setzen und strukturelle Diffs in einem Git-kompatiblen Workflow bekommen</li>
+                <li><strong>Mercurial und Fossil:</strong> beide akzeptieren einen externen Diff-Befehl — dasselbe Binary bedient jedes Repository</li>
+                <li><strong>Umgebungsvariablen:</strong> <code>DFT_DISPLAY</code>, <code>DFT_BACKGROUND</code>, <code>DFT_WIDTH</code> und Verwandte setzen deine Standards einmalig</li>
+                <li><strong>CI und Skripte:</strong> <code>--check-only</code> mit <code>--exit-code</code> beantwortet „hat sich die Syntax geändert?“ ohne Ausgabe, und <code>--display json</code> ist zum Parsen gemacht</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> paketiert difftastic überhaupt nicht — auf einem Standardsystem gibt es nichts zu installieren</li>
+                <li><strong>cargo install difftastic:</strong> aktuell, aber ein langer Build mit vielen tree-sitter-Grammatiken, außerhalb von apt und ohne Handbuchseite</li>
+                <li><strong>Upstream-Tarball:</strong> das offizielle Binary, das du für jedes Release von Hand neu holst</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Aktuelle Grammatiken:</strong> das neueste Release mit tree-sitter-Grammatiken, die die Sprachversionen verstehen, die du heute schreibst</li>
+            <li>✅ <strong>Die einzige apt-Quelle:</strong> difftastic ist weder in den Debian- noch in den Ubuntu-Archiven; dieses Repository paketiert den offiziellen Upstream-Build</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden innerhalb von Stunden nach Upstream-Releases aktualisiert</li>
+            <li>✅ <strong>Vollständiges Paket:</strong> das Upstream-Binary als <code>/usr/bin/difft</code> plus die Handbuchseite <code>difft.1</code></li>
+            <li>✅ <strong>Zwei Architekturen:</strong> amd64 (statischer musl-Build ohne Bibliotheksabhängigkeiten) und arm64</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Updates mit den üblichen apt-Befehlen</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/difftastic-debian" target="_blank" rel="noopener">🔀 difftastic-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls verfügbar über deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Terminal-git-UI zum Stagen von Hunks und Zeilen</li>
+            <li><a href="/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a> - Git-kompatibles VCS mit erstklassigen Rebases</li>
+            <li><a href="/install-latest-ripgrep-in-ubuntu.html">ripgrep</a> - Schnelle rekursive Suche im gleichen Baum</li>
+            <li><a href="/install-latest-neovim-in-ubuntu.html">Neovim</a> - Editor, um das Gefundene direkt zu öffnen</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal für:</strong> das Review eines Refactorings, das Code verschoben hat, das Lesen eines Formatter-Commits ohne Augenschmerzen, das Unterscheiden einer echten API-Änderung von einer Neueinrückung — und jede Codebasis, in der „die ganze Datei hat sich geändert“ meist nicht stimmt.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.70.0</code> — 2026-08-18</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist difftastic in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein — difftastic ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert difftastic 0.70.0.</p></details>
+<details><summary>Wie installiere ich das neueste difftastic unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install difftastic. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist difftastic in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — difftastic ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert difftastic 0.70.0."}}, {"@type": "Question", "name": "Wie installiere ich das neueste difftastic unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install difftastic. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Alle Rechte vorbehalten. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Kostenloser Spiegel</a> |
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a> |
+    <a href="/terms.html">Nutzungsbedingungen</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Neuestes difftastic unter Ubuntu installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten strukturellen Diffs difftastic unter Ubuntu über das deb.griffo.io-Repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "difftastic",
+        "applicationCategory": "Developer Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Struktureller Diff, der Dateien mit tree-sitter nach Syntax vergleicht, mit Nebeneinander- oder Inline-Anzeige und direkter git-Integration"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

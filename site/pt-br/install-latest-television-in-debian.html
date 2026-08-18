@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar Television no Debian via apt — versão atual</title>
+<meta name="description" content="O Television não está nos arquivos oficiais do Debian — obtenha o Television 0.15.9 via apt para Bookworm, Trixie, Forky e Sid. Assinado com GPG e recompilado poucas horas após cada lançamento.">
+<meta name="keywords" content="television debian, instalar Television debian, television tv fuzzy finder, alternativa ao fzf, fuzzy finder no terminal, television apt, pacotes debian, bookworm, trixie, sid, apt television">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-television-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-television-in-debian.html">
+<meta property="og:title" content="Instalar Television no Debian via apt — versão atual">
+<meta property="og:description" content="O Television não está nos arquivos oficiais do Debian — obtenha o Television 0.15.9 via apt para Bookworm, Trixie, Forky e Sid. Assinado com GPG e recompilado poucas horas após cada lançamento.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-television-in-debian.html">
+<meta property="twitter:title" content="Instalar Television no Debian via apt — versão atual">
+<meta property="twitter:description" content="O Television não está nos arquivos oficiais do Debian — obtenha o Television 0.15.9 via apt para Bookworm, Trixie, Forky e Sid. Assinado com GPG e recompilado poucas horas após cada lançamento.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-television-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-television-in-debian.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="05">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="06">Perguntas</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 A partir de <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exigirá uma assinatura.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📼 Instalar o Television mais recente no Debian</h1>
+        <p class="subtitle">Um fuzzy finder para o terminal muito rápido, portátil e hackeável</p>
+        <div class="version-badge">Última versão: 0.15.9 · atualizado em 2026-08-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.15.9 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-television-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-television-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-television-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-television-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>O que é o Television?</h2>
+        <p>O Television — o comando é <code>tv</code> — é um <strong>fuzzy finder construído em torno de canais</strong>. Um canal é uma fonte de dados nomeada, com comando de pré-visualização, atalhos e ações próprios: arquivos, texto dentro de arquivos, diretórios, repositórios git, variáveis de ambiente, processos, contêineres Docker ou qualquer coisa que você descreva em algumas linhas de TOML. Ele busca enquanto você digita, pré-visualiza o item selecionado e entrega o resultado ao shell, a um editor ou ao seu próprio comando.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que a versão mais recente importa:</strong> o Television é um projeto jovem que anda rápido: canais, ações, integração com o shell e o formato de configuração evoluíram lançamento a lançamento, e o <code>tv update-channels</code> baixa os protótipos de canal mais recentes, que esperam um binário compatível. Nem o Debian nem o Ubuntu o empacotam, então uma build atual não é luxo: é a única forma de tê-lo.
+        </div>
+
+        <h3>⚡ Principais recursos do Television</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔎 Canais, não só arquivos</h4>
+                <p>Arquivos, texto, diretórios, repositórios git, variáveis de ambiente, processos e contêineres são canais — <code>tv list-channels</code> mostra o que esta build traz.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👁️ Pré-visualização embutida</h4>
+                <p>Cada canal pode definir um comando de pré-visualização, então você vê o arquivo, o log, o diff ou os detalhes do contêiner ao lado da lista de resultados.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧵 Hackeável em TOML</h4>
+                <p>Um canal é um pequeno arquivo TOML com comando de origem, pré-visualização, atalhos e ações — um fluxo novo é um arquivo em <code>~/.config/television/cable/</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ Integração com o shell</h4>
+                <p><code>tv init</code> liga o autocompletar inteligente ao <kbd>Ctrl</kbd>+<kbd>T</kbd> e a busca no histórico ao <kbd>Ctrl</kbd>+<kbd>R</kbd>, para bash, zsh e fish.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🚀 Rápido por projeto</h4>
+                <p>Um matcher assíncrono e paralelo mantém a digitação fluida em fontes enormes, e as pré-visualizações são calculadas sob demanda e podem ser cacheadas.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 Modo improvisado</h4>
+                <p><code>--source-command</code> e <code>--preview-command</code> transformam duas linhas de shell em um finder pontual, sem escrever canal nenhum.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos arquivos oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes quando lançam uma release — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar o repositório</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz Ghostty, Oh My Posh e Zed; Television não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
+  <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar o Television</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar o Television mais recente</span>
+sudo apt install television
+
+<span class="comment"># Verificar a instalação</span>
+tv --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar o Television mais recente</span>
+apt install television
+
+<span class="comment"># Verificar a instalação</span>
+tv --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Primeira execução e integração com o shell</h3>
+            <div class="code-block"><pre><code><span class="comment"># Ver quais canais esta build traz</span>
+tv list-channels
+
+<span class="comment"># Buscar entre os arquivos do diretório atual</span>
+tv files
+
+<span class="comment"># Integração com o shell: Ctrl+T para completar, Ctrl+R para o histórico</span>
+echo &#039;eval &quot;$(tv init bash)&quot;&#039; &gt;&gt; ~/.bashrc
+
+<span class="comment"># A página de manual e as conclusões de bash, zsh e fish vêm no pacote</span>
+man tv</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemplos básicos de uso</h3>
+
+        <p><strong>Buscas do dia a dia:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># O canal padrão</span>
+tv
+
+<span class="comment"># Os canais que você mais vai usar</span>
+tv files
+tv text
+tv dirs
+tv git-repos
+
+<span class="comment"># Começar em outro diretório</span>
+tv files ~/src
+
+<span class="comment"># Baixar os protótipos de canal mais recentes</span>
+tv update-channels</code></pre></div>
+
+        <p><strong>Canais improvisados a partir de qualquer comando:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Transformar qualquer comando em um fuzzy finder</span>
+tv --source-command &quot;fd -t f -H&quot;
+
+<span class="comment"># Com uma pré-visualização construída a partir do item selecionado</span>
+tv --source-command &quot;git branch --format=&#039;%(refname:short)&#039;&quot; \
+   --preview-command &quot;git log -20 --oneline {}&quot;
+
+<span class="comment"># Manter as cores que o comando de origem emite</span>
+tv --source-command &quot;rg --color=always -n TODO&quot; --ansi
+
+<span class="comment"># Preservar a ordem da origem em vez do ranking de correspondência</span>
+tv --source-command &quot;ls -t&quot; --no-sort</code></pre></div>
+
+        <p><strong>Shell, conclusões e canais próprios:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Ativar Ctrl+T e Ctrl+R neste shell</span>
+eval &quot;$(tv init zsh)&quot;
+
+<span class="comment"># Conclusão por Tab para os subcomandos do próprio tv</span>
+tv completions fish &gt; ~/.config/fish/completions/tv.fish
+
+<span class="comment"># Canais próprios ficam no diretório cable</span>
+mkdir -p ~/.config/television/cable
+$EDITOR ~/.config/television/cable/tldr.toml
+
+<span class="comment"># Depois de uma atualização, limpe da configuração os padrões escritos pela máquina</span>
+tv migrate-config</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações com outras ferramentas</h4>
+            <p>o Television foi feito para ser colado ao resto do seu ambiente:</p>
+            <ul>
+                <li><strong>Seu shell:</strong> <code>tv init bash</code>, <code>zsh</code> ou <code>fish</code> adiciona autocompletar inteligente e busca no histórico, e qualquer canal pode escrever direto na linha de comando</li>
+                <li><strong>Editores:</strong> há integrações para Neovim, Vim, VS Code, IDEs da JetBrains e Zed, todas usando o mesmo binário</li>
+                <li><strong>ripgrep e afins:</strong> canais são comandos de shell, então <code>rg</code>, <code>fd</code>, <code>git</code>, <code>docker</code> ou seu próprio script podem ser a origem</li>
+                <li><strong>Configuração:</strong> <code>~/.config/television/config.toml</code> para padrões e atalhos, <code>cable/*.toml</code> para os canais</li>
+                <li><strong>Todo o resto:</strong> o item selecionado é impresso na stdout, então o <code>tv</code> combina com pipes, aliases e scripts como qualquer outro comando</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativo de repositórios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> não empacota o Television — <code>apt install television</code> falha em um sistema padrão</li>
+                <li><strong>cargo install television:</strong> atualizado, mas é compilar Rust em cada máquina, fora do apt e sem página de manual ou conclusões</li>
+                <li><strong>O script de instalação upstream:</strong> conveniente, mas escreve no sistema por trás do gerenciador de pacotes e se atualiza no ritmo dele</li>
+                <li><strong>deb.griffo.io:</strong> versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Canais no compasso do binário:</strong> os protótipos de canal evoluem junto com a ferramenta, então é a build atual que torna o <code>tv update-channels</code> útil em vez de confuso</li>
+            <li>✅ <strong>A única fonte apt:</strong> o Television não está nos arquivos do Debian nem do Ubuntu; este repositório empacota a build oficial upstream</li>
+            <li>✅ <strong>Atualizações automáticas:</strong> os pacotes são atualizados poucas horas após cada lançamento upstream</li>
+            <li>✅ <strong>Pacote completo:</strong> o binário upstream como <code>/usr/bin/tv</code>, a página de manual <code>tv.1</code> e as conclusões de bash, zsh e fish</li>
+            <li>✅ <strong>Três arquiteturas, um conflito declarado:</strong> amd64, arm64 e i386 — e o pacote declara conflito com o <code>treeviewx</code>, dono do mesmo caminho <code>/usr/bin/tv</code>, para o apt te avisar em vez de dois pacotes brigarem por ele</li>
+            <li>✅ <strong>Multi-distribuição:</strong> funciona no Bookworm, Trixie, Forky e Sid</li>
+            <li>✅ <strong>Manutenção simples:</strong> atualizações com os comandos apt de sempre</li>
+        </ul>
+
+        <h3>📦 Repositório de build do pacote</h3>
+        <p>Os pacotes Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/television-debian" target="_blank" rel="noopener">📼 television-debian</a> - Builds dos últimos lançamentos</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf</a> - O fuzzy finder clássico, se você prefere o modelo dele</li>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep</a> - Busca recursiva rápida para alimentar um canal</li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide</a> - Saltos entre diretórios que combinam com o tv dirs</li>
+            <li><a href="/install-latest-yazi-in-debian.html">Yazi</a> - Gerenciador de arquivos no terminal para ver o que achou</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> pular para um arquivo em um repositório que você mal conhece, buscar no código e cair na linha certa do editor, alternar entre dezenas de checkouts e substituir a pilha de wrappers de fzf que se acumulou na sua configuração de shell.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.15.9</code> — 2026-08-18</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O Television está nos repositórios oficiais do Debian?</summary><p>Não — Television não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo Television 0.15.9.</p></details>
+<details><summary>Como instalo o Television mais recente no Debian?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install television. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Debian são suportadas?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Television está nos repositórios oficiais do Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Não — Television não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo Television 0.15.9."}}, {"@type": "Question", "name": "Como instalo o Television mais recente no Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install television. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Debian são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Todos os direitos reservados. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Espelho gratuito</a> |
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a> |
+    <a href="/terms.html">Termos e Condições</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Instalar o Television mais recente no Debian",
+    "description": "Guia completo para instalar a versão mais recente do fuzzy finder Television (tv) no Debian usando o repositório deb.griffo.io.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Television",
+        "applicationCategory": "Command Line Tool",
+        "operatingSystem": "Debian Linux",
+        "softwareVersion": "latest",
+        "description": "Fuzzy finder para o terminal muito rápido, portátil e hackeável, construído sobre canais configuráveis com pré-visualizações, ações próprias e integração com o shell"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

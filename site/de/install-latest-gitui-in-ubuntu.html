@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>GitUI auf Ubuntu installieren — immer aktuell</title>
+<meta name="description" content="GitUI ist nicht in den offiziellen Ubuntu-Archiven — hole dir GitUI 0.28.1 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta name="keywords" content="gitui ubuntu, GitUI ubuntu installieren, gitui Terminal git, lazygit Alternative, git TUI, gitui ppa, ubuntu Pakete, jammy, noble, questing, apt gitui">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-latest-gitui-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-latest-gitui-in-ubuntu.html">
+<meta property="og:title" content="GitUI auf Ubuntu installieren — immer aktuell">
+<meta property="og:description" content="GitUI ist nicht in den offiziellen Ubuntu-Archiven — hole dir GitUI 0.28.1 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-latest-gitui-in-ubuntu.html">
+<meta property="twitter:title" content="GitUI auf Ubuntu installieren — immer aktuell">
+<meta property="twitter:description" content="GitUI ist nicht in den offiziellen Ubuntu-Archiven — hole dir GitUI 0.28.1 per apt für Ubuntu 22.04, 24.04, 25.10 und 26.04. GPG-signiert, wenige Stunden nach jedem Release neu gebaut.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-gitui-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-gitui-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>48 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🎛️ Neuestes GitUI unter Ubuntu installieren</h1>
+        <p class="subtitle">Eine blitzschnelle Terminal-Oberfläche für git, komplett per Tastatur</p>
+        <div class="version-badge">Neueste Version: 0.28.1 · aktualisiert 2026-08-18</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.28.1 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-gitui-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-gitui-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-gitui-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-gitui-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist GitUI?</h2>
+        <p>GitUI ist eine <strong>Terminal-Oberfläche für git</strong>, geschrieben in Rust. Sie bietet genau die Teile einer git-GUI, die sich wirklich lohnen — einzelne Hunks und Zeilen stagen, Diffs lesen, das Log durchsuchen, stashen, blamen, branchen und pushen — ohne das Terminal zu verlassen und ohne die Hänger, die bekannte GUIs bei großen Repositories haben.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum neueste Versionen wichtig sind:</strong> GitUI ist noch vor 1.0 und entwickelt sich schnell: Submodul-Unterstützung, Log-Suche, Blame, besseres Rebasing und viele Korrekturen kamen in ganz normalen Releases. Weder Debian noch Ubuntu paketieren es überhaupt — die Alternative zu einem aktuellen Build ist also kein älteres Paket, sondern gar keins.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von GitUI</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Schnell bei riesigen Repositories</h4>
+                <p>Der Benchmark von upstream liest die komplette Linux-Kernel-Historie in rund 24 Sekunden mit etwa 170 MB Speicher — dort, wo schwerere GUIs einfrieren oder abstürzen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✂️ Hunks und Zeilen stagen</h4>
+                <p>Ganze Dateien, einzelne Hunks oder einzelne Zeilen stagen, unstagen, zurücknehmen und zurücksetzen — der Grund, warum die meisten überhaupt eine git-GUI öffnen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📜 Log und Diffs</h4>
+                <p>Das Commit-Log durchblättern und durchsuchen, den Diff jedes Commits ansehen und eine Datei zeilenweise blamen — alles in derselben Tastatur-Oberfläche.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Stashing</h4>
+                <p>Stashes speichern, poppen, anwenden, verwerfen und ansehen — in einem eigenen Tab, statt sich die <code>git stash</code>-Unterbefehle zu merken.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌿 Branches und Remotes</h4>
+                <p>Branches anlegen, umbenennen, löschen und auschecken, mit Remotes arbeiten sowie pushen und fetchen, ohne zurück in die Shell zu wechseln.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ Kontextbezogene Hilfe</h4>
+                <p><code>?</code> zeigt genau die Tasten, die in der aktuellen Ansicht funktionieren, und mit <code>key_bindings.ron</code> lässt sich alles neu belegen — auf Wunsch vim-artig.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer den offiziellen Archiven voraus:</strong> Debian und Ubuntu frieren Paketversionen zum Release-Zeitpunkt ein — dieses Repository veröffentlicht neue Upstream-Releases in der Regel innerhalb weniger Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation aus deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Schritt 1: Repository hinzufügen</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Es gibt einen für immer kostenlosen Spiegel.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> liefert Pakete für immer kostenlos — ohne Konto, ohne Abo, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Derzeit enthält er Ghostty, Oh My Posh und Zed; GitUI ist nicht dabei, deshalb führt heute nur das Repository oben dorthin — auf Anfrage kann es aufgenommen werden.</p>
+  <p class="free-lane-more"><a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Schritt 2: GitUI installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Neuestes GitUI installieren</span>
+sudo apt install gitui
+
+<span class="comment"># Installation überprüfen</span>
+gitui --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Neuestes GitUI installieren</span>
+apt install gitui
+
+<span class="comment"># Installation überprüfen</span>
+gitui --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: Erster Start und Konfiguration</h3>
+            <div class="code-block"><pre><code><span class="comment"># In einem beliebigen git-Repository öffnen</span>
+cd /path/to/your/repo
+gitui
+
+<span class="comment"># Jederzeit ? drücken für die Tasten der aktuellen Ansicht</span>
+
+<span class="comment"># Theme und Tastenbelegung liegen im Konfigurationsverzeichnis</span>
+ls ~/.config/gitui/
+
+<span class="comment"># Zum Beispiel eine vim-artige Belegung</span>
+$EDITOR ~/.config/gitui/key_bindings.ron</code></pre></div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Repositories öffnen:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Das Repository im aktuellen Verzeichnis</span>
+gitui
+
+<span class="comment"># Ein bestimmtes Repository, ohne hineinzuwechseln</span>
+gitui -d ~/src/linux
+
+<span class="comment"># Getrenntes Arbeitsverzeichnis und git-Verzeichnis</span>
+gitui -d ~/src/project/.git -w ~/src/project
+
+<span class="comment"># Mit bereits ausgewählter Datei im Dateien-Tab starten</span>
+gitui -f src/main.rs</code></pre></div>
+
+        <p><strong>Aussehen und Bedienung:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Eine Theme-Datei aus ~/.config/gitui/</span>
+gitui -t mytheme.ron
+
+<span class="comment"># Eine eigene Datei mit Tastenbelegungen</span>
+gitui -k ~/.config/gitui/key_bindings.ron
+
+<span class="comment"># Eigene Tastensymbole für Tastaturen, die sie anders darstellen</span>
+gitui -s ~/.config/gitui/key_symbols.ron
+
+<span class="comment"># Den Dateisystem-Watcher statt zyklischer Aktualisierung nutzen</span>
+gitui --watcher</code></pre></div>
+
+        <p><strong>Wenn etwas geklärt werden muss:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Umgebungsdaten für einen Fehlerbericht sammeln</span>
+gitui --bugreport
+
+<span class="comment"># Beim Nachstellen eines Problems ein Log schreiben</span>
+gitui --logging --logfile /tmp/gitui.log
+
+<span class="comment"># Die git-CLI ist weiterhin für alles da, was GitUI nicht abdeckt</span>
+git rebase -i origin/main
+
+<span class="comment"># HTTPS-Pushes brauchen einen explizit konfigurierten Credential-Helper</span>
+git config --global credential.helper store</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Tool-Integrationen</h4>
+            <p>GitUI setzt auf deinem vorhandenen git-Setup auf:</p>
+            <ul>
+                <li><strong>Deine Repositories:</strong> ein ganz normales git-Repository, gelesen und geschrieben über ein Rust-git-Backend — nichts daran ist GitUI-spezifisch</li>
+                <li><strong>Hooks:</strong> <code>pre-commit</code>, <code>commit-msg</code>, <code>post-commit</code> und <code>prepare-commit-msg</code> laufen wie auf der Kommandozeile</li>
+                <li><strong>GPG-Signaturen:</strong> signierte Commits funktionieren, mit den Einschränkungen, die upstream in seinem Issue-Tracker dokumentiert</li>
+                <li><strong>Themes und Tastenbelegungen:</strong> <code>theme.ron</code>, <code>key_bindings.ron</code> und <code>key_symbols.ron</code> in <code>~/.config/gitui/</code></li>
+                <li><strong>Über SSH:</strong> auf entfernten Maschinen schnell genug, dass das Aufräumen eines Commits auf dem Server keine Qual mehr ist; der amd64-Build braucht keine Bibliotheken</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> paketiert GitUI überhaupt nicht — <code>apt install gitui</code> schlägt auf einem Standardsystem fehl</li>
+                <li><strong>cargo install gitui:</strong> aktuell, aber ein langer Rust-Build pro Maschine, außerhalb von apt und außerhalb deiner Update-Routine</li>
+                <li><strong>Upstream-Tarball:</strong> das offizielle Binary, das du für jedes Release von Hand neu holst</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Noch vor 1.0:</strong> GitUI bekommt in normalen Releases echte Funktionen — die aktuelle Version zu fahren entscheidet, ob du Submodule, Log-Suche und Blame hast oder nicht</li>
+            <li>✅ <strong>Die einzige apt-Quelle:</strong> GitUI ist weder in den Debian- noch in den Ubuntu-Archiven; dieses Repository paketiert den offiziellen Upstream-Build</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden innerhalb von Stunden nach Upstream-Releases aktualisiert</li>
+            <li>✅ <strong>Ehrliche Paketierung:</strong> das Upstream-Binary unter <code>/usr/bin/gitui</code> — upstream liefert weder Handbuchseite noch Vervollständigungen, also erfindet das Paket auch keine</li>
+            <li>✅ <strong>Drei Architekturen:</strong> amd64 (statischer musl-Build), arm64 und armhf, mit deklarierten Bibliotheksabhängigkeiten dort, wo upstream gegen glibc linkt</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Updates mit den üblichen apt-Befehlen</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/gitui-debian" target="_blank" rel="noopener">🎛️ gitui-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls verfügbar über deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Die andere Terminal-git-UI, falls dir ihr Layout mehr liegt</li>
+            <li><a href="/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a> - Git-kompatibles VCS mit erstklassigen Rebases</li>
+            <li><a href="/install-latest-forgejo-in-ubuntu.html">Forgejo</a> - Selbstgehostete Forge, um die Branches hinzuschieben</li>
+            <li><a href="/install-latest-neovim-in-ubuntu.html">Neovim</a> - Editor für alles, wohin der Diff dich schickt</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal für:</strong> das Aufteilen eines unordentlichen Arbeitsverzeichnisses in saubere Commits, das Review vor dem Push, die Arbeit in Repositories, die grafische Clients ins Stocken bringen, und jede Maschine, die du über SSH erreichst.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.28.1</code> — 2026-08-18</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist GitUI in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein — GitUI ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert GitUI 0.28.1.</p></details>
+<details><summary>Wie installiere ich das neueste GitUI unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install gitui. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist GitUI in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein — GitUI ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert GitUI 0.28.1."}}, {"@type": "Question", "name": "Wie installiere ich das neueste GitUI unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install gitui. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Alle Rechte vorbehalten. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Kostenloser Spiegel</a> |
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a> |
+    <a href="/terms.html">Nutzungsbedingungen</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Neuestes GitUI unter Ubuntu installieren",
+    "description": "Vollständige Anleitung zur Installation des neuesten Terminal-git-Clients GitUI unter Ubuntu über das deb.griffo.io-Repository.",
+    "author": {
+        "@type": "Person",
+        "name": "Dario Griffo",
+        "url": "https://github.com/dariogriffo"
+    },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-18",
+    "publisher": {
+        "@type": "Organization",
+        "name": "deb.griffo.io"
+    },
+    "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "GitUI",
+        "applicationCategory": "Developer Tool",
+        "operatingSystem": "Ubuntu Linux",
+        "softwareVersion": "latest",
+        "description": "Blitzschnelle, tastaturgesteuerte Terminal-Oberfläche für git, mit Stagen von Hunks und Zeilen, Log-Suche, Diffs, Blame, Stashes und Branch-Verwaltung"
+    }
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
