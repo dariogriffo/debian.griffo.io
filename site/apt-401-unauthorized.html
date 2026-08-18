@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>apt: 401 Unauthorized from deb.griffo.io — what it means, how to fix it</title>
+<meta name="description" content="apt reports 401 Unauthorized for deb.griffo.io on install or upgrade. Nothing is broken: package downloads need a subscription from 1 October 2026. Three ways forward — add your credentials to /etc/apt/auth.conf.d, switch to the always-free mirror, or take the .deb from GitHub.">
+<meta name="keywords" content="apt 401 unauthorized, deb.griffo.io 401, E: Failed to fetch 401 Unauthorized, apt auth.conf.d, apt repository authentication, apt unauthorized debian, apt install 401">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/apt-401-unauthorized.html">
+<meta property="og:title" content="apt: 401 Unauthorized from deb.griffo.io">
+<meta property="og:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026 — here are the three ways forward, with exact commands.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/apt-401-unauthorized.html">
+<meta property="twitter:title" content="apt: 401 Unauthorized from deb.griffo.io">
+<meta property="twitter:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026 — here are the three ways forward, with exact commands.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>43 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="${home}#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔐 apt says 401 Unauthorized</h1>
+        <p class="subtitle">What it means when it comes from deb.griffo.io, and the three ways forward</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> Nothing on your system is broken and no
+            package has been removed. From <strong>1 October 2026, 12:00 UK time</strong>,
+            downloading packages from <code>deb.griffo.io</code> requires a subscription.
+            <code>apt update</code> still works for everyone; <code>apt install</code> and
+            <code>apt upgrade</code> need credentials. You have three ways forward, all
+            below: <a href="#subscribed">add your credentials</a>,
+            <a href="#free">switch to the always-free mirror</a>, or
+            <a href="#github">take the <code>.deb</code> straight from GitHub</a>, which is
+            free and always will be.
+        </div>
+
+        <h2>🧾 The error you are seeing</h2>
+
+        <div class="code-block"><pre><code>E: Failed to fetch https://deb.griffo.io/apt/pool/main/g/ghostty/ghostty_1.3.1-5~trixie_amd64.deb  401  Unauthorized [IP: 2a01:… 443]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?</code></pre></div>
+
+        <p>Running <code>apt-get update --fix-missing</code> will not help, because nothing is
+        missing — the server answered, and the answer was "you are not authenticated". Some
+        apt versions phrase it as <code>The repository … is not signed</code> only when the
+        key is the problem; a bare <code>401</code> is always authentication.</p>
+
+        <h2>🚦 What still works without a subscription</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Command</th><th>Needs a subscription?</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>No — the indexes stay open to everyone</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>No</td></tr>
+                <tr><td>Browsing <a href="/apt/dists/">/apt/dists/</a></td><td>No</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Yes</strong>, from 1 October 2026</td></tr>
+                <tr><td>Packages already installed</td><td>No — they keep working, nothing expires</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No — free forever, no account</td></tr>
+                <tr><td>The <code>.deb</code> files on GitHub</td><td>No — free forever</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="subscribed">1. You have a subscription — store the credentials</h2>
+
+        <p>Credentials go in <code>/etc/apt/auth.conf.d/</code>, never in the
+        <code>sources.list</code> line, where every user on the machine could read them and
+        apt would leak them in error messages:</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo apt update</code></pre><pre class="variant variant-root"><code>tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+apt update</code></pre></div>
+        </div>
+
+        <p>Then <code>sudo apt install &lt;package&gt;</code> works exactly as before. If it
+        still returns 401, check these in order:</p>
+
+        <ul>
+            <li>The <code>machine</code> line is <code>deb.griffo.io</code> — <strong>no
+                <code>https://</code></strong>, no trailing slash, no <code>/apt</code> path.</li>
+            <li>The file is in <code>/etc/apt/auth.conf.d/</code> and its name ends in
+                <code>.conf</code>. apt silently ignores any other extension.</li>
+            <li>The file is owned by root and mode <code>600</code>. apt refuses to read
+                credentials that other users can read.</li>
+            <li>No stray quotes around the password, and no trailing whitespace.</li>
+            <li>Still stuck? <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Ask in
+                Discord</a> — that is the fastest way to get it sorted.</li>
+        </ul>
+
+        <h2 id="free">2. Switch to the always-free mirror</h2>
+
+        <p><a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> needs no
+        account and no payment, ever. It serves the newest release that is <strong>at least
+        two months old</strong>, and publishes security and patch fixes for that release
+        immediately. It currently carries <strong>Ghostty, Oh My Posh and Zed</strong> — any other tool
+        can be enrolled on request, so <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">ask
+        in Discord</a> if you need one.</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>Do not enable both repositories at once. apt would install whichever version is
+        higher — the subscription one — and you would be back to a 401.
+        <a href="/free.html">Full details of the free mirror →</a></p>
+
+        <h2 id="github">3. Take the .deb from GitHub</h2>
+
+        <p>Every package here is built in public, and the build artifacts are attached to a
+        public GitHub release. Those downloads are free and unauthenticated, today and after
+        1 October:</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+sudo apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre><pre class="variant variant-root"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
+
+        <p>You lose automatic upgrades — that is the thing the subscription pays for — but you
+        never lose access to the software. Each tool's packaging repository is listed on
+        <a href="/how-packages-are-built.html">how packages are built</a>.</p>
+
+        <h2>☕ You supported the project on Buy Me a Coffee</h2>
+
+        <p>Then you get a <strong>free lifetime subscription</strong>. Come to
+        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord</a> and it will be
+        sorted out — that promise stands regardless of when you supported.</p>
+
+        <h2>❓ Why this happened</h2>
+
+        <p>Building 40+ tools for 8 Debian and Ubuntu suites, within hours of each upstream
+        release, costs money and time every single day. The subscription pays for that; the
+        free mirror exists so that nobody is locked out of software they have every right to
+        run. The packages themselves are open source and always will be — what you are paying
+        for is the automation that keeps them current.
+        <a href="/#pricing">Pricing →</a></p>
+
+        <p class="back-link"><a href="/">← All packages served by deb.griffo.io</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. All rights reserved. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Free mirror</a> |
+    <a href="/how-packages-are-built.html">How packages are built</a> |
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Why does apt say 401 Unauthorized for deb.griffo.io?",
+     "acceptedAnswer": {"@type": "Answer", "text": "From 1 October 2026 at 12:00 UK time, downloading packages from deb.griffo.io requires a subscription. apt update, apt policy and browsing the repository stay free for everyone; apt install and apt upgrade need credentials. A 401 means the server answered and the request was not authenticated — nothing on your system is broken and no installed package is affected."}},
+    {"@type": "Question", "name": "Where do apt credentials for deb.griffo.io go?",
+     "acceptedAnswer": {"@type": "Answer", "text": "In a file under /etc/apt/auth.conf.d/ whose name ends in .conf, for example /etc/apt/auth.conf.d/deb.griffo.io.conf, containing three lines: machine deb.griffo.io, login your email, password your subscription password. The machine line must not include https:// or a path. Set the file to mode 600, owned by root, or apt will refuse to read it. Never put credentials in the sources.list line."}},
+    {"@type": "Question", "name": "Can I keep using the repository for free?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Yes, in two ways. deb-free.griffo.io is an always-free apt mirror with no account and no subscription, serving each enrolled tool's newest release once it is at least two months old, with security and patch fixes published immediately. Alternatively every .deb is attached to a public GitHub release in its packaging repository and can be downloaded and installed directly, free and unauthenticated."}},
+    {"@type": "Question", "name": "Will packages I already installed stop working?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. Installed .deb packages do not expire, phone home or check a licence. A repository only decides where future upgrades come from, so an unauthenticated system simply stops receiving new versions from deb.griffo.io."}},
+    {"@type": "Question", "name": "apt still returns 401 after I added the credentials. What now?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Check that the machine line reads exactly deb.griffo.io with no scheme, path or trailing slash; that the filename ends in .conf; that the file is root-owned with mode 600, since apt ignores world-readable credential files; and that there are no quotes or trailing spaces around the password. If it still fails, ask in the project Discord."}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
