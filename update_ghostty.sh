@@ -15,6 +15,7 @@ find deb/ -mindepth 2 -type f \( \
 
 for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
   ./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
+  ./download_stable_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
 done
 
 cd ${PWD}

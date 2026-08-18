@@ -28,6 +28,24 @@ echo "deb-src https://deb.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | s
 sudo apt update
 ```
 
+## Always-free lane (deb-free.griffo.io)
+
+A second, always-free apt repository serves the same packages on a delay: the newest upstream version that is at least 2 months old, with patch releases of that version's series promoted immediately (so security and bugfix updates do not wait). No account and no authentication are needed, and it is signed with the same GPG key. Nightly/tip channels (e.g. `ghostty-tip`) are not in the free lane.
+
+- Free repository URL: https://deb-free.griffo.io/apt (same suites and component as above)
+- Currently enrolled packages: `ghostty`, `oh-my-posh`, `zed` — more are being added; the live list is at https://deb-free.griffo.io/apt/dists/
+- Explanation page: https://deb.griffo.io/free.html
+- Everything else in the catalogue is served by https://deb.griffo.io/apt only
+
+```sh
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
+sudo apt update
+```
+
+Configure one repository or the other, not both: with both enabled apt simply installs the higher version.
+
 ## Available packages (exact apt package names)
 
 - `atuin` - shell history sync, search and stats
@@ -42,7 +60,7 @@ sudo apt update
 - `forgejo-runner` - CI runner for Forgejo Actions
 - `fzf` - command-line fuzzy finder
 - `garage` - S3-compatible distributed object storage
-- `ghostty` - GPU-accelerated terminal emulator (also `ghostty-tip` nightly; Bookworm stays at 1.1.3, use Trixie+ for latest)
+- `ghostty` - GPU-accelerated terminal emulator (also `ghostty-tip` nightly; Bookworm stays at 1.1.3, use Trixie+ for latest; on Ubuntu 24.04+, no jammy build)
 - `headscale` - self-hosted Tailscale control server
 - `helix` - post-modern modal text editor (command: hx)
 - `herdr` - terminal workspace manager for AI coding agents (run and orchestrate multiple agents side by side; command: herdr)
@@ -77,7 +95,7 @@ sudo apt update
 ## Per-package installation guides
 
 - [Homepage with quick install](https://deb.griffo.io/): repository overview, all packages, source package instructions
-- [Ghostty on Debian](https://deb.griffo.io/install-latest-ghostty-in-debian.html)
+- [Ghostty on Debian](https://deb.griffo.io/install-latest-ghostty-in-debian.html) / [Ghostty on Ubuntu](https://deb.griffo.io/install-latest-ghostty-in-ubuntu.html)
 - [Zig on Debian](https://deb.griffo.io/install-latest-zig-in-debian.html) / [Zig on Ubuntu](https://deb.griffo.io/install-latest-zig-in-ubuntu.html)
 - [ZLS on Debian](https://deb.griffo.io/install-latest-zls-in-debian.html) / [ZLS on Ubuntu](https://deb.griffo.io/install-latest-zls-in-ubuntu.html)
 - [Zed on Debian](https://deb.griffo.io/install-latest-zed-in-debian.html) / [Zed on Ubuntu](https://deb.griffo.io/install-latest-zed-in-ubuntu.html)

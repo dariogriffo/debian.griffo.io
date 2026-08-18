@@ -30,6 +30,7 @@ find deb/ -mindepth 2 -type f \( \
 
 for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
   ../download_stable_deb_file.sh ${REPO} ${FREE_VERSION} ${FREE_BUILD} ${PKG}
+  ../download_stable_ubuntu_file.sh ${REPO} ${FREE_VERSION} ${FREE_BUILD} ${PKG}
 done
 
 find src/ -type f -name "*ghostty*" -delete 2>/dev/null || true

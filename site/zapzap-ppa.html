@@ -128,6 +128,9 @@
     <p class="announce-notice">
       📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
       <a href="${home}#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
     </p>
   </div>
 </div>
@@ -163,6 +166,10 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; ZapZap is not in it yet, so the repository above is the only way to get it today.</p>
+  <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
+</div>
         </div>
 
         <div class="install-steps">
@@ -215,6 +222,7 @@ apt update</code></pre></div>
   <p>
     &copy; 2026 Dario Griffo. All rights reserved. |
     <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Free mirror</a> |
     <a href="/terms.html">Terms &amp; Conditions</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

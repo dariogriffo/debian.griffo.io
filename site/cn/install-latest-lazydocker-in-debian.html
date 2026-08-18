@@ -134,6 +134,9 @@
     <p class="announce-notice">
       📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
       <a href="${home}#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
     </p>
   </div>
 </div>
@@ -217,6 +220,10 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 Ghostty、Oh My Posh 和 Zed；lazydocker 尚未收录，因此今天只能通过上面的仓库安装。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
         </div>
 
         <div class="install-block">
@@ -345,6 +352,7 @@ u             - Refresh/update view</code></pre></div>
   <p>
     &copy; 2026 Dario Griffo. 保留所有权利。 |
     <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">免费镜像</a> |
     <a href="/terms.html">条款和条件</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

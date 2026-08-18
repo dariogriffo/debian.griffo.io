@@ -134,6 +134,9 @@
     <p class="announce-notice">
       📅 A partir del <strong><time datetime="2026-10-01T12:00:00+01:00">1 de octubre de 2026, 12:00 hora del Reino Unido</time></strong>, el mirror de apt requerirá una suscripción.
       <a href="${home}#pricing">Ver precios</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe un espejo gratis para siempre</a>
     </p>
   </div>
 </div>
@@ -228,6 +231,10 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe un espejo gratis para siempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> sirve paquetes gratis para siempre: sin cuenta, sin suscripción, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Ahora mismo incluye Ghostty, Oh My Posh y Zed; zoxide todavía no está, así que hoy el repositorio de arriba es la única forma de instalarlo.</p>
+  <p class="free-lane-more"><a href="/free.html">Cómo funciona el espejo gratuito →</a></p>
+</div>
         </div>
 
         <div class="install-block">
@@ -382,6 +389,7 @@ export _ZO_EXCLUDE_DIRS=&quot;$HOME:$HOME/private/*&quot;</code></pre></div>
   <p>
     &copy; 2026 Dario Griffo. Todos los derechos reservados. |
     <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Espejo gratuito</a> |
     <a href="/terms.html">Términos y Condiciones</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

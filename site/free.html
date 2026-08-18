@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>The always-free apt mirror — deb-free.griffo.io | deb.griffo.io</title>
+<meta name="description" content="deb-free.griffo.io is the always-free lane of this apt repository: no account, no subscription, every enrolled tool served at its newest release that is at least 2 months old, with security and patch fixes published immediately. Here is the repository line, what it serves today, and how it differs from the subscription.">
+<meta name="keywords" content="deb-free.griffo.io, free apt repository debian, free apt mirror ubuntu, apt repository without subscription, ghostty apt free, zed apt free, oh my posh apt free">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/free.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/free.html">
+<meta property="og:title" content="The always-free apt mirror — deb-free.griffo.io">
+<meta property="og:description" content="No account, no subscription: every enrolled tool at its newest release that is at least 2 months old, security fixes immediately.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/free.html">
+<meta property="twitter:title" content="The always-free apt mirror — deb-free.griffo.io">
+<meta property="twitter:description" content="No account, no subscription: every enrolled tool at its newest release that is at least 2 months old, security fixes immediately.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>43 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="${home}#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🆓 The always-free lane</h1>
+        <p class="subtitle">deb-free.griffo.io — no account, no subscription, no expiry</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> <code>deb-free.griffo.io</code> is a second
+            apt repository, GPG-signed with the same key, that serves each enrolled tool's
+            newest release once it is <strong>at least 2 months old</strong> — free forever,
+            with no account and no authentication. Security and patch fixes for the version it
+            serves are published <strong>immediately</strong>. The subscription repository at
+            <code>deb.griffo.io/apt</code> is the same packages without the 2-month wait.
+        </div>
+
+        <h2>📦 Add the free repository</h2>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>Then install anything it carries, for example <code>sudo apt install ghostty</code>.
+        Source packages are available too — add the matching <code>deb-src</code> line if you
+        want <code>apt-get source</code> or <code>apt-get build-dep</code> to work.</p>
+
+        <h2>📋 What the free mirror serves today</h2>
+        <p>Enrolment is per tool, and the list grows as tools are added:</p>
+        <ul class="release-list">
+            <li><strong>Ghostty</strong> — <code>apt install ghostty</code></li>
+            <li><strong>Oh My Posh</strong> — <code>apt install oh-my-posh</code></li>
+            <li><strong>Zed</strong> — <code>apt install zed</code></li>
+        </ul>
+        <p>Everything else in the catalogue is served only by the subscription repository for
+        now. The full, live package list is at
+        <a href="https://deb-free.griffo.io/apt/dists/" rel="noopener">deb-free.griffo.io/apt/dists/</a>
+        — that is the archive itself, not a page describing it.</p>
+
+        <h2>⏳ The rule, exactly</h2>
+        <ul>
+            <li>The free mirror serves the <strong>newest upstream version that is at least
+                2 months old</strong>. Age is measured from the first time that version was
+                published here, not from when it was rebuilt.</li>
+            <li>Once a version is in the free mirror, <strong>patch releases of that same
+                series are promoted immediately</strong> — so a bugfix or security fix for the
+                version you are running does not wait 2 months.</li>
+            <li>Nightly and tip channels (for example <code>ghostty-tip</code>) are
+                subscription-only. They exist to test unreleased code; a 2-month-old nightly
+                would be pointless.</li>
+            <li>Every architecture, every suite: the free mirror covers the same
+                Debian and Ubuntu suites as the main one for the tools it carries.</li>
+            <li>It is signed with the <strong>same GPG key</strong>
+                (<code>EA0F721D231FDD3A0A17B9AC7808B4DD62C41256</code>), stored under its own
+                keyring filename so both repositories can be configured on one machine.</li>
+        </ul>
+
+        <h2>🤔 Free lane or subscription?</h2>
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th></th><th>deb-free.griffo.io</th><th>deb.griffo.io/apt</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Price</td><td>Free forever</td><td>€20/year or €150 once</td></tr>
+                <tr><td>Freshness</td><td>Newest release at least 2 months old</td><td>Within hours of upstream</td></tr>
+                <tr><td>Security &amp; patch fixes</td><td>Immediately</td><td>Immediately</td></tr>
+                <tr><td>Tools covered</td><td>Enrolled tools (list above)</td><td>The whole catalogue</td></tr>
+                <tr><td>Nightly / tip channels</td><td>No</td><td>Yes</td></tr>
+                <tr><td>Account needed</td><td>No</td><td>Yes, from 1 October 2026</td></tr>
+                <tr><td>GPG-signed, apt-native</td><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>If you want a tool the moment upstream tags it —
+        <a href="/#pricing">the subscription</a> is what pays for the build machines that make
+        that possible. If a 2-month-old release is fine, the free mirror is genuinely free, and
+        it stays that way.</p>
+
+        <h2>❓ Common questions</h2>
+
+        <h3>Should I configure both repositories?</h3>
+        <p>No — pick one. With both enabled <code>apt</code> installs whichever version is
+        higher, which is the subscription one, so the free lane just sits there; and if a
+        subscription lapses, <code>apt update</code> starts reporting an authentication error
+        for the paid source. To switch from the subscription repository to the free one, drop
+        its source file and update:</p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+sudo apt update</code></pre><pre class="variant variant-root"><code>rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+apt update</code></pre></div>
+
+        <h3>Will packages I already installed keep working?</h3>
+        <p>Yes. Installed <code>.deb</code>s are yours; nothing phones home and nothing expires.
+        A repository only decides where <em>future</em> upgrades come from. Switching to the
+        free mirror means <code>apt</code> may report no upgrade available for a while — until
+        the version you are on ages past the 2-month window, or a patch release of your series
+        is published.</p>
+
+        <h3>Why does the free lane exist at all?</h3>
+        <p>Because every tool packaged here is open source, and its licence guarantees the right
+        to use and redistribute it. Charging for freshness is fair; making the software itself
+        reachable only behind a payment is not the deal these projects offer their users. The
+        subscription pays for the automation — the free lane is the same automation, run on a
+        delay.</p>
+
+        <h3>Is the free mirror as trustworthy as the main one?</h3>
+        <p>It is the same pipeline, the same packaging repositories on GitHub with public CI
+        logs, and the same signing key. The only difference is which release it publishes.</p>
+
+        <h3>Can a tool I need be enrolled?</h3>
+        <p>Ask. Enrolment is a per-tool switch in the packaging repository, not a rebuild —
+        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">say so in Discord</a> or
+        <a href="https://github.com/dariogriffo/debian.griffo.io/issues" rel="noopener">open an
+        issue</a>.</p>
+
+        <p><a href="/" class="back-link">← All packages served by deb.griffo.io</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. All rights reserved. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Free mirror</a> |
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is deb-free.griffo.io?","acceptedAnswer":{"@type":"Answer","text":"An always-free apt repository for Debian and Ubuntu, GPG-signed with the same key as deb.griffo.io, serving each enrolled tool's newest release once that release is at least 2 months old. No account and no authentication are required. Patch releases of the served version are published immediately, so security and bugfix updates do not wait."}},
+{"@type":"Question","name":"How do I add the free apt repository?","acceptedAnswer":{"@type":"Answer","text":"Run: sudo install -d -m 0755 /etc/apt/keyrings; curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg; echo \"deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc) main\" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list; sudo apt update"}},
+{"@type":"Question","name":"Should I configure both the free and the subscription repository?","acceptedAnswer":{"@type":"Answer","text":"No, pick one. With both enabled apt installs whichever version is higher, which is the subscription one, and a lapsed subscription makes apt update report an authentication error. To switch to the free lane, remove /etc/apt/sources.list.d/deb.griffo.io.list and run sudo apt update."}},
+{"@type":"Question","name":"Will packages I already installed keep working?","acceptedAnswer":{"@type":"Answer","text":"Yes. Installed .deb packages do not expire or phone home; a repository only decides where future upgrades come from. After switching to the free lane apt may report no upgrade available until your version ages past the 2-month window or a patch release of its series is published."}},
+{"@type":"Question","name":"Why does the free lane exist?","acceptedAnswer":{"@type":"Answer","text":"Every tool packaged here is open source and its licence guarantees the right to use and redistribute it. Charging for freshness is fair; putting the software itself behind a payment is not. The subscription pays for the build automation, and the free lane is the same automation run on a delay."}}
+]}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

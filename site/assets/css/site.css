@@ -232,6 +232,10 @@ body {
   border-top: 1px solid rgba(215,10,83,0.18);
 }
 .announce-notice time { white-space: nowrap; }
+.announce-sep { color: var(--slate-warm); margin: 0 4px; }
+/* the free-lane link in the banner is green, matching the notice on the pages
+   themselves, so paywall and free lane are told apart at a glance */
+.announce-notice a[href="/free.html"] { color: #8CD79A; }
 
 /* ── Layout ── */
 .main { position: relative; z-index: 10; max-width: 1120px; margin: 0 auto; padding: 0 40px; }
@@ -469,6 +473,19 @@ h4.block-subtitle {
 .notice-box { border-left: 2px solid var(--ubuntu); }
 .notice-box strong, .highlight-box strong { color: var(--ivory); }
 
+/* ── The always-free lane ──
+   Green, so it reads as the reassurance it is rather than as another warning,
+   and distinct from the cerise/orange the paid repository and the distros own.
+   It sits directly under a setup transcript on every page, so its own code
+   block keeps the notice's padding instead of the page's wider rhythm. */
+.free-lane { border-left: 2px solid #66BB6A; }
+/* the link colour is further down the file, next to the page link colour it has
+   to beat: both selectors have the same specificity, so only source order
+   separates them */
+.free-lane .code-block { margin: 14px 0 4px; }
+.free-lane p + p { margin-top: 10px; }
+.free-lane-more { font-size: 13.5px; }
+
 /* ── "Request a package" prompt above the grid ── */
 .request-note {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
@@ -693,6 +710,12 @@ h4.block-subtitle {
 .container > .content p { font-size: 15px; color: var(--ivory-muted); line-height: 1.85; margin: 12px 0; }
 .container > .content a { color: #FF7BA8; text-decoration: none; border-bottom: 1px solid rgba(255,123,168,0.3); }
 .container > .content a:hover { border-bottom-color: #FF7BA8; }
+/* the free lane keeps its green here too. Cerise is the paid repository's
+   colour and the whole point of the notice is that this one is not that.
+   Two classes to match `.container > .content a`'s specificity, and placed
+   after it so the tie breaks this way. */
+.notice-box.free-lane a { color: #8CD79A; font-weight: 600; border-bottom-color: rgba(140,215,154,0.35); }
+.notice-box.free-lane a:hover { border-bottom-color: #8CD79A; }
 .container > .content code {
   font-family: var(--mono); font-size: 0.88em; background: rgba(0,0,0,0.35);
   padding: 2px 6px; border-radius: 4px; color: var(--ivory); border: 1px solid var(--panel-border);
@@ -734,6 +757,25 @@ h4.block-subtitle {
   border-bottom: 1px solid rgba(156,163,175,0.05);
 }
 .version-compare tr:last-child td, .version-compare-index tr:last-child td { border-bottom: none; }
+
+/* hand-written comparison table (/free.html): same visual language as the
+   injected version tables, and it scrolls rather than squeezing on a phone */
+.lane-table-wrap { overflow-x: auto; margin: 22px 0; }
+.lane-table {
+  width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13.5px;
+  background: var(--panel-bg); border: 1px solid var(--panel-border);
+  border-radius: 14px; overflow: hidden;
+}
+.lane-table th {
+  text-align: left; padding: 12px 16px; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-light);
+  border-bottom: 1px solid var(--panel-border); background: rgba(15,17,21,0.6);
+}
+.lane-table td {
+  padding: 11px 16px; border-bottom: 1px solid rgba(156,163,175,0.05);
+}
+.lane-table tr:last-child td { border-bottom: none; }
+.lane-table td:first-child { color: var(--slate-light); }
 
 /* related links / release links the generator appends */
 .tool-extras { margin-top: 44px; padding-top: 8px; border-top: 1px solid var(--panel-border); }

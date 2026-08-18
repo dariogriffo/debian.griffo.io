@@ -134,6 +134,9 @@
     <p class="announce-notice">
       📅 С <strong><time datetime="2026-10-01T12:00:00+01:00">1 октября 2026 года, 12:00 по времени Великобритании</time></strong> для доступа к apt-зеркалу потребуется подписка.
       <a href="${home}#pricing">Посмотреть цены</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Есть вечно бесплатное зеркало</a>
     </p>
   </div>
 </div>
@@ -225,6 +228,10 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там Ghostty, Oh My Posh и Zed; herdr пока нет, поэтому репозиторий выше — единственный способ установить его сегодня.</p>
+  <p class="free-lane-more"><a href="/free.html">Как работает бесплатное зеркало →</a></p>
+</div>
         </div>
 
         <div class="install-block">
@@ -361,6 +368,7 @@ herdr --default-config</code></pre></div>
   <p>
     &copy; 2026 Dario Griffo. Все права защищены. |
     <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Бесплатное зеркало</a> |
     <a href="/terms.html">Условия использования</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>

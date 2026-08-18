@@ -134,6 +134,9 @@
     <p class="announce-notice">
       📅 À partir du <strong><time datetime="2026-10-01T12:00:00+01:00">1er octobre 2026, 12h00 heure du Royaume-Uni</time></strong>, le miroir apt nécessitera un abonnement.
       <a href="${home}#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
     </p>
   </div>
 </div>
@@ -206,6 +209,10 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui Ghostty, Oh My Posh et Zed ; Deno n'y est pas encore, le dépôt ci-dessus reste donc le seul moyen de l'installer.</p>
+  <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
+</div>
         </div>
 
         <div class="package-variants">
@@ -287,6 +294,7 @@ deno lint</code></pre></div>
             <li><a href="/fr/install-latest-bun-in-ubuntu.html">Bun JavaScript Runtime</a> - Runtime JavaScript tout-en-un rapide</li>
             <li><a href="/fr/install-latest-zig-in-ubuntu.html">Langage de programmation Zig</a> - Langage de programmation système</li>
             <li><a href="/fr/install-latest-uv-in-ubuntu.html">Gestionnaire Python uv</a> - Gestionnaire de paquets Python rapide</li>
+            <li><a href="/fr/install-latest-ghostty-in-ubuntu.html">Terminal Ghostty</a> - Émulateur de terminal rapide</li>
         </ul>
 
         <h2>📚 Ressources supplémentaires</h2>
@@ -321,6 +329,7 @@ deno lint</code></pre></div>
   <p>
     &copy; 2026 Dario Griffo. Tous droits réservés. |
     <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Miroir gratuit</a> |
     <a href="/terms.html">Conditions Générales</a>
   </p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
