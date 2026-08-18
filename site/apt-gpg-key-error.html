@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>apt NO_PUBKEY and “not signed”: fixing GPG key errors</title>
+<meta name="description" content="Why apt says NO_PUBKEY or “is not signed”, and the fix that covers every case: dearmoured key in /etc/apt/keyrings, mode 644, signed-by. Plus the permissions trap.">
+<meta name="keywords" content="apt NO_PUBKEY, apt gpg error, repository is not signed, trusted.gpg deprecation, apt-key deprecated, signed-by apt, /etc/apt/keyrings, gpg --dearmor, apt key error debian, apt key error ubuntu">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/apt-gpg-key-error.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/apt-gpg-key-error.html">
+<meta property="og:title" content="apt NO_PUBKEY and “not signed”: fixing GPG key errors">
+<meta property="og:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by — including the permissions trap.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/apt-gpg-key-error.html">
+<meta property="twitter:title" content="apt NO_PUBKEY and “not signed”: fixing GPG key errors">
+<meta property="twitter:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by — including the permissions trap.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>43 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="${home}#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔑 apt GPG key errors, and how to fix them</h1>
+        <p class="subtitle">NO_PUBKEY, “is not signed”, and the legacy <code>trusted.gpg</code> warning</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> Almost every apt key error comes from one of
+            four things: the key was never imported, it was saved in the wrong
+            <em>format</em>, it was saved in the wrong <em>place</em>, or the keyring file is
+            not readable by the <code>_apt</code> user. The modern fix for all of them is the
+            same — an armoured key dearmoured into <code>/etc/apt/keyrings/</code>, mode
+            <code>644</code>, referenced by <code>signed-by=</code> in that one repository's
+            sources entry. Never <code>apt-key add</code>, and never a key in
+            <code>/etc/apt/trusted.gpg</code>.
+        </div>
+
+        <h2>🩺 Find your error</h2>
+
+        <h3>NO_PUBKEY</h3>
+        <div class="code-block"><pre><code>W: GPG error: https://deb.griffo.io/apt trixie InRelease: The following signatures couldn&#039;t be verified because the public key is not available: NO_PUBKEY 7808B4DD62C41256
+E: The repository &#039;https://deb.griffo.io/apt trixie InRelease&#039; is not signed.</code></pre></div>
+        <p>apt fetched the index, found a valid signature, and has no matching public key. The
+        key is missing, is in a file apt was not told to look at, or is not in the binary
+        format apt expects. <a href="#fix">Go to the fix.</a></p>
+
+        <h3>“is not signed” on its own</h3>
+        <div class="code-block"><pre><code>E: The repository &#039;https://… trixie InRelease&#039; is not signed.
+N: Updating from such a repository can&#039;t be done securely, and is therefore disabled by default.</code></pre></div>
+        <p>Same cause as above in most cases. It genuinely means "unsigned" only when the
+        repository ships no <code>InRelease</code> or <code>Release.gpg</code> at all — check
+        by opening <code>&lt;repo&gt;/dists/&lt;suite&gt;/InRelease</code> in a browser. For
+        this repository it is always present, so the key is the problem, not the archive.</p>
+
+        <h3>Legacy trusted.gpg keyring</h3>
+        <div class="code-block"><pre><code>W: https://…/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg),
+   see the DEPRECATION section in apt-key(8) for details.</code></pre></div>
+        <p>Not fatal yet, and worth fixing anyway: a key in <code>trusted.gpg</code> is trusted
+        for <strong>every</strong> repository on the machine, not just the one it belongs to.
+        That is the whole reason <code>apt-key</code> was deprecated. Move it, as below.</p>
+
+        <h3>“Release file is not valid yet”</h3>
+        <div class="code-block"><pre><code>E: Release file for https://… is not valid yet (invalid for another 5h 12min 4s).</code></pre></div>
+        <p>Not a key problem — your system clock is wrong. Fix the clock
+        (<code>sudo timedatectl set-ntp true</code>) rather than reaching for
+        <code>-o Acquire::Check-Valid-Until=false</code>.</p>
+
+        <h2 id="fix">✅ The fix that covers all of them</h2>
+
+        <p>Using this repository as the worked example; substitute your own key URL and host
+        for any other repository.</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+sudo chmod 644 /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+chmod 644 /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>Four details in there do all the work, and each one is a common failure on its own:</p>
+
+        <ul>
+            <li><code>gpg --dearmor</code> converts the armoured (<code>.asc</code>) key into
+                the binary form. Saving an <code>.asc</code> file <em>named</em>
+                <code>.gpg</code> is the single most common cause of NO_PUBKEY. If you prefer
+                to skip dearmouring, keep the <code>.asc</code> extension and point
+                <code>signed-by=</code> at the <code>.asc</code> file — apt reads either, but
+                the name must match the contents.</li>
+            <li><code>/etc/apt/keyrings/</code> is the directory for third-party keys on
+                current Debian and Ubuntu. <code>/usr/share/keyrings/</code> is for keys
+                shipped by packages; do not write there by hand.</li>
+            <li><strong><code>chmod 644</code>.</strong> apt drops privileges to the
+                <code>_apt</code> user to fetch, so a keyring readable only by root produces
+                NO_PUBKEY even though the file is right there. This one wastes hours because
+                <code>sudo gpg</code> can read the file perfectly when you test it.</li>
+            <li><code>signed-by=</code> scopes the key to this repository alone. Without it the
+                key would either be untrusted or, if you put it in
+                <code>trusted.gpg</code>, trusted for every repository on the system.</li>
+        </ul>
+
+        <h2>🧹 Migrating a key off the legacy keyring</h2>
+
+        <p>List what is in the old keyring, export the one you want, then remove it:</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt-key list 2&gt;/dev/null | grep -B2 -A2 griffo
+sudo gpg --keyring /etc/apt/trusted.gpg --export 7808B4DD62C41256 | sudo tee /etc/apt/keyrings/deb.griffo.io.gpg &gt; /dev/null
+sudo chmod 644 /etc/apt/keyrings/deb.griffo.io.gpg
+sudo apt-key --keyring /etc/apt/trusted.gpg del 7808B4DD62C41256</code></pre><pre class="variant variant-root"><code>apt-key list 2&gt;/dev/null | grep -B2 -A2 griffo
+gpg --keyring /etc/apt/trusted.gpg --export 7808B4DD62C41256 | tee /etc/apt/keyrings/deb.griffo.io.gpg &gt; /dev/null
+chmod 644 /etc/apt/keyrings/deb.griffo.io.gpg
+apt-key --keyring /etc/apt/trusted.gpg del 7808B4DD62C41256</code></pre></div>
+
+        <p>Then add <code>signed-by=</code> to that repository's sources entry, as above. Keys
+        in <code>/etc/apt/trusted.gpg.d/*.gpg</code> are still honoured and are not deprecated
+        in the same way, but they are also system-wide — moving them to
+        <code>keyrings/</code> plus <code>signed-by=</code> is still the better end state.</p>
+
+        <h2>🔍 Verify it worked</h2>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># the key apt will actually use, and its fingerprint</span>
+gpg --show-keys /etc/apt/keyrings/deb.griffo.io.gpg
+
+<span class="comment"># what apt itself thinks of the repository</span>
+apt-cache policy
+sudo apt update</code></pre><pre class="variant variant-root"><code><span class="comment"># the key apt will actually use, and its fingerprint</span>
+gpg --show-keys /etc/apt/keyrings/deb.griffo.io.gpg
+
+<span class="comment"># what apt itself thinks of the repository</span>
+apt-cache policy
+apt update</code></pre></div>
+
+        <p>The fingerprint must read
+        <code>EA0F 721D 231F DD3A 0A17&nbsp; B9AC 7808 B4DD 62C4 1256</code>. If it does not,
+        you have imported someone else's key — stop and re-fetch it from
+        <a href="/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc">the source</a>.
+        <a href="/how-packages-are-built.html">How these packages are built and signed →</a></p>
+
+        <h2>🚫 What not to do</h2>
+
+        <ul>
+            <li><strong><code>apt-key add</code></strong> — deprecated and removed in newer
+                releases; it also grants the key system-wide trust.</li>
+            <li><strong><code>[trusted=yes]</code></strong> in a sources entry — this disables
+                signature checking for that repository entirely. It makes the error go away by
+                removing the security the error exists to provide.</li>
+            <li><strong><code>--allow-unauthenticated</code></strong> — same objection, per
+                command.</li>
+            <li><strong>Downloading a key over plain HTTP</strong>, or from a mirror you did
+                not verify. The key is what makes everything else trustworthy.</li>
+        </ul>
+
+        <p class="back-link"><a href="/">← All packages served by deb.griffo.io</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. All rights reserved. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Free mirror</a> |
+    <a href="/how-packages-are-built.html">How packages are built</a> |
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How do I fix NO_PUBKEY in apt?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Download the repository's armoured key, convert it with gpg --dearmor into /etc/apt/keyrings/, set it to mode 644 so the _apt user can read it, and reference it with signed-by= in that repository's sources entry. For example: sudo install -d -m 0755 /etc/apt/keyrings; curl -fsSL <key url> | sudo gpg --dearmor --yes -o /etc/apt/keyrings/<name>.gpg; sudo chmod 644 /etc/apt/keyrings/<name>.gpg; then add [signed-by=/etc/apt/keyrings/<name>.gpg] to the deb line and run apt update."}},
+    {"@type": "Question", "name": "Why does apt still say NO_PUBKEY when the key file exists?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Two usual causes. First, the file is armoured text saved under a .gpg name: apt expects binary in a .gpg file, so either run gpg --dearmor or keep the .asc extension and point signed-by at the .asc file. Second, the keyring is not world-readable: apt drops privileges to the _apt user when fetching, so a key readable only by root produces NO_PUBKEY. Set it to mode 644."}},
+    {"@type": "Question", "name": "What does the legacy trusted.gpg keyring warning mean?",
+     "acceptedAnswer": {"@type": "Answer", "text": "It means a key sits in /etc/apt/trusted.gpg, where it is trusted for every repository configured on the machine rather than only the one it belongs to. That is why apt-key was deprecated. Export the key to /etc/apt/keyrings/, delete it from the old keyring, and add signed-by= to the repository's sources entry so the key is scoped to that repository alone."}},
+    {"@type": "Question", "name": "Is [trusted=yes] a valid fix for an apt GPG error?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. It disables signature verification for that repository, which removes exactly the protection the error is reporting. The same applies to --allow-unauthenticated. Import the key correctly instead."}},
+    {"@type": "Question", "name": "apt says the Release file is not valid yet. Is that a key problem?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No, it is a clock problem. The signature is valid but your system time is behind the file's validity window. Enable time synchronisation with sudo timedatectl set-ntp true rather than disabling the Valid-Until check."}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
