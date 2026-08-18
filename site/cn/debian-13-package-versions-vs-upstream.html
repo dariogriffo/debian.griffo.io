@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Debian 13 与 Ubuntu 软件包版本对比 deb.griffo.io</title>
+<meta name="description" content="Debian 13 Trixie 与 Ubuntu 为现代开发者工具实际提供的版本，与本仓库提供的版本对照。一张表格，每次有软件包发布时重新生成。">
+<meta name="keywords" content="debian 13 软件包版本, trixie 软件包版本, debian 版本对比, ubuntu 软件包版本, debian 软件包过时, debian trixie 版本表, debian 是否过时">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<meta property="og:title" content="Debian 13 与 Ubuntu 软件包版本对比 deb.griffo.io">
+<meta property="og:description" content="Debian 13 与 Ubuntu 为现代开发者工具提供的版本，与本仓库提供的版本对照。每次有软件包发布时重新生成。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<meta property="twitter:title" content="Debian 13 与 Ubuntu 软件包版本对比 deb.griffo.io">
+<meta property="twitter:description" content="Debian 13 与 Ubuntu 为现代开发者工具提供的版本，与本仓库提供的版本对照。每次有软件包发布时重新生成。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/debian-13-package-versions-vs-upstream.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>43 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="${home}#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 Debian 13 与 Ubuntu 软件包版本</h1>
+        <p class="subtitle">官方软件源提供的版本，与本仓库提供的版本对照 —— 2026-08-18</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 简短的答案。</strong> 在本仓库收录的 42 个工具中，
+            <strong>有 29 个在 Debian 13 和 Ubuntu 26.04 中都没有</strong>，
+            其余的则被冻结在那些发行版发布当时的版本上。Debian 和 Ubuntu 会在发行版发布时
+            冻结软件包版本，之后基本只接受安全修复，
+            这是一个有意为之、往往也正确的取舍 —— 但这意味着在一台原版系统上通过
+            <code>apt install</code> 得到的，就是发布当天的那个版本。
+            本表格完整呈现了这一份开发者工具目录的现状，
+            每次有软件包发布时都会重新生成，而不是手工填写。
+        </div>
+
+        <h2>📋 表格</h2>
+
+        <p>官方版本直接取自 Debian 与 Ubuntu 的软件源本身（madison
+        服务），对照的是各自当前的稳定发行版：<strong>Debian 13
+        “Trixie”</strong> 与 <strong>Ubuntu 26.04 “Resolute”</strong>。backports、testing 和
+        unstable 不计入其中 —— 我们要回答的是一台原版稳定系统能给你什么。最后
+        一列是本仓库今天提供的版本。</p>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr>
+                    <th>工具</th>
+                    <th>apt 软件包</th>
+                    <th>Debian 13</th>
+                    <th>Ubuntu 26.04</th>
+                    <th>deb.griffo.io</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Atuin</td><td><code>atuin</code></td><td><code>18.6.1</code></td><td><code>18.8.0</code></td><td><code>18.19.0</code></td></tr>
+                <tr><td>Bun</td><td><code>bun</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>1.3.14</code></td></tr>
+                <tr><td>Deno</td><td><code>deno</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>2.9.5</code></td></tr>
+                <tr><td>DuckDB</td><td><code>duckdb</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>1.5.5</code></td></tr>
+                <tr><td>eza</td><td><code>eza</code></td><td><code>0.21.0</code></td><td><code>0.23.4</code></td><td><code>0.23.5</code></td></tr>
+                <tr><td>Fastfetch</td><td><code>fastfetch</code></td><td><code>2.40.4</code></td><td><code>2.57.1</code></td><td><code>2.66.0</code></td></tr>
+                <tr><td>fish</td><td><code>fish</code></td><td><code>4.0.2</code></td><td><code>4.2.1</code></td><td><code>4.8.1</code></td></tr>
+                <tr><td>Forgejo</td><td><code>forgejo</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>15.0.2</code></td></tr>
+                <tr><td>Forgejo Runner</td><td><code>forgejo-runner</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>13.0.0</code></td></tr>
+                <tr><td>fzf</td><td><code>fzf</code></td><td><code>0.60.3</code></td><td><code>0.67.0</code></td><td><code>0.74.3</code></td></tr>
+                <tr><td>Garage</td><td><code>garage</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>2.3.0</code></td></tr>
+                <tr><td>Ghostty</td><td><code>ghostty</code></td><td><em class="muted">未收录</em></td><td><code>1.3.0</code></td><td><code>1.3.1</code></td></tr>
+                <tr><td>Headscale</td><td><code>headscale</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.29.3</code></td></tr>
+                <tr><td>Helix</td><td><code>helix</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>25.07.1</code></td></tr>
+                <tr><td>herdr</td><td><code>herdr</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.8.0</code></td></tr>
+                <tr><td>Jujutsu</td><td><code>jujutsu</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.44.0</code></td></tr>
+                <tr><td>just</td><td><code>just</code></td><td><code>1.40.0</code></td><td><code>1.45.0</code></td><td><code>1.58.0</code></td></tr>
+                <tr><td>k9s</td><td><code>k9s</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.51.0</code></td></tr>
+                <tr><td>lazydocker</td><td><code>lazydocker</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.25.2</code></td></tr>
+                <tr><td>lazygit</td><td><code>lazygit</code></td><td><code>0.50.0</code></td><td><code>0.57.0</code></td><td><code>0.64.1</code></td></tr>
+                <tr><td>lowfi</td><td><code>lowfi</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>2.0.7</code></td></tr>
+                <tr><td>Neovim</td><td><code>neovim</code></td><td><code>0.10.4</code></td><td><code>0.11.6</code></td><td><code>0.12.4</code></td></tr>
+                <tr><td>Nushell</td><td><code>nushell</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.115.0</code></td></tr>
+                <tr><td>Oh My Posh</td><td><code>oh-my-posh</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>30.6.5</code></td></tr>
+                <tr><td>ripgrep</td><td><code>ripgrep</code></td><td><code>14.1.1</code></td><td><code>15.1.0</code></td><td><code>15.2.0</code></td></tr>
+                <tr><td>Ruff</td><td><code>ruff</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.16.3</code></td></tr>
+                <tr><td>Starship</td><td><code>starship</code></td><td><code>1.22.1</code></td><td><code>1.22.1</code></td><td><code>1.26.0</code></td></tr>
+                <tr><td>Termusic</td><td><code>termusic</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.13.2</code></td></tr>
+                <tr><td>TigerBeetle</td><td><code>tigerbeetle</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.17.9</code></td></tr>
+                <tr><td>Uncloud</td><td><code>uncloud</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.20.0</code></td></tr>
+                <tr><td>Unregistry</td><td><code>unregistry</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.4.3</code></td></tr>
+                <tr><td>uv</td><td><code>uv</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.12.5</code></td></tr>
+                <tr><td>viu</td><td><code>viu</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>1.6.1</code></td></tr>
+                <tr><td>Yazi</td><td><code>yazi</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>26.8.15</code></td></tr>
+                <tr><td>yq</td><td><code>yq</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>4.53.3</code></td></tr>
+                <tr><td>yt-dlp</td><td><code>yt-dlp</code></td><td><code>2025.04.30</code></td><td><code>2026.03.17</code></td><td><code>2026.07.04</code></td></tr>
+                <tr><td>ZapZap</td><td><code>zapzap</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>7.4.2</code></td></tr>
+                <tr><td>Zed</td><td><code>zed</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>1.15.0</code></td></tr>
+                <tr><td>Zellij</td><td><code>zellij</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.44.3</code></td></tr>
+                <tr><td>Zig</td><td><code>zig-stable</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>ZLS</td><td><code>zls</code></td><td><em class="muted">未收录</em></td><td><em class="muted">未收录</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>zoxide</td><td><code>zoxide</code></td><td><code>0.9.7</code></td><td><code>0.9.8</code></td><td><code>0.10.0</code></td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>🔍 如何解读</h2>
+
+        <ul>
+            <li><strong>“未收录”</strong> 表示在该发行版当前的稳定版本中，软件源里
+                根本没有同名的软件包。在原版系统上，<code>apt install</code>
+                会以 “Unable to locate package” 失败。</li>
+            <li>版本号按软件源报告的样子打印，去掉 epoch 和 Debian
+                修订号，因此 <code>1:0.44.1-1ubuntu2</code> 显示为
+                <code>0.44.1</code> —— 也就是上游项目认得的那个数字。</li>
+            <li>一个工具可能出现在 Ubuntu 而不在 Debian，反之亦然：两个软件源各自
+                独立决策，冻结的日期也不同。</li>
+            <li>这里没有任何内容是在批评 Debian。正是冻结的软件源让稳定发行版得以
+                稳定，对于大量软件包来说，这恰恰是你想要的。
+                它只是不适合每隔几周就发布一次的工具，
+                而这正是本仓库存在的全部理由。</li>
+        </ul>
+
+        <h2>✅ 自己核对任意一行</h2>
+
+        <p>上面每一个数字都是公开的。在一台 Debian 或 Ubuntu 机器上：</p>
+
+        <div class="code-block"><pre><code>apt-cache policy ripgrep        # 你的系统会安装哪个版本，以及从哪里安装
+apt-cache madison ripgrep       # 你配置的软件源提供的每一个版本
+rmadison ripgrep                # 官方软件源提供的版本，无需安装任何东西</code></pre></div>
+
+        <p><code>rmadison</code> 来自 <code>devscripts</code> 软件包，查询的正是本表格
+        所依据的同一个服务。deb.griffo.io 这一列跟踪每个项目的最新发布，并在发布后数小时内
+        重新构建；每个工具的打包仓库都列在
+        <a href="/how-packages-are-built.html">软件包如何构建</a>页面上。</p>
+
+        <h2>📦 改为获取当前的版本</h2>
+
+        <p>一行仓库配置即可覆盖表中的每一个工具，上游每次发布后数小时内
+        重新构建：</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>这不是唯一的答案：如果你的发行版已经提供了某个工具，且版本足够满足你的
+        需要，那么官方软件源仍然是更好的选择 —— 它不需要你付出额外的信任。
+        <a href="/apt-cli-rs-alternative.html">这一论点的完整版 →</a></p>
+
+        <p class="back-link"><a href="/">← deb.griffo.io 提供的所有软件包</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. 保留所有权利。 |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">免费镜像</a> |
+    <a href="/how-packages-are-built.html">软件包如何构建</a> |
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Debian 13 与 Ubuntu 的软件包版本，与 deb.griffo.io 仓库的对照",
+  "description": "一张开发者工具表格，列出 Debian 13 Trixie 与 Ubuntu 26.04 Resolute 中打包的版本，以及 deb.griffo.io 仓库提供的版本 —— 该仓库在上游每次发布后数小时内重新构建。每次有软件包发布时都会重新生成。",
+  "url": "https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html",
+  "creator": { "@type": "Person", "name": "Dario Griffo" },
+  "isAccessibleForFree": true,
+  "dateModified": "2026-08-18",
+  "measurementTechnique": "Debian 与 Ubuntu 的软件源版本取自 qa.debian.org 的 madison 服务，仅限每个发行版当前的稳定版本。",
+  "variableMeasured": [
+    { "@type": "PropertyValue", "name": "Debian 13 版本" },
+    { "@type": "PropertyValue", "name": "Ubuntu 26.04 版本" },
+    { "@type": "PropertyValue", "name": "deb.griffo.io 提供的版本" }
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

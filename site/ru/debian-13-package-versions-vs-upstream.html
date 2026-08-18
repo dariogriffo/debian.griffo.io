@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle — a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Версии пакетов Debian 13 и Ubuntu против deb.griffo.io</title>
+<meta name="description" content="Что Debian 13 Trixie и Ubuntu реально поставляют для современных инструментов разработки, рядом с версиями этого репозитория. Одна таблица, всегда актуальная.">
+<meta name="keywords" content="версии пакетов debian 13, версии пакетов trixie, debian против upstream, версии пакетов ubuntu, устаревшие пакеты debian, таблица версий debian trixie, debian устарел">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<meta property="og:title" content="Версии пакетов Debian 13 и Ubuntu против deb.griffo.io">
+<meta property="og:description" content="Что Debian 13 и Ubuntu поставляют для современных инструментов разработки, рядом с версиями этого репозитория. Обновляется при каждой публикации пакета.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<meta property="twitter:title" content="Версии пакетов Debian 13 и Ubuntu против deb.griffo.io">
+<meta property="twitter:description" content="Что Debian 13 и Ubuntu поставляют для современных инструментов разработки, рядом с версиями этого репозитория. Обновляется при каждой публикации пакета.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/debian-13-package-versions-vs-upstream.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ru/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ru/#packages">Пакеты</a></li>
+    <li><a href="/ru/#install">Установка</a></li>
+    <li><a href="/ru/#versions">Версии</a></li>
+    <li><a href="/ru/#source">Исходники</a></li>
+    <li><a href="/ru/#pricing">Цены</a></li>
+    <li><a href="/ru/#faq">Вопросы</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Выбрать язык"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Русский</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ru/#pricing" class="nav-cta">Оформить подписку</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ru/#packages" class="mobile-menu-link" data-index="01">Пакеты</a>
+      <a href="/ru/#install" class="mobile-menu-link" data-index="02">Установка</a>
+      <a href="/ru/#versions" class="mobile-menu-link" data-index="03">Версии</a>
+      <a href="/ru/#source" class="mobile-menu-link" data-index="04">Исходники</a>
+      <a href="/ru/#pricing" class="mobile-menu-link" data-index="05">Цены</a>
+      <a href="/ru/#faq" class="mobile-menu-link" data-index="06">Вопросы</a>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Прогресс прокрутки">
+  <span class="side-label">Прокрутка</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Статус">
+  <span class="side-label">Статус</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      ⚡ <strong>43 инструментов разработчика, всегда актуальны</strong> — новые выпуски появляются в <code>apt</code> в течение нескольких часов.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Присоединиться к Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 С <strong><time datetime="2026-10-01T12:00:00+01:00">1 октября 2026 года, 12:00 по времени Великобритании</time></strong> для доступа к apt-зеркалу потребуется подписка.
+      <a href="${home}#pricing">Посмотреть цены</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Есть вечно бесплатное зеркало</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 Версии пакетов Debian 13 и Ubuntu</h1>
+        <p class="subtitle">Что поставляют официальные архивы, рядом с версиями этого репозитория — 2026-08-18</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ Коротко.</strong> Из 42 инструментов этого
+            репозитория <strong>29 нет ни в Debian 13, ни в Ubuntu 26.04</strong>,
+            а остальные заморожены на тех версиях, которые были актуальны на момент выхода
+            этих выпусков. Debian и Ubuntu замораживают версии
+            пакетов при выходе выпуска и после этого принимают в основном исправления
+            безопасности — это осознанный и часто правильный компромисс, но он означает,
+            что версия, которую вы получаете командой <code>apt install</code> на стандартной
+            системе, актуальна на день выхода выпуска. Эта таблица — полная картина по одному
+            каталогу инструментов разработчика, она перегенерируется при каждой публикации
+            пакета, а не заполняется вручную.
+        </div>
+
+        <h2>📋 Таблица</h2>
+
+        <p>Официальные версии взяты прямо из архивов Debian и Ubuntu (сервис madison) и
+        сопоставлены с текущим стабильным выпуском каждого дистрибутива: <strong>Debian 13
+        «Trixie»</strong> и <strong>Ubuntu 26.04 «Resolute»</strong>. Backports, testing и
+        unstable исключены — вопрос в том, что даёт стандартная стабильная система. В последнем
+        столбце — то, что раздаёт этот репозиторий сегодня.</p>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr>
+                    <th>Инструмент</th>
+                    <th>Пакет apt</th>
+                    <th>Debian 13</th>
+                    <th>Ubuntu 26.04</th>
+                    <th>deb.griffo.io</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Atuin</td><td><code>atuin</code></td><td><code>18.6.1</code></td><td><code>18.8.0</code></td><td><code>18.19.0</code></td></tr>
+                <tr><td>Bun</td><td><code>bun</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>1.3.14</code></td></tr>
+                <tr><td>Deno</td><td><code>deno</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>2.9.5</code></td></tr>
+                <tr><td>DuckDB</td><td><code>duckdb</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>1.5.5</code></td></tr>
+                <tr><td>eza</td><td><code>eza</code></td><td><code>0.21.0</code></td><td><code>0.23.4</code></td><td><code>0.23.5</code></td></tr>
+                <tr><td>Fastfetch</td><td><code>fastfetch</code></td><td><code>2.40.4</code></td><td><code>2.57.1</code></td><td><code>2.66.0</code></td></tr>
+                <tr><td>fish</td><td><code>fish</code></td><td><code>4.0.2</code></td><td><code>4.2.1</code></td><td><code>4.8.1</code></td></tr>
+                <tr><td>Forgejo</td><td><code>forgejo</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>15.0.2</code></td></tr>
+                <tr><td>Forgejo Runner</td><td><code>forgejo-runner</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>13.0.0</code></td></tr>
+                <tr><td>fzf</td><td><code>fzf</code></td><td><code>0.60.3</code></td><td><code>0.67.0</code></td><td><code>0.74.3</code></td></tr>
+                <tr><td>Garage</td><td><code>garage</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>2.3.0</code></td></tr>
+                <tr><td>Ghostty</td><td><code>ghostty</code></td><td><em class="muted">не упакован</em></td><td><code>1.3.0</code></td><td><code>1.3.1</code></td></tr>
+                <tr><td>Headscale</td><td><code>headscale</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.29.3</code></td></tr>
+                <tr><td>Helix</td><td><code>helix</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>25.07.1</code></td></tr>
+                <tr><td>herdr</td><td><code>herdr</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.8.0</code></td></tr>
+                <tr><td>Jujutsu</td><td><code>jujutsu</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.44.0</code></td></tr>
+                <tr><td>just</td><td><code>just</code></td><td><code>1.40.0</code></td><td><code>1.45.0</code></td><td><code>1.58.0</code></td></tr>
+                <tr><td>k9s</td><td><code>k9s</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.51.0</code></td></tr>
+                <tr><td>lazydocker</td><td><code>lazydocker</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.25.2</code></td></tr>
+                <tr><td>lazygit</td><td><code>lazygit</code></td><td><code>0.50.0</code></td><td><code>0.57.0</code></td><td><code>0.64.1</code></td></tr>
+                <tr><td>lowfi</td><td><code>lowfi</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>2.0.7</code></td></tr>
+                <tr><td>Neovim</td><td><code>neovim</code></td><td><code>0.10.4</code></td><td><code>0.11.6</code></td><td><code>0.12.4</code></td></tr>
+                <tr><td>Nushell</td><td><code>nushell</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.115.0</code></td></tr>
+                <tr><td>Oh My Posh</td><td><code>oh-my-posh</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>30.6.5</code></td></tr>
+                <tr><td>ripgrep</td><td><code>ripgrep</code></td><td><code>14.1.1</code></td><td><code>15.1.0</code></td><td><code>15.2.0</code></td></tr>
+                <tr><td>Ruff</td><td><code>ruff</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.16.3</code></td></tr>
+                <tr><td>Starship</td><td><code>starship</code></td><td><code>1.22.1</code></td><td><code>1.22.1</code></td><td><code>1.26.0</code></td></tr>
+                <tr><td>Termusic</td><td><code>termusic</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.13.2</code></td></tr>
+                <tr><td>TigerBeetle</td><td><code>tigerbeetle</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.17.9</code></td></tr>
+                <tr><td>Uncloud</td><td><code>uncloud</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.20.0</code></td></tr>
+                <tr><td>Unregistry</td><td><code>unregistry</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.4.3</code></td></tr>
+                <tr><td>uv</td><td><code>uv</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.12.5</code></td></tr>
+                <tr><td>viu</td><td><code>viu</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>1.6.1</code></td></tr>
+                <tr><td>Yazi</td><td><code>yazi</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>26.8.15</code></td></tr>
+                <tr><td>yq</td><td><code>yq</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>4.53.3</code></td></tr>
+                <tr><td>yt-dlp</td><td><code>yt-dlp</code></td><td><code>2025.04.30</code></td><td><code>2026.03.17</code></td><td><code>2026.07.04</code></td></tr>
+                <tr><td>ZapZap</td><td><code>zapzap</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>7.4.2</code></td></tr>
+                <tr><td>Zed</td><td><code>zed</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>1.15.0</code></td></tr>
+                <tr><td>Zellij</td><td><code>zellij</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.44.3</code></td></tr>
+                <tr><td>Zig</td><td><code>zig-stable</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>ZLS</td><td><code>zls</code></td><td><em class="muted">не упакован</em></td><td><em class="muted">не упакован</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>zoxide</td><td><code>zoxide</code></td><td><code>0.9.7</code></td><td><code>0.9.8</code></td><td><code>0.10.0</code></td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>🔍 Как читать таблицу</h2>
+
+        <ul>
+            <li><strong>«не упакован»</strong> означает, что в архиве вообще нет пакета с таким
+                именем в текущем стабильном выпуске этого дистрибутива. На стандартной системе
+                <code>apt install</code> завершается ошибкой «Unable to locate package».</li>
+            <li>Версии приводятся так, как их сообщают архивы, но без эпох и ревизий Debian,
+                поэтому <code>1:0.44.1-1ubuntu2</code> выглядит как
+                <code>0.44.1</code> — номер, который узнает сам проект upstream.</li>
+            <li>Инструмент может быть в Ubuntu, но отсутствовать в Debian, или наоборот: архивы
+                принимают решения независимо друг от друга и замораживаются в разные даты.</li>
+            <li>Ничто здесь не является критикой Debian. Именно замороженный архив делает
+                стабильный выпуск стабильным, и для очень многих пакетов это именно то, что
+                нужно. Он плохо подходит инструментам, которые выходят каждые несколько недель,
+                и ровно поэтому существует этот репозиторий.</li>
+        </ul>
+
+        <h2>✅ Проверьте любую строку сами</h2>
+
+        <p>Все числа выше общедоступны. На машине с Debian или Ubuntu:</p>
+
+        <div class="code-block"><pre><code>apt-cache policy ripgrep        # что установит ваша система и откуда
+apt-cache madison ripgrep       # все версии, доступные из настроенных источников
+rmadison ripgrep                # что поставляют официальные архивы, ничего не устанавливая</code></pre></div>
+
+        <p><code>rmadison</code> входит в пакет <code>devscripts</code> и обращается к тому же
+        сервису, на основе которого построена эта таблица. Столбец deb.griffo.io отслеживает
+        новейший выпуск каждого проекта и пересобирается в течение нескольких часов после него;
+        репозиторий упаковки каждого инструмента перечислен на странице
+        <a href="/how-packages-are-built.html">как собираются пакеты</a>.</p>
+
+        <h2>📦 Как получить актуальную версию</h2>
+
+        <p>Одна строка репозитория покрывает все инструменты из таблицы, и каждый пересобирается
+        в течение нескольких часов после выпуска upstream:</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Выберите способ запуска команд"><span class="variant-toggle-label">Запуск команд</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">через sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">от root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>Это не единственный ответ: если ваш дистрибутив уже поставляет инструмент в версии,
+        которая делает всё, что вам нужно, архив остаётся лучшим выбором — он не требует
+        дополнительного доверия. <a href="/apt-cli-rs-alternative.html">Этот довод целиком →</a></p>
+
+        <p class="back-link"><a href="/">← Все пакеты, которые раздаёт deb.griffo.io</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <p>
+    &copy; 2026 Dario Griffo. Все права защищены. |
+    <a href="https://github.com/dariogriffo">GitHub</a> |
+    <a href="/free.html">Бесплатное зеркало</a> |
+    <a href="/how-packages-are-built.html">Как собираются пакеты</a> |
+    <a href="/terms.html">Условия использования</a>
+  </p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Версии пакетов Debian 13 и Ubuntu в сравнении с репозиторием deb.griffo.io",
+  "description": "Таблица инструментов разработчика с версией, упакованной в Debian 13 Trixie и Ubuntu 26.04 Resolute, рядом с версией, которую раздаёт репозиторий deb.griffo.io, пересобираемый в течение нескольких часов после каждого выпуска upstream. Перегенерируется при каждой публикации пакета.",
+  "url": "https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html",
+  "creator": { "@type": "Person", "name": "Dario Griffo" },
+  "isAccessibleForFree": true,
+  "dateModified": "2026-08-18",
+  "measurementTechnique": "Версии из архивов Debian и Ubuntu получены через сервис madison на qa.debian.org и ограничены текущим стабильным выпуском каждого дистрибутива.",
+  "variableMeasured": [
+    { "@type": "PropertyValue", "name": "Версия в Debian 13" },
+    { "@type": "PropertyValue", "name": "Версия в Ubuntu 26.04" },
+    { "@type": "PropertyValue", "name": "Версия, которую раздаёт deb.griffo.io" }
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>
