@@ -56,7 +56,7 @@
 <div class="atmosphere"></div>
 <nav class="top-nav" id="topNav">
   <a href="/" class="nav-brand">
-    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
     deb.griffo.io
   </a>
   <ul class="nav-links">
@@ -240,6 +240,8 @@ apt update</code></pre></div>
             <li><a href="/apt-install-ripgrep.html">apt install ripgrep</a></li>
             <li><a href="/apt-install-starship.html">apt install starship</a></li>
             <li><a href="/apt-install-zoxide.html">apt install zoxide</a></li>
+            <li><a href="/deb822-sources-debian-13.html">Converting this apt source to deb822 .sources on Debian 13</a></li>
+            <li><a href="/apt-gpg-key-error.html">apt GPG key errors — NO_PUBKEY and friends</a></li>
             <li><a href="/debian-13-package-versions-vs-upstream.html">What Debian 13 and Ubuntu ship, for every tool</a></li>
             <li><a href="/">All packages served by deb.griffo.io</a></li>
         </ul>
@@ -293,7 +295,7 @@ apt update</code></pre></div>
    "@type": "SoftwareApplication",
    "name": "Television",
    "applicationCategory": "DeveloperApplication",
-   "operatingSystem": "Debian 12 \u201cBookworm\u201d, Debian 13 \u201cTrixie\u201d, Debian 14 \u201cForky\u201d, Debian Sid, Ubuntu 22.04 LTS \u201cJammy Jellyfish\u201d, Ubuntu 24.04 LTS \u201cNoble Numbat\u201d, Ubuntu 25.10 \u201cQuesting Quokka\u201d, Ubuntu 26.04 LTS \u201cResolute\u201d",
+   "operatingSystem": "Debian 12 “Bookworm”, Debian 13 “Trixie”, Debian 14 “Forky”, Debian Sid, Ubuntu 22.04 LTS “Jammy Jellyfish”, Ubuntu 24.04 LTS “Noble Numbat”, Ubuntu 25.10 “Questing Quokka”, Ubuntu 26.04 LTS “Resolute”",
    "softwareVersion": "0.15.9",
    "url": "https://deb.griffo.io/apt-install-television.html",
    "downloadUrl": "https://deb.griffo.io/apt/",
@@ -301,12 +303,30 @@ apt update</code></pre></div>
     "@type": "CreativeWork",
     "url": "https://github.com/dariogriffo/television-debian"
    },
-   "description": "A very fast, portable and hackable fuzzy finder for the terminal"
+   "description": "A very fast, portable and hackable fuzzy finder for the terminal",
+   "offers": [
+    {
+     "@type": "Offer",
+     "name": "Yearly subscription",
+     "price": "20",
+     "priceCurrency": "EUR",
+     "availability": "https://schema.org/InStock",
+     "url": "https://deb.griffo.io/how-subscriptions-work.html"
+    },
+    {
+     "@type": "Offer",
+     "name": "Lifetime access",
+     "price": "150",
+     "priceCurrency": "EUR",
+     "availability": "https://schema.org/InStock",
+     "url": "https://deb.griffo.io/how-subscriptions-work.html"
+    }
+   ]
   },
   {
    "@type": "HowTo",
    "name": "Install Television on Debian and Ubuntu with apt",
-   "description": "television is not in the Debian or Ubuntu archives \u2014 this repository serves television 0.15.9 via apt, rebuilt within hours of each release.",
+   "description": "television is not in the Debian or Ubuntu archives — this repository serves television 0.15.9 via apt, rebuilt within hours of each release.",
    "totalTime": "PT2M",
    "dateModified": "2026-08-19",
    "tool": [
@@ -363,7 +383,7 @@ apt update</code></pre></div>
      "name": "How do I apt install the latest Television?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "There is no separate command \u2014 once this repository is added, apt resolves television to the newest release it serves, rebuilt within hours of upstream. Use sudo apt update && sudo apt install --only-upgrade television to move an existing install up."
+      "text": "There is no separate command — once this repository is added, apt resolves television to the newest release it serves, rebuilt within hours of upstream. Use sudo apt update && sudo apt install --only-upgrade television to move an existing install up."
      }
     },
     {
