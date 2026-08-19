@@ -949,3 +949,18 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
 @media (prefers-reduced-motion: reduce) {
   .review-track { scroll-behavior: auto; }
 }
+
+/* ── Mobile auto-linking ─────────────────────────────────────────────────
+   Belt and braces for the format-detection meta: when iOS decides to link
+   something anyway it wraps it in <a x-apple-data-detectors="true">, which
+   inherits nothing and renders link-blue. Detected text should look exactly
+   like the text around it. */
+a[x-apple-data-detectors="true"],
+a[href^="tel:"] {
+  color: inherit !important; text-decoration: none !important;
+  font-size: inherit !important; font-weight: inherit !important;
+}
+/* The three hero logos are image links with no text, so they never had a
+   colour of their own; give them one so a slow or failed image shows alt text
+   in the page's own ink rather than default blue. */
+.hero-logos a { color: var(--ivory-muted); text-decoration: none; }
