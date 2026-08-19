@@ -1,0 +1,96 @@
+title: "Review: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Everything below except the last two boxes is required —
+        the rating especially, because a star rating on the site has to come from a number you
+        chose, not from someone reading your prose and guessing.
+
+        **Negative reviews are welcome and will not be deleted.** A 3/5 that names a real rough
+        edge is worth more to the next reader than another 5/5.
+
+  - type: dropdown
+    id: rating
+    attributes:
+      label: Rating
+      description: Out of 5.
+      options:
+        - "5 — no complaints"
+        - "4 — good, with a caveat"
+        - "3 — useful but rough in places"
+        - "2 — more trouble than it saved me"
+        - "1 — would not recommend"
+    validations:
+      required: true
+
+  - type: input
+    id: distro
+    attributes:
+      label: Distro and release
+      description: Which ones you actually run it on.
+      placeholder: "Debian 13 Trixie, Ubuntu 24.04 Noble"
+    validations:
+      required: true
+
+  - type: input
+    id: tools
+    attributes:
+      label: Which tools you install from it
+      placeholder: "bun, neovim, ripgrep, zoxide"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: duration
+    attributes:
+      label: How long you have been using it
+      options:
+        - "Less than a month"
+        - "1–3 months"
+        - "3–6 months"
+        - "6–12 months"
+        - "More than a year"
+    validations:
+      required: true
+
+  - type: textarea
+    id: review
+    attributes:
+      label: How has it actually worked out?
+      description: >-
+        A couple of sentences. What is good, what is not. Concrete beats kind — "Bun tracks
+        upstream within a day and apt upgrade has never broken on three Trixie boxes" tells the
+        next person something; "great repo, thanks" does not.
+      placeholder: "Been running it since April on three Trixie boxes…"
+    validations:
+      required: true
+
+  - type: input
+    id: links
+    attributes:
+      label: Other profiles (optional)
+      description: >-
+        Your GitHub profile is picked up automatically. Add a Mastodon handle or personal site
+        here if you would like those linked too.
+      placeholder: "https://hachyderm.io/@you, https://you.dev"
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Publishing
+      options:
+        - label: >-
+            You may publish this review on deb.griffo.io with my name, my GitHub avatar and a
+            link to my profile, alongside a link back to this post.
+          required: true
+        - label: >-
+            Override the above — publish the review anonymously, with no name, avatar or
+            profile link. Tick this only if you want the review used but not attributed.
+          required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Changed your mind later? Edit or delete this post, or say so on Discord, and it comes off
+        the site. Nothing is offered in exchange for a review — no discount, no free month.
