@@ -23,7 +23,7 @@
 })();
 </script>
 <title>apt NO_PUBKEY and “not signed”: fixing GPG key errors</title>
-<meta name="description" content="Why apt says NO_PUBKEY or “is not signed”, and the fix that covers every case: a dearmoured key in /etc/apt/keyrings, mode 644, signed-by.">
+<meta name="description" content="Why apt says NO_PUBKEY or “is not signed”, and the fix that covers every case: dearmoured key in /etc/apt/keyrings, mode 644, signed-by. Plus the permissions trap.">
 <meta name="keywords" content="apt NO_PUBKEY, apt gpg error, repository is not signed, trusted.gpg deprecation, apt-key deprecated, signed-by apt, /etc/apt/keyrings, gpg --dearmor, apt key error debian, apt key error ubuntu">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -56,7 +56,7 @@
 <div class="atmosphere"></div>
 <nav class="top-nav" id="topNav">
   <a href="/" class="nav-brand">
-    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    <img src="/assets/img/logo.webp" alt="" width="26" height="26">
     deb.griffo.io
   </a>
   <ul class="nav-links">
@@ -273,18 +273,6 @@ apt update</code></pre></div>
                 command.</li>
             <li><strong>Downloading a key over plain HTTP</strong>, or from a mirror you did
                 not verify. The key is what makes everything else trustworthy.</li>
-        </ul>
-
-        <h2>🔗 Related</h2>
-
-        <ul>
-            <li><a href="/deb822-sources-debian-13.html">deb822 <code>.sources</code> on Debian 13</a>
-                — the modern replacement for the one-line <code>sources.list</code> entry above,
-                where the signing key is named inside the source itself.</li>
-            <li><a href="/apt-401-unauthorized.html">apt: 401 Unauthorized</a> — the other error
-                this repository can return, and what it means.</li>
-            <li><a href="/how-packages-are-built.html">How every package here is built</a> — what
-                the signature you just imported is actually attesting to.</li>
         </ul>
 
         <p class="back-link"><a href="/">← All packages served by deb.griffo.io</a></p>
