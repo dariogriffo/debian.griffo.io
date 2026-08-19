@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -23,7 +23,7 @@
 })();
 </script>
 <title>Install Latest ripgrep on Ubuntu via apt</title>
-<meta name="description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
+<meta name="description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
 <meta name="keywords" content="ripgrep ubuntu, install ripgrep ubuntu, rg command, recursive grep, grep alternative, rust search tool, ubuntu packages, jammy, noble, burntsushi, apt ripgrep">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
 <meta property="og:title" content="Install Latest ripgrep on Ubuntu via apt">
-<meta property="og:description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
+<meta property="og:description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
 <meta property="twitter:title" content="Install Latest ripgrep on Ubuntu via apt">
-<meta property="twitter:description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
+<meta property="twitter:description" content="Get ripgrep 15.2.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 15.1.0. GPG-signed, rebuilt hours after each release.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ripgrep-in-ubuntu.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-ripgrep-in-ubuntu.html">
@@ -129,9 +129,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -169,7 +169,7 @@
         <p>ripgrep (the <code>rg</code> command) is a <strong>line-oriented search tool</strong> written in Rust by Andrew Gallant. It recursively searches the current directory for a regex pattern while respecting your <code>.gitignore</code> rules and automatically skipping hidden files, ignored files and binary files. It is the search engine behind editors like VS Code, and it is generally faster than GNU grep, The Silver Searcher and ack.</p>
 
         <div class="highlight-box">
-            <strong>🚀 Why Latest Versions Matter:</strong> ripgrep gains real capability between releases — hyperlink support for jumping straight into your editor, <code>--engine auto</code> for transparent PCRE2 fallback, richer <code>--json</code> output and steady throughput gains in its regex engine. The archive version predates most of it.
+            <strong>🚀 Why Latest Versions Matter:</strong> ripgrep gains real capability between releases, hyperlink support for jumping straight into your editor, <code>--engine auto</code> for transparent PCRE2 fallback, richer <code>--json</code> output and steady throughput gains in its regex engine. The archive version predates most of it.
         </div>
 
         <h3>⚡ Key Features of ripgrep</h3>
@@ -186,7 +186,7 @@
 
             <div class="feature-card">
                 <h4>🌍 Full Unicode Support</h4>
-                <p>Unicode-aware by default — character classes, case folding, word boundaries and grapheme handling all work correctly, at no real speed cost.</p>
+                <p>Unicode-aware by default, character classes, case folding, word boundaries and grapheme handling all work correctly, at no real speed cost.</p>
             </div>
 
             <div class="feature-card">
@@ -206,7 +206,7 @@
         </div>
 
         <div class="highlight-box">
-            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships. This repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
         </div>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -222,7 +222,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; ripgrep is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; ripgrep is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
         </div>
@@ -242,8 +242,7 @@ rg --version</code></pre></div>
 
         <div class="install-steps">
             <h3>Step 3: Shell Completions</h3>
-            <div class="code-block"><pre><code><span class="comment"># Completions for bash, zsh and fish ship with the package —</span>
-<span class="comment"># nothing to configure. Open a new shell and press Tab:</span>
+            <div class="code-block"><pre><code><span class="comment"># Completions for bash, zsh and fish ship with the package, # nothing to configure. Open a new shell and press Tab:</span>
 rg --ty&lt;Tab&gt;
 
 <span class="comment"># The manual page is installed too</span>
@@ -382,10 +381,10 @@ rg --json &#039;error&#039; | jq -r &#039;select(.type==&quot;match&quot;) | .da
 
 <div class="tool-extras">
 <section>
-<p>Just after the command? See <a href="/apt-install-ripgrep.html">apt install ripgrep</a> — one page covering Debian and Ubuntu.</p>
+<p>Just after the command? See <a href="/apt-install-ripgrep.html">apt install ripgrep</a>, one page covering Debian and Ubuntu.</p>
 <h2>📦 Recent releases from this repository</h2>
 <ul class="release-list">
-<li><code>15.2.0</code> — 2026-08-10</li>
+<li><code>15.2.0</code>: 2026-08-10</li>
 </ul>
 <h2>📚 Release-specific install guides</h2>
 <ul class="release-list">
@@ -399,12 +398,12 @@ rg --json &#039;error&#039; | jq -r &#039;select(.type==&quot;match&quot;) | .da
 <li><a href="/install-ripgrep-on-ubuntu-26-04-resolute.html">Install ripgrep on Ubuntu 26.04 LTS “Resolute”</a></li>
 </ul>
 <h2>❓ Frequently asked questions</h2>
-<details><summary>Is ripgrep in the official Ubuntu repositories?</summary><p>Yes, but the official Ubuntu archive ships ripgrep 15.1.0, while this repository serves ripgrep 15.2.0 — rebuilt within hours of each upstream release.</p></details>
+<details><summary>Is ripgrep in the official Ubuntu repositories?</summary><p>Yes, but the official Ubuntu archive ships ripgrep 15.1.0, while this repository serves ripgrep 15.2.0, rebuilt within hours of each upstream release.</p></details>
 <details><summary>How do I install the latest ripgrep on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ripgrep. New releases arrive through the normal sudo apt upgrade.</p></details>
 <details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
 <details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is ripgrep in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Ubuntu archive ships ripgrep 15.1.0, while this repository serves ripgrep 15.2.0 — rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest ripgrep on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ripgrep. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is ripgrep in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Ubuntu archive ships ripgrep 15.1.0, while this repository serves ripgrep 15.2.0, rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest ripgrep on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ripgrep. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
 </div>
 
 <footer class="site-footer">

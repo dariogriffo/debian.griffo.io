@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,8 +22,8 @@
   } catch (e) {}
 })();
 </script>
-<title>apt install yq on Debian and Ubuntu — latest release</title>
-<meta name="description" content="yq is not in the Debian or Ubuntu archives — this repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
+<title>apt install yq on Debian and Ubuntu, latest release</title>
+<meta name="description" content="yq is not in the Debian or Ubuntu archives. This repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta name="keywords" content="apt install yq, apt install latest yq, apt-get install yq, apt yq, install yq debian ubuntu, yq apt repository, latest yq apt">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -32,13 +32,13 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/apt-install-yq.html">
-<meta property="og:title" content="apt install yq on Debian and Ubuntu — latest release">
-<meta property="og:description" content="yq is not in the Debian or Ubuntu archives — this repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
+<meta property="og:title" content="apt install yq on Debian and Ubuntu, latest release">
+<meta property="og:description" content="yq is not in the Debian or Ubuntu archives. This repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/apt-install-yq.html">
-<meta property="twitter:title" content="apt install yq on Debian and Ubuntu — latest release">
-<meta property="twitter:description" content="yq is not in the Debian or Ubuntu archives — this repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
+<meta property="twitter:title" content="apt install yq on Debian and Ubuntu, latest release">
+<meta property="twitter:description" content="yq is not in the Debian or Ubuntu archives. This repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -145,9 +145,9 @@
 
     <div class="content">
         <div class="highlight-box">
-            <strong>⚡ The short answer.</strong> On a stock system <code>apt install yq</code> fails outright — yq is not in the official Debian or Ubuntu archives at all. Add the deb.griffo.io
+            <strong>⚡ The short answer.</strong> On a stock system <code>apt install yq</code> fails outright, yq is not in the official Debian or Ubuntu archives at all. Add the deb.griffo.io
             repository below and <code>sudo apt install yq</code> gives you the current
-            release on Debian and Ubuntu alike — currently <code>yq 4.53.4</code>
+            release on Debian and Ubuntu alike, currently <code>yq 4.53.4</code>
             (updated 2026-08-19).
         </div>
 
@@ -165,7 +165,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; yq is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; yq is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
         </div>
@@ -176,7 +176,7 @@ apt update</code></pre></div>
         </div>
 
         <h2>🔄 How to apt install the latest yq</h2>
-        <p>Once the repository is added there is no separate "install latest" command — <code>apt</code>
+        <p>Once the repository is added there is no separate "install latest" command, <code>apt</code>
         already resolves to the newest version this repository serves, and that is rebuilt within hours of
         every upstream yq release. To move an existing install up to the latest version:</p>
         <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt update &amp;&amp; sudo apt install --only-upgrade yq</code></pre><pre class="variant variant-root"><code>apt update &amp;&amp; apt install --only-upgrade yq</code></pre></div>
@@ -225,15 +225,15 @@ apt update</code></pre></div>
 
         <h2>🔗 Related</h2>
         <ul>
-            <li><a href="/install-latest-yq-in-debian.html">yq on Debian — overview and features</a></li>
-            <li><a href="/install-latest-yq-in-ubuntu.html">yq on Ubuntu — overview and features</a></li>
+            <li><a href="/install-latest-yq-in-debian.html">yq on Debian, overview and features</a></li>
+            <li><a href="/install-latest-yq-in-ubuntu.html">yq on Ubuntu, overview and features</a></li>
             <li><a href="/yq-ppa.html">yq PPA alternative for Ubuntu</a></li>
             <li><a href="/apt-install-k9s.html">apt install k9s</a></li>
             <li><a href="/apt-install-lazydocker.html">apt install lazydocker</a></li>
             <li><a href="/apt-install-uncloud.html">apt install uncloud</a></li>
             <li><a href="/apt-install-unregistry.html">apt install unregistry</a></li>
             <li><a href="/deb822-sources-debian-13.html">Converting this apt source to deb822 .sources on Debian 13</a></li>
-            <li><a href="/apt-gpg-key-error.html">apt GPG key errors — NO_PUBKEY and friends</a></li>
+            <li><a href="/apt-gpg-key-error.html">apt GPG key errors, NO_PUBKEY and friends</a></li>
             <li><a href="/debian-13-package-versions-vs-upstream.html">What Debian 13 and Ubuntu ship, for every tool</a></li>
             <li><a href="/">All packages served by deb.griffo.io</a></li>
         </ul>
@@ -318,7 +318,7 @@ apt update</code></pre></div>
   {
    "@type": "HowTo",
    "name": "Install yq on Debian and Ubuntu with apt",
-   "description": "yq is not in the Debian or Ubuntu archives — this repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.",
+   "description": "yq is not in the Debian or Ubuntu archives. This repository serves yq 4.53.4 via apt, rebuilt within hours of each release. One apt command, GPG-signed.",
    "totalTime": "PT2M",
    "dateModified": "2026-08-19",
    "tool": [
@@ -375,7 +375,7 @@ apt update</code></pre></div>
      "name": "How do I apt install the latest yq?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "There is no separate command — once this repository is added, apt resolves yq to the newest release it serves, rebuilt within hours of upstream. Use sudo apt update && sudo apt install --only-upgrade yq to move an existing install up."
+      "text": "There is no separate command, once this repository is added, apt resolves yq to the newest release it serves, rebuilt within hours of upstream. Use sudo apt update && sudo apt install --only-upgrade yq to move an existing install up."
      }
     },
     {

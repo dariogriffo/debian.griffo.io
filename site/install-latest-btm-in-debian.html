@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -23,7 +23,7 @@
 })();
 </script>
 <title>Install Latest bottom on Debian via apt</title>
-<meta name="description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid — official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
+<meta name="description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid, official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
 <meta name="keywords" content="btm debian, install bottom debian, bottom btm, htop alternative, terminal system monitor, btm apt, debian packages, bookworm, trixie, sid, apt btm">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-latest-btm-in-debian.html">
 <meta property="og:title" content="Install Latest bottom on Debian via apt">
-<meta property="og:description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid — official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
+<meta property="og:description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid, official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-latest-btm-in-debian.html">
 <meta property="twitter:title" content="Install Latest bottom on Debian via apt">
-<meta property="twitter:description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid — official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
+<meta property="twitter:description" content="Get bottom 0.14.8 via apt on Bookworm, Trixie, Forky and Sid, official Debian ships only 0.10.2. GPG-signed, rebuilt hours after each release.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-btm-in-debian.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-btm-in-debian.html">
@@ -129,9 +129,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -166,7 +166,7 @@
         <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-btm-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-btm-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-btm-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-btm-on-debian-sid.html">Debian Sid</a></div>
 
         <h2>What is bottom?</h2>
-        <p>bottom — the command is <code>btm</code> — is a <strong>graphical process and system monitor for the terminal</strong>, written in Rust and inspired by gtop, gotop and htop. By default it behaves like a dashboard: CPU, memory, network, disk, temperature and process widgets share one screen, and any of them can be sorted, zoomed or expanded to fill the terminal.</p>
+        <p>bottom (the command is <code>btm</code>) is a <strong>graphical process and system monitor for the terminal</strong>, written in Rust and inspired by gtop, gotop and htop. By default it behaves like a dashboard: CPU, memory, network, disk, temperature and process widgets share one screen, and any of them can be sorted, zoomed or expanded to fill the terminal.</p>
 
         <div class="highlight-box">
             <strong>🚀 Why Latest Versions Matter:</strong> the official archives are several minor releases behind, and those releases are where the useful things happened: separate cache and buffer accounting, GPU usage in the memory widget, built-in colour themes, kernel-thread filtering and a long list of fixes for newer kernels and sensors. A monitor that misreads your hardware is worse than no monitor, so this is a tool worth keeping current.
@@ -206,7 +206,7 @@
         </div>
 
         <div class="highlight-box">
-            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships. This repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
         </div>
 
         <h2>📦 Installation from deb.griffo.io</h2>
@@ -222,7 +222,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; bottom is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; bottom is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
         </div>
@@ -248,7 +248,7 @@ btm
 <span class="comment"># A compact, graph-free readout for small terminals and slow links</span>
 btm --basic
 
-<span class="comment"># Point bottom at a config file — it is created with defaults if missing</span>
+<span class="comment"># Point bottom at a config file. It is created with defaults if missing</span>
 mkdir -p ~/.config/bottom
 btm --config_location ~/.config/bottom/bottom.toml
 
@@ -312,7 +312,7 @@ btm --theme gruvbox</code></pre></div>
         <div class="integration-box">
             <strong>📊 Repository Comparison:</strong>
             <ul>
-                <li><strong>Official Debian:</strong> ships <code>btm</code>, but frozen several minor releases back — new widgets, themes and sensor fixes only arrive with the next Debian release</li>
+                <li><strong>Official Debian:</strong> ships <code>btm</code>, but frozen several minor releases back, new widgets, themes and sensor fixes only arrive with the next Debian release</li>
                 <li><strong>cargo install bottom:</strong> current, but it compiles for several minutes, lands outside apt, and brings no man page, completions or desktop entry</li>
                 <li><strong>Upstream tarball:</strong> the official binary, which you then re-download by hand for every release</li>
                 <li><strong>deb.griffo.io:</strong> latest version with automatic updates</li>
@@ -324,7 +324,7 @@ btm --theme gruvbox</code></pre></div>
             <li>✅ <strong>Drop-in for bottom:</strong> the package is named <code>btm</code> after the command and declares <code>Provides</code>/<code>Replaces</code> for <code>bottom</code>, so it slots in where the archive package was</li>
             <li>✅ <strong>Automatic Updates:</strong> packages updated within hours of upstream releases</li>
             <li>✅ <strong>Complete Package:</strong> the upstream binary plus the <code>btm.1</code> man page, bash, zsh and fish completions, the desktop entry and its icon</li>
-            <li>✅ <strong>Five Architectures:</strong> amd64, arm64, armhf, i386 and riscv64 — the same monitor on a laptop, a Raspberry Pi and a RISC-V board</li>
+            <li>✅ <strong>Five Architectures:</strong> amd64, arm64, armhf, i386 and riscv64, the same monitor on a laptop, a Raspberry Pi and a RISC-V board</li>
             <li>✅ <strong>Multi-Distribution:</strong> works on Bookworm, Trixie, Forky and Sid</li>
             <li>✅ <strong>Easy Maintenance:</strong> standard apt commands for updates</li>
         </ul>
@@ -387,10 +387,10 @@ btm --theme gruvbox</code></pre></div>
 
 <div class="tool-extras">
 <section>
-<p>Just after the command? See <a href="/apt-install-btm.html">apt install btm</a> — one page covering Debian and Ubuntu.</p>
+<p>Just after the command? See <a href="/apt-install-btm.html">apt install btm</a>, one page covering Debian and Ubuntu.</p>
 <h2>📦 Recent releases from this repository</h2>
 <ul class="release-list">
-<li><code>0.14.8</code> — 2026-08-18</li>
+<li><code>0.14.8</code>: 2026-08-18</li>
 </ul>
 <h2>📚 Release-specific install guides</h2>
 <ul class="release-list">
@@ -404,12 +404,12 @@ btm --theme gruvbox</code></pre></div>
 <li><a href="/install-btm-on-ubuntu-26-04-resolute.html">Install bottom on Ubuntu 26.04 LTS “Resolute”</a></li>
 </ul>
 <h2>❓ Frequently asked questions</h2>
-<details><summary>Is bottom in the official Debian repositories?</summary><p>Yes, but the official Debian archive ships bottom 0.10.2, while this repository serves bottom 0.14.8 — rebuilt within hours of each upstream release.</p></details>
+<details><summary>Is bottom in the official Debian repositories?</summary><p>Yes, but the official Debian archive ships bottom 0.10.2, while this repository serves bottom 0.14.8, rebuilt within hours of each upstream release.</p></details>
 <details><summary>How do I install the latest bottom on Debian?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install btm. New releases arrive through the normal sudo apt upgrade.</p></details>
 <details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
 <details><summary>Which Debian releases are supported?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is bottom in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Debian archive ships bottom 0.10.2, while this repository serves bottom 0.14.8 — rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest bottom on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install btm. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is bottom in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Debian archive ships bottom 0.10.2, while this repository serves bottom 0.14.8, rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest bottom on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install btm. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
 </div>
 
 <footer class="site-footer">

@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -23,7 +23,7 @@
 })();
 </script>
 <title>Install Latest Ruff on Ubuntu via apt</title>
-<meta name="description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
+<meta name="description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
 <meta name="keywords" content="ruff ubuntu, install ruff ubuntu, ruff ppa, ruff apt, python linter ubuntu, python formatter, flake8 replacement, black replacement, astral ruff, ubuntu packages, jammy, noble, questing, resolute, apt ruff">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-latest-ruff-in-ubuntu.html">
 <meta property="og:title" content="Install Latest Ruff on Ubuntu via apt">
-<meta property="og:description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
+<meta property="og:description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-latest-ruff-in-ubuntu.html">
 <meta property="twitter:title" content="Install Latest Ruff on Ubuntu via apt">
-<meta property="twitter:description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04 — not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
+<meta property="twitter:description" content="Get Ruff 0.16.3 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, not in Ubuntu's official archives. GPG-signed, rebuilt hours after each release.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-ruff-in-ubuntu.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-ruff-in-ubuntu.html">
@@ -129,9 +129,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -166,36 +166,36 @@
         <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-ruff-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-ruff-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-ruff-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-ruff-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
 
         <h2>What is Ruff?</h2>
-        <p>Ruff is an <strong>extremely fast Python linter and code formatter</strong>, written in Rust by <a href="https://astral.sh" target="_blank" rel="noopener">Astral</a> — the team behind uv. With over 800 built-in rules and native re-implementations of popular plugins, a single <code>ruff</code> binary replaces Flake8, isort, Black, pyupgrade, autoflake and dozens of plugins, while running 10–100× faster. It has become the default linter of the modern Python ecosystem, adopted by projects like FastAPI, Pandas and Hugging Face.</p>
+        <p>Ruff is an <strong>extremely fast Python linter and code formatter</strong>, written in Rust by <a href="https://astral.sh" target="_blank" rel="noopener">Astral</a>, the team behind uv. With over 800 built-in rules and native re-implementations of popular plugins, a single <code>ruff</code> binary replaces Flake8, isort, Black, pyupgrade, autoflake and dozens of plugins, while running 10–100× faster. It has become the default linter of the modern Python ecosystem, adopted by projects like FastAPI, Pandas and Hugging Face.</p>
 
         <div class="comparison-box">
-            <strong>😤 Python tooling pain points:</strong> Managing flake8 plus a dozen plugins, isort fighting Black, minutes-long lint runs in CI, and installing linters into every single virtualenv? Ruff is one dependency-free binary that does it all in milliseconds — and installing it with apt makes it available system-wide, for every project and venv, without pip.
+            <strong>😤 Python tooling pain points:</strong> Managing flake8 plus a dozen plugins, isort fighting Black, minutes-long lint runs in CI, and installing linters into every single virtualenv? Ruff is one dependency-free binary that does it all in milliseconds, and installing it with apt makes it available system-wide, for every project and venv, without pip.
         </div>
 
         <div class="highlight-box">
-            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships. This repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
         </div>
 
         <h3>⚡ Key Features of Ruff</h3>
         <div class="feature-grid">
             <div class="feature-card">
                 <h4>🏎️ 10–100× Faster</h4>
-                <p>Lints large codebases in milliseconds where legacy tools take minutes — fast enough to run on every save and in every CI pipeline.</p>
+                <p>Lints large codebases in milliseconds where legacy tools take minutes, fast enough to run on every save and in every CI pipeline.</p>
             </div>
 
             <div class="feature-card">
                 <h4>🧰 One Tool, 800+ Rules</h4>
-                <p>Re-implements Flake8, isort, pyupgrade, pydocstyle, eradicate and more — one config in <code>pyproject.toml</code> replaces a stack of plugins.</p>
+                <p>Re-implements Flake8, isort, pyupgrade, pydocstyle, eradicate and more, one config in <code>pyproject.toml</code> replaces a stack of plugins.</p>
             </div>
 
             <div class="feature-card">
                 <h4>🖤 Drop-in Formatter</h4>
-                <p><code>ruff format</code> is a Black-compatible formatter — same style, orders of magnitude faster, no separate tool to install.</p>
+                <p><code>ruff format</code> is a Black-compatible formatter, same style, orders of magnitude faster, no separate tool to install.</p>
             </div>
 
             <div class="feature-card">
                 <h4>🔧 Auto-fixes</h4>
-                <p>Hundreds of rules come with automatic fixes: unused imports, upgraded syntax, sorted imports — <code>ruff check --fix</code> and done.</p>
+                <p>Hundreds of rules come with automatic fixes: unused imports, upgraded syntax, sorted imports, <code>ruff check --fix</code> and done.</p>
             </div>
 
             <div class="feature-card">
@@ -212,11 +212,11 @@
         <div class="productivity-box">
             <h4>🏆 Why install it with apt?</h4>
             <ul>
-                <li><strong>System-wide, pip-free:</strong> one binary for every project, venv, CI job and user — no per-project installs to keep in sync</li>
+                <li><strong>System-wide, pip-free:</strong> one binary for every project, venv, CI job and user, no per-project installs to keep in sync</li>
                 <li><strong>Perfect for Docker/CI images:</strong> bake the repo into base images and every pipeline gets current ruff automatically</li>
-                <li><strong>No toolchain:</strong> no Rust, no cargo, no pip — a signed apt repository with prebuilt binaries for 8 architectures</li>
+                <li><strong>No toolchain:</strong> no Rust, no cargo, no pip, a signed apt repository with prebuilt binaries for 8 architectures</li>
                 <li><strong>Automatic updates:</strong> ruff releases frequently; <code>apt upgrade</code> keeps up so your rules never go stale</li>
-                <li><strong>Pairs with uv:</strong> Astral's package manager is <a href="/install-latest-uv-in-ubuntu.html">also served here</a> — the full modern Python toolchain from one repository</li>
+                <li><strong>Pairs with uv:</strong> Astral's package manager is <a href="/install-latest-uv-in-ubuntu.html">also served here</a>, the full modern Python toolchain from one repository</li>
             </ul>
         </div>
 
@@ -233,7 +233,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; Ruff is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; Ruff is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
         </div>
@@ -258,7 +258,7 @@ ruff format .         # format (Black-compatible)</code></pre></div>
         <h3>🔗 Related Packages</h3>
         <p>Also available from deb.griffo.io:</p>
         <ul>
-            <li><a href="/install-latest-uv-in-ubuntu.html">uv</a> - Astral's extremely fast Python package manager — ruff's perfect companion</li>
+            <li><a href="/install-latest-uv-in-ubuntu.html">uv</a> - Astral's extremely fast Python package manager, ruff's perfect companion</li>
             <li><a href="/install-latest-zed-in-ubuntu.html">Zed</a> - A fast editor with first-class ruff integration</li>
             <li><a href="/install-latest-just-in-ubuntu.html">just</a> - A command runner for your lint/format/test workflows</li>
         </ul>
@@ -306,14 +306,14 @@ ruff format .         # format (Black-compatible)</code></pre></div>
 
 <div class="tool-extras">
 <section>
-<p>Just after the command? See <a href="/apt-install-ruff.html">apt install ruff</a> — one page covering Debian and Ubuntu.</p>
+<p>Just after the command? See <a href="/apt-install-ruff.html">apt install ruff</a>, one page covering Debian and Ubuntu.</p>
 <h2>📦 Recent releases from this repository</h2>
 <ul class="release-list">
-<li><code>0.16.3</code> — 2026-08-13</li>
-<li><code>0.16.2</code> — 2026-08-07</li>
-<li><code>0.16.1</code> — 2026-07-30</li>
-<li><code>0.16.0</code> — 2026-07-23</li>
-<li><code>0.15.22</code> — 2026-07-16</li>
+<li><code>0.16.3</code>: 2026-08-13</li>
+<li><code>0.16.2</code>: 2026-08-07</li>
+<li><code>0.16.1</code>: 2026-07-30</li>
+<li><code>0.16.0</code>: 2026-07-23</li>
+<li><code>0.15.22</code>: 2026-07-16</li>
 </ul>
 <h2>📚 Release-specific install guides</h2>
 <ul class="release-list">
@@ -327,12 +327,12 @@ ruff format .         # format (Black-compatible)</code></pre></div>
 <li><a href="/install-ruff-on-ubuntu-26-04-resolute.html">Install Ruff on Ubuntu 26.04 LTS “Resolute”</a></li>
 </ul>
 <h2>❓ Frequently asked questions</h2>
-<details><summary>Is Ruff in the official Ubuntu repositories?</summary><p>No — Ruff is not packaged in the official Ubuntu archives. This repository is currently the only apt source, serving Ruff 0.16.3.</p></details>
+<details><summary>Is Ruff in the official Ubuntu repositories?</summary><p>No, Ruff is not packaged in the official Ubuntu archives. This repository is currently the only apt source, serving Ruff 0.16.3.</p></details>
 <details><summary>How do I install the latest Ruff on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ruff. New releases arrive through the normal sudo apt upgrade.</p></details>
 <details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
 <details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Ruff in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — Ruff is not packaged in the official Ubuntu archives. This repository is currently the only apt source, serving Ruff 0.16.3."}}, {"@type": "Question", "name": "How do I install the latest Ruff on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ruff. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Ruff in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No, Ruff is not packaged in the official Ubuntu archives. This repository is currently the only apt source, serving Ruff 0.16.3."}}, {"@type": "Question", "name": "How do I install the latest Ruff on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install ruff. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
 </div>
 
 <footer class="site-footer">
@@ -352,7 +352,7 @@ ruff format .         # format (Black-compatible)</code></pre></div>
  "@context": "https://schema.org",
  "@type": "TechArticle",
  "headline": "Install Latest Ruff Python Linter on Ubuntu",
- "description": "Complete guide to installing the latest Ruff Python linter and formatter on Ubuntu using the deb.griffo.io repository — system-wide, without pip.",
+ "description": "Complete guide to installing the latest Ruff Python linter and formatter on Ubuntu using the deb.griffo.io repository, system-wide, without pip.",
  "author": {
   "@type": "Person",
   "name": "Dario Griffo",

@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -23,7 +23,7 @@
 })();
 </script>
 <title>Install Latest DuckDB on Debian via apt</title>
-<meta name="description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid — not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
+<meta name="description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid, not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
 <meta name="keywords" content="duckdb debian, install duckdb debian, duckdb apt, duckdb cli, analytical database, in-process sql, olap database, sqlite for analytics, parquet sql, debian packages, bookworm, trixie, sid, apt duckdb">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-latest-duckdb-in-debian.html">
 <meta property="og:title" content="Install Latest DuckDB on Debian via apt">
-<meta property="og:description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid — not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
+<meta property="og:description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid, not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-latest-duckdb-in-debian.html">
 <meta property="twitter:title" content="Install Latest DuckDB on Debian via apt">
-<meta property="twitter:description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid — not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
+<meta property="twitter:description" content="Get DuckDB 1.5.5 via apt on Bookworm, Trixie, Forky and Sid, not in Debian's official archives. GPG-signed, rebuilt hours after each release.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-duckdb-in-debian.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-duckdb-in-debian.html">
@@ -129,9 +129,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -147,7 +147,7 @@
 <div class="container">
     <div class="header">
         <h1>🦆 Install Latest DuckDB on Debian</h1>
-        <p class="subtitle">A fast in-process analytical SQL database — SQLite for analytics</p>
+        <p class="subtitle">A fast in-process analytical SQL database, SQLite for analytics</p>
         <div class="version-badge">Latest version: 1.5.5 · updated 2026-07-22</div>
         <div class="version-compare">
 <table>
@@ -166,26 +166,26 @@
         <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-duckdb-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-duckdb-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-duckdb-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-duckdb-on-debian-sid.html">Debian Sid</a></div>
 
         <h2>What is DuckDB?</h2>
-        <p>DuckDB is a <strong>fast, in-process analytical SQL database</strong> — think "SQLite for analytics". It runs inside the calling process with no server to set up, queries CSV, Parquet and JSON files directly (<code>SELECT * FROM 'data.parquet'</code>), and speaks a rich, friendly SQL dialect with excellent performance on analytical workloads. This package ships the official <code>duckdb</code> CLI.</p>
+        <p>DuckDB is a <strong>fast, in-process analytical SQL database</strong>: think "SQLite for analytics". It runs inside the calling process with no server to set up, queries CSV, Parquet and JSON files directly (<code>SELECT * FROM 'data.parquet'</code>), and speaks a rich, friendly SQL dialect with excellent performance on analytical workloads. This package ships the official <code>duckdb</code> CLI.</p>
 
         <div class="comparison-box">
-            <strong>⚠️ No server, no daemon:</strong> DuckDB is an embedded database — it runs inside your process (or the CLI), so there is no service to configure, no port to open and no systemd unit. Install it and run <code>duckdb</code>. For the same reason, one database file belongs to one process at a time.
+            <strong>⚠️ No server, no daemon:</strong> DuckDB is an embedded database. It runs inside your process (or the CLI), so there is no service to configure, no port to open and no systemd unit. Install it and run <code>duckdb</code>. For the same reason, one database file belongs to one process at a time.
         </div>
 
         <div class="highlight-box">
-            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships — this repository publishes new upstream releases typically within hours, for every supported release including stable. A simple <code>apt upgrade</code> keeps you on the latest version.
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships. This repository publishes new upstream releases typically within hours, for every supported release including stable. A simple <code>apt upgrade</code> keeps you on the latest version.
         </div>
 
         <h3>⚡ Key Features of DuckDB</h3>
         <div class="feature-grid">
             <div class="feature-card">
                 <h4>📊 Built for Analytics</h4>
-                <p>A columnar, vectorized engine crunches millions of rows per second — aggregations, joins and window functions at OLAP speed.</p>
+                <p>A columnar, vectorized engine crunches millions of rows per second, aggregations, joins and window functions at OLAP speed.</p>
             </div>
 
             <div class="feature-card">
                 <h4>📁 Query Files Directly</h4>
-                <p><code>SELECT * FROM 'events.parquet'</code> — CSV, Parquet and JSON are queryable (and writable) without any import step.</p>
+                <p><code>SELECT * FROM 'events.parquet'</code>: CSV, Parquet and JSON are queryable (and writable) without any import step.</p>
             </div>
 
             <div class="feature-card">
@@ -195,17 +195,17 @@
 
             <div class="feature-card">
                 <h4>🔌 Runtime Extensions</h4>
-                <p><code>INSTALL httpfs;</code> pulls signed extensions from the official repository — S3/HTTP access, spatial, full-text search and more.</p>
+                <p><code>INSTALL httpfs;</code> pulls signed extensions from the official repository, S3/HTTP access, spatial, full-text search and more.</p>
             </div>
 
             <div class="feature-card">
                 <h4>🗣️ Friendly SQL</h4>
-                <p>SELECT * EXCLUDE, GROUP BY ALL, list/struct types, PIVOT — a modern dialect that removes boilerplate from everyday queries.</p>
+                <p>SELECT * EXCLUDE, GROUP BY ALL, list/struct types, PIVOT, a modern dialect that removes boilerplate from everyday queries.</p>
             </div>
 
             <div class="feature-card">
                 <h4>🤝 Plays Well with Others</h4>
-                <p>Reads SQLite, PostgreSQL and MySQL through extensions; exports Parquet/CSV/JSON — ideal glue for data pipelines.</p>
+                <p>Reads SQLite, PostgreSQL and MySQL through extensions; exports Parquet/CSV/JSON, ideal glue for data pipelines.</p>
             </div>
         </div>
 
@@ -213,10 +213,10 @@
             <h4>🏆 Why install it with apt?</h4>
             <ul>
                 <li><strong>Extensions just work:</strong> this package uses upstream's official glibc build, so <code>INSTALL httpfs;</code> matches the official <code>linux_amd64</code>/<code>linux_arm64</code> extension repository</li>
-                <li><strong>Every release, including stable:</strong> the official archives carry DuckDB only in testing/unstable — here Bookworm and Trixie get the same current version</li>
+                <li><strong>Every release, including stable:</strong> the official archives carry DuckDB only in testing/unstable, here Bookworm and Trixie get the same current version</li>
                 <li><strong>No curl-to-bin:</strong> a GPG-signed repository instead of downloading binaries into <code>/usr/local/bin</code> by hand</li>
                 <li><strong>Automatic updates:</strong> new upstream releases arrive with your normal <code>apt upgrade</code></li>
-                <li><strong>Multi-arch:</strong> amd64 and arm64 — the architectures upstream publishes Linux CLI binaries for</li>
+                <li><strong>Multi-arch:</strong> amd64 and arm64, the architectures upstream publishes Linux CLI binaries for</li>
             </ul>
         </div>
 
@@ -233,7 +233,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; DuckDB is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; DuckDB is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
         </div>
@@ -258,7 +258,7 @@ duckdb -c &quot;INSTALL httpfs; LOAD httpfs;&quot;      # extensions from the of
         <h3>🔗 Related Packages</h3>
         <p>Also available from deb.griffo.io:</p>
         <ul>
-            <li><a href="/install-latest-garage-in-debian.html">garage</a> - S3-compatible object storage — query it from DuckDB via httpfs</li>
+            <li><a href="/install-latest-garage-in-debian.html">garage</a> - S3-compatible object storage, query it from DuckDB via httpfs</li>
             <li><a href="/install-latest-tigerbeetle-in-debian.html">tigerbeetle</a> - A distributed financial transactions database</li>
             <li><a href="/install-latest-yq-in-debian.html">yq</a> - YAML/JSON/CSV wrangling on the command line</li>
         </ul>
@@ -306,11 +306,11 @@ duckdb -c &quot;INSTALL httpfs; LOAD httpfs;&quot;      # extensions from the of
 
 <div class="tool-extras">
 <section>
-<p>Just after the command? See <a href="/apt-install-duckdb.html">apt install duckdb</a> — one page covering Debian and Ubuntu.</p>
+<p>Just after the command? See <a href="/apt-install-duckdb.html">apt install duckdb</a>, one page covering Debian and Ubuntu.</p>
 <h2>📦 Recent releases from this repository</h2>
 <ul class="release-list">
-<li><code>1.5.5</code> — 2026-07-22</li>
-<li><code>1.5.4</code> — 2026-07-19</li>
+<li><code>1.5.5</code>: 2026-07-22</li>
+<li><code>1.5.4</code>: 2026-07-19</li>
 </ul>
 <h2>📚 Release-specific install guides</h2>
 <ul class="release-list">
@@ -324,12 +324,12 @@ duckdb -c &quot;INSTALL httpfs; LOAD httpfs;&quot;      # extensions from the of
 <li><a href="/install-duckdb-on-ubuntu-26-04-resolute.html">Install DuckDB on Ubuntu 26.04 LTS “Resolute”</a></li>
 </ul>
 <h2>❓ Frequently asked questions</h2>
-<details><summary>Is DuckDB in the official Debian repositories?</summary><p>No — DuckDB is not packaged in the official Debian archives. This repository is currently the only apt source, serving DuckDB 1.5.5.</p></details>
+<details><summary>Is DuckDB in the official Debian repositories?</summary><p>No, DuckDB is not packaged in the official Debian archives. This repository is currently the only apt source, serving DuckDB 1.5.5.</p></details>
 <details><summary>How do I install the latest DuckDB on Debian?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install duckdb. New releases arrive through the normal sudo apt upgrade.</p></details>
 <details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
 <details><summary>Which Debian releases are supported?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is DuckDB in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No — DuckDB is not packaged in the official Debian archives. This repository is currently the only apt source, serving DuckDB 1.5.5."}}, {"@type": "Question", "name": "How do I install the latest DuckDB on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install duckdb. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is DuckDB in the official Debian repositories?", "acceptedAnswer": {"@type": "Answer", "text": "No, DuckDB is not packaged in the official Debian archives. This repository is currently the only apt source, serving DuckDB 1.5.5."}}, {"@type": "Question", "name": "How do I install the latest DuckDB on Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install duckdb. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Debian releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky and Sid."}}]}</script>
 </div>
 
 <footer class="site-footer">

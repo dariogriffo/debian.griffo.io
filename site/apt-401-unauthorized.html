@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,8 +22,8 @@
   } catch (e) {}
 })();
 </script>
-<title>apt 401 Unauthorized from deb.griffo.io — what it means</title>
-<meta name="description" content="apt says 401 Unauthorized for deb.griffo.io? Nothing is broken — downloads need a subscription from 1 October 2026. Three ways forward, with the commands.">
+<title>apt 401 Unauthorized from deb.griffo.io, what it means</title>
+<meta name="description" content="apt says 401 Unauthorized for deb.griffo.io? Nothing is broken, downloads need a subscription from 1 October 2026. Three ways forward, with the commands.">
 <meta name="keywords" content="apt 401 unauthorized, deb.griffo.io 401, E: Failed to fetch 401 Unauthorized, apt auth.conf.d, apt repository authentication, apt unauthorized debian, apt install 401">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/apt-401-unauthorized.html">
 <meta property="og:title" content="apt: 401 Unauthorized from deb.griffo.io">
-<meta property="og:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026 — here are the three ways forward, with exact commands.">
+<meta property="og:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026, here are the three ways forward, with exact commands.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/apt-401-unauthorized.html">
 <meta property="twitter:title" content="apt: 401 Unauthorized from deb.griffo.io">
-<meta property="twitter:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026 — here are the three ways forward, with exact commands.">
+<meta property="twitter:description" content="Nothing is broken. Downloads need a subscription from 1 October 2026, here are the three ways forward, with exact commands.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -162,7 +162,7 @@
 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?</code></pre></div>
 
         <p>Running <code>apt-get update --fix-missing</code> will not help, because nothing is
-        missing — the server answered, and the answer was "you are not authenticated". Some
+        missing, the server answered, and the answer was "you are not authenticated". Some
         apt versions phrase it as <code>The repository … is not signed</code> only when the
         key is the problem; a bare <code>401</code> is always authentication.</p>
 
@@ -174,18 +174,18 @@ E: Unable to fetch some archives, maybe run apt-get update or try with --fix-mis
                 <tr><th>Command</th><th>Needs a subscription?</th></tr>
             </thead>
             <tbody>
-                <tr><td><code>apt update</code></td><td>No — the indexes stay open to everyone</td></tr>
+                <tr><td><code>apt update</code></td><td>No, the indexes stay open to everyone</td></tr>
                 <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>No</td></tr>
                 <tr><td>Browsing <a href="/apt/dists/">/apt/dists/</a></td><td>No</td></tr>
                 <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Yes</strong>, from 1 October 2026</td></tr>
-                <tr><td>Packages already installed</td><td>No — they keep working, nothing expires</td></tr>
-                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No — free forever, no account</td></tr>
-                <tr><td>The <code>.deb</code> files on GitHub</td><td>No — free forever</td></tr>
+                <tr><td>Packages already installed</td><td>No. They keep working, nothing expires</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No, free forever, no account</td></tr>
+                <tr><td>The <code>.deb</code> files on GitHub</td><td>No, free forever</td></tr>
             </tbody>
         </table>
         </div>
 
-        <h2 id="subscribed">1. You have a subscription — store the credentials</h2>
+        <h2 id="subscribed">1. You have a subscription, store the credentials</h2>
 
         <p>Credentials go in <code>/etc/apt/auth.conf.d/</code>, never in the
         <code>sources.list</code> line, where every user on the machine could read them and
@@ -213,10 +213,10 @@ apt update</code></pre></div>
 
         <p>Not subscribed yet and wondering what you would be signing up for?
         <a href="/how-subscriptions-work.html">How the subscription works</a> covers the whole
-        flow — credentials by email, unlimited machines, renewal, cancellation and refunds.</p>
+        flow, credentials by email, unlimited machines, renewal, cancellation and refunds.</p>
 
         <ul>
-            <li>The <code>machine</code> line is <code>deb.griffo.io</code> — <strong>no
+            <li>The <code>machine</code> line is <code>deb.griffo.io</code>: <strong>no
                 <code>https://</code></strong>, no trailing slash, no <code>/apt</code> path.</li>
             <li>The file is in <code>/etc/apt/auth.conf.d/</code> and its name ends in
                 <code>.conf</code>. apt silently ignores any other extension.</li>
@@ -224,7 +224,7 @@ apt update</code></pre></div>
                 credentials that other users can read.</li>
             <li>No stray quotes around the password, and no trailing whitespace.</li>
             <li>Still stuck? <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Ask in
-                Discord</a> — that is the fastest way to get it sorted.</li>
+                Discord</a>. That is the fastest way to get it sorted.</li>
         </ul>
 
         <h2 id="free">2. Switch to the always-free mirror</h2>
@@ -232,7 +232,7 @@ apt update</code></pre></div>
         <p><a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> needs no
         account and no payment, ever. It serves the newest release that is <strong>at least
         two months old</strong>, and publishes security and patch fixes for that release
-        immediately. It currently carries <strong>Ghostty, Oh My Posh and Zed</strong> — any other tool
+        immediately. It currently carries <strong>Ghostty, Oh My Posh and Zed</strong>: any other tool
         can be enrolled on request, so <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">ask
         in Discord</a> if you need one.</p>
 
@@ -250,7 +250,7 @@ apt update</code></pre></div>
         </div>
 
         <p>Do not enable both repositories at once. apt would install whichever version is
-        higher — the subscription one — and you would be back to a 401.
+        higher (the subscription one) and you would be back to a 401.
         <a href="/free.html">Full details of the free mirror →</a></p>
 
         <h2 id="github">3. Take the .deb from GitHub</h2>
@@ -263,7 +263,7 @@ apt update</code></pre></div>
 sudo apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre><pre class="variant variant-root"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
 apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
 
-        <p>You lose automatic upgrades — that is the thing the subscription pays for — but you
+        <p>You lose automatic upgrades (that is the thing the subscription pays for) but you
         never lose access to the software. Each tool's packaging repository is listed on
         <a href="/how-packages-are-built.html">how packages are built</a>.</p>
 
@@ -271,14 +271,14 @@ apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
 
         <p>Then you get a <strong>free lifetime subscription</strong>. Come to
         <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord</a> and it will be
-        sorted out — that promise stands regardless of when you supported.</p>
+        sorted out. That promise stands regardless of when you supported.</p>
 
         <h2>❓ Why this happened</h2>
 
         <p>Building 40+ tools for 8 Debian and Ubuntu suites, within hours of each upstream
         release, costs money and time every single day. The subscription pays for that; the
         free mirror exists so that nobody is locked out of software they have every right to
-        run. The packages themselves are open source and always will be — what you are paying
+        run. The packages themselves are open source and always will be, what you are paying
         for is the automation that keeps them current.
         <a href="/#pricing">Pricing →</a></p>
 
@@ -304,7 +304,7 @@ apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
   "@type": "FAQPage",
   "mainEntity": [
     {"@type": "Question", "name": "Why does apt say 401 Unauthorized for deb.griffo.io?",
-     "acceptedAnswer": {"@type": "Answer", "text": "From 1 October 2026 at 12:00 UK time, downloading packages from deb.griffo.io requires a subscription. apt update, apt policy and browsing the repository stay free for everyone; apt install and apt upgrade need credentials. A 401 means the server answered and the request was not authenticated — nothing on your system is broken and no installed package is affected."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "From 1 October 2026 at 12:00 UK time, downloading packages from deb.griffo.io requires a subscription. apt update, apt policy and browsing the repository stay free for everyone; apt install and apt upgrade need credentials. A 401 means the server answered and the request was not authenticated, nothing on your system is broken and no installed package is affected."}},
     {"@type": "Question", "name": "Where do apt credentials for deb.griffo.io go?",
      "acceptedAnswer": {"@type": "Answer", "text": "In a file under /etc/apt/auth.conf.d/ whose name ends in .conf, for example /etc/apt/auth.conf.d/deb.griffo.io.conf, containing three lines: machine deb.griffo.io, login your email, password your subscription password. The machine line must not include https:// or a path. Set the file to mode 600, owned by root, or apt will refuse to read it. Never put credentials in the sources.list line."}},
     {"@type": "Question", "name": "Can I keep using the repository for free?",

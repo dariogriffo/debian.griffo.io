@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,7 +22,7 @@
   } catch (e) {}
 })();
 </script>
-<title>How deb.griffo.io packages are built — public repos and CI</title>
+<title>How deb.griffo.io packages are built, public repos and CI</title>
 <meta name="description" content="Every .deb here is built by a public GitHub Actions workflow from a public packaging repo, against upstream's own source. Workflow, logs and debian/ are public.">
 <meta name="keywords" content="how deb.griffo.io builds packages, apt repository transparency, debian package build pipeline, verify apt repository, gpg signed apt repository, reproducible deb packaging, third party apt repository trust">
 <meta name="author" content="Dario Griffo">
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/how-packages-are-built.html">
 <meta property="og:title" content="How every package here is built">
-<meta property="og:description" content="Public packaging repo, public CI logs, upstream source, GPG-signed archive — and the commands to check all of it yourself.">
+<meta property="og:description" content="Public packaging repo, public CI logs, upstream source, GPG-signed archive, and the commands to check all of it yourself.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/how-packages-are-built.html">
 <meta property="twitter:title" content="How every package here is built">
-<meta property="twitter:description" content="Public packaging repo, public CI logs, upstream source, GPG-signed archive — and the commands to check all of it yourself.">
+<meta property="twitter:description" content="Public packaging repo, public CI logs, upstream source, GPG-signed archive, and the commands to check all of it yourself.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -180,15 +180,15 @@
         <h3>3. The build itself</h3>
         <p>Each suite is built in a container matching that suite, so a package built for
         <code>bookworm</code> links against bookworm's libraries and a package built for
-        <code>noble</code> links against noble's. Three jobs run per release — Debian binaries,
-        Ubuntu binaries, and the source package — and the release job requires all three to
+        <code>noble</code> links against noble's. Three jobs run per release (Debian binaries,
+        Ubuntu binaries, and the source package) and the release job requires all three to
         succeed. Debug symbols are packaged separately as <code>-dbgsym</code>.</p>
 
         <p>The artifacts are published as a <strong>GitHub release</strong> tagged
         <code>&lt;upstream version&gt;+&lt;build number&gt;</code>: the <code>.deb</code> files,
         the <code>.dsc</code>, the <code>.orig.tar.gz</code> and the
         <code>.debian.tar.xz</code>. Those files are public, permanent, and are exactly the
-        files the mirror ingests — the release page is the artifact, not a description of one.</p>
+        files the mirror ingests, the release page is the artifact, not a description of one.</p>
 
         <h3>4. Ingest and signing</h3>
         <p>The mirror polls every packaging repository for a newly <em>published</em> release
@@ -222,7 +222,7 @@ apt-cache madison ghostty</code></pre></div>
 <span class="comment"># fingerprint must be EA0F721D 231F DD3A 0A17 B9AC 7808 B4DD 62C4 1256</span></code></pre></div>
 
         <p><strong>Compare the .deb apt would install against the artifact GitHub built.</strong>
-        Download both and hash them — same file, same digest:</p>
+        Download both and hash them, same file, same digest:</p>
         <div class="code-block"><pre><code>apt-get download ghostty
 sha256sum ghostty_*.deb
 <span class="comment"># then compare against the .deb attached to the matching release at</span>
@@ -240,8 +240,7 @@ apt-get build-dep ghostty</code></pre></div>
 
         <h2>📦 Every package, and where it is built</h2>
 
-        <p>One row per tool: the apt package name, the packaging repository that builds it —
-        build scripts, <code>debian/</code> directory, workflow file and CI logs — and the
+        <p>One row per tool: the apt package name, the packaging repository that builds it (        build scripts, <code>debian/</code> directory, workflow file and CI logs) and the
         upstream project it is built from.</p>
 
         <div class="lane-table-wrap">
@@ -308,7 +307,7 @@ apt-get build-dep ghostty</code></pre></div>
 
         <ul>
             <li><strong>Not bit-for-bit reproducible builds.</strong> The builds are public,
-                scripted and repeatable, and you can rebuild from the source package — but this
+                scripted and repeatable, and you can rebuild from the source package, but this
                 repository does not currently claim byte-identical rebuilds in the
                 <a href="https://reproducible-builds.org/" rel="noopener">Reproducible Builds</a>
                 sense.</li>
@@ -321,7 +320,7 @@ apt-get build-dep ghostty</code></pre></div>
                 unavoidable it lives in <code>debian/patches</code> in the packaging repo, in
                 the open.</li>
             <li><strong>Not a single point of trust you have to accept blindly.</strong> If any
-                of it stops being verifiable, that is a bug — report it on the packaging
+                of it stops being verifiable, that is a bug, report it on the packaging
                 repository.</li>
         </ul>
 
@@ -329,7 +328,7 @@ apt-get build-dep ghostty</code></pre></div>
 
         <p>The always-free mirror at
         <a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> serves the
-        same artifacts, from the same builds, signed with the same key — just at a delay of at
+        same artifacts, from the same builds, signed with the same key, just at a delay of at
         least two months, with security and patch fixes published immediately.
         <a href="/free.html">How the free mirror works →</a></p>
 

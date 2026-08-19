@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -33,12 +33,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/apt-gpg-key-error.html">
 <meta property="og:title" content="apt NO_PUBKEY and “not signed”: fixing GPG key errors">
-<meta property="og:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by — including the permissions trap.">
+<meta property="og:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by, including the permissions trap.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/apt-gpg-key-error.html">
 <meta property="twitter:title" content="apt NO_PUBKEY and “not signed”: fixing GPG key errors">
-<meta property="twitter:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by — including the permissions trap.">
+<meta property="twitter:description" content="Each apt key error, its real cause, and the modern fix with /etc/apt/keyrings and signed-by, including the permissions trap.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -149,7 +149,7 @@
             four things: the key was never imported, it was saved in the wrong
             <em>format</em>, it was saved in the wrong <em>place</em>, or the keyring file is
             not readable by the <code>_apt</code> user. The modern fix for all of them is the
-            same — an armoured key dearmoured into <code>/etc/apt/keyrings/</code>, mode
+            same, an armoured key dearmoured into <code>/etc/apt/keyrings/</code>, mode
             <code>644</code>, referenced by <code>signed-by=</code> in that one repository's
             sources entry. Never <code>apt-key add</code>, and never a key in
             <code>/etc/apt/trusted.gpg</code>.
@@ -168,7 +168,7 @@ E: The repository &#039;https://deb.griffo.io/apt trixie InRelease&#039; is not 
         <div class="code-block"><pre><code>E: The repository &#039;https://… trixie InRelease&#039; is not signed.
 N: Updating from such a repository can&#039;t be done securely, and is therefore disabled by default.</code></pre></div>
         <p>Same cause as above in most cases. It genuinely means "unsigned" only when the
-        repository ships no <code>InRelease</code> or <code>Release.gpg</code> at all — check
+        repository ships no <code>InRelease</code> or <code>Release.gpg</code> at all, check
         by opening <code>&lt;repo&gt;/dists/&lt;suite&gt;/InRelease</code> in a browser. For
         this repository it is always present, so the key is the problem, not the archive.</p>
 
@@ -181,7 +181,7 @@ N: Updating from such a repository can&#039;t be done securely, and is therefore
 
         <h3>“Release file is not valid yet”</h3>
         <div class="code-block"><pre><code>E: Release file for https://… is not valid yet (invalid for another 5h 12min 4s).</code></pre></div>
-        <p>Not a key problem — your system clock is wrong. Fix the clock
+        <p>Not a key problem, your system clock is wrong. Fix the clock
         (<code>sudo timedatectl set-ntp true</code>) rather than reaching for
         <code>-o Acquire::Check-Valid-Until=false</code>.</p>
 
@@ -210,7 +210,7 @@ apt update</code></pre></div>
                 the binary form. Saving an <code>.asc</code> file <em>named</em>
                 <code>.gpg</code> is the single most common cause of NO_PUBKEY. If you prefer
                 to skip dearmouring, keep the <code>.asc</code> extension and point
-                <code>signed-by=</code> at the <code>.asc</code> file — apt reads either, but
+                <code>signed-by=</code> at the <code>.asc</code> file, apt reads either, but
                 the name must match the contents.</li>
             <li><code>/etc/apt/keyrings/</code> is the directory for third-party keys on
                 current Debian and Ubuntu. <code>/usr/share/keyrings/</code> is for keys
@@ -238,7 +238,7 @@ apt-key --keyring /etc/apt/trusted.gpg del 7808B4DD62C41256</code></pre></div>
 
         <p>Then add <code>signed-by=</code> to that repository's sources entry, as above. Keys
         in <code>/etc/apt/trusted.gpg.d/*.gpg</code> are still honoured and are not deprecated
-        in the same way, but they are also system-wide — moving them to
+        in the same way, but they are also system-wide, moving them to
         <code>keyrings/</code> plus <code>signed-by=</code> is still the better end state.</p>
 
         <h2>🔍 Verify it worked</h2>
@@ -257,19 +257,19 @@ apt update</code></pre></div>
 
         <p>The fingerprint must read
         <code>EA0F 721D 231F DD3A 0A17&nbsp; B9AC 7808 B4DD 62C4 1256</code>. If it does not,
-        you have imported someone else's key — stop and re-fetch it from
+        you have imported someone else's key, stop and re-fetch it from
         <a href="/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc">the source</a>.
         <a href="/how-packages-are-built.html">How these packages are built and signed →</a></p>
 
         <h2>🚫 What not to do</h2>
 
         <ul>
-            <li><strong><code>apt-key add</code></strong> — deprecated and removed in newer
+            <li><strong><code>apt-key add</code></strong>: deprecated and removed in newer
                 releases; it also grants the key system-wide trust.</li>
-            <li><strong><code>[trusted=yes]</code></strong> in a sources entry — this disables
+            <li><strong><code>[trusted=yes]</code></strong> in a sources entry. This disables
                 signature checking for that repository entirely. It makes the error go away by
                 removing the security the error exists to provide.</li>
-            <li><strong><code>--allow-unauthenticated</code></strong> — same objection, per
+            <li><strong><code>--allow-unauthenticated</code></strong>: same objection, per
                 command.</li>
             <li><strong>Downloading a key over plain HTTP</strong>, or from a mirror you did
                 not verify. The key is what makes everything else trustworthy.</li>
@@ -278,12 +278,11 @@ apt update</code></pre></div>
         <h2>🔗 Related</h2>
 
         <ul>
-            <li><a href="/deb822-sources-debian-13.html">deb822 <code>.sources</code> on Debian 13</a>
-                — the modern replacement for the one-line <code>sources.list</code> entry above,
+            <li><a href="/deb822-sources-debian-13.html">deb822 <code>.sources</code> on Debian 13</a>, the modern replacement for the one-line <code>sources.list</code> entry above,
                 where the signing key is named inside the source itself.</li>
-            <li><a href="/apt-401-unauthorized.html">apt: 401 Unauthorized</a> — the other error
+            <li><a href="/apt-401-unauthorized.html">apt: 401 Unauthorized</a>, the other error
                 this repository can return, and what it means.</li>
-            <li><a href="/how-packages-are-built.html">How every package here is built</a> — what
+            <li><a href="/how-packages-are-built.html">How every package here is built</a>, what
                 the signature you just imported is actually attesting to.</li>
         </ul>
 

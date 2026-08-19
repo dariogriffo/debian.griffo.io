@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -23,7 +23,7 @@
 })();
 </script>
 <title>apt.cli.rs is gone: where its Rust CLI tools live now</title>
-<meta name="description" content="apt.cli.rs was sunset in November 2025. Where its tools live now: most are in Debian 13 and Ubuntu, two are packaged nowhere — plus how to remove the dead repo.">
+<meta name="description" content="apt.cli.rs was sunset in November 2025. Where its tools live now: most are in Debian 13 and Ubuntu, two are packaged nowhere, plus how to remove the dead repo.">
 <meta name="keywords" content="apt.cli.rs alternative, apt cli rs shut down, rust cli tools apt, ripgrep apt repository, eza apt, bat fd apt debian, bottom gitui debian package, apt.cli.rs replacement">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -140,7 +140,7 @@
 <div class="container">
     <div class="header">
         <h1>🦀 apt.cli.rs shut down. Now what?</h1>
-        <p class="subtitle">Where each of its Rust CLI tools lives today — checked 2026-08-19</p>
+        <p class="subtitle">Where each of its Rust CLI tools lives today, checked 2026-08-19</p>
     </div>
 
     <div class="content">
@@ -150,7 +150,7 @@
             good news is that you probably need less of a replacement than you think: by
             Debian 13 “Trixie” and current Ubuntu, <strong>most of its catalogue is in the
             official archives</strong>. Remove the dead repository, install from Debian, and
-            come here only for the tools the archives do not carry — or when the archive
+            come here only for the tools the archives do not carry, or when the archive
             version is too far behind to be useful.
         </div>
 
@@ -171,7 +171,7 @@ rm -f /etc/apt/keyrings/*cli*rs*.gpg /etc/apt/trusted.gpg.d/*cli*rs*.gpg
 apt update</code></pre></div>
         </div>
 
-        <p>Packages you already installed from it keep working — a <code>.deb</code> does not
+        <p>Packages you already installed from it keep working, a <code>.deb</code> does not
         stop functioning when its repository goes away. They simply stop receiving updates,
         which is what the rest of this page is about.</p>
 
@@ -209,7 +209,7 @@ apt update</code></pre></div>
 
         <p>It launched when Debian genuinely had none of these tools. That is no longer the
         situation: Debian 13 carries almost the whole list, and for most of them the archive
-        version is one or two minor releases behind upstream — close enough that a separate
+        version is one or two minor releases behind upstream, close enough that a separate
         repository is not worth the trust cost. These are mature, slow-moving tools;
         <code>hyperfine</code> and <code>procs</code> in Debian are within a patch release of
         upstream today.</p>
@@ -218,7 +218,7 @@ apt update</code></pre></div>
         <strong>if the archive version does what you need, use the archive.</strong> It is
         maintained by people with a security team behind them and it costs you no additional
         trust. A third-party repository has to earn its place with a gap that actually affects
-        you — a tool the archive does not have at all, or one where the version difference is
+        you, a tool the archive does not have at all, or one where the version difference is
         the difference between working and not.</p>
 
         <h2>📦 Where this repository does help</h2>
@@ -226,7 +226,7 @@ apt update</code></pre></div>
         <p>For the five tools above that we build, the difference is cadence: this repository
         rebuilds within hours of each upstream release, so <code>apt upgrade</code> keeps you
         on the current version rather than the one frozen at the distro's release date. That
-        matters most for the fast-moving tools — the ones shipping every few weeks — and least
+        matters most for the fast-moving tools (the ones shipping every few weeks) and least
         for the ones that release twice a year.</p>
 
         <div class="install-steps">
@@ -242,8 +242,7 @@ apt update
 apt install ripgrep eza zoxide starship fzf</code></pre></div>
         </div>
 
-        <p>Every package is built by a public workflow in a public repository —
-        <a href="/how-packages-are-built.html">here is exactly how, and how to verify it</a>.
+        <p>Every package is built by a public workflow in a public repository, <a href="/how-packages-are-built.html">here is exactly how, and how to verify it</a>.
         From 1 October 2026 downloads need a subscription; there is an
         <a href="/free.html">always-free mirror</a> and the <code>.deb</code> files stay
         downloadable from GitHub regardless.</p>
@@ -255,7 +254,7 @@ apt install ripgrep eza zoxide starship fzf</code></pre></div>
         itself. If you would use them from apt,
         <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">say so in Discord</a> or
         <a href="https://github.com/dariogriffo/debian.griffo.io/issues" rel="noopener">open an
-        issue</a> — demand is how the packaging queue gets ordered.</p>
+        issue</a>, demand is how the packaging queue gets ordered.</p>
 
         <p class="back-link"><a href="/">← All packages served by deb.griffo.io</a></p>
     </div>

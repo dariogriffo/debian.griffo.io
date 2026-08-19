@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,7 +22,7 @@
   } catch (e) {}
 })();
 </script>
-<title>How the subscription works — payment and apt credentials</title>
+<title>How the subscription works, payment and apt credentials</title>
 <meta name="description" content="After you pay for deb.griffo.io: an email with your apt credentials, HTTP Basic auth in /etc/apt/auth.conf.d, no seat limits, and how renewal works.">
 <meta name="keywords" content="deb.griffo.io subscription, apt authentication, apt basic auth, apt auth.conf.d credentials, private apt repository login, apt repository password, stripe subscription apt, deb.griffo.io credentials">
 <meta name="author" content="Dario Griffo">
@@ -129,9 +129,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -153,8 +153,8 @@
     <div class="content">
         <div class="highlight-box">
             <strong>⚡ The short answer.</strong> You pay through Stripe. Within a couple of
-            minutes an email arrives with two things: a <strong>login</strong> — the email
-            address you used at checkout — and a <strong>generated password</strong>. You put
+            minutes an email arrives with two things: a <strong>login</strong> (the email
+            address you used at checkout) and a <strong>generated password</strong>. You put
             those in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> and
             <code>apt</code> sends them over HTTPS with every download. There is no account
             portal to log into, no token to rotate, no licence file, and no limit on how many
@@ -167,7 +167,7 @@
             <li>You complete checkout on <strong>Stripe</strong>. Card details go to Stripe and
                 never touch this server.</li>
             <li>Stripe confirms the payment and notifies the repository. This is the moment
-                access is created — not the moment the checkout page closes, so a payment still
+                access is created, not the moment the checkout page closes, so a payment still
                 being authorised takes a little longer.</li>
             <li>Your account is created and a password is generated for it, at random, on the
                 server.</li>
@@ -177,7 +177,7 @@
         </ol>
 
         <p>If it has not arrived within a few minutes, check spam first, then
-        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">ask in Discord</a> — that is the
+        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">ask in Discord</a>. That is the
         fastest way to get it sorted, and the account can be looked up by the email you paid
         with.</p>
 
@@ -189,23 +189,23 @@
                 <tr><th>Field</th><th>Value</th></tr>
             </thead>
             <tbody>
-                <tr><td>Login</td><td>The email address used at checkout — nothing to choose or remember</td></tr>
+                <tr><td>Login</td><td>The email address used at checkout, nothing to choose or remember</td></tr>
                 <tr><td>Password</td><td>24 random characters, generated server-side, never chosen by you</td></tr>
-                <tr><td>Stored as</td><td>A bcrypt hash. The plaintext is not kept — it cannot be looked up later, by me or by anyone else</td></tr>
+                <tr><td>Stored as</td><td>A bcrypt hash. The plaintext is not kept. It cannot be looked up later, by me or by anyone else</td></tr>
                 <tr><td>Expiry</td><td>None. The password does not rotate or time out; only the subscription behind it decides access</td></tr>
                 <tr><td>Machines</td><td>Unlimited. No seat count, no activation, no device registration</td></tr>
             </tbody>
         </table>
         </div>
 
-        <p>Because only the hash is stored, a lost password cannot be recovered — but a new one
+        <p>Because only the hash is stored, a lost password cannot be recovered, but a new one
         can be issued on request. Reply to the welcome email or ask in Discord, and you get
         fresh credentials; the old password stops working the moment the new one is issued.
         Keep the welcome email, or better, put the password in your password manager.</p>
 
         <h2>🖥️ 3. How apt authenticates</h2>
 
-        <p>Plain <strong>HTTP Basic authentication over HTTPS</strong> — the mechanism
+        <p>Plain <strong>HTTP Basic authentication over HTTPS</strong>: the mechanism
         <code>apt</code> has supported natively for years, with no plugin, no helper binary and
         no extra package. Credentials belong in <code>/etc/apt/auth.conf.d/</code>, never in the
         <code>sources.list</code> line, where every user on the machine could read them and apt
@@ -235,11 +235,10 @@ apt update</code></pre></div>
         </div>
 
         <p>That is the whole integration. Three details matter, and they are the three things
-        that go wrong: the <code>machine</code> line is bare —
-        <code>deb.griffo.io</code>, with no <code>https://</code>, no trailing slash and no
+        that go wrong: the <code>machine</code> line is bare, <code>deb.griffo.io</code>, with no <code>https://</code>, no trailing slash and no
         <code>/apt</code> path; the filename ends in <code>.conf</code>, because apt silently
         ignores any other extension; and the file is root-owned and mode <code>600</code>,
-        because apt refuses to read credentials other users can read — which is why the file is
+        because apt refuses to read credentials other users can read, which is why the file is
         created empty at mode <code>600</code> above, before the password is written into it.
         <a href="/apt-401-unauthorized.html">If apt returns 401, the full checklist is here →</a></p>
 
@@ -250,14 +249,14 @@ apt update</code></pre></div>
 
         <h2>🏗️ 4. Servers, containers and CI</h2>
 
-        <p>One set of credentials covers every machine you run — workstation, laptops, servers,
+        <p>One set of credentials covers every machine you run, workstation, laptops, servers,
         build agents. Drop the same <code>auth.conf.d</code> file on each, or mount it as a
         secret in CI. What you should not do is bake it into a container image that gets pushed
         to a public registry: it is a password in a file, and it travels with whatever you copy
         it into. For images, prefer a build secret, or install the <code>.deb</code> from its
         public GitHub release, which needs no credentials at all.</p>
 
-        <h2>🔄 5. Yearly subscription — the full lifecycle</h2>
+        <h2>🔄 5. Yearly subscription, the full lifecycle</h2>
 
         <div class="lane-table-wrap">
         <table class="lane-table">
@@ -265,9 +264,9 @@ apt update</code></pre></div>
                 <tr><th>What happens</th><th>Effect on your access</th></tr>
             </thead>
             <tbody>
-                <tr><td>Renewal, once a year</td><td>Silent. Stripe charges the card, the period extends, <strong>your credentials do not change</strong> — nothing to do, nothing to re-run</td></tr>
+                <tr><td>Renewal, once a year</td><td>Silent. Stripe charges the card, the period extends, <strong>your credentials do not change</strong>: nothing to do, nothing to re-run</td></tr>
                 <tr><td>You cancel</td><td>Via the cancellation link in your welcome email. Access continues to the <strong>end of the period you already paid for</strong>, then stops</td></tr>
-                <tr><td>A payment fails</td><td>Access stops. Fixing the card and paying restores it — ask in Discord if you get stuck</td></tr>
+                <tr><td>A payment fails</td><td>Access stops. Fixing the card and paying restores it, ask in Discord if you get stuck</td></tr>
                 <tr><td>You resubscribe later</td><td>The same account and the <strong>same password</strong> are reactivated. No new email is sent, because nothing changed</td></tr>
                 <tr><td>You request a refund</td><td>Access is revoked immediately when the refund is issued</td></tr>
                 <tr><td>Access ends</td><td>You get an email saying so, and <code>apt install</code> starts returning 401. Packages already installed are untouched</td></tr>
@@ -275,11 +274,11 @@ apt update</code></pre></div>
         </table>
         </div>
 
-        <h2>♾️ 6. Lifetime — what is different</h2>
+        <h2>♾️ 6. Lifetime, what is different</h2>
 
         <p>Lifetime is a single payment, not a subscription. There is nothing to renew and
         nothing to cancel, no card on file to expire, and price changes do not reach you. The
-        credentials work exactly the same way — same login, same
+        credentials work exactly the same way, same login, same
         <code>auth.conf.d</code> file, same everything. If you already had a yearly subscription
         and upgrade, you keep the credentials you have; you get a confirmation email rather than
         a new password. The one thing that ends lifetime access is a refund.</p>
@@ -292,13 +291,13 @@ apt update</code></pre></div>
                 <tr><th>Command</th><th>Needs credentials?</th></tr>
             </thead>
             <tbody>
-                <tr><td><code>apt update</code></td><td>No — the indexes stay open to everyone</td></tr>
+                <tr><td><code>apt update</code></td><td>No, the indexes stay open to everyone</td></tr>
                 <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>No</td></tr>
                 <tr><td>Browsing <a href="/apt/dists/">/apt/dists/</a></td><td>No</td></tr>
                 <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Yes</strong></td></tr>
-                <tr><td>Packages already installed</td><td>No — they never expire or check a licence</td></tr>
-                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No — free forever, no account</td></tr>
-                <tr><td>The <code>.deb</code> files on GitHub</td><td>No — free forever</td></tr>
+                <tr><td>Packages already installed</td><td>No. They never expire or check a licence</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>No, free forever, no account</td></tr>
+                <tr><td>The <code>.deb</code> files on GitHub</td><td>No, free forever</td></tr>
             </tbody>
         </table>
         </div>
@@ -318,7 +317,7 @@ apt update</code></pre></div>
 
         <h2>❓ Still unsure?</h2>
 
-        <p>Ask before you pay — <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">the
+        <p>Ask before you pay, <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">the
         Discord</a> is the fastest way to reach me, and questions about how any of this works
         are welcome. If you supported the project on Buy Me a Coffee in the past, come and say
         so there: you get a free lifetime subscription.</p>
@@ -345,17 +344,17 @@ apt update</code></pre></div>
   "@type": "FAQPage",
   "mainEntity": [
     {"@type": "Question", "name": "How is access authenticated after paying for deb.griffo.io?",
-     "acceptedAnswer": {"@type": "Answer", "text": "With HTTP Basic authentication over HTTPS, which apt supports natively. After payment an email is sent with a login — the email address used at Stripe checkout — and a randomly generated password. Those two lines go in a file under /etc/apt/auth.conf.d/ named deb.griffo.io.conf, owned by root with mode 600, and apt sends them with every package download. There is no account portal, no token to rotate and no licence file."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "With HTTP Basic authentication over HTTPS, which apt supports natively. After payment an email is sent with a login (the email address used at Stripe checkout) and a randomly generated password. Those two lines go in a file under /etc/apt/auth.conf.d/ named deb.griffo.io.conf, owned by root with mode 600, and apt sends them with every package download. There is no account portal, no token to rotate and no licence file."}},
     {"@type": "Question", "name": "How soon after payment do the credentials arrive?",
      "acceptedAnswer": {"@type": "Answer", "text": "Within a couple of minutes. The account is created when Stripe confirms the payment rather than when the checkout page closes, so a payment still being authorised takes a little longer. The email goes to the address given at checkout; if it has not arrived, check spam and then ask in the project Discord."}},
     {"@type": "Question", "name": "How many machines can use one subscription?",
-     "acceptedAnswer": {"@type": "Answer", "text": "As many as you run. There is no seat count, no activation and no device registration — the same credentials work on every workstation, server and build agent. They should not be baked into a container image pushed to a public registry, since they are a password in a file; use a build secret or install the .deb from its public GitHub release instead."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "As many as you run. There is no seat count, no activation and no device registration, the same credentials work on every workstation, server and build agent. They should not be baked into a container image pushed to a public registry, since they are a password in a file; use a build secret or install the .deb from its public GitHub release instead."}},
     {"@type": "Question", "name": "What happens when a yearly subscription renews?",
-     "acceptedAnswer": {"@type": "Answer", "text": "Nothing on your side. Stripe charges the card, the subscription period is extended and the credentials stay exactly the same — no new email, no file to update, no command to re-run."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "Nothing on your side. Stripe charges the card, the subscription period is extended and the credentials stay exactly the same, no new email, no file to update, no command to re-run."}},
     {"@type": "Question", "name": "What happens if I cancel the subscription?",
-     "acceptedAnswer": {"@type": "Answer", "text": "Cancelling through the link in the welcome email stops the next payment. Access continues until the end of the period already paid for, then the credentials stop working and apt install returns 401. Packages already installed are unaffected — they never expire or check a licence. A refund, unlike a cancellation, revokes access immediately."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "Cancelling through the link in the welcome email stops the next payment. Access continues until the end of the period already paid for, then the credentials stop working and apt install returns 401. Packages already installed are unaffected. They never expire or check a licence. A refund, unlike a cancellation, revokes access immediately."}},
     {"@type": "Question", "name": "What if I lose the password?",
-     "acceptedAnswer": {"@type": "Answer", "text": "Only a bcrypt hash of the password is stored, so it cannot be looked up or recovered. A new password can be issued on request — reply to the welcome email or ask in Discord — and the old one stops working as soon as the new one is issued."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "Only a bcrypt hash of the password is stored, so it cannot be looked up or recovered. A new password can be issued on request (reply to the welcome email or ask in Discord) and the old one stops working as soon as the new one is issued."}},
     {"@type": "Question", "name": "Is lifetime access authenticated differently?",
      "acceptedAnswer": {"@type": "Answer", "text": "No. Lifetime uses the same login, the same auth.conf.d file and the same mechanism as the yearly plan. The difference is billing: one payment, nothing to renew, nothing to cancel, and no exposure to future price changes. Only a refund ends lifetime access."}}
   ]

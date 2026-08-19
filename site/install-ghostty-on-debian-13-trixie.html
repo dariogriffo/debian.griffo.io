@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,7 +22,7 @@
   } catch (e) {}
 })();
 </script>
-<title>Install Ghostty on Debian 13 (trixie) — 1.3.1 via apt</title>
+<title>Install Ghostty on Debian 13 (trixie), 1.3.1 via apt</title>
 <meta name="description" content="Install Ghostty 1.3.1 on Debian 13 “Trixie” with apt. deb.griffo.io serves ghostty 1.3.1-6~trixie for trixie, updated 2026-08-19.">
 <meta name="keywords" content="ghostty trixie, install ghostty Debian 13, ghostty Debian 13, apt ghostty trixie, ghostty deb trixie, latest ghostty Debian 13">
 <meta name="author" content="Dario Griffo">
@@ -32,12 +32,12 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-ghostty-on-debian-13-trixie.html">
-<meta property="og:title" content="Install Ghostty on Debian 13 (trixie) — 1.3.1 via apt">
+<meta property="og:title" content="Install Ghostty on Debian 13 (trixie), 1.3.1 via apt">
 <meta property="og:description" content="Latest Ghostty packages for Debian 13 “Trixie” from the deb.griffo.io apt repository. Currently serving 1.3.1-6~trixie.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-ghostty-on-debian-13-trixie.html">
-<meta property="twitter:title" content="Install Ghostty on Debian 13 (trixie) — 1.3.1 via apt">
+<meta property="twitter:title" content="Install Ghostty on Debian 13 (trixie), 1.3.1 via apt">
 <meta property="twitter:description" content="Latest Ghostty packages for Debian 13 “Trixie” from the deb.griffo.io apt repository. Currently serving 1.3.1-6~trixie.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -148,7 +148,7 @@
 
         <div class="highlight-box">
             <strong>📦 Currently serving:</strong> <code>ghostty 1.3.1-6~trixie</code> for <strong>trixie</strong>
-            (updated 2026-08-19) — architectures: amd64. This page is regenerated automatically from the
+            (updated 2026-08-19), architectures: amd64. This page is regenerated automatically from the
             repository metadata, so the version above is exactly what <code>apt install ghostty</code> gives you today.
         </div>
 
@@ -157,7 +157,7 @@
         specifically at <strong>trixie</strong>, with dependencies matching what Debian 13 actually ships.</p>
 
         <p><strong>And then it keeps doing it.</strong> Every new upstream release is packaged and published
-        here within hours, so Ghostty updates arrive the same way your system updates do — through
+        here within hours, so Ghostty updates arrive the same way your system updates do, through
         <code>apt upgrade</code>, unattended-upgrades, or whatever already runs on your machine. No release
         page to watch, no version to compare, no <code>dpkg -i</code> to remember.</p>
 
@@ -175,7 +175,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt trixie main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 Free forever alternative.</strong> Ghostty is also in the always-free mirror at <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> — no account, no subscription, at most 2 months behind upstream, and security fixes published immediately. Add that repository instead of the one above:</p>
+  <p><strong>🆓 Free forever alternative.</strong> Ghostty is also in the always-free mirror at <a href="https://deb-free.griffo.io">deb-free.griffo.io</a>, no account, no subscription, at most 2 months behind upstream, and security fixes published immediately. Add that repository instead of the one above:</p>
   <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
@@ -197,7 +197,7 @@ apt update</code></pre></div>
         </div>
 
         <h3>🔄 Updating</h3>
-        <p>Updates arrive through normal system maintenance — new upstream releases are usually packaged within hours:</p>
+        <p>Updates arrive through normal system maintenance, new upstream releases are usually packaged within hours:</p>
         <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt update &amp;&amp; sudo apt install --only-upgrade ghostty</code></pre><pre class="variant variant-root"><code>apt update &amp;&amp; apt install --only-upgrade ghostty</code></pre></div>
 
         <h3>🗑️ Uninstalling</h3>
@@ -208,7 +208,7 @@ sudo rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.
 rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gpg</code></pre></div>
 
         <h2>📋 Ghostty versions across Debian &amp; Ubuntu releases</h2>
-        <p>The same repository serves every supported release — this table is generated from the live
+        <p>The same repository serves every supported release. This table is generated from the live
         repository metadata:</p>
         <table class="controls-table">
             <tr><th>Release</th><th>Suite</th><th>Ghostty version</th></tr>
@@ -221,7 +221,7 @@ rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gp
         <h2>❓ Frequently asked questions</h2>
 
         <h3>Is this an official Ghostty package?</h3>
-        <p>No — deb.griffo.io is an unofficial repository maintained by
+        <p>No, deb.griffo.io is an unofficial repository maintained by
         <a href="https://github.com/dariogriffo" rel="noopener">Dario Griffo</a>. Packages are built
         automatically from official upstream Ghostty releases; the packaging is open source at
         <a href="https://github.com/dariogriffo/ghostty-debian" rel="noopener">dariogriffo/ghostty-debian</a>.</p>
@@ -238,9 +238,9 @@ rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gp
 
         <h2>🔗 Related</h2>
         <ul>
-            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty on Debian — overview and features</a></li>
-            <li><a href="/install-latest-herdr-in-debian.html">herdr — same category (terminal)</a></li>
-            <li><a href="/install-latest-zellij-in-debian.html">zellij — same category (terminal)</a></li>
+            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty on Debian, overview and features</a></li>
+            <li><a href="/install-latest-herdr-in-debian.html">herdr, same category (terminal)</a></li>
+            <li><a href="/install-latest-zellij-in-debian.html">zellij, same category (terminal)</a></li>
             <li><a href="/">All packages served by deb.griffo.io</a></li>
         </ul>
 

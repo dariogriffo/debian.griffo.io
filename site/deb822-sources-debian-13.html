@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -149,7 +149,7 @@
             prefers the <strong>deb822</strong> format: multi-line stanzas in
             <code>/etc/apt/sources.list.d/*.sources</code> instead of one-line
             <code>deb …</code> entries in <code>*.list</code>. Old <code>.list</code> files
-            still work — nothing breaks — and <code>apt modernize-sources</code> converts them
+            still work (nothing breaks) and <code>apt modernize-sources</code> converts them
             for you, keeping backups. The one rule: never describe the same repository in both
             formats at once.
         </div>
@@ -168,7 +168,7 @@ Signed-By: /etc/apt/keyrings/deb.griffo.io.gpg</code></pre></div>
 
         <p>Both describe exactly the same thing. The gain is that each field is named, so
         nothing depends on the order of bracketed options, and multi-value fields stop needing
-        a separate line per combination — <code>Types: deb deb-src</code> and
+        a separate line per combination, <code>Types: deb deb-src</code> and
         <code>Suites: trixie forky sid</code> replace what would otherwise be six one-line
         entries.</p>
 
@@ -186,7 +186,7 @@ apt update</code></pre></div>
         </div>
 
         <p>It asks before touching anything and tells you what it changed. On older releases
-        the command does not exist — write the stanza by hand, as above.</p>
+        the command does not exist, write the stanza by hand, as above.</p>
 
         <h2>✍️ Writing a third-party entry by hand</h2>
 
@@ -203,12 +203,12 @@ Enabled: yes</code></pre></div>
         <p>Field notes that matter in practice:</p>
 
         <ul>
-            <li><code>Signed-By:</code> takes a path to a keyring — or the armoured key
+            <li><code>Signed-By:</code> takes a path to a keyring, or the armoured key
                 inline, indented, if you would rather not manage a separate file. A path is
                 easier to audit. See <a href="/apt-gpg-key-error.html">apt GPG key errors</a>
                 if that key is giving you trouble.</li>
             <li><code>Architectures:</code> is how you stop apt fetching an index that does not
-                exist for your machine — useful on arm64 hosts where a repository only ships
+                exist for your machine, useful on arm64 hosts where a repository only ships
                 amd64.</li>
             <li><code>Enabled: no</code> disables a repository without deleting the file, which
                 is much nicer than commenting out a line.</li>
@@ -216,7 +216,7 @@ Enabled: yes</code></pre></div>
                 several repositories. A stray blank line inside a stanza silently splits it in
                 two.</li>
             <li>The file must end in <code>.sources</code>. apt ignores any other extension in
-                that directory — the same trap as <code>.list</code>.</li>
+                that directory, the same trap as <code>.list</code>.</li>
         </ul>
 
         <h2>⚠️ The mistake to avoid</h2>
@@ -229,14 +229,14 @@ Enabled: yes</code></pre></div>
    /etc/apt/sources.list.d/deb.griffo.io.sources:1</code></pre></div>
 
         <p>It is a warning rather than an error, and it is harmless in itself, but it means
-        every <code>apt update</code> fetches the same index twice — and if the two entries
+        every <code>apt update</code> fetches the same index twice, and if the two entries
         ever drift apart, you will be debugging a repository that is configured two ways at
         once. Delete or rename the <code>.list</code> file.</p>
 
         <h2>🐧 Should you convert?</h2>
 
         <p>There is no deadline. One-line entries are still read by apt and will be for a long
-        time. Convert when you want the clarity — particularly if you manage machines with a
+        time. Convert when you want the clarity, particularly if you manage machines with a
         configuration tool, where a named-field format is far easier to template than a line of
         bracketed options. If you have a working <code>.list</code> file and no reason to
         touch it, leaving it alone is a perfectly good decision.</p>

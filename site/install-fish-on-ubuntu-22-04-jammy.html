@@ -6,7 +6,7 @@
 <script>
 /* sudo/root preference, applied before first paint so a returning "as root"
    visitor never sees the sudo commands flash. Also marks the document as
-   scripted, which is what reveals the toggle — a switch that cannot switch is
+   scripted, which is what reveals the toggle, a switch that cannot switch is
    worse than no switch.
 
    Failure modes, all of which must still render "with sudo":
@@ -22,7 +22,7 @@
   } catch (e) {}
 })();
 </script>
-<title>Install fish on Ubuntu 22.04 LTS (jammy) — 4.8.1 via apt</title>
+<title>Install fish on Ubuntu 22.04 LTS (jammy), 4.8.1 via apt</title>
 <meta name="description" content="Install fish 4.8.1 on Ubuntu 22.04 LTS “Jammy Jellyfish” with apt. deb.griffo.io serves fish 4.8.1-1~jammy for jammy, updated 2026-08-19.">
 <meta name="keywords" content="fish jammy, install fish Ubuntu 22.04 LTS, fish Ubuntu 22.04 LTS, apt fish jammy, fish deb jammy, latest fish Ubuntu 22.04 LTS">
 <meta name="author" content="Dario Griffo">
@@ -32,12 +32,12 @@
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/install-fish-on-ubuntu-22-04-jammy.html">
-<meta property="og:title" content="Install fish on Ubuntu 22.04 LTS (jammy) — 4.8.1 via apt">
+<meta property="og:title" content="Install fish on Ubuntu 22.04 LTS (jammy), 4.8.1 via apt">
 <meta property="og:description" content="Latest fish packages for Ubuntu 22.04 LTS “Jammy Jellyfish” from the deb.griffo.io apt repository. Currently serving 4.8.1-1~jammy.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/install-fish-on-ubuntu-22-04-jammy.html">
-<meta property="twitter:title" content="Install fish on Ubuntu 22.04 LTS (jammy) — 4.8.1 via apt">
+<meta property="twitter:title" content="Install fish on Ubuntu 22.04 LTS (jammy), 4.8.1 via apt">
 <meta property="twitter:description" content="Latest fish packages for Ubuntu 22.04 LTS “Jammy Jellyfish” from the deb.griffo.io apt repository. Currently serving 4.8.1-1~jammy.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
@@ -122,9 +122,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
-      ⚡ <strong>49 developer tools, always updated</strong> — new upstream releases land in <code>apt</code> within hours.
+      ⚡ <strong>49 developer tools, always updated</strong> , new upstream releases land in <code>apt</code> within hours.
       <!-- general channel; the package-request prompt uses a different
-           invite on purpose — see DISCORD_* in sitegen/layout.py -->
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
     </p>
     <p class="announce-notice">
@@ -148,7 +148,7 @@
 
         <div class="highlight-box">
             <strong>📦 Currently serving:</strong> <code>fish 4.8.1-1~jammy</code> for <strong>jammy</strong>
-            (updated 2026-08-19) — architectures: amd64, arm64. This page is regenerated automatically from the
+            (updated 2026-08-19), architectures: amd64, arm64. This page is regenerated automatically from the
             repository metadata, so the version above is exactly what <code>apt install fish</code> gives you today.
         </div>
 
@@ -157,7 +157,7 @@
         specifically at <strong>jammy</strong>, with dependencies matching what Ubuntu 22.04 LTS actually ships.</p>
 
         <p><strong>And then it keeps doing it.</strong> Every new upstream release is packaged and published
-        here within hours, so fish updates arrive the same way your system updates do — through
+        here within hours, so fish updates arrive the same way your system updates do, through
         <code>apt upgrade</code>, unattended-upgrades, or whatever already runs on your machine. No release
         page to watch, no version to compare, no <code>dpkg -i</code> to remember.</p>
 
@@ -175,7 +175,7 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt jammy main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever — no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; fish is not one of them, so the repository above is the only way to get it today — ask and it can be enrolled.</p>
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries Ghostty, Oh My Posh and Zed; fish is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
 
@@ -190,7 +190,7 @@ apt update</code></pre></div>
         </div>
 
         <h3>🔄 Updating</h3>
-        <p>Updates arrive through normal system maintenance — new upstream releases are usually packaged within hours:</p>
+        <p>Updates arrive through normal system maintenance, new upstream releases are usually packaged within hours:</p>
         <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt update &amp;&amp; sudo apt install --only-upgrade fish</code></pre><pre class="variant variant-root"><code>apt update &amp;&amp; apt install --only-upgrade fish</code></pre></div>
 
         <h3>🗑️ Uninstalling</h3>
@@ -201,7 +201,7 @@ sudo rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.
 rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gpg</code></pre></div>
 
         <h2>📋 fish versions across Debian &amp; Ubuntu releases</h2>
-        <p>The same repository serves every supported release — this table is generated from the live
+        <p>The same repository serves every supported release. This table is generated from the live
         repository metadata:</p>
         <table class="controls-table">
             <tr><th>Release</th><th>Suite</th><th>fish version</th></tr>
@@ -218,7 +218,7 @@ rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gp
         <h2>❓ Frequently asked questions</h2>
 
         <h3>Is this an official fish package?</h3>
-        <p>No — deb.griffo.io is an unofficial repository maintained by
+        <p>No, deb.griffo.io is an unofficial repository maintained by
         <a href="https://github.com/dariogriffo" rel="noopener">Dario Griffo</a>. Packages are built
         automatically from official upstream fish releases; the packaging is open source at
         <a href="https://github.com/dariogriffo/fish-shell-debian" rel="noopener">dariogriffo/fish-shell-debian</a>.</p>
@@ -235,19 +235,19 @@ rm /etc/apt/sources.list.d/deb.griffo.io.list /etc/apt/keyrings/deb.griffo.io.gp
 
         <h2>🔗 Related</h2>
         <ul>
-            <li><a href="/install-latest-fish-in-ubuntu.html">fish on Ubuntu — overview and features</a></li>
-            <li><a href="/install-latest-atuin-in-debian.html">atuin — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-btm-in-debian.html">btm — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-eza-in-debian.html">eza — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-fastfetch-in-debian.html">fastfetch — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-fzf-in-debian.html">fzf — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-just-in-debian.html">just — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-nushell-in-debian.html">nushell — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-oh-my-posh-in-debian.html">oh-my-posh — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-starship-in-debian.html">starship — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-television-in-debian.html">television — same category (shell-tools)</a></li>
-            <li><a href="/install-latest-zoxide-in-debian.html">zoxide — same category (shell-tools)</a></li>
+            <li><a href="/install-latest-fish-in-ubuntu.html">fish on Ubuntu, overview and features</a></li>
+            <li><a href="/install-latest-atuin-in-debian.html">atuin, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-btm-in-debian.html">btm, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-eza-in-debian.html">eza, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-fastfetch-in-debian.html">fastfetch, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-just-in-debian.html">just, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-nushell-in-debian.html">nushell, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-oh-my-posh-in-debian.html">oh-my-posh, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-starship-in-debian.html">starship, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-television-in-debian.html">television, same category (shell-tools)</a></li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide, same category (shell-tools)</a></li>
             <li><a href="/">All packages served by deb.griffo.io</a></li>
         </ul>
 
