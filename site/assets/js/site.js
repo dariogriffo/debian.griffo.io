@@ -209,6 +209,75 @@
   //   - the server fell back to Accept-Language or the default, where a live
   //     lookup may still do better.
   // Never overrides a geoip result, and never guesses from the timezone — that
+  // ── Review carousel ─────────────────────────────────────────────────────
+  // Advances the reviews on a timer. Deliberately built on the container's own
+  // scroll position rather than a transform: the track is a plain overflow-x
+  // element, so with this script absent or failed it is still a swipeable row
+  // of readable cards. The reviews back the Review nodes in the page's JSON-LD
+  // and Google expects them visible, so they must never depend on JS to exist.
+  var carousels = document.querySelectorAll('[data-review-carousel].review-rotates');
+  var stillMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  carousels.forEach(function (root) {
+    var track = root.querySelector('.review-track');
+    var cards = track ? track.querySelectorAll('.review-card') : [];
+    var dots = root.querySelectorAll('.review-dot');
+    if (!track || cards.length < 2) { return; }
+
+    var index = 0;
+    var timer = null;
+    var DELAY = 7000;
+
+    function show(i, smooth) {
+      index = (i + cards.length) % cards.length;
+      var card = cards[index];
+      track.scrollTo({
+        left: card.offsetLeft - (track.clientWidth - card.clientWidth) / 2,
+        behavior: smooth === false ? 'auto' : 'smooth'
+      });
+      dots.forEach(function (d, n) { d.classList.toggle('active', n === index); });
+    }
+
+    function start() {
+      // Someone who asked the OS for less motion gets the cards, not the ride.
+      if (stillMotion && stillMotion.matches) { return; }
+      stop();
+      timer = setInterval(function () { show(index + 1); }, DELAY);
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { show(+d.dataset.index); start(); });
+    });
+    // Pause while it is being read or interacted with, and while the tab is
+    // hidden — rotating in a background tab burns battery for nobody.
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+    track.addEventListener('touchstart', stop, { passive: true });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); } else { start(); }
+    });
+    // Keep the dots honest when someone swipes the track by hand.
+    var settle;
+    track.addEventListener('scroll', function () {
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        var mid = track.scrollLeft + track.clientWidth / 2;
+        var nearest = 0, best = Infinity;
+        cards.forEach(function (c, n) {
+          var d = Math.abs(c.offsetLeft + c.clientWidth / 2 - mid);
+          if (d < best) { best = d; nearest = n; }
+        });
+        index = nearest;
+        dots.forEach(function (d, n) { d.classList.toggle('active', n === index); });
+      }, 120);
+    }, { passive: true });
+
+    show(0, false);
+    start();
+  });
+
   // was the old heuristic and it is strictly worse than asking the server.
   var priceEls = document.querySelectorAll('[data-amount]');
   var source = document.body.dataset.currencySource;

@@ -860,3 +860,92 @@ h4.block-subtitle {
 .install-steps, .installer-steps { margin: 26px 0; }
 .install-steps > h3, .installer-steps > h3 { margin-top: 0; }
 .counter { font-variant-numeric: tabular-nums; }
+
+/* ── Reviews ─────────────────────────────────────────────────────────────
+   Reviews of the repository, on the homepages. The markup here mirrors the
+   Review nodes in the page's JSON-LD: Google requires the review it is asked
+   to trust to be visible to a reader, so this section is not decoration, it
+   is the thing the structured data points at.
+
+   Links use #FF7BA8, the same rose every other link on the site uses. When
+   this stylesheet was missing the cards rendered as bare text and the links
+   fell back to browser-default blue, which is what "the links are blue"
+   meant. */
+/* Narrower than the section on purpose: at 1120px two cards fit side by side,
+   the track never overflows and the carousel has nothing to advance. At 780px
+   a second review is already enough to make it move, which is the point. */
+.review-carousel { position: relative; margin: 34px auto 0; max-width: 780px; }
+.review-track {
+  display: flex; gap: 22px; overflow-x: auto; scroll-behavior: smooth;
+  scroll-snap-type: x mandatory; padding: 4px; scrollbar-width: none;
+  /* "safe" so that when the cards do overflow, the first one stays reachable;
+     plain `center` makes the leading overflow unscrollable in every browser */
+  justify-content: safe center;
+}
+.review-track::-webkit-scrollbar { display: none; }
+
+.review-card {
+  /* one card fills most of the track, so an advance slides a whole review
+     past rather than nudging two half-visible ones along */
+  flex: 0 0 min(600px, 84vw); scroll-snap-align: center;
+  display: flex; flex-direction: column; gap: 14px; padding: 28px 26px; margin: 0;
+  text-align: left; background: var(--panel-bg); border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  transition: transform 0.5s var(--silk-ease), border-color 0.5s var(--silk-ease);
+}
+.review-card:hover { transform: translateY(-3px); border-color: rgba(255, 123, 168, 0.28); }
+
+.review-rating { display: flex; align-items: baseline; gap: 10px; }
+.review-stars { color: var(--ubuntu); font-size: 1.05rem; letter-spacing: 2px; }
+.review-rating-text { color: var(--slate-light); font-size: 0.8rem; }
+
+.review-headline {
+  margin: 0; font-size: 1.05rem; line-height: 1.35; color: var(--ivory); font-weight: 600;
+}
+.review-body { margin: 0; }
+.review-body p { margin: 0; color: var(--ivory-muted); line-height: 1.65; font-size: 0.95rem; }
+
+.review-who {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding-top: 14px; border-top: 1px solid var(--panel-border);
+}
+.review-avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; }
+.review-avatar-anon {
+  display: grid; place-items: center; background: var(--graphite); color: var(--slate-light);
+  font-family: var(--mono);
+}
+.review-who-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.review-name { color: var(--ivory); font-weight: 600; font-size: 0.92rem; text-decoration: none; }
+a.review-name { color: #FF7BA8; }
+a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
+.review-context { color: var(--slate-warm); font-size: 0.78rem; }
+.review-verified { color: var(--win); font-size: 0.78rem; }
+.review-source {
+  margin-left: auto; color: #FF7BA8; font-size: 0.78rem; text-decoration: none;
+  white-space: nowrap; border-bottom: 1px solid rgba(255, 123, 168, 0.3);
+}
+.review-source:hover { border-bottom-color: #FF7BA8; }
+
+.review-dots { display: flex; justify-content: center; gap: 9px; margin-top: 22px; }
+.review-dot {
+  width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--graphite-soft); transition: background 0.4s var(--silk-ease), width 0.4s var(--silk-ease);
+}
+.review-dot:hover { background: var(--slate-warm); }
+.review-dot.active { width: 22px; border-radius: 4px; background: #FF7BA8; }
+
+.review-cta { margin-top: 24px; }
+.review-cta a {
+  color: #FF7BA8; text-decoration: none; font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 123, 168, 0.3);
+}
+.review-cta a:hover { border-bottom-color: #FF7BA8; }
+
+@media (max-width: 560px) {
+  .review-source { margin-left: 0; width: 100%; }
+}
+/* Someone who has asked the OS for less motion gets a static, swipeable row;
+   site.js checks the same query before starting its timer. */
+@media (prefers-reduced-motion: reduce) {
+  .review-track { scroll-behavior: auto; }
+}
