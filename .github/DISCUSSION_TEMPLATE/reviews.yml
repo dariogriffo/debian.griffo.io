@@ -75,19 +75,19 @@ body:
         here if you would like those linked too.
       placeholder: "https://hachyderm.io/@you, https://you.dev"
 
-  - type: checkboxes
-    id: consent
+  - type: dropdown
+    id: publishing
     attributes:
       label: Publishing
+      description: >-
+        Pick one. Whichever you choose, this post stays public here; this is only about what
+        goes on deb.griffo.io.
       options:
-        - label: >-
-            You may publish this review on deb.griffo.io with my name, my GitHub avatar and a
-            link to my profile, alongside a link back to this post.
-          required: true
-        - label: >-
-            Override the above — publish the review anonymously, with no name, avatar or
-            profile link. Tick this only if you want the review used but not attributed.
-          required: false
+        - "Publish it with my name, my GitHub avatar and a link to my profile"
+        - "Publish it anonymously, with no name, avatar or profile link"
+        - "Do not publish it, this is just feedback for you"
+    validations:
+      required: true
 
   - type: markdown
     attributes:
