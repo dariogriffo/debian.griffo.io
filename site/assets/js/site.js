@@ -15,22 +15,63 @@
   var scrollPct = document.getElementById('scrollPct');
   var dots = document.querySelectorAll('.side-panel.left .side-dot');
 
-  function onScroll() {
-    var y = window.scrollY;
-    if (topNav) { topNav.classList.toggle('scrolled', y > 40); }
+  // This used to read scrollY, toggle a class on the nav, and then ask for
+  // document.scrollHeight. That last read comes after a write, so the browser
+  // had to flush layout synchronously to answer it — on every scroll event, on
+  // a document 26,000px tall. Lighthouse measured 165ms of forced reflow, and
+  // it was costing real scrolling, not only the audit.
+  //
+  // Two changes. The document's height cannot change while you scroll, so it is
+  // measured once and re-measured only when something actually resizes; and the
+  // handler now does all of its reading before any of its writing, so nothing
+  // asks the browser a question it needs a fresh layout to answer.
+  var scrollMax = 0;
+  function measureDocument() {
+    scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+  }
 
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = max > 0 ? Math.min(100, (y / max) * 100) : 0;
+  var queued = false;
+  function onScroll() {
+    if (queued) { return; }
+    queued = true;
+    requestAnimationFrame(paintScrollState);
+  }
+
+  function paintScrollState() {
+    queued = false;
+    // reads
+    if (!scrollMax) { measureDocument(); }
+    var y = window.scrollY;
+    var pct = scrollMax > 0 ? Math.min(100, (y / scrollMax) * 100) : 0;
+    var active = dots.length
+      ? Math.min(dots.length - 1, Math.floor((pct / 100) * dots.length))
+      : -1;
+    // writes
+    if (topNav) { topNav.classList.toggle('scrolled', y > 40); }
     if (leftTrack) { leftTrack.style.height = pct + '%'; }
     if (rightTrack) { rightTrack.style.height = (100 - pct) + '%'; }
     if (scrollPct) { scrollPct.textContent = String(Math.round(pct)).padStart(2, '0'); }
-    if (dots.length) {
-      var active = Math.min(dots.length - 1, Math.floor((pct / 100) * dots.length));
+    if (active >= 0) {
       dots.forEach(function (d, i) { d.classList.toggle('active', i === active); });
     }
   }
+
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.addEventListener('resize', measureDocument, { passive: true });
+  if ('ResizeObserver' in window) {
+    // images and fonts landing after first paint change the document's height
+    new ResizeObserver(measureDocument).observe(document.body);
+  }
+  // Measuring the document is itself a layout, and the side panels it feeds are
+  // decoration: nothing needs them before the page has painted. So the first
+  // measurement waits for idle, and a scroll that arrives before that takes its
+  // own measurement rather than showing zero.
+  function initScrollState() { measureDocument(); paintScrollState(); }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(initScrollState, { timeout: 2000 });
+  } else {
+    setTimeout(initScrollState, 200);
+  }
 
   // ── Smooth scroll for in-page anchors ──
   // Nav links are written absolute ("/#pricing") so they work from sub-pages;
