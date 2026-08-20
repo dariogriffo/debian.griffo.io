@@ -48,6 +48,17 @@
   --win: #4ADE80;
   --lose: #F87171;
   --mono: 'DejaVu Sans Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* One rose for every link on the site. Cerise itself is too dark to read as
+     body text on the deep background, so links are a lifted tint of it — and
+     they are tokens, not literals, so a link can never drift out of the set. */
+  --link: #FF7BA8;
+  --link-hover: #FFB3CC;
+  --link-rule: rgba(255, 123, 168, 0.3);
+  --link-rule-hover: #FF7BA8;
+  /* the always-free lane, told apart from the paid repository at a glance */
+  --link-free: #8CD79A;
+  --link-free-rule: rgba(140, 215, 154, 0.35);
 }
 
 html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 90px; }
@@ -62,6 +73,27 @@ body {
 }
 
 ::selection { background: var(--debian-glow); color: #fff; }
+::-moz-selection { background: var(--debian-glow); color: #fff; }
+
+/* ── The link floor ──
+   Every link colour below is scoped to the block it lives in, which means any
+   link written in a block nobody thought about renders in the browser default
+   blue — and, once clicked, purple. That is what "some links are blue" was.
+   `:where()` carries no specificity, so this loses to every rule in the file
+   and can never fight one; it only catches what nothing else claims. Author
+   origin still beats the browser's own stylesheet, so the blue is gone for
+   good. */
+:where(a) { color: var(--link); text-decoration: none; }
+:where(a:visited) { color: var(--link); }
+:where(a:hover) { color: var(--link-hover); }
+
+/* Keyboard users get the same care as pointer users: one ring, on brand,
+   never on a mouse click. */
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
 
 /* ── Atmosphere ── */
 .grain {
@@ -81,13 +113,14 @@ body {
 .top-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 600;
   display: flex; justify-content: space-between; align-items: center;
-  gap: 24px; padding: 20px 40px;
+  gap: 24px;
+  padding: 20px max(40px, env(safe-area-inset-right)) 20px max(40px, env(safe-area-inset-left));
   transition: background 0.8s var(--silk-ease), padding 0.8s var(--silk-ease);
 }
 .top-nav.scrolled {
   background: rgba(15, 17, 21, 0.85);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  padding: 12px 40px;
+  padding: 12px max(40px, env(safe-area-inset-right)) 12px max(40px, env(safe-area-inset-left));
   border-bottom: 1px solid var(--panel-border);
 }
 .nav-brand {
@@ -95,7 +128,7 @@ body {
   font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--ivory); text-decoration: none; white-space: nowrap;
 }
-.nav-brand img { width: 26px; height: auto; }
+.nav-brand img { width: 26px; height: auto; border-radius: 6px; }
 .nav-brand span { font-weight: 300; color: var(--slate-warm); letter-spacing: 0.12em; }
 .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
 .nav-links a {
@@ -188,6 +221,19 @@ body {
 .mobile-menu.open .mobile-menu-link:nth-child(5) { transition-delay: 0.30s; }
 .mobile-menu.open .mobile-menu-link:nth-child(6) { transition-delay: 0.36s; }
 .mobile-menu.open .mobile-menu-link:nth-child(7) { transition-delay: 0.42s; }
+/* The nav CTA is hidden below 900px because it will not fit beside the brand,
+   which left the phone with no way to reach pricing except by hunting for it
+   in the menu list. It lives at the foot of the open panel instead. */
+.mobile-menu-foot {
+  display: flex; flex-direction: column; gap: 14px; align-items: stretch;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s var(--silk-ease) 0.34s, transform 0.6s var(--silk-ease) 0.34s;
+}
+.mobile-menu.open .mobile-menu-foot { opacity: 1; transform: translateY(0); }
+.mobile-menu-foot .btn-primary { justify-content: center; padding: 16px 30px; font-size: 14px; }
+.mobile-menu-note { font-size: 12.5px; color: var(--slate-warm); text-align: center; }
+.mobile-menu-note a { color: var(--link-free); }
 
 /* ── Side panels ── */
 .side-panel {
@@ -224,7 +270,7 @@ body {
   font-family: var(--mono); font-size: 0.9em;
   background: rgba(0,0,0,0.32); padding: 1px 6px; border-radius: 4px; color: var(--ivory);
 }
-.announce a { color: #FF7BA8; font-weight: 600; text-decoration: none; }
+.announce a { color: var(--link); font-weight: 600; text-decoration: none; }
 .announce a:hover { text-decoration: underline; }
 /* the cutover notice is the reason the banner exists — give it separation */
 .announce-notice {
@@ -232,13 +278,21 @@ body {
   border-top: 1px solid rgba(215,10,83,0.18);
 }
 .announce-notice time { white-space: nowrap; }
+/* "1 октября 2026 года, 12:00 по времени Великобритании" is 52 characters. On
+   a phone it has to be allowed to break, or it takes the banner with it. */
+@media (max-width: 720px) { .announce-notice time { white-space: normal; } }
 .announce-sep { color: var(--slate-warm); margin: 0 4px; }
 /* the free-lane link in the banner is green, matching the notice on the pages
    themselves, so paywall and free lane are told apart at a glance */
-.announce-notice a[href="/free.html"] { color: #8CD79A; }
+.announce-notice a[href="/free.html"] { color: var(--link-free); }
 
 /* ── Layout ── */
-.main { position: relative; z-index: 10; max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+.main {
+  position: relative; z-index: 10; max-width: 1120px; margin: 0 auto;
+  /* max() so a notch or a rounded corner in landscape never eats the text */
+  padding-left: max(40px, env(safe-area-inset-left));
+  padding-right: max(40px, env(safe-area-inset-right));
+}
 .section { padding: 96px 0; position: relative; }
 .section-tag {
   font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
@@ -261,21 +315,37 @@ body {
    table wrapper, not inside it, so it is not caught by the horizontal scroll */
 .vc-more { margin: 14px 0 0; font-size: 14px; text-align: center; }
 .vc-more a {
-  color: #FF7BA8; text-decoration: none; border-bottom: 1px solid rgba(255,123,168,0.3);
+  color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-rule);
 }
-.vc-more a:hover { border-bottom-color: #FF7BA8; }
+.vc-more a:hover { color: var(--link-hover); border-bottom-color: var(--link-rule-hover); }
 
 .section-body a, .pricing-note a, .pricing-desc a, .faq-answer-inner a {
-  color: #FF7BA8; text-decoration: none; border-bottom: 1px solid rgba(255,123,168,0.3);
+  color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-rule);
 }
 .section-body a:hover, .pricing-note a:hover, .pricing-desc a:hover,
-.faq-answer-inner a:hover { border-bottom-color: #FF7BA8; }
+.faq-answer-inner a:hover { color: var(--link-hover); border-bottom-color: var(--link-rule-hover); }
 .section-center { text-align: center; }
 .section-center .section-body { margin: 0 auto; }
 .silk-divider {
   width: 100px; height: 1px; margin: 0 auto;
   background: linear-gradient(90deg, transparent, rgba(215,10,83,0.5), transparent);
 }
+/* A 46px heading over a 350px screen strands its last word on a line of its
+   own more often than not. `balance` evens the lines out; `pretty` does the
+   same job for prose, where it only polices the last line. Both are ignored by
+   browsers that do not know them, so there is nothing to fall back to. */
+h1, h2, h3, h4,
+.section-title, .container > .header h1, .review-headline, .faq-question {
+  text-wrap: balance;
+}
+.hero-sub, .section-body, .container .subtitle, .prose,
+.container > .content p, .review-body p, .announce p {
+  text-wrap: pretty;
+}
+/* A bare URL or a 40-character path in running text is not a reason to widen
+   the page. */
+p, li, dd, figcaption, blockquote { overflow-wrap: break-word; }
+
 h3.block-title {
   font-size: 17px; font-weight: 600; margin: 34px 0 14px; color: var(--ivory);
   letter-spacing: -0.01em;
@@ -286,8 +356,8 @@ h4.block-subtitle {
 }
 .prose { font-size: 15px; color: var(--ivory-muted); line-height: 1.85; }
 .prose + .prose { margin-top: 14px; }
-.prose a, .link { color: #FF7BA8; text-decoration: none; border-bottom: 1px solid rgba(255,123,168,0.3); }
-.prose a:hover, .link:hover { border-bottom-color: #FF7BA8; }
+.prose a, .link { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-rule); }
+.prose a:hover, .link:hover { color: var(--link-hover); border-bottom-color: var(--link-rule-hover); }
 .prose code, .inline-code {
   font-family: var(--mono); font-size: 0.88em;
   background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 4px;
@@ -333,7 +403,7 @@ h4.block-subtitle {
   -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 40%, #000 20%, transparent 75%);
 }
 .hero-logos { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 26px; }
-.hero-logos img { height: 52px; width: auto; opacity: 0.92; transition: opacity 0.3s, transform 0.3s; }
+.hero-logos img { height: 52px; width: auto; opacity: 0.92; border-radius: 10px; transition: opacity 0.3s, transform 0.3s; }
 .hero-logos a:hover img { opacity: 1; transform: translateY(-2px); }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px;
@@ -391,9 +461,38 @@ h4.block-subtitle {
 .ticker-item { font-size: 13px; font-weight: 500; color: var(--slate-light); white-space: nowrap; }
 .ticker-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--debian); opacity: 0.6; }
 
+/* ── Horizontal scrollers ──
+   Tables of releases and versions are wider than a phone and always will be.
+   Every one of them scrolls inside its own box rather than widening the page,
+   and they all carry the same slim, on-brand scrollbar so a scrollable table
+   looks scrollable. */
+.table-wrap, .lane-table-wrap, .version-compare, .version-compare-index,
+div.controls-table, .code-block pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--graphite-soft) transparent;
+}
+.table-wrap::-webkit-scrollbar, .lane-table-wrap::-webkit-scrollbar,
+.version-compare::-webkit-scrollbar, .version-compare-index::-webkit-scrollbar,
+div.controls-table::-webkit-scrollbar, .code-block pre::-webkit-scrollbar {
+  height: 6px;
+}
+.table-wrap::-webkit-scrollbar-thumb, .lane-table-wrap::-webkit-scrollbar-thumb,
+.version-compare::-webkit-scrollbar-thumb, .version-compare-index::-webkit-scrollbar-thumb,
+div.controls-table::-webkit-scrollbar-thumb, .code-block pre::-webkit-scrollbar-thumb {
+  background: var(--graphite-soft); border-radius: 3px;
+}
+.table-wrap::-webkit-scrollbar-track, .lane-table-wrap::-webkit-scrollbar-track,
+.version-compare::-webkit-scrollbar-track, .version-compare-index::-webkit-scrollbar-track,
+div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 /* ── Version comparison table ── */
 .table-wrap {
-  overflow-x: auto; border: 1px solid var(--panel-border); border-radius: 16px;
+  border: 1px solid var(--panel-border); border-radius: 16px;
   background: var(--panel-bg); margin-top: 26px;
 }
 .vc-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 620px; }
@@ -420,7 +519,7 @@ h4.block-subtitle {
   background: #0B0D10; border: 1px solid var(--panel-border); border-radius: 12px;
 }
 .code-block pre {
-  margin: 0; padding: 18px 20px; overflow-x: auto;
+  margin: 0; padding: 18px 20px;
   font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #CBD5E1;
 }
 .code-block .comment { color: var(--slate-warm); }
@@ -435,6 +534,14 @@ h4.block-subtitle {
 .code-block:hover .copy-btn, .copy-btn:focus { opacity: 1; }
 .copy-btn:hover { color: var(--ivory); border-color: var(--debian); }
 .copy-btn.copied { color: var(--win); border-color: var(--win); }
+/* A button revealed on hover does not exist on a phone. Where there is no
+   pointer to hover with, it is always on — and the block opens a band at the
+   top for it to sit in, so it never covers the first line of the command. */
+@media (hover: none) {
+  .code-block { padding-top: 38px; }
+  .code-block pre { padding-top: 2px; }
+  .copy-btn { opacity: 1; top: 9px; padding: 7px 13px; }
+}
 
 /* ── sudo / root toggle ──
    One switch for the whole page: the state lives in data-install-variant on
@@ -501,7 +608,7 @@ h4.block-subtitle {
   padding: 11px 18px; border-radius: 40px; font-size: 13.5px; color: var(--ivory-muted);
   background: var(--panel-bg); border: 1px dashed rgba(215,10,83,0.35);
 }
-.request-note a { color: #FF7BA8; font-weight: 600; text-decoration: none; }
+.request-note a { color: var(--link); font-weight: 600; text-decoration: none; }
 .request-note a:hover { text-decoration: underline; }
 .request-sep { color: var(--slate-warm); }
 @media (max-width: 560px) { .request-note { display: flex; flex-wrap: wrap; } }
@@ -605,7 +712,7 @@ h4.block-subtitle {
   font-size: 12.5px; color: var(--slate-warm); line-height: 1.8;
   max-width: 620px; margin: 30px auto 0;
 }
-.pricing-foot a { color: #FF7BA8; text-decoration: none; }
+.pricing-foot a { color: var(--link); text-decoration: none; }
 .pricing-foot a:hover { text-decoration: underline; }
 /* Footnote marker: quiet enough to sit on a CTA without competing with it. */
 .pricing-star { font-size: 0.75em; opacity: 0.7; margin-left: 2px; }
@@ -617,14 +724,14 @@ h4.block-subtitle {
   max-width: 620px; margin: 32px auto 0;
 }
 .pricing-access a { color: var(--debian); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
-.pricing-access a:hover { color: #FF7BA8; }
+.pricing-access a:hover { color: var(--link); }
 .pricing-terms {
   font-size: 12px; color: var(--slate-warm); line-height: 1.7;
   max-width: 620px; margin: 26px auto 0;
 }
 .pricing-terms .pricing-star { margin: 0 3px 0 0; }
 .pricing-terms a { color: var(--slate-light); text-decoration: underline; text-underline-offset: 2px; }
-.pricing-terms a:hover { color: #FF7BA8; }
+.pricing-terms a:hover { color: var(--link); }
 
 /* ── FAQ ── */
 .faq-list { max-width: 780px; margin: 34px auto 0; text-align: left; }
@@ -656,8 +763,22 @@ h4.block-subtitle {
 .site-footer p { font-size: 12.5px; color: var(--slate-warm); line-height: 1.9; }
 .site-footer p + p { font-size: 11px; }
 .site-footer a { color: var(--slate-light); text-decoration: none; }
-.site-footer a:hover { color: var(--debian); }
+.site-footer a:hover { color: var(--link); }
 .footer-credit { color: var(--slate-warm); }
+
+/* The footer links are a row, not a sentence. They used to be pipe-separated
+   inside the copyright line, which on a phone wrapped into a ladder of stray
+   "|" characters at the start of every line. Space separates them now — a
+   separator that cannot be left stranded by a line break — and each link gets
+   a tap target taller than the text it holds. */
+.footer-links {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 2px 28px; margin-bottom: 14px; font-size: 12.5px;
+}
+.footer-links a { display: block; padding: 5px 0; }
+.footer-legal { font-size: 12.5px; }
+/* the two trademark disclaimers are the quiet ones */
+.footer-legal + p, .footer-legal + p + p { font-size: 11px; }
 
 /* ── Reveal ── */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--silk-ease), transform 0.9s var(--silk-ease); }
@@ -669,19 +790,94 @@ h4.block-subtitle {
 
 /* ── Responsive ── */
 @media (max-width: 1180px) { .side-panel { display: none; } }
+/* ── The nav's middle range ──
+   Six section names in Spanish or Portuguese are half again as wide as the
+   English ones, and at 1024px they used to wrap "CÓDIGO FUENTE" onto a second
+   line and push the CTA off the right edge. Between the phone breakpoint and
+   1360px the row gives up, in order, what it can afford to: the language
+   label, then the gaps, then the CTA. Nothing wraps: a nav item that breaks
+   across two lines is worse than one that is a point smaller. */
+.nav-links a { white-space: nowrap; }
+@media (max-width: 1360px) {
+  .top-nav { gap: 18px; }
+  .nav-links { gap: 20px; }
+  .lang-button { padding: 8px 12px; gap: 0; }
+  .lang-button > span + span { display: none; }
+}
+@media (max-width: 1160px) {
+  .nav-links { gap: 15px; }
+  .nav-links a { font-size: 11.5px; letter-spacing: 0.05em; }
+  /* The pill goes before the section links do: "Pricing" is one of those
+     links, so the route to it survives, and six visible section names are
+     worth more here than a seventh button. */
+  .nav-cta { display: none; }
+}
+
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .nav-toggle { display: block; }
   .nav-cta { display: none; }
-  .main { padding: 0 24px; }
+  .main {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
   .section { padding: 70px 0; }
   .announce { padding-top: 90px; }
 }
 @media (max-width: 560px) {
-  .top-nav { padding: 16px 20px; }
+  .top-nav {
+    padding: 16px max(20px, env(safe-area-inset-right)) 16px max(20px, env(safe-area-inset-left));
+  }
+  .top-nav.scrolled {
+    padding: 11px max(20px, env(safe-area-inset-right)) 11px max(20px, env(safe-area-inset-left));
+  }
   .hero-logos img { height: 40px; }
+  .hero-logos { gap: 20px; }
   .hero-metrics { gap: 26px; }
   .package-grid { grid-template-columns: 1fr; }
+  /* the announcement is two sentences of small print; it needs the room the
+     hero does not */
+  .announce { padding-left: max(18px, env(safe-area-inset-left));
+              padding-right: max(18px, env(safe-area-inset-right)); }
+  .notice-box, .highlight-box { padding: 18px 18px; }
+  .comparison-box, .performance-box, .productivity-box, .integration-box,
+  .philosophy-box, .benchmark-box, .pain-point-box, .freedom-box, .warning-box,
+  .alternatives-box, .ide-box, .solution-box, .problem-box, .package-variants {
+    padding: 18px 18px;
+  }
+  .pricing-card { padding: 28px 22px; }
+  .site-footer { padding: 34px 22px max(34px, env(safe-area-inset-bottom)); }
+}
+/* ── The narrow end: 320px, an iPhone SE ──
+   Brand, language picker and menu button do not fit on one row at that width,
+   and the row is fixed, so it overflowed silently rather than wrapping. The
+   wordmark gives up the size and letter-spacing it can afford to; the language
+   label has already gone by here — see the rule below it. */
+@media (max-width: 400px) {
+  .top-nav { gap: 12px; }
+  .nav-brand { font-size: 11.5px; letter-spacing: 0.11em; gap: 8px; }
+  .nav-brand img { width: 22px; }
+  .nav-actions { gap: 10px; }
+  .lang-button { padding: 8px 13px; }
+  .hero-logos { gap: 16px; }
+  .hero-logos img { height: 36px; }
+}
+/* On a phone the language name is the piece that goes. "Português (BR)" is
+   wide enough to push the brand off the row on its own, and the label is
+   redundant next to a menu that lists every language with its flag: the globe
+   is the affordance, and the button still names itself to a screen reader
+   through its aria-label. Hidden for every language, not only the long ones,
+   so the nav is the same shape whatever language the reader is in. */
+@media (max-width: 460px) {
+  .lang-button { padding: 8px 12px; gap: 0; }
+  .lang-button > span + span { display: none; }
+}
+
+/* A phone in landscape is 390px tall: an 88vh hero leaves no room for the
+   words in it. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { min-height: 0; padding: 40px 0 50px; }
+  .hero-metrics { margin-top: 34px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -701,7 +897,9 @@ h4.block-subtitle {
 
 .container {
   position: relative; z-index: 10;
-  max-width: 900px; margin: 0 auto; padding: 0 40px;
+  max-width: 900px; margin: 0 auto;
+  padding-left: max(40px, env(safe-area-inset-left));
+  padding-right: max(40px, env(safe-area-inset-right));
 }
 .container > .header {
   padding: 40px 0 24px; text-align: center;
@@ -726,17 +924,39 @@ h4.block-subtitle {
   font-size: 14px; font-weight: 600; margin: 0 0 10px; color: var(--ivory);
 }
 .container > .content p { font-size: 15px; color: var(--ivory-muted); line-height: 1.85; margin: 12px 0; }
-.container > .content a { color: #FF7BA8; text-decoration: none; border-bottom: 1px solid rgba(255,123,168,0.3); }
-.container > .content a:hover { border-bottom-color: #FF7BA8; }
+.container > .content a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-rule); }
+.container > .content a:hover { color: var(--link-hover); border-bottom-color: var(--link-rule-hover); }
 /* the free lane keeps its green here too. Cerise is the paid repository's
    colour and the whole point of the notice is that this one is not that.
    Two classes to match `.container > .content a`'s specificity, and placed
    after it so the tie breaks this way. */
-.notice-box.free-lane a { color: #8CD79A; font-weight: 600; border-bottom-color: rgba(140,215,154,0.35); }
-.notice-box.free-lane a:hover { border-bottom-color: #8CD79A; }
+.notice-box.free-lane a { color: var(--link-free); font-weight: 600; border-bottom-color: var(--link-free-rule); }
+.notice-box.free-lane a:hover { border-bottom-color: var(--link-free); }
 .container > .content code, .faq-answer-inner code {
   font-family: var(--mono); font-size: 0.88em; background: rgba(0,0,0,0.35);
   padding: 2px 6px; border-radius: 4px; color: var(--ivory); border: 1px solid var(--panel-border);
+}
+
+/* An inline chip is often one long unbreakable token — a keyring path, a
+   versioned package name — so on a phone it either wraps or it drags the whole
+   page sideways. It wraps; and when it does, `clone` gives the second half its
+   own padding and border instead of leaving a chip sawn in two. */
+.prose code, .inline-code, .announce code,
+.container > .content code, .faq-answer-inner code, .controls-table code {
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+
+/* …but a shell transcript is not an inline chip. `.container > .content code`
+   also matched the <code> inside every <pre>, which gave each wrapped line of
+   a transcript its own background, its own border and 11px type. A transcript
+   is the block around it; the code inside carries no chrome of its own. */
+.container > .content .code-block code,
+.prose .code-block code,
+.code-block code {
+  background: none; border: 0; padding: 0; border-radius: 0;
+  font-size: inherit; color: inherit; font-family: inherit;
+  overflow-wrap: normal;
 }
 .container ul { list-style: none; margin: 14px 0; }
 .container ul li { position: relative; padding: 6px 0 6px 24px; font-size: 14.5px;
@@ -757,6 +977,16 @@ h4.block-subtitle {
   color: var(--ivory-muted); background: var(--panel-bg);
   border: 1px solid rgba(215,10,83,0.3);
 }
+/* The badge does two jobs. Under a heading it is an eyebrow — "Latest version:
+   0.14.8 · updated 2026-08-18" — and small caps suit it. Inside the release
+   table it is the literal string apt will report, and uppercasing a version
+   with 0.12em between the letters both misreads it and makes it wide enough to
+   push the table off the screen. There, it is set as what it is: mono. */
+.controls-table .version-badge {
+  margin-top: 0; font-family: var(--mono); font-size: 11.5px;
+  letter-spacing: 0; text-transform: none; padding: 6px 13px;
+  color: var(--ivory);
+}
 
 /* the two-row "us vs the archive" table the generator injects */
 .version-compare, .version-compare-index { margin: 22px 0; }
@@ -775,6 +1005,14 @@ h4.block-subtitle {
   border-bottom: 1px solid rgba(156,163,175,0.05);
 }
 .version-compare tr:last-child td, .version-compare-index tr:last-child td { border-bottom: none; }
+/* Four columns of "not packaged" against 350px of phone: they fit, but only
+   once the cells stop spending 32px each on padding. They still scroll if a
+   version string is long enough to need it. */
+@media (max-width: 620px) {
+  .version-compare table, .version-compare-index table { font-size: 12.5px; }
+  .version-compare th, .version-compare-index th { padding: 11px 9px; letter-spacing: 0.1em; }
+  .version-compare td, .version-compare-index td { padding: 11px 9px; }
+}
 
 /* hand-written comparison table (/free.html): same visual language as the
    injected version tables, and it scrolls rather than squeezing on a phone */
@@ -796,12 +1034,20 @@ h4.block-subtitle {
 .lane-table td:first-child { color: var(--slate-light); }
 /* "not packaged" cells: present, but visibly not a version number */
 .lane-table .muted { color: var(--slate-light); font-style: italic; opacity: 0.75; }
+/* Three columns of short phrases: they fit a phone once the 520px floor and
+   the wide cell padding come off, and a table the reader can see all of beats
+   one they have to drag sideways. */
+@media (max-width: 620px) {
+  .lane-table { min-width: 0; font-size: 12.5px; }
+  .lane-table th, .lane-table td { padding: 11px 9px; }
+  .lane-table th { letter-spacing: 0.08em; }
+}
 
 /* related links / release links the generator appends */
 .tool-extras { margin-top: 44px; padding-top: 8px; border-top: 1px solid var(--panel-border); }
 .tool-extras h2 { font-size: 17px !important; font-weight: 600 !important; margin: 26px 0 12px !important; }
 .tool-extras ul { margin: 10px 0; }
-.tool-extras a { color: #FF7BA8; text-decoration: none; }
+.tool-extras a { color: var(--link); text-decoration: none; }
 .tool-extras a:hover { text-decoration: underline; }
 
 /* feature grids */
@@ -848,11 +1094,45 @@ h4.block-subtitle {
 .controls-table th { color: var(--slate-light); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
 .controls-table code { white-space: nowrap; }
 
+/* ── The release table on a phone ──
+   Release / suite / version, where the version alone is a 17-character pill.
+   Three columns cannot fit in 350px and squeezing them only makes an unreadable
+   table that also overflows, so below 620px each row stops being a row and
+   becomes its own small card: the release name on top, the suite and the
+   version it serves underneath. The header row is dropped — every cell in
+   these tables names itself. */
+@media (max-width: 620px) {
+  table.controls-table { display: block; margin: 20px 0; }
+  table.controls-table tbody { display: block; }
+  table.controls-table tr:first-child { display: none; }
+  table.controls-table tr {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 9px 10px;
+    padding: 14px 16px; margin-bottom: 10px; border-radius: 14px;
+    background: var(--panel-bg); border: 1px solid var(--panel-border);
+  }
+  table.controls-table tr:last-child { margin-bottom: 0; }
+  table.controls-table td {
+    display: block; padding: 0; border: 0; font-size: 13px;
+  }
+  /* the suite is a link to that release's own page — keep it obviously so */
+  table.controls-table td a { font-size: 13px; }
+  /* the release name owns the first line */
+  table.controls-table td:first-child {
+    flex: 1 0 100%; color: var(--ivory); font-weight: 600; font-size: 14.5px;
+  }
+  table.controls-table td .version-badge { margin-top: 0; }
+}
+
 .install-block > h3 { margin-top: 0; }
 
 @media (max-width: 700px) {
-  .container { padding: 0 20px; }
+  .container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
   .feature-grid { grid-template-columns: 1fr; }
+  .container > .header { padding: 30px 0 18px; }
+  .container > .content > h2 { margin: 36px 0 14px; }
 }
 
 /* Step wrappers that never had tabs (just a heading + one transcript) get the
@@ -867,10 +1147,9 @@ h4.block-subtitle {
    to trust to be visible to a reader, so this section is not decoration, it
    is the thing the structured data points at.
 
-   Links use #FF7BA8, the same rose every other link on the site uses. When
-   this stylesheet was missing the cards rendered as bare text and the links
-   fell back to browser-default blue, which is what "the links are blue"
-   meant. */
+   Links use --link, the same rose every other link on the site uses. When this
+   stylesheet was missing the cards rendered as bare text and the links fell
+   back to browser-default blue, which is what "the links are blue" meant. */
 /* Narrower than the section on purpose: at 1120px two cards fit side by side,
    the track never overflows and the carousel has nothing to advance. At 780px
    a second review is already enough to make it move, which is the point. */
@@ -878,11 +1157,14 @@ h4.block-subtitle {
 .review-track {
   display: flex; gap: 22px; overflow-x: auto; scroll-behavior: smooth;
   scroll-snap-type: x mandatory; padding: 4px; scrollbar-width: none;
-  /* "safe" so that when the cards do overflow, the first one stays reachable;
-     plain `center` makes the leading overflow unscrollable in every browser */
-  justify-content: safe center;
 }
 .review-track::-webkit-scrollbar { display: none; }
+/* Centre the cards without `justify-content: center`, which makes the leading
+   overflow unreachable, and without `safe center`, which Safari only learned
+   recently. Auto margins on the end cards do the same job everywhere: centred
+   while they fit, fully scrollable once they do not. */
+.review-track > :first-child { margin-inline-start: auto; }
+.review-track > :last-child { margin-inline-end: auto; }
 
 .review-card {
   /* one card fills most of the track, so an advance slides a whole review
@@ -893,6 +1175,10 @@ h4.block-subtitle {
   border-radius: 20px;
   transition: transform 0.5s var(--silk-ease), border-color 0.5s var(--silk-ease);
 }
+/* A single review is not a carousel: there is nothing to peek at, so it takes
+   the content width like every other block on the page instead of sitting in
+   a narrower column of its own. */
+.review-track:not(:has(> * + *)) > .review-card { flex-basis: min(600px, 100%); }
 .review-card:hover { transform: translateY(-3px); border-color: rgba(255, 123, 168, 0.28); }
 
 .review-rating { display: flex; align-items: baseline; gap: 10px; }
@@ -916,15 +1202,15 @@ h4.block-subtitle {
 }
 .review-who-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .review-name { color: var(--ivory); font-weight: 600; font-size: 0.92rem; text-decoration: none; }
-a.review-name { color: #FF7BA8; }
+a.review-name { color: var(--link); }
 a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
 .review-context { color: var(--slate-warm); font-size: 0.78rem; }
 .review-verified { color: var(--win); font-size: 0.78rem; }
 .review-source {
-  margin-left: auto; color: #FF7BA8; font-size: 0.78rem; text-decoration: none;
-  white-space: nowrap; border-bottom: 1px solid rgba(255, 123, 168, 0.3);
+  margin-left: auto; color: var(--link); font-size: 0.78rem; text-decoration: none;
+  white-space: nowrap; border-bottom: 1px solid var(--link-rule);
 }
-.review-source:hover { border-bottom-color: #FF7BA8; }
+.review-source:hover { border-bottom-color: var(--link); }
 
 .review-dots { display: flex; justify-content: center; gap: 9px; margin-top: 22px; }
 .review-dot {
@@ -932,17 +1218,38 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
   background: var(--graphite-soft); transition: background 0.4s var(--silk-ease), width 0.4s var(--silk-ease);
 }
 .review-dot:hover { background: var(--slate-warm); }
-.review-dot.active { width: 22px; border-radius: 4px; background: #FF7BA8; }
+.review-dot.active { width: 22px; border-radius: 4px; background: var(--link); }
 
 .review-cta { margin-top: 24px; }
 .review-cta a {
-  color: #FF7BA8; text-decoration: none; font-size: 0.9rem;
-  border-bottom: 1px solid rgba(255, 123, 168, 0.3);
+  color: var(--link); text-decoration: none; font-size: 0.9rem;
+  border-bottom: 1px solid var(--link-rule);
 }
-.review-cta a:hover { border-bottom-color: #FF7BA8; }
+.review-cta a:hover { border-bottom-color: var(--link); }
 
-@media (max-width: 560px) {
-  .review-source { margin-left: 0; width: 100%; }
+/* ── Reviews on a phone ──
+   The quote is the longest run of prose on the homepage and the card was
+   handing it 26px of side padding out of 350: the text ran to the rails and
+   the attribution line collapsed onto itself. Below 620px the card breathes
+   with the page instead — a wider measure, a real gap between the quote and
+   the person who wrote it, and the source link on its own line, shrink-wrapped
+   to its text rather than ruled across the whole card. */
+@media (max-width: 620px) {
+  .review-carousel { margin-top: 28px; }
+  .review-track { gap: 14px; padding: 3px; }
+  .review-card { gap: 16px; padding: 24px 20px; border-radius: 18px; }
+  .review-headline { font-size: 1.02rem; }
+  .review-body p { font-size: 0.94rem; line-height: 1.7; }
+  .review-who { --review-avatar: 40px; row-gap: 13px; padding-top: 16px; }
+  .review-avatar { width: var(--review-avatar); height: var(--review-avatar); }
+  .review-source {
+    /* wraps onto its own line of its own accord; it keeps its underline to its
+       own text, and lines up under the name so the three parts still read as
+       one attribution rather than as a stray link under a card */
+    margin-left: calc(var(--review-avatar) + 12px); margin-right: auto; width: auto;
+  }
+  .review-dots { margin-top: 18px; }
+  .review-cta { margin-top: 20px; }
 }
 /* Someone who has asked the OS for less motion gets a static, swipeable row;
    site.js checks the same query before starting its timer. */
@@ -955,10 +1262,12 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
    something anyway it wraps it in <a x-apple-data-detectors="true">, which
    inherits nothing and renders link-blue. Detected text should look exactly
    like the text around it. */
-a[x-apple-data-detectors="true"],
-a[href^="tel:"] {
+a[x-apple-data-detectors],
+a[href^="tel:"], a[href^="sms:"], a[href^="facetime:"], a[href^="facetime-audio:"],
+a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple.com"] {
   color: inherit !important; text-decoration: none !important;
   font-size: inherit !important; font-weight: inherit !important;
+  border-bottom: 0 !important;
 }
 /* The three hero logos are image links with no text, so they never had a
    colour of their own; give them one so a slow or failed image shows alt text

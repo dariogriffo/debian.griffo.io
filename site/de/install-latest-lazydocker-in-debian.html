@@ -113,6 +113,12 @@
       <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
       <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
     </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/de/#pricing" class="btn-primary">Abo abschließen</a>
+      <p class="mobile-menu-note"><a href="/free.html">Kostenloser Spiegel</a></p>
+    </div>
   </div>
 </div>
 
@@ -135,6 +141,9 @@
 <div class="announce">
   <div class="announce-inner">
     <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
       ⚡ <strong>49 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
       <!-- general channel; the package-request prompt uses a different
            invite on purpose, see DISCORD_* in sitegen/layout.py -->
@@ -358,14 +367,18 @@ u             - Refresh/update view</code></pre></div>
 </div>
 
 <footer class="site-footer">
-  <p>
-    &copy; 2026 Dario Griffo. Alle Rechte vorbehalten. |
-    <a href="https://github.com/dariogriffo">GitHub</a> |
-    <a href="/free.html">Kostenloser Spiegel</a> |
-    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a> |
-    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a> |
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Kostenloser Spiegel</a>
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a>
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a>
     <a href="/terms.html">Nutzungsbedingungen</a>
   </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Alle Rechte vorbehalten.</p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>

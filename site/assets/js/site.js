@@ -209,6 +209,21 @@
   //   - the server fell back to Accept-Language or the default, where a live
   //     lookup may still do better.
   // Never overrides a geoip result, and never guesses from the timezone — that
+  // was the old heuristic and it is strictly worse than asking the server.
+  var priceEls = document.querySelectorAll('[data-amount]');
+  var source = document.body.dataset.currencySource;
+  if (priceEls.length && source !== 'geoip') {
+    fetch('/api/currency.php', { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data || !data.symbol) { return; }
+        if (data.currency === document.body.dataset.currency) { return; }
+        priceEls.forEach(function (el) { el.textContent = data.symbol + el.dataset.amount; });
+        document.body.dataset.currency = data.currency;
+      })
+      .catch(function () { /* keep whatever the markup shipped with */ });
+  }
+
   // ── Review carousel ─────────────────────────────────────────────────────
   // Advances the reviews on a timer. Deliberately built on the container's own
   // scroll position rather than a transform: the track is a plain overflow-x
@@ -277,19 +292,4 @@
     show(0, false);
     start();
   });
-
-  // was the old heuristic and it is strictly worse than asking the server.
-  var priceEls = document.querySelectorAll('[data-amount]');
-  var source = document.body.dataset.currencySource;
-  if (priceEls.length && source !== 'geoip') {
-    fetch('/api/currency.php', { credentials: 'omit' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (!data || !data.symbol) { return; }
-        if (data.currency === document.body.dataset.currency) { return; }
-        priceEls.forEach(function (el) { el.textContent = data.symbol + el.dataset.amount; });
-        document.body.dataset.currency = data.currency;
-      })
-      .catch(function () { /* keep whatever the markup shipped with */ });
-  }
 })();
