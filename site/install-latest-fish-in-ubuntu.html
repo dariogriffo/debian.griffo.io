@@ -513,12 +513,44 @@ set -U EDITOR nvim</code></pre></div>
  "inLanguage": "en"
 }</script>
 <script src="/assets/js/site.js" defer></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
 <script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
 </script>
 </body>
 </html>
