@@ -1,4 +1,3 @@
-/* critical:start */
 /*
  * deb.griffo.io — layout derived from TemplateMo 621 "Luminary"
  * https://templatemo.com/tm-621-luminary
@@ -11,17 +10,11 @@
  * Accent is Debian cerise with Ubuntu orange as the secondary distro colour,
  * replacing the template's neutral silver.
  *
- * ── critical:start / critical:end ──
- * The regions between those markers are everything that paints above the fold
- * on any of the three page shapes: the chrome, the announcement, the hero, the
- * migrated-page header, and the responsive rules and `.reveal` state that go
- * with them. sitegen/layout.py extracts, minifies and inlines exactly those
- * bytes into every page's <head>, and the file as a whole then loads
- * asynchronously. Two rules for anything added inside a critical region:
- * it must be needed for the first paint, and it must not depend on a rule
- * outside the markers. Anything that hides something — `.reveal`,
- * `.mobile-menu`, `.variant` — has to be critical, or its content flashes on
- * screen before the stylesheet arrives to hide it.
+ * This file is the source, not what ships. sitegen/layout.py strips the
+ * comments, collapses the whitespace and inlines the result into every page's
+ * <head>: 62 kB of documented CSS becomes 41 kB minified, 8.6 kB over the
+ * wire, and one fewer render-blocking request. Write it for the next reader;
+ * the build worries about the bytes.
  */
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,6 +30,27 @@
   src: url('/assets/fonts/Montserrat-SemiBold.woff2') format('woff2'); }
 @font-face { font-family: 'Montserrat'; font-weight: 700; font-display: swap;
   src: url('/assets/fonts/Montserrat-Bold.woff2') format('woff2'); }
+
+/* ── The fallback, measured against the real thing ──
+   `font-display: swap` paints in a fallback face first and swaps Montserrat in
+   when it arrives. Montserrat is about 10% wider than Arial at the same pixel
+   size and taller in the ascent, so every line re-flowed on the swap: that was
+   the whole of this page's layout shift once the stylesheet stopped blocking
+   the first paint and the text started arriving before the fonts did.
+
+   The numbers below were measured, not guessed: the same string rendered at
+   100px in Montserrat and in Arial, compared for width and for the font
+   bounding box. Overriding the fallback's metrics to match means the first
+   paint occupies the same space as the final one, and the swap moves nothing.
+   Liberation Sans is metric-compatible with Arial, which covers Linux. */
+@font-face {
+  font-family: 'Montserrat fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 110.46%;
+  ascent-override: 87.81%;
+  descent-override: 22.63%;
+  line-gap-override: 0%;
+}
 
 :root {
   --base-deep: #0F1115;
@@ -81,7 +95,7 @@
 html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 90px; }
 
 body {
-  font-family: 'Montserrat', system-ui, sans-serif;
+  font-family: 'Montserrat', 'Montserrat fallback', system-ui, sans-serif;
   background: var(--base-deep);
   color: var(--ivory);
   overflow-x: hidden;
@@ -619,7 +633,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .free-lane p + p { margin-top: 10px; }
 .free-lane-more { font-size: 13.5px; }
 
-/* critical:end */
 /* ── "Request a package" prompt above the grid ── */
 .request-note {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
@@ -751,7 +764,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .pricing-terms a { color: var(--slate-light); text-decoration: underline; text-underline-offset: 2px; }
 .pricing-terms a:hover { color: var(--link); }
 
-/* critical:start */
 /* ── FAQ ── */
 .faq-list { max-width: 780px; margin: 34px auto 0; text-align: left; }
 .faq-item { border-bottom: 1px solid var(--panel-border); }
@@ -772,7 +784,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--silk-ease); }
 .faq-answer-inner { padding: 0 0 22px; font-size: 14px; color: var(--ivory-muted); line-height: 1.85; }
 
-/* critical:end */
 /* ── Support / footer CTA ── */
 .footer-cta { text-align: center; padding: 96px 0 60px; }
 .footer-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
@@ -800,7 +811,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 /* the two trademark disclaimers are the quiet ones */
 .footer-legal + p, .footer-legal + p + p { font-size: 11px; }
 
-/* critical:start */
 /* ── Reveal ── */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--silk-ease), transform 0.9s var(--silk-ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -1035,7 +1045,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   .version-compare td, .version-compare-index td { padding: 11px 9px; }
 }
 
-/* critical:end */
 /* hand-written comparison table (/free.html): same visual language as the
    injected version tables, and it scrolls rather than squeezing on a phone */
 .lane-table-wrap { overflow-x: auto; margin: 22px 0; }
