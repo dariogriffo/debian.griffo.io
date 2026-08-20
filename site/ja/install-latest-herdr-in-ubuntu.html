@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>herdr を Ubuntu にインストール — 常に最新</title>
+<meta name="description" content="herdr 0.8.2 を apt で Ubuntu 22.04、24.04、25.10、26.04 に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。apt upgrade だけで、そのまま最新を保てます。">
+<meta name="keywords" content="herdr ubuntu, herdr インストール, herdr apt, ubuntu パッケージ, 最新版, 非公式リポジトリ, herdr ubuntu, install herdr ubuntu, terminal workspace manager, ai coding agents, agent multiplexer, terminal multiplexer, ubuntu packages, jammy, noble, ogulcancelik, apt herdr">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html">
+<meta property="og:title" content="herdr を Ubuntu にインストール — 常に最新">
+<meta property="og:description" content="herdr 0.8.2 を apt で Ubuntu 22.04、24.04、25.10、26.04 に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。apt upgrade だけで、そのまま最新を保てます。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html">
+<meta property="twitter:title" content="herdr を Ubuntu にインストール — 常に最新">
+<meta property="twitter:description" content="herdr 0.8.2 を apt で Ubuntu 22.04、24.04、25.10、26.04 に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。apt upgrade だけで、そのまま最新を保てます。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-herdr-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-herdr-in-ubuntu.html">
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-herdr-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="05">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>49 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要になります。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🐑 最新の herdr を Ubuntu にインストール</h1>
+        <p class="subtitle">AI コーディングエージェントのためのターミナルワークスペース管理</p>
+        <div class="version-badge">最新バージョン: 0.8.2 · 更新日 2026-08-19</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>提供元</th><th>バージョン</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.8.2 ✅</td></tr>
+<tr><td>公式 Ubuntu</td><td class="vc-lose">🚫 パッケージなし</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← ホームに戻る</a>
+
+        <div class="notice-box"><strong>📌 特定のリリースに入れますか？</strong> <a href="/install-herdr-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-herdr-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-herdr-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-herdr-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>herdr とは</h2>
+        <p>herdr は<strong>ターミナルに住むエージェントマルチプレクサ</strong>です。複数の AI コーディングエージェントを並べて動かし、束ねるためのワークスペース管理ツールで、Rust で書かれ、単一の静的バイナリとして配布されています。Claude Code、Codex、Gemini、Aider などのエージェント群を、キーボード中心の TUI ひとつから操作でき、永続セッション、git ワークツリー、SSH 越しのリモートアクセスを備えています。</p>
+
+        <div class="benchmark-box">
+            <strong>🤖 AI コーディングエージェントのために:</strong>
+            <ul>
+                <li><strong>エージェントを同時にたくさん</strong>: それぞれ専用のペイン、タブ、ワークスペースで</li>
+                <li><strong>切断されても残るセッション</strong>。エージェント版のマルチプレクサのようなもの</li>
+                <li><strong>Git worktree に対応</strong>: エージェントごとに専用ブランチで隔離できます</li>
+                <li><strong>SSH 越しのリモート</strong>: どこで動いている herdr サーバーにも接続できます</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 最新版であることの意味:</strong> herdr は動きが速く、stable と preview のチャンネルがあり、新しいエージェント連携、ワークスペース機能、TUI の改善が頻繁に入ります。deb.griffo.io から入れれば、内蔵の自己更新を使わずに最新リリースを保てます。
+        </div>
+
+        <h3>⚡ herdr の主な機能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🤖 複数のエージェントを並べて</h4>
+                <p>複数の AI コーディングエージェントを同時に起動して束ねられます。それぞれ専用のペインとタブに入り、ターミナルを離れずに切り替えられます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ ワークスペースとセッション</h4>
+                <p>作業に名前を付けて、永続的なセッションとワークスペースにまとめられます。バックグラウンドで動き続け、すぐに再接続できます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌿 Git ワークツリー</h4>
+                <p>エージェントごとに専用の git ワークツリーとブランチを与えるので、並行作業がぶつからず、差分もきれいでレビューしやすいままです。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ SSH 越しのリモート操作</h4>
+                <p>SSH でどのマシンの herdr サーバーにも接続でき、リモートのセッションをローカルと同じように操作できます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ キーボード中心の TUI</h4>
+                <p>マウスがなくても使える高速なターミナル UI。キーバインド、タブ、ペインを設定でき、どの操作も 1 打鍵の距離にあります。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 連携と拡張性</h4>
+                <p>エージェントとの連携を内蔵しつつ、ソケット API と設定ファイルを備え、一級のプラグインのエコシステムが育ちつつあります。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 公式アーカイブより、いつも先へ:</strong> Debian と Ubuntu は、リリース時点でパッケージのバージョンを固定します。このリポジトリは上流の新しいリリースを、たいてい数時間以内に公開します。<code>apt upgrade</code> を実行するだけで、常に最新版を使い続けられます。
+        </div>
+
+        <h2>📦 deb.griffo.io からインストールする</h2>
+
+        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">ステップ 1: リポジトリを追加する</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは Ghostty、Oh My Posh と Zed です。herdr は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
+  <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">ステップ 2: herdr をインストールする</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 最新の herdr をインストール</span>
+sudo apt install herdr
+
+<span class="comment"># インストールを確認</span>
+herdr --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 最新の herdr をインストール</span>
+apt install herdr
+
+<span class="comment"># インストールを確認</span>
+herdr --version</code></pre></div>
+        </div>
+
+        <h3>🎯 基本的な使い方</h3>
+
+        <p><strong>セッションを起動して接続する:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 永続セッションを起動、または再接続</span>
+herdr
+
+<span class="comment"># 名前付きセッションを使う、または作る</span>
+herdr --session work
+
+<span class="comment"># 名前付きセッションに接続</span>
+herdr session attach work</code></pre></div>
+
+        <p><strong>リモートサーバーを扱う:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># SSH でリモートの herdr サーバーに接続</span>
+herdr --remote user@server
+
+<span class="comment"># リモートホストで名前付きセッションを開く</span>
+herdr --remote user@server --session build</code></pre></div>
+
+        <p><strong>ワークスペース・ワークツリー・エージェントを管理する:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># ソケット API 経由のワークスペース・ワークツリー・エージェント補助</span>
+herdr workspace list
+herdr worktree list
+herdr agent list
+
+<span class="comment"># ローカルのクライアントと、動作中のサーバーの状態を表示</span>
+herdr status</code></pre></div>
+
+        <p><strong>チャンネル、設定、シェル補完:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># stable か preview か、更新チャンネルを選ぶ</span>
+herdr channel set stable
+
+<span class="comment"># zsh 用のシェル補完を生成</span>
+herdr completion zsh
+
+<span class="comment"># 既定の設定を表示</span>
+herdr --default-config</code></pre></div>
+
+        <h2>🚀 deb.griffo.io を選ぶ理由</h2>
+
+        <div class="performance-box">
+            <strong>📊 インストール方法の比較:</strong>
+            <ul>
+                <li><strong>公式 Ubuntu:</strong> herdr はパッケージ化されておらず、入れるものがありません</li>
+                <li><strong>curl / 自己更新:</strong> 手動セットアップで、更新はパッケージマネージャの外</li>
+                <li><strong>ソースからビルド:</strong> Rust ツールチェインと時間が必要</li>
+                <li><strong>deb.griffo.io:</strong> 最新版を apt の自動更新で</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>最新の機能:</strong> 最新のエージェント連携と TUI の改善が手に入ります</li>
+            <li>✅ <strong>自動更新:</strong> 上流のリリースから数時間以内にパッケージを更新</li>
+            <li>✅ <strong>セットアップ不要:</strong> ビルド済みの静的バイナリ、Rust のコンパイルは不要</li>
+            <li>✅ <strong>正しく統合:</strong> 正しくパッケージ化され、/usr/bin にインストールされます</li>
+            <li>✅ <strong>マルチディストリビューション:</strong> Jammy、Noble、Questing、Resolute で動作</li>
+            <li>✅ <strong>手間のかからない運用:</strong> 更新は通常の apt コマンドだけ</li>
+        </ul>
+
+        <div class="benchmark-box">
+            <h4>🏆 herdr がほかと違うところ</h4>
+            <ul>
+                <li><strong>エージェント前提の設計:</strong> AI コーディングエージェントを並列で走らせるために作られています</li>
+                <li><strong>永続的:</strong> サーバー / クライアント方式なので、切断してもセッションが生き残ります</li>
+                <li><strong>Git ネイティブ:</strong> ワークツリーでエージェントごとに専用ブランチに隔離</li>
+                <li><strong>リモート対応:</strong> SSH でどこの herdr サーバーにも接続できます</li>
+                <li><strong>単一バイナリ:</strong> 実行時依存のない静的 Rust ビルド</li>
+            </ul>
+        </div>
+
+        <h3>📦 パッケージのビルドリポジトリ</h3>
+        <p>Ubuntu パッケージは、この GitHub リポジトリで自動的にビルド・管理されています:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/herdr-debian" target="_blank" rel="noopener">🐑 herdr-debian</a> - 最新リリースのビルド</li>
+        </ul>
+
+        <h3>🔗 関連パッケージ</h3>
+        <p>deb.griffo.io では、こちらも配布しています:</p>
+        <ul>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij マルチプレクサ</a> - ターミナルのワークスペースマルチプレクサ</li>
+            <li><a href="/install-latest-ghostty-in-ubuntu.html">Ghostty ターミナル</a> - GPU アクセラレーションの高速ターミナル</li>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - git のためのシンプルなターミナル UI</li>
+            <li><a href="/install-latest-neovim-in-ubuntu.html">Neovim エディタ</a> - 拡張性の高い Vim ベースのエディタ</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 こんな方に:</strong> AI コーディングエージェントを使う開発者、複数のエージェントを並行して動かす方、永続的なリモートセッションが欲しいチーム、キーボード中心の作業を好むターミナル上級者。
+        </div>
+
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 このリポジトリの最近のリリース</h2>
+<ul class="release-list">
+<li><code>0.8.2</code>: 2026-08-19</li>
+<li><code>0.8.0</code>: 2026-08-03</li>
+<li><code>0.7.5</code>: 2026-07-23</li>
+</ul>
+<h2>❓ よくある質問</h2>
+<details><summary>herdr は公式の Ubuntu リポジトリにありますか？</summary><p>ありません。herdr は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、herdr 0.8.2 を配布しています。</p></details>
+<details><summary>Ubuntu に最新の herdr を入れるには？</summary><p>上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install herdr を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。</p></details>
+<details><summary>パッケージは署名されていますか？ どのようにビルドされていますか？</summary><p>すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。</p></details>
+<details><summary>Ubuntu のどのリリースに対応していますか？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "herdr は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "ありません。herdr は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、herdr 0.8.2 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の herdr を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install herdr を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "最新の herdr を Ubuntu にインストール",
+ "description": "deb.griffo.io リポジトリを使って、最新の herdr を Ubuntu にインストールする手順をひととおり。常に新しいパッケージが手に入ります。",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-07-23",
+ "dateModified": "2026-08-19",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "herdr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "AI コーディングエージェントのためのターミナルワークスペース管理",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html",
+  "url": "https://deb.griffo.io/ja/install-latest-herdr-in-ubuntu.html",
+  "inLanguage": "ja"
+ },
+ "inLanguage": "ja"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+</body>
+</html>

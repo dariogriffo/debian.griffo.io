@@ -1,3 +1,4 @@
+/* critical:start */
 /*
  * deb.griffo.io — layout derived from TemplateMo 621 "Luminary"
  * https://templatemo.com/tm-621-luminary
@@ -9,6 +10,18 @@
  *
  * Accent is Debian cerise with Ubuntu orange as the secondary distro colour,
  * replacing the template's neutral silver.
+ *
+ * ── critical:start / critical:end ──
+ * The regions between those markers are everything that paints above the fold
+ * on any of the three page shapes: the chrome, the announcement, the hero, the
+ * migrated-page header, and the responsive rules and `.reveal` state that go
+ * with them. sitegen/layout.py extracts, minifies and inlines exactly those
+ * bytes into every page's <head>, and the file as a whole then loads
+ * asynchronously. Two rules for anything added inside a critical region:
+ * it must be needed for the first paint, and it must not depend on a rule
+ * outside the markers. Anything that hides something — `.reveal`,
+ * `.mobile-menu`, `.variant` — has to be critical, or its content flashes on
+ * screen before the stylesheet arrives to hide it.
  */
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -606,6 +619,7 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .free-lane p + p { margin-top: 10px; }
 .free-lane-more { font-size: 13.5px; }
 
+/* critical:end */
 /* ── "Request a package" prompt above the grid ── */
 .request-note {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
@@ -737,6 +751,7 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .pricing-terms a { color: var(--slate-light); text-decoration: underline; text-underline-offset: 2px; }
 .pricing-terms a:hover { color: var(--link); }
 
+/* critical:start */
 /* ── FAQ ── */
 .faq-list { max-width: 780px; margin: 34px auto 0; text-align: left; }
 .faq-item { border-bottom: 1px solid var(--panel-border); }
@@ -757,6 +772,7 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--silk-ease); }
 .faq-answer-inner { padding: 0 0 22px; font-size: 14px; color: var(--ivory-muted); line-height: 1.85; }
 
+/* critical:end */
 /* ── Support / footer CTA ── */
 .footer-cta { text-align: center; padding: 96px 0 60px; }
 .footer-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
@@ -784,6 +800,7 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 /* the two trademark disclaimers are the quiet ones */
 .footer-legal + p, .footer-legal + p + p { font-size: 11px; }
 
+/* critical:start */
 /* ── Reveal ── */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--silk-ease), transform 0.9s var(--silk-ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -1018,6 +1035,7 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   .version-compare td, .version-compare-index td { padding: 11px 9px; }
 }
 
+/* critical:end */
 /* hand-written comparison table (/free.html): same visual language as the
    injected version tables, and it scrolls rather than squeezing on a phone */
 .lane-table-wrap { overflow-x: auto; margin: 22px 0; }
