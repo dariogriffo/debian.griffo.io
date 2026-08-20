@@ -47,12 +47,17 @@
 <meta property="twitter:description" content="Latest Television packages for Ubuntu 24.04 LTS “Noble Numbat” from the deb.griffo.io apt repository. Currently serving 0.15.9-1~noble.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
 <!-- The latin subsets, which is what these two weights resolve to on every page
      that is not Russian. The URL has to match what the stylesheet asks for
      exactly, or the file is fetched twice. -->
 <link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.min.css">
 <!-- Ahrefs Web Analytics -->
 <script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
 </head>
