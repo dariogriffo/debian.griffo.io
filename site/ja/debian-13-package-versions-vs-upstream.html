@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Debian 13 と Ubuntu のパッケージバージョン vs deb.griffo.io</title>
+<meta name="description" content="モダンな開発ツールについて、Debian 13 Trixie と Ubuntu 26.04 が実際に配布しているバージョンと、このリポジトリが提供しているバージョンを並べた比較表。公式アーカイブから取得し、パッケージを公開するたびに再生成しています。">
+<meta name="keywords" content="debian 13 パッケージバージョン, trixie パッケージバージョン, debian 上流 比較, ubuntu パッケージバージョン, debian 古いパッケージ, debian trixie バージョン一覧, debian は古いのか">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/debian-13-package-versions-vs-upstream.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/debian-13-package-versions-vs-upstream.html">
+<meta property="og:title" content="Debian 13 と Ubuntu のパッケージバージョン vs deb.griffo.io">
+<meta property="og:description" content="モダンな開発ツールについて、公式アーカイブが配布しているバージョンと、このリポジトリが提供しているバージョンの比較。パッケージを公開するたびに再生成しています。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/debian-13-package-versions-vs-upstream.html">
+<meta property="twitter:title" content="Debian 13 と Ubuntu のパッケージバージョン vs deb.griffo.io">
+<meta property="twitter:description" content="モダンな開発ツールについて、公式アーカイブが配布しているバージョンと、このリポジトリが提供しているバージョンの比較。パッケージを公開するたびに再生成しています。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/debian-13-package-versions-vs-upstream.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/debian-13-package-versions-vs-upstream.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/debian-13-package-versions-vs-upstream.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="05">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>49 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要になります。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 Debian 13 と Ubuntu のパッケージバージョン</h1>
+        <p class="subtitle">公式アーカイブが配布しているものと、このリポジトリが提供しているもの — 2026-08-20</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 短い答え。</strong> このリポジトリにある 48 個のツールのうち、<strong>33 個は Debian 13 にも Ubuntu 26.04 にも入っていません</strong>。残りも、それぞれのディストリビューションがリリースされた時点のバージョンで固定されています。Debian と Ubuntu はリリースの時点でパッケージのバージョンを凍結し、以降はセキュリティ修正くらいしか当てません。これは意図的なトレードオフで、多くの場合は賢明な判断でもあります。ただしそれは、素の状態のシステムで <code>apt install</code> して得られるのが、リリース当日に最新だったバージョンだということでもあります。この表は開発ツール一式の全体像を示すもので、手で書き写すのではなく、パッケージを公開するたびに再生成しています。
+        </div>
+
+        <h2>📋 比較表</h2>
+
+        <p>公式のバージョンは Debian と Ubuntu のアーカイブそのもの（madison サービス）から取得し、それぞれの現在の安定版、つまり <strong>Debian 13「Trixie」</strong>と <strong>Ubuntu 26.04「Resolute」</strong>と比較しています。backports、testing、unstable は除いています。知りたいのは、素の安定版システムで何が手に入るかだからです。いちばん右の列が、このリポジトリが今日提供しているものです。</p>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr>
+                    <th>ツール</th>
+                    <th>apt パッケージ</th>
+                    <th>Debian 13</th>
+                    <th>Ubuntu 26.04</th>
+                    <th>deb.griffo.io</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Atuin</td><td><code>atuin</code></td><td><code>18.6.1</code></td><td><code>18.8.0</code></td><td><code>18.19.0</code></td></tr>
+                <tr><td>bottom</td><td><code>btm</code></td><td><code>0.10.2</code></td><td><code>0.12.3</code></td><td><code>0.14.8</code></td></tr>
+                <tr><td>Bun</td><td><code>bun</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>1.4.0</code></td></tr>
+                <tr><td>Deno</td><td><code>deno</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>2.9.5</code></td></tr>
+                <tr><td>difftastic</td><td><code>difftastic</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.70.0</code></td></tr>
+                <tr><td>DuckDB</td><td><code>duckdb</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>1.5.5</code></td></tr>
+                <tr><td>eza</td><td><code>eza</code></td><td><code>0.21.0</code></td><td><code>0.23.4</code></td><td><code>0.23.5</code></td></tr>
+                <tr><td>Fastfetch</td><td><code>fastfetch</code></td><td><code>2.40.4</code></td><td><code>2.57.1</code></td><td><code>2.66.0</code></td></tr>
+                <tr><td>fish</td><td><code>fish</code></td><td><code>4.0.2</code></td><td><code>4.2.1</code></td><td><code>4.8.1</code></td></tr>
+                <tr><td>Forgejo</td><td><code>forgejo</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>15.0.2</code></td></tr>
+                <tr><td>Forgejo Runner</td><td><code>forgejo-runner</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>13.0.0</code></td></tr>
+                <tr><td>fzf</td><td><code>fzf</code></td><td><code>0.60.3</code></td><td><code>0.67.0</code></td><td><code>0.74.3</code></td></tr>
+                <tr><td>Garage</td><td><code>garage</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>2.3.0</code></td></tr>
+                <tr><td>Ghostty</td><td><code>ghostty</code></td><td><em class="muted">パッケージなし</em></td><td><code>1.3.0</code></td><td><code>1.3.1</code></td></tr>
+                <tr><td>GitUI</td><td><code>gitui</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.28.1</code></td></tr>
+                <tr><td>Headscale</td><td><code>headscale</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.29.3</code></td></tr>
+                <tr><td>Helix</td><td><code>helix</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>25.07.1</code></td></tr>
+                <tr><td>herdr</td><td><code>herdr</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.8.2</code></td></tr>
+                <tr><td>Jujutsu</td><td><code>jujutsu</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.44.0</code></td></tr>
+                <tr><td>just</td><td><code>just</code></td><td><code>1.40.0</code></td><td><code>1.45.0</code></td><td><code>1.58.0</code></td></tr>
+                <tr><td>k9s</td><td><code>k9s</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.51.0</code></td></tr>
+                <tr><td>lazydocker</td><td><code>lazydocker</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.25.2</code></td></tr>
+                <tr><td>lazygit</td><td><code>lazygit</code></td><td><code>0.50.0</code></td><td><code>0.57.0</code></td><td><code>0.64.1</code></td></tr>
+                <tr><td>lowfi</td><td><code>lowfi</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>2.0.7</code></td></tr>
+                <tr><td>Neovim</td><td><code>neovim</code></td><td><code>0.10.4</code></td><td><code>0.11.6</code></td><td><code>0.12.4</code></td></tr>
+                <tr><td>Nushell</td><td><code>nushell</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.115.0</code></td></tr>
+                <tr><td>Oh My Posh</td><td><code>oh-my-posh</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>30.6.5</code></td></tr>
+                <tr><td>rclone</td><td><code>rclone</code></td><td><code>1.60.1</code></td><td><code>1.60.1</code></td><td><code>1.75.0</code></td></tr>
+                <tr><td>ripgrep</td><td><code>ripgrep</code></td><td><code>14.1.1</code></td><td><code>15.1.0</code></td><td><code>15.2.0</code></td></tr>
+                <tr><td>Ruff</td><td><code>ruff</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.16.4</code></td></tr>
+                <tr><td>Serie</td><td><code>serie</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.8.1</code></td></tr>
+                <tr><td>Starship</td><td><code>starship</code></td><td><code>1.22.1</code></td><td><code>1.22.1</code></td><td><code>1.26.0</code></td></tr>
+                <tr><td>Television</td><td><code>television</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.15.9</code></td></tr>
+                <tr><td>Termusic</td><td><code>termusic</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.13.2</code></td></tr>
+                <tr><td>TigerBeetle</td><td><code>tigerbeetle</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.17.9</code></td></tr>
+                <tr><td>Uncloud</td><td><code>uncloud</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.20.0</code></td></tr>
+                <tr><td>Unregistry</td><td><code>unregistry</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.4.3</code></td></tr>
+                <tr><td>uv</td><td><code>uv</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.12.5</code></td></tr>
+                <tr><td>viu</td><td><code>viu</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>1.6.1</code></td></tr>
+                <tr><td>Yazi</td><td><code>yazi</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>26.8.15</code></td></tr>
+                <tr><td>yq</td><td><code>yq</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>4.53.6</code></td></tr>
+                <tr><td>yt-dlp</td><td><code>yt-dlp</code></td><td><code>2025.04.30</code></td><td><code>2026.03.17</code></td><td><code>2026.08.19</code></td></tr>
+                <tr><td>ZapZap</td><td><code>zapzap</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>7.4.2</code></td></tr>
+                <tr><td>Zed</td><td><code>zed</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>1.16.1</code></td></tr>
+                <tr><td>Zellij</td><td><code>zellij</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.45.0</code></td></tr>
+                <tr><td>Zig</td><td><code>zig-stable</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>ZLS</td><td><code>zls</code></td><td><em class="muted">パッケージなし</em></td><td><em class="muted">パッケージなし</em></td><td><code>0.16.0</code></td></tr>
+                <tr><td>zoxide</td><td><code>zoxide</code></td><td><code>0.9.7</code></td><td><code>0.9.8</code></td><td><code>0.10.0</code></td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>🔍 表の読み方</h2>
+
+        <ul>
+            <li><strong>「パッケージなし」</strong>は、そのディストリビューションの現在の安定版に、その名前のパッケージが存在しないという意味です。素の状態のシステムでは、<code>apt install</code> は「Unable to locate package」で失敗します。</li>
+            <li>バージョンはアーカイブが報告するとおりに、epoch と Debian リビジョンを取り除いて表示しています。そのため <code>1:0.44.1-1ubuntu2</code> は <code>0.44.1</code> と読めます。上流のプロジェクトが自分のものだと認識する番号です。</li>
+            <li>Ubuntu にはあるが Debian にはない、あるいはその逆、ということもあります。2 つのアーカイブは独立に判断し、凍結する時期も違うからです。</li>
+            <li>ここに書かれていることは、どれも Debian への批判ではありません。凍結されたアーカイブこそが安定版を安定させているのであり、多くのパッケージではそれがまさに望ましいものです。合わないのは 2 〜 3 週間おきにリリースされるツールで、このリポジトリが存在する理由もそこにあります。</li>
+        </ul>
+
+        <h2>✅ どの行も自分で確かめられます</h2>
+
+        <p>上の数字はすべて公開されているものです。Debian か Ubuntu のマシンで、次のように確かめられます。</p>
+
+        <div class="code-block"><pre><code>apt-cache policy ripgrep        # そのシステムが何をインストールするか、どのソースからか
+apt-cache madison ripgrep       # 設定済みのソースが提供しているすべてのバージョン
+rmadison ripgrep                # 公式アーカイブが配布しているもの。何もインストールせずに確認</code></pre></div>
+
+        <p><code>rmadison</code> は <code>devscripts</code> パッケージに入っていて、この表を組み立てているのと同じサービスに問い合わせます。deb.griffo.io の列は各プロジェクトの最新リリースを追いかけ、数時間以内に再ビルドしたものです。各ツールのパッケージングリポジトリは<a href="/how-packages-are-built.html">パッケージのビルド方法</a>のページに一覧があります。</p>
+
+        <h2>📦 代わりに最新版を入れる</h2>
+
+        <p>リポジトリの行を 1 つ追加するだけで、表にあるすべてのツールがカバーされます。どれも上流のリリースから数時間以内に再ビルドされています。</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <p>これが唯一の答えというわけではありません。ディストリビューションがすでに十分なバージョンを提供しているツールなら、アーカイブのほうが良い選択です。余分な信頼を必要としないからです。<a href="/apt-cli-rs-alternative.html">この議論の全文はこちら →</a></p>
+
+        <p class="back-link"><a href="/ja/">← deb.griffo.io が配布しているすべてのパッケージ</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Debian 13 と Ubuntu のパッケージバージョンと deb.griffo.io リポジトリの比較",
+  "description": "開発ツールごとに、Debian 13 Trixie と Ubuntu 26.04 Resolute でパッケージされているバージョンと、deb.griffo.io リポジトリが配布しているバージョンを並べた表。このリポジトリは上流のリリースから数時間以内に再ビルドしています。パッケージを公開するたびに再生成されます。",
+  "url": "https://deb.griffo.io/ja/debian-13-package-versions-vs-upstream.html",
+  "creator": { "@type": "Person", "name": "Dario Griffo" },
+  "isAccessibleForFree": true,
+  "dateModified": "2026-08-20",
+  "measurementTechnique": "Debian と Ubuntu のアーカイブのバージョンを qa.debian.org の madison サービスから取得し、それぞれのディストリビューションの現在の安定版に限定しています。",
+  "variableMeasured": [
+    { "@type": "PropertyValue", "name": "Debian 13 でのバージョン" },
+    { "@type": "PropertyValue", "name": "Ubuntu 26.04 でのバージョン" },
+    { "@type": "PropertyValue", "name": "deb.griffo.io が配布しているバージョン" }
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

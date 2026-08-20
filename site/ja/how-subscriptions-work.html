@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>サブスクリプションの仕組み — 支払いと apt の認証情報</title>
+<meta name="description" content="deb.griffo.io の支払いを終えたあとに起きること。apt の認証情報がメールで届き、/etc/apt/auth.conf.d に置くだけで HTTP Basic 認証が通ります。台数は無制限、更新と解約の扱いも。">
+<meta name="keywords" content="deb.griffo.io サブスクリプション, apt 認証, apt basic auth, apt auth.conf.d 認証情報, プライベート apt リポジトリ, apt リポジトリ パスワード, stripe サブスクリプション apt, deb.griffo.io 認証情報">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/how-subscriptions-work.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/how-subscriptions-work.html">
+<meta property="og:title" content="deb.griffo.io のサブスクリプションの仕組み">
+<meta property="og:description" content="支払う前に。認証情報がどう発行され、apt がどう認証し、更新・解約・返金のときに何が起きるのか。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/how-subscriptions-work.html">
+<meta property="twitter:title" content="deb.griffo.io のサブスクリプションの仕組み">
+<meta property="twitter:description" content="支払う前に。認証情報がどう発行され、apt がどう認証し、更新・解約・返金のときに何が起きるのか。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/how-subscriptions-work.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/how-subscriptions-work.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/how-subscriptions-work.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/how-subscriptions-work.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/how-subscriptions-work.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/how-subscriptions-work.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/how-subscriptions-work.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/how-subscriptions-work.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/how-subscriptions-work.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/how-subscriptions-work.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="05">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>49 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要になります。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔑 サブスクリプションの仕組み</h1>
+        <p class="subtitle">支払ったあとに起きること、<code>apt</code> がどう認証するのか、そして更新から解約までサブスクリプションがどう扱われるのか</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 短い答え。</strong> お支払いは Stripe で行います。数分以内に、2 つのものが書かれたメールが届きます。<strong>ログイン名</strong>（お支払いに使ったメールアドレス）と、<strong>生成されたパスワード</strong>です。これを <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に置けば、<code>apt</code> がダウンロードのたびに HTTPS で送ります。ログインするアカウントポータルも、ローテーションするトークンも、ライセンスファイルもありません。同じ認証情報を使えるマシンの台数にも制限はありません。
+        </div>
+
+        <h2>🧾 1. 支払うと何が起きるのか</h2>
+
+        <ol>
+            <li><strong>Stripe</strong> で決済を完了します。カード情報は Stripe に渡り、このサーバーには一切届きません。</li>
+            <li>Stripe が支払いを確定し、リポジトリに通知します。アクセスが作られるのはこの瞬間であって、決済ページを閉じた瞬間ではありません。オーソリ中の支払いは少しだけ時間がかかります。</li>
+            <li>アカウントが作成され、そのためのパスワードがサーバー側でランダムに生成されます。</li>
+            <li><strong>Stripe に伝えたアドレス</strong>宛にメールが送られます。ログイン名、パスワード、そしてセットアップ用のコマンドが入っています。そのパスワードが送信されるのは、このとき一度きりです。</li>
+        </ol>
+
+        <p>数分待っても届かない場合は、まず迷惑メールフォルダを確認し、それから <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord で聞いてください</a>。それがいちばん早く、支払いに使ったメールアドレスからアカウントを探せます。</p>
+
+        <h2>🔐 2. 認証情報の中身</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>項目</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>ログイン名</td><td>お支払いに使ったメールアドレス。選ぶものも覚えるものもありません</td></tr>
+                <tr><td>パスワード</td><td>サーバー側で生成されたランダムな 24 文字。こちらで決めることはありません</td></tr>
+                <tr><td>保存のされ方</td><td>bcrypt ハッシュ。平文は保持していません。あとから取り出すことは、私にも誰にもできません</td></tr>
+                <tr><td>有効期限</td><td>ありません。パスワードはローテーションも失効もせず、アクセスの可否は背後のサブスクリプションだけが決めます</td></tr>
+                <tr><td>マシン台数</td><td>無制限。シート数の計算も、アクティベーションも、デバイス登録もありません</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>保存しているのはハッシュだけなので、なくしたパスワードを復元することはできません。ただし、新しいものはいつでも再発行できます。ウェルカムメールに返信するか Discord で聞いてもらえれば、新しい認証情報をお送りします。新しいものが発行された時点で、古いパスワードは使えなくなります。ウェルカムメールは残しておくか、できればパスワードマネージャーに入れておいてください。</p>
+
+        <h2>🖥️ 3. apt はどう認証するのか</h2>
+
+        <p>ただの <strong>HTTPS 上の HTTP Basic 認証</strong>です。<code>apt</code> が何年も前からネイティブに対応している仕組みで、プラグインも補助バイナリも追加パッケージも要りません。認証情報は <code>/etc/apt/auth.conf.d/</code> に置きます。<code>sources.list</code> の行に書いてはいけません。そこに書くとマシンの誰もが読めてしまい、apt がエラーメッセージの中で漏らしてしまいます。</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+install -m 600 /dev/null /etc/apt/auth.conf.d/deb.griffo.io.conf
+tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+apt update</code></pre></div>
+        </div>
+
+        <p>組み込みはこれで全部です。大事な点は 3 つあり、つまずくのもちょうどこの 3 つです。<code>machine</code> の行にはホスト名だけを書きます。<code>deb.griffo.io</code> であって、<code>https://</code> も末尾のスラッシュも <code>/apt</code> というパスも付けません。ファイル名は <code>.conf</code> で終わらせます。それ以外の拡張子を apt は黙って無視します。そしてファイルは root 所有のパーミッション <code>600</code> にします。ほかのユーザーが読める認証情報を apt は読み込もうとしないからです。上のコマンドがパスワードを書き込む前に <code>600</code> の空ファイルを作っているのは、そのためです。<a href="/apt-401-unauthorized.html">apt が 401 を返すときの確認リストはこちら →</a></p>
+
+        <p>リクエストは、そのつどデータベースに照会されます。ログイン名、パスワードのハッシュ、そしてそのアカウントの背後に有効なサブスクリプションがあるかどうかです。キャッシュされるものも、あなたのマシンに発行されるものもありません。だからこそ、更新も解約も新しいパスワードも、こちら側で何かをしなくても即座に反映されます。</p>
+
+        <h2>🏗️ 4. サーバー、コンテナ、CI</h2>
+
+        <p>1 組の認証情報で、あなたのすべてのマシンをまかなえます。デスクトップもノートも、サーバーもビルドエージェントもです。同じ <code>auth.conf.d</code> のファイルをそれぞれに置くか、CI ではシークレットとしてマウントしてください。やってはいけないのは、公開レジストリに push するコンテナイメージに焼き込むことです。ファイルの中のパスワードである以上、それをコピーするものすべてと一緒に運ばれてしまいます。イメージにはビルドシークレットを使うか、認証情報の要らない GitHub の公開リリースから <code>.deb</code> をインストールしてください。</p>
+
+        <h2>🔄 5. 年額プラン — 一年のサイクル</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>起きること</th><th>アクセスへの影響</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>年に一度の更新</td><td>静かに行われます。Stripe がカードに請求し、期間が延長され、<strong>認証情報は変わりません</strong>。することも、やり直すコマンドもありません</td></tr>
+                <tr><td>解約したとき</td><td>ウェルカムメールの解約リンクから行います。<strong>すでに支払った期間の終わり</strong>までアクセスは続き、そこで止まります</td></tr>
+                <tr><td>支払いが失敗したとき</td><td>アクセスが止まります。カードを直して支払えば元に戻ります。困ったら Discord で聞いてください</td></tr>
+                <tr><td>あとで再購読したとき</td><td>同じアカウントと<strong>同じパスワード</strong>が再び有効になります。何も変わらないので、新しいメールも届きません</td></tr>
+                <tr><td>返金を希望したとき</td><td>返金が実行された時点で、アクセスは即座に取り消されます</td></tr>
+                <tr><td>アクセスが終わるとき</td><td>その旨のメールが届き、<code>apt install</code> は 401 を返します。すでにインストール済みのパッケージはそのままです</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>♾️ 6. 買い切り — 何が変わるのか</h2>
+
+        <p>買い切りは一度きりの支払いで、サブスクリプションではありません。更新するものも、解約するものも、期限切れになる登録済みカードもなく、価格改定の影響も受けません。認証情報の使い方はまったく同じです。同じログイン名、同じ <code>auth.conf.d</code> のファイル、すべて同じです。すでに年額プランを使っていて切り替えた場合は、認証情報はそのまま引き継がれます。新しいパスワードではなく、確認のメールが届きます。買い切りのアクセスを終わらせるのは、返金だけです。</p>
+
+        <h2>🚦 7. サブスクリプションが要らないもの</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>コマンド</th><th>認証情報は必要？</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>不要 — インデックスは誰にでも開かれています</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>不要</td></tr>
+                <tr><td><a href="/apt/dists/">/apt/dists/</a> を見る</td><td>不要</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>必要</strong></td></tr>
+                <tr><td>インストール済みのパッケージ</td><td>不要 — 失効することも、ライセンスを確認することもありません</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>不要 — ずっと無料、アカウントも不要</td></tr>
+                <tr><td>GitHub の <code>.deb</code> ファイル</td><td>不要 — ずっと無料</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>つまり、リポジトリを追加して <code>apt update</code> を実行し、どのバージョンが提供されるのかを、何も支払わないうちに確かめられます。<a href="/free.html">ずっと無料のミラーの説明はこちら →</a></p>
+
+        <h2>🗃️ 8. 保存している情報</h2>
+
+        <p>メールアドレス、Stripe の顧客参照、パスワードの bcrypt ハッシュ、そしてサブスクリプションの日付。記録はそれだけです。決済情報は Stripe が扱い、このサーバーには届きません。送るメールもサービスに必要なものだけです。認証情報、買い切りのアクセスが有効になったときの確認、そしてアクセスが終わるときのお知らせ。マーケティングもメールマガジンもありません。<a href="/terms.html">利用規約 →</a></p>
+
+        <h2>❓ まだ気になることがありますか？</h2>
+
+        <p>支払う前に聞いてください。<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord</a> がいちばん早い連絡手段で、この仕組みについての質問はいつでも歓迎です。Buy Me a Coffee でこのプロジェクトを支援してくださっていた方は、あちらでそう伝えてください。買い切りのサブスクリプションを無償でご用意します。</p>
+
+        <p class="back-link"><a href="/ja/#pricing">← 料金へ戻る</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "ja",
+  "mainEntity": [
+    {"@type": "Question", "name": "deb.griffo.io で支払ったあと、アクセスはどう認証されますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "HTTPS 上の HTTP Basic 認証で、apt がネイティブに対応している仕組みです。支払いが済むと、ログイン名（Stripe の決済で使ったメールアドレス）とランダムに生成されたパスワードがメールで届きます。この 2 行を /etc/apt/auth.conf.d/ の下に deb.griffo.io.conf という名前で、root 所有のパーミッション 600 のファイルとして置くと、apt がパッケージをダウンロードするたびに送ります。アカウントポータルも、ローテーションするトークンも、ライセンスファイルもありません。"}},
+    {"@type": "Question", "name": "認証情報はどれくらいで届きますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "数分以内です。アカウントが作られるのは Stripe が支払いを確定した時点であって、決済ページを閉じた時点ではありません。そのため、オーソリ中の支払いは少し時間がかかります。メールは支払いのときに指定したアドレスへ送られます。届かない場合は迷惑メールを確認し、それからプロジェクトの Discord で聞いてください。"}},
+    {"@type": "Question", "name": "1 つのサブスクリプションを何台のマシンで使えますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "持っているだけ何台でも使えます。シート数の計算も、アクティベーションも、デバイス登録もありません。同じ認証情報が、すべてのデスクトップ、サーバー、ビルドエージェントで動きます。ただし、公開レジストリに push するコンテナイメージに焼き込むのは避けてください。ファイルの中のパスワードだからです。ビルドシークレットを使うか、GitHub の公開リリースから .deb をインストールしてください。"}},
+    {"@type": "Question", "name": "年額プランが更新されるとき、何が起きますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "こちら側では何も起きません。Stripe がカードに請求し、サブスクリプションの期間が延長され、認証情報はまったく同じままです。新しいメールも、更新するファイルも、やり直すコマンドもありません。"}},
+    {"@type": "Question", "name": "サブスクリプションを解約すると、どうなりますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "ウェルカムメールのリンクから解約すると、次回の支払いが止まります。すでに支払った期間の終わりまではアクセスが続き、そのあと認証情報は使えなくなり、apt install は 401 を返します。インストール済みのパッケージには影響しません。失効することも、ライセンスを確認することもないからです。解約と違い、返金の場合はアクセスが即座に取り消されます。"}},
+    {"@type": "Question", "name": "パスワードをなくしてしまったら？",
+     "acceptedAnswer": {"@type": "Answer", "text": "パスワードは bcrypt ハッシュだけを保存しているため、参照することも復元することもできません。新しいパスワードはいつでも再発行できます。ウェルカムメールに返信するか Discord で聞いてください。新しいものが発行された時点で、古いパスワードは使えなくなります。"}},
+    {"@type": "Question", "name": "買い切りのアクセスは認証の仕方が違いますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "違いません。買い切りも年額プランと同じログイン名、同じ auth.conf.d のファイル、同じ仕組みを使います。違うのは課金だけです。一度きりの支払いで、更新するものも解約するものもなく、今後の価格改定の影響も受けません。買い切りのアクセスを終わらせるのは返金だけです。"}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
