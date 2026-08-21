@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上用 apt 安装 workmux</title>
+<meta name="description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 workmux 0.1.243，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。用 git worktree 和 tmux 窗口并行开发。">
+<meta name="keywords" content="workmux ubuntu, 安装 workmux, git worktree tmux, 并行开发, tmux worktree 管理, workmux apt, ubuntu 软件包, jammy, noble, questing, apt workmux">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上用 apt 安装 workmux">
+<meta property="og:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 workmux 0.1.243，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。用 git worktree 和 tmux 窗口并行开发。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上用 apt 安装 workmux">
+<meta property="twitter:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 workmux 0.1.243，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。用 git worktree 和 tmux 窗口并行开发。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-workmux-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-workmux-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-workmux-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>50 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🧩 在 Ubuntu 上安装最新版 workmux</h1>
+        <p class="subtitle">用 git worktree 和 tmux 窗口实现零摩擦的并行开发</p>
+        <div class="version-badge">最新版本：0.1.243 · 更新于 2026-08-21</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.1.243 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-workmux-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-workmux-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-workmux-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-workmux-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>什么是 workmux？</h2>
+        <p>workmux 把<strong>一条分支变成一个工作区</strong>。一条 <code>workmux add</code> 就会创建 git worktree、打开对应的 tmux 窗口、复制新检出缺少的文件（<code>.env</code>、凭据），为你不想重装的目录建立软链接（<code>node_modules</code>），执行你的准备命令，并按你要求的方式排布窗格。<code>workmux merge</code> 再一步把这一切收回：合并分支、删除 worktree、关闭窗口、移除本地分支。不用 stash，不用切分支，也不会有半成品检出挡住下一件事。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> workmux 每周都会发布多个版本，而且大多与它所驱动的工具有关：能追踪哪些编码代理、如何上报它们的状态、支持哪些终端复用器、仪表盘和侧边栏显示什么。上周新增的代理集成，只存在于上周的二进制文件里。Debian 和 Ubuntu 根本没有收录 workmux，所以最新构建在这里不是锦上添花，而是通过 apt 获得它的唯一途径。
+        </div>
+
+        <h3>⚡ workmux 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🌿 一条分支一个窗口</h4>
+                <p><code>workmux add</code> 同时创建 worktree 和 tmux 窗口，于是切换任务就是切换标签页，各自拥有自己的 shell、编辑器和开发服务器。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧰 真正能用的 worktree</h4>
+                <p>新建的 worktree 一开始是残缺的。workmux 会复制配置文件、软链接依赖并运行你的 <code>post_create</code> 命令，让新检出立刻可用。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤖 并行运行代理</h4>
+                <p>同时运行多个 AI 编码代理，每个 worktree 一个，并在 tmux 窗口名、TUI 仪表盘或实时侧边栏中查看它们的状态。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧹 一条命令收尾</h4>
+                <p><code>workmux merge</code> 合并分支后会删除 worktree、tmux 窗口和本地分支；<code>workmux remove</code> 则只清理、不合并。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📄 用 YAML 配置</h4>
+                <p>全局 <code>config.yaml</code> 保存你的默认设置，项目级 <code>.workmux.yaml</code> 定义窗格布局、钩子和文件操作，并支持适合 monorepo 的嵌套。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ 不只是 tmux</h4>
+                <p>tmux 是默认后端，kitty、WezTerm 和 Zellij 也是受支持的替代方案，工作流可以跟着你已有的终端走。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 Ghostty、lazydocker、Oh My Posh 和 Zed；workmux 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 workmux</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 workmux</span>
+sudo apt install workmux
+
+<span class="comment"># tmux 是默认后端，但只作为推荐依赖，</span>
+<span class="comment"># 因为 kitty、WezTerm 和 Zellij 同样可用</span>
+sudo apt install tmux
+
+<span class="comment"># 验证安装</span>
+workmux --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 workmux</span>
+apt install workmux
+
+<span class="comment"># tmux 是默认后端，但只作为推荐依赖，</span>
+<span class="comment"># 因为 kitty、WezTerm 和 Zellij 同样可用</span>
+apt install tmux
+
+<span class="comment"># 验证安装</span>
+workmux --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一个 worktree</h3>
+            <div class="code-block"><pre><code><span class="comment"># 可选：为这个项目写一个 .workmux.yaml</span>
+cd ~/src/my-project
+workmux init
+
+<span class="comment"># 在 tmux 里：分支、worktree、窗口和窗格一条命令搞定</span>
+workmux add new-feature
+
+<span class="comment"># 工作完成后：合并并清理干净</span>
+workmux merge
+
+<span class="comment"># 软件包自带 bash、zsh 和 fish 补全</span>
+workmux --help</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>日常流程：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 创建分支、worktree 和 tmux 窗口</span>
+workmux add fix-login
+
+<span class="comment"># 已有分支按名字识别</span>
+workmux add existing-work
+
+<span class="comment"># 从默认基准之外的分支切出</span>
+workmux add hotfix --base production
+
+<span class="comment"># 把 pull request 检出到独立的 worktree</span>
+workmux add --pr 123
+
+<span class="comment"># 查看所有进行中的工作</span>
+workmux list
+
+<span class="comment"># 合并并全部拆除</span>
+workmux merge
+
+<span class="comment"># 或者不合并直接丢弃</span>
+workmux remove fix-login</code></pre></div>
+
+        <p><strong>窗口、窗格与恢复：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 创建窗口但不切换过去</span>
+workmux add docs-pass --background
+
+<span class="comment"># 关闭窗口，保留 worktree 和分支</span>
+workmux close docs-pass
+
+<span class="comment"># 之后再打开</span>
+workmux open docs-pass
+
+<span class="comment"># tmux 或机器崩溃后重建全部窗口</span>
+workmux resurrect
+
+<span class="comment"># 从任何地方进入某个 worktree</span>
+cd &quot;$(workmux path fix-login)&quot;</code></pre></div>
+
+        <p><strong>让多个代理并行工作：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 为你的代理安装状态钩子和技能</span>
+workmux setup
+
+<span class="comment"># 带上给代理的提示词启动一个 worktree</span>
+workmux add add-tests --prompt &quot;为解析器补充单元测试&quot;
+
+<span class="comment"># 在一个 TUI 里观察所有代理</span>
+workmux dashboard
+
+<span class="comment"># 或者在 tmux 中常驻一个状态侧边栏</span>
+workmux sidebar
+
+<span class="comment"># 给运行中的代理发送指令</span>
+workmux send add-tests &quot;也把错误路径覆盖上&quot;
+
+<span class="comment"># 等待该代理完成</span>
+workmux wait add-tests</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>workmux 刻意建立在你已经在用的工具之上：</p>
+            <ul>
+                <li><strong>git:</strong> worktree 就是普通的 <code>git worktree</code> 检出，<code>git</code>、你的钩子和 CI 都察觉不到异常</li>
+                <li><strong>tmux:</strong> 每个 worktree 一个窗口，以分支命名，并自动套用你的窗格布局</li>
+                <li><strong>kitty、WezTerm 和 Zellij：</strong> 如果你的复用器不是 tmux，这些都是受支持的替代后端</li>
+                <li><strong>编码代理：</strong> 为 Claude Code 及上游支持的其他代理提供状态追踪、提示词注入和技能安装</li>
+                <li><strong>你的 shell：</strong> 本软件包自带 bash、zsh 和 fish 补全，<code>alias wm='workmux'</code> 是上游推荐的简写</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Ubuntu：</strong> 没有收录 workmux，标准系统上 <code>apt install workmux</code> 会失败</li>
+                <li><strong>cargo install workmux:</strong> 版本较新，但每台机器都要编译 Rust，不在 apt 之内，也没有 shell 补全</li>
+                <li><strong>上游安装脚本：</strong> 方便，但它绕过包管理器写入系统，并按自己的节奏更新</li>
+                <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong> Debian 与 Ubuntu 官方源都没有 workmux；本仓库打包官方上游构建</li>
+            <li>✅ <strong>代理支持每周都在变：</strong> workmux 能追踪和驱动哪些代理，是逐个版本变化的，因此保持最新决定了功能是能用还是根本不存在</li>
+            <li>✅ <strong>自动更新：</strong> 上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>完整的软件包：</strong> 上游二进制文件安装为 <code>/usr/bin/workmux</code>，另附 bash、zsh 和 fish 补全</li>
+            <li>✅ <strong>诚实的依赖：</strong> 软件包依赖 <code>git</code> 并推荐 <code>tmux</code>，因为 kitty、WezTerm 和 Zellij 同样是受支持的后端</li>
+            <li>✅ <strong>两种架构：</strong> amd64 和 arm64，均为静态链接，同一个包在所有版本上都能运行</li>
+            <li>✅ <strong>多发行版：</strong> 支持 Ubuntu 22.04、24.04、25.10 和 26.04</li>
+            <li>✅ <strong>易于维护：</strong> 使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/workmux-debian" target="_blank" rel="noopener">🧩 workmux-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - 终端 git 界面，处理每个 worktree 里的 git 工作</li>
+            <li><a href="/install-latest-gitui-in-ubuntu.html">GitUI</a> - 另一个快速的终端 git 客户端，如果你更喜欢它的思路</li>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij</a> - 受支持的 tmux 替代方案，可作为复用器后端</li>
+            <li><a href="/install-latest-serie-in-ubuntu.html">Serie</a> - 提交图，用来回看一条分支到底做了什么</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 在不丢失当前检出的情况下审阅 pull request，同时让三个编码代理处理三个功能，让长期的迁移分支与日常工作并行存活，以及再也不用只为回答「能快速看一下这个吗？」而 stash。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.1.243</code>: 2026-08-21</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>workmux 在官方 Ubuntu 软件源中吗？</summary><p>不在, 官方 Ubuntu 源没有打包 workmux。本仓库目前是唯一的 apt 来源，提供 workmux 0.1.243。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 workmux？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install workmux。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "workmux 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Ubuntu 源没有打包 workmux。本仓库目前是唯一的 apt 来源，提供 workmux 0.1.243。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 workmux？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install workmux。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest workmux on Ubuntu",
+ "description": "Complete guide to installing the latest workmux git worktree and tmux workflow tool on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-21",
+ "dateModified": "2026-08-21",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "workmux",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Opinionated workflow tool that orchestrates git worktrees and tmux windows as isolated development environments, for running features and AI coding agents in parallel",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html",
+  "url": "https://deb.griffo.io/cn/install-latest-workmux-in-ubuntu.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
