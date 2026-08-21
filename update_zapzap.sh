@@ -5,8 +5,8 @@ PACKAGE_NAME=zapzap
 PWD=$(pwd)
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
-# ZapZap only ships amd64.
-ARCHITECTURES="amd64"
+# ZapZap is pure Python and ships as a single Architecture: all package.
+ARCHITECTURES="all"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}

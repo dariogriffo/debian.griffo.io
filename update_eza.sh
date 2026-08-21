@@ -2,9 +2,11 @@ REPO=eza-debian
 PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
 PACKAGE_NAME=eza
+# Upstream publishes x86_64, aarch64 and armv7 Linux builds.
+ARCHITECTURES="amd64,arm64,armhf"
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
-./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
-./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
+./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}
 
