@@ -44,6 +44,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [rclone](https://rclone.org) - rsync for cloud storage, with mount and serve
 - [Serie](https://github.com/lusingander/serie) - Rich git commit graph in your terminal
 - [Television](https://github.com/alexpasmantier/television) - Very fast, hackable fuzzy finder (tv)
+- [workmux](https://github.com/raine/workmux) - git worktrees + tmux windows for parallel development
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -87,6 +88,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [rclone-debian](https://github.com/dariogriffo/rclone-debian) - Cloud storage sync
 - [serie-debian](https://github.com/dariogriffo/serie-debian) - Git commit graph viewer
 - [television-debian](https://github.com/dariogriffo/television-debian) - Fuzzy finder
+- [workmux-debian](https://github.com/dariogriffo/workmux-debian) - git worktree + tmux workflow tool
 
 ## 🐧 Supported Debian Distributions
 
@@ -132,6 +134,7 @@ sudo apt install -y btm          # Process/system monitor
 # Development Tools
 sudo apt install -y lazygit      # Git terminal UI
 sudo apt install -y lazydocker   # Docker terminal UI
+sudo apt install -y workmux      # git worktrees + tmux windows
 sudo apt install -y uv           # Fast Python package manager
 sudo apt install -y gitui        # Terminal UI for git
 sudo apt install -y difftastic   # Structural diff (command: difft)
@@ -169,7 +172,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux
 ```
 
 ## ⚠️ Important Information
