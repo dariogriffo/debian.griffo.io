@@ -2,7 +2,7 @@ REPO=zoxide-debian
 PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
 PACKAGE_NAME=zoxide
-ARCHITECTURES="amd64,arm64,armhf,riscv64"
+ARCHITECTURES="amd64,arm64,armel,armhf,riscv64,i386"
 
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
