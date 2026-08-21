@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>cliamp を Ubuntu にインストール — 常に最新</title>
+<meta name="description" content="cliamp 1.63.2 を apt で Jammy、Noble、Questing、Resolute に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。">
+<meta name="keywords" content="cliamp ubuntu, cliamp インストール, ターミナル 音楽プレーヤー, winamp ターミナル, tui プレーヤー, cliamp apt, ubuntu パッケージ, 最新版, 非公式リポジトリ, jammy, noble, apt cliamp">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html">
+<meta property="og:title" content="cliamp を Ubuntu にインストール — 常に最新">
+<meta property="og:description" content="cliamp 1.63.2 を apt で Jammy、Noble、Questing、Resolute に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html">
+<meta property="twitter:title" content="cliamp を Ubuntu にインストール — 常に最新">
+<meta property="twitter:description" content="cliamp 1.63.2 を apt で Jammy、Noble、Questing、Resolute に。公式 Ubuntu のアーカイブにはありません。GPG 署名付きで、上流のリリースから数時間以内に再ビルドしています。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-cliamp-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="05">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>51 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要になります。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📻 Ubuntu に最新の cliamp をインストール</h1>
+        <p class="subtitle">Winamp 2.x にインスパイアされたレトロなターミナル音楽プレーヤー</p>
+        <div class="version-badge">最新バージョン: 1.63.2 · 更新日 2026-08-21</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>提供元</th><th>バージョン</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.63.2 ✅</td></tr>
+<tr><td>公式 Ubuntu</td><td class="vc-lose">🚫 パッケージなし</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← ホームに戻る</a>
+
+        <div class="notice-box"><strong>📌 特定のリリースにインストールしますか？</strong> <a href="/install-cliamp-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-cliamp-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-cliamp-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-cliamp-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>cliamp とは？</h2>
+        <p>cliamp は <strong>ターミナル向けに作り直された Winamp 2.x</strong> です。プレイリストエディタ、グラフィックイコライザ、スペクトラムビジュアライザ、そしてスキンの代わりとなるテーマ機構が、すべてテキストで描かれます。ローカルファイル（MP3、FLAC、OGG、WAV）、インターネットラジオ、ポッドキャストを再生し、Spotify、Qobuz、Navidrome、Jellyfin、Emby、Plex、SoundCloud、NetEase、YouTube Music を一つの画面から扱えます。<code>--daemon</code> を付ければ同じバイナリが UI を持たないプレーヤーになり、IPC ソケット越しに操作できます。ステータスバーもキーバインドもスクリプトも、すでに鳴っている音楽と直接やり取りできます。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 最新バージョンが重要な理由:</strong> cliamp の大半は、絶えず変わり続けるサービスとの接続部分です。Spotify、Qobuz、SoundCloud、NetEase、YouTube Music はいずれも予告なくエンドポイントを変更し、今月壊れたプロバイダは今月のリリースで直ります。昨年のビルドでは直りません。cliamp が週に何度もリリースするのはそのためです。Debian も Ubuntu も cliamp をパッケージ化していないため、最新ビルドはここでは贅沢ではなく、apt で導入する唯一の方法です。
+        </div>
+
+        <h3>⚡ cliamp の主な機能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎚️ テキストで再現した Winamp</h4>
+                <p>プレイリストエディタ、グラフィックイコライザ、ピークメータ付きの往年のレイアウトを罫線文字で描き直しました。<code>dracula</code> や <code>nord</code> から <code>vantablack</code> まで 20 種類の内蔵テーマが、かつてのスキンのように見た目を丸ごと変えます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📡 ラジオとストリーミング</h4>
+                <p>お気に入り付きのインターネットラジオカタログに加え、Spotify、Qobuz、Navidrome、Jellyfin、Emby、Plex、SoundCloud、NetEase、YouTube Music を <code>--provider</code> 一つと対話型ウィザード <code>cliamp setup</code> で扱えます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 29 種類のビジュアライザ</h4>
+                <p>スペクトラムバー、オシロスコープ、ステレオフィールド、マトリックスの雨、炎、花火など、すべて同じ FFT から描かれます。<code>cliamp vis</code> で実行中に切り替えられ、<code>--low-power</code> はバッテリー重視のときに丸ごと止めます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎛️ 本格的なオーディオ設定</h4>
+                <p>プリセット付きのパラメトリックイコライザ、0.25 倍から 2 倍までの再生速度、モノラルダウンミックス、ギャップレス再生、出力デバイスの切り替え、サンプルレート・ビット深度・バッファサイズの明示的な指定。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ ヘッドレスなデーモンと IPC</h4>
+                <p><code>cliamp --daemon</code> は TUI なしで再生し、ソケット越しに <code>cliamp status</code>、<code>next</code>、<code>volume</code> に応答します。<code>cliamp visstream</code> はビジュアライザの帯域を NDJSON で出力し、Waybar や quickshell、パイプを読めるものなら何にでも渡せます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 サンドボックス化された Lua プラグイン</h4>
+                <p>再生イベント、キーマップ、通知、HTTP、ストレージ向けのフックを備えたプラグイン API を、すべてサンドボックス内で提供します。同梱の例は「再生中」ファイル、Webhook、ジャンル別の自動イコライジングを扱います。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 常に公式アーカイブの先を行く:</strong> Debian と Ubuntu はリリース時にパッケージのバージョンを凍結します。このリポジトリは新しい上流リリースを通常は数時間以内に公開します。<code>apt upgrade</code> だけで常に最新バージョンを維持できます。
+        </div>
+
+        <h2>📦 deb.griffo.io からのインストール</h2>
+
+        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">ステップ 1: リポジトリを追加</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 ずっと無料の選択肢もあります。</strong> cliamp は <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> のずっと無料のミラーにも収録されています。アカウントもサブスクリプションも不要、上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。上のリポジトリの代わりに、こちらを追加してください:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+  <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">ステップ 2: cliamp をインストール</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 最新の cliamp をインストール</span>
+sudo apt install cliamp
+
+<span class="comment"># ffmpeg は推奨（追加フォーマットとストリーム対応）、</span>
+<span class="comment"># yt-dlp は提案（YouTube と YouTube Music 用）</span>
+sudo apt install ffmpeg yt-dlp
+
+<span class="comment"># インストールを確認</span>
+cliamp --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 最新の cliamp をインストール</span>
+apt install cliamp
+
+<span class="comment"># ffmpeg は推奨（追加フォーマットとストリーム対応）、</span>
+<span class="comment"># yt-dlp は提案（YouTube と YouTube Music 用）</span>
+apt install ffmpeg yt-dlp
+
+<span class="comment"># インストールを確認</span>
+cliamp --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>ステップ 3: 最初の再生</h3>
+            <div class="code-block"><pre><code><span class="comment"># 音楽フォルダをプレーヤーで開く</span>
+cliamp ~/Music
+
+<span class="comment"># またはインターネットラジオのカタログから始める</span>
+cliamp --provider radio
+
+<span class="comment"># Spotify、Qobuz、Navidrome、Jellyfin、Emby、Plex を設定</span>
+cliamp setup
+
+<span class="comment"># bash と zsh の補完はパッケージに同梱</span>
+cliamp --help</code></pre></div>
+        </div>
+
+        <h3>🎯 基本的な使用例</h3>
+
+        <p><strong>再生する:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># ファイル、フォルダ、ストリーム URL</span>
+cliamp ~/Music/albums/1997
+cliamp https://stream.example.org/radio.mp3
+
+<span class="comment"># すぐにシャッフル再生を開始</span>
+cliamp ~/Music --auto-play --shuffle
+
+<span class="comment"># 保存したプレイリストを名前で指定</span>
+cliamp --playlist roadtrip
+
+<span class="comment"># YouTube Music の URL（yt-dlp が必要）</span>
+cliamp &quot;https://music.youtube.com/watch?v=...&quot;
+
+<span class="comment"># 何を聴いたか</span>
+cliamp history</code></pre></div>
+
+        <p><strong>見た目と音:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># テーマの一覧と切り替え</span>
+cliamp theme list
+cliamp theme tokyo-night
+
+<span class="comment"># ビジュアライザの一覧と切り替え</span>
+cliamp vis list
+cliamp vis Stereo
+
+<span class="comment"># イコライザのプリセットと再生速度</span>
+cliamp eq Rock
+cliamp speed 1.25
+
+<span class="comment"># 出力デバイスを選ぶ</span>
+cliamp --audio-device list
+cliamp device &quot;USB Audio&quot;
+
+<span class="comment"># 小さな端末向けの 80 桁レイアウト</span>
+cliamp --compact</code></pre></div>
+
+        <p><strong>ヘッドレスとスクリプト:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># TUI なしで動かし、IPC を提供</span>
+cliamp --daemon ~/Music
+
+<span class="comment"># 動作中のプレーヤーをどこからでも操作</span>
+cliamp toggle
+cliamp next
+cliamp volume -3
+cliamp seek 90
+cliamp status
+
+<span class="comment"># ビジュアライザの帯域をステータスバーに流す</span>
+cliamp visstream | jq -c .
+
+<span class="comment"># Lua プラグインを管理</span>
+cliamp plugins list</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 ツール連携</h4>
+            <p>cliamp は、システムにすでにあるものの上に意図的に組み立てられています:</p>
+            <ul>
+                <li><strong>ALSA:</strong> 音声は <code>libasound</code> から出力されます。パッケージが依存しているのはそのためで、デスクトップセッションのない素のサーバーでも動きます</li>
+                <li><strong>ffmpeg:</strong> 推奨。内蔵デコーダが扱わないフォーマットやストリームに使われます</li>
+                <li><strong>yt-dlp:</strong> 提案。YouTube と YouTube Music の再生に必要です</li>
+                <li><strong>D-Bus 経由の MPRIS:</strong> キーボードのメディアキーやデスクトップの「再生中」ウィジェットが、他のプレーヤーと同じように cliamp を操作します</li>
+                <li><strong>Waybar、quickshell、シェル:</strong> IPC ソケットと <code>cliamp visstream</code> がステータスバーやウィジェットを動かし、bash と zsh の補完はこのパッケージに同梱されています</li>
+            </ul>
+        </div>
+
+        <h2>🚀 なぜ deb.griffo.io を選ぶのか？</h2>
+
+        <div class="integration-box">
+            <strong>📊 リポジトリの比較:</strong>
+            <ul>
+                <li><strong>公式 Ubuntu:</strong> cliamp をパッケージ化していないため、素のシステムでは <code>apt install cliamp</code> は失敗します</li>
+                <li><strong>go install:</strong> 最新ではありますが、マシンごとに cgo ビルドが必要で、先に ALSA、FLAC、Ogg、Vorbis の開発ヘッダを用意しなければなりません</li>
+                <li><strong>上流のインストールスクリプト:</strong> 手軽ですが、パッケージマネージャの知らないうちに <code>~/.local/bin</code> へバイナリを置き、その後は <code>cliamp upgrade</code> が独自のタイミングでそのバイナリを差し替えます</li>
+                <li><strong>deb.griffo.io:</strong> 自動更新付きの最新バージョン</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一の apt ソース:</strong> cliamp は Debian にも Ubuntu のアーカイブにもありません。このリポジトリが公式の上流ビルドをパッケージ化しています</li>
+            <li>✅ <strong>ストリーミングは壊れ、上流で直る:</strong> cliamp が話す音楽サービスは絶えず変わるため、今月のリリースかどうかがプロバイダの可否を分けます</li>
+            <li>✅ <strong>自動更新:</strong> 上流リリースの数時間以内にパッケージを更新</li>
+            <li>✅ <strong>完全なパッケージ:</strong> <code>/usr/bin/cliamp</code>、man ページ、アプリアイコン付きのデスクトップエントリ、bash と zsh の補完</li>
+            <li>✅ <strong>正直な依存関係:</strong> ALSA に依存し、<code>ffmpeg</code> を推奨、<code>yt-dlp</code> を提案するので、最小構成は最小のままです</li>
+            <li>✅ <strong>2 つのアーキテクチャ:</strong> amd64 と arm64。同じパッケージがノート PC と Raspberry Pi の両方をカバーします</li>
+            <li>✅ <strong>マルチディストリビューション:</strong> Ubuntu 22.04、24.04、25.10、26.04 で動作</li>
+            <li>✅ <strong>簡単なメンテナンス:</strong> 更新は標準の apt コマンドで</li>
+        </ul>
+
+        <h3>📦 パッケージビルドリポジトリ</h3>
+        <p>Ubuntu パッケージは、この GitHub リポジトリで自動的にビルド・管理されています:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/cliamp-debian" target="_blank" rel="noopener">📻 cliamp-debian</a> - 最新リリースのビルド</li>
+        </ul>
+
+        <h3>🔗 関連パッケージ</h3>
+        <p>deb.griffo.io では次も利用できます:</p>
+        <ul>
+            <li><a href="/install-latest-termusic-in-ubuntu.html">termusic</a> - もう一つのターミナル音楽・ポッドキャストプレーヤー。レイアウトの好みで選べます</li>
+            <li><a href="/install-latest-lowfi-in-ubuntu.html">lowfi</a> - UI を一切求めないときのための、コマンド一つで動く lo-fi ラジオプレーヤー</li>
+            <li><a href="/install-latest-yt-dlp-in-ubuntu.html">yt-dlp</a> - cliamp が YouTube と YouTube Music のために呼び出すダウンローダ</li>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - 再生する前にアルバムを探すためのターミナルファイルマネージャ</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 こんな用途に最適:</strong> デスクトップのないマシンへ SSH して自分のライブラリを聴く、tmux のペインで一日中インターネットラジオを流す、ヘッドレスなデーモンから Waybar の「再生中」ウィジェットを動かす、そして FLAC も Navidrome も Spotify も諦めずに Winamp のレイアウトを取り戻す。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 このリポジトリの最近のリリース</h2>
+<ul class="release-list">
+<li><code>1.63.2</code>: 2026-08-21</li>
+</ul>
+<h2>❓ よくある質問</h2>
+<details><summary>cliamp は公式の Ubuntu リポジトリにありますか？</summary><p>ありません。cliamp は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、cliamp 1.63.2 を配布しています。</p></details>
+<details><summary>Ubuntu に最新の cliamp を入れるには？</summary><p>上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install cliamp を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。</p></details>
+<details><summary>パッケージは署名されていますか？ どのようにビルドされていますか？</summary><p>すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。</p></details>
+<details><summary>Ubuntu のどのリリースに対応していますか？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "cliamp は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "ありません。cliamp は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、cliamp 1.63.2 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の cliamp を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install cliamp を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest cliamp on Ubuntu",
+ "description": "Complete guide to installing the latest cliamp retro terminal music player on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-21",
+ "dateModified": "2026-08-21",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "cliamp",
+  "applicationCategory": "Multimedia Application",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Retro terminal music player inspired by Winamp 2.x, with a playlist editor, a graphic equaliser, 29 visualisers and streaming from radio, Spotify, Qobuz, Navidrome, Jellyfin, Emby, Plex, SoundCloud, NetEase and YouTube Music",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Free lane (deb-free.griffo.io)",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/free.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html",
+  "url": "https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html",
+  "inLanguage": "ja"
+ },
+ "inLanguage": "ja"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

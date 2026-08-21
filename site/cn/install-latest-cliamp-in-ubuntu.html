@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上用 apt 安装 cliamp</title>
+<meta name="description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 cliamp 1.63.2，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。受 Winamp 启发的终端音乐播放器。">
+<meta name="keywords" content="cliamp ubuntu, 安装 cliamp, 终端音乐播放器, winamp 终端, tui 播放器, cliamp apt, ubuntu 软件包, jammy, noble, questing, apt cliamp">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上用 apt 安装 cliamp">
+<meta property="og:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 cliamp 1.63.2，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。受 Winamp 启发的终端音乐播放器。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上用 apt 安装 cliamp">
+<meta property="twitter:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 cliamp 1.63.2，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。受 Winamp 启发的终端音乐播放器。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-cliamp-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-cliamp-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-cliamp-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>51 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📻 在 Ubuntu 上安装最新的 cliamp</h1>
+        <p class="subtitle">一款受 Winamp 2.x 启发的复古终端音乐播放器</p>
+        <div class="version-badge">最新版本：1.63.2 · 更新于 2026-08-21</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.63.2 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要安装到特定发行版本？</strong> <a href="/install-cliamp-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-cliamp-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-cliamp-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-cliamp-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>cliamp 是什么？</h2>
+        <p>cliamp 是<strong>为终端重做的 Winamp 2.x</strong>：播放列表编辑器、图形均衡器、频谱可视化器，以及代替皮肤的主题系统，全部用字符绘制。它可以播放本地文件（MP3、FLAC、OGG、WAV）、网络电台和播客，也能在同一个界面里从 Spotify、Qobuz、Navidrome、Jellyfin、Emby、Plex、SoundCloud、网易云音乐和 YouTube Music 流式播放。加上 <code>--daemon</code>，同一个可执行文件就变成没有界面的播放器，通过 IPC 套接字接受指令：状态栏、快捷键和脚本都能直接和正在播放的音乐对话。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> cliamp 的大部分代码是与不断变动的服务对接的粘合层：Spotify、Qobuz、SoundCloud、网易云音乐和 YouTube Music 都会毫无预警地改动接口，本月坏掉的服务会在本月的版本里修好，而不是在去年的构建里。这正是 cliamp 每周发布多个版本的原因。Debian 和 Ubuntu 都没有打包它，所以在这里用最新构建不是锦上添花，而是通过 apt 安装它的唯一途径。
+        </div>
+
+        <h3>⚡ cliamp 的主要特性</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎚️ 文字版的 Winamp</h4>
+                <p>播放列表编辑器、图形均衡器和带峰值表的经典布局，用制表字符重新绘制。从 <code>dracula</code>、<code>nord</code> 到 <code>vantablack</code> 的 20 款内置主题，像当年的皮肤一样改变整体外观。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📡 电台与流媒体</h4>
+                <p>带收藏功能的网络电台目录，外加 Spotify、Qobuz、Navidrome、Jellyfin、Emby、Plex、SoundCloud、网易云音乐和 YouTube Music，统一由一个 <code>--provider</code> 选项和交互式向导 <code>cliamp setup</code> 管理。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 29 种可视化效果</h4>
+                <p>频谱柱、示波器、立体声场、矩阵雨、火焰、烟花等等，全部由同一套 FFT 驱动。<code>cliamp vis</code> 可在运行时切换；在意续航时用 <code>--low-power</code> 直接关掉。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎛️ 真正的音频控制</h4>
+                <p>带预设的参量均衡器、0.25 倍到 2 倍的播放速度、单声道混音、无缝播放、输出设备切换，以及采样率、位深和缓冲区大小的显式控制。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ 无界面守护进程与 IPC</h4>
+                <p><code>cliamp --daemon</code> 不启动 TUI 也能播放，并通过套接字响应 <code>cliamp status</code>、<code>next</code> 或 <code>volume</code>；<code>cliamp visstream</code> 则以 NDJSON 输出可视化频段，供 Waybar、quickshell 以及任何能读管道的程序使用。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 沙箱中的 Lua 插件</h4>
+                <p>插件 API 提供播放事件、按键映射、通知、HTTP 和存储等钩子，且全部运行在沙箱内。自带示例涵盖“正在播放”文件、Webhook 和按流派自动均衡。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发行版发布时会冻结软件包版本。本仓库通常在数小时内发布新的上游版本。只需 <code>apt upgrade</code> 就能保持在最新版本。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 永久免费的替代方案。</strong> cliamp 也在永久免费的镜像 <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 中 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。可以改用该仓库替代上面的仓库：</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 cliamp</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新的 cliamp</span>
+sudo apt install cliamp
+
+<span class="comment"># ffmpeg 为推荐依赖（额外格式与流处理），</span>
+<span class="comment"># yt-dlp 为建议依赖，用于 YouTube 和 YouTube Music</span>
+sudo apt install ffmpeg yt-dlp
+
+<span class="comment"># 验证安装</span>
+cliamp --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新的 cliamp</span>
+apt install cliamp
+
+<span class="comment"># ffmpeg 为推荐依赖（额外格式与流处理），</span>
+<span class="comment"># yt-dlp 为建议依赖，用于 YouTube 和 YouTube Music</span>
+apt install ffmpeg yt-dlp
+
+<span class="comment"># 验证安装</span>
+cliamp --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一次播放</h3>
+            <div class="code-block"><pre><code><span class="comment"># 在播放器中打开一个音乐文件夹</span>
+cliamp ~/Music
+
+<span class="comment"># 或者从网络电台目录开始</span>
+cliamp --provider radio
+
+<span class="comment"># 配置 Spotify、Qobuz、Navidrome、Jellyfin、Emby 或 Plex</span>
+cliamp setup
+
+<span class="comment"># 软件包自带 bash 和 zsh 补全</span>
+cliamp --help</code></pre></div>
+        </div>
+
+        <h3>🎯 基本使用示例</h3>
+
+        <p><strong>播放内容：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 文件、文件夹或流地址</span>
+cliamp ~/Music/albums/1997
+cliamp https://stream.example.org/radio.mp3
+
+<span class="comment"># 立即以随机顺序开始播放</span>
+cliamp ~/Music --auto-play --shuffle
+
+<span class="comment"># 按名称加载已保存的播放列表</span>
+cliamp --playlist roadtrip
+
+<span class="comment"># 一个 YouTube Music 链接（需要 yt-dlp）</span>
+cliamp &quot;https://music.youtube.com/watch?v=...&quot;
+
+<span class="comment"># 我都听过什么？</span>
+cliamp history</code></pre></div>
+
+        <p><strong>外观与声音：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 列出并切换主题</span>
+cliamp theme list
+cliamp theme tokyo-night
+
+<span class="comment"># 列出并切换可视化效果</span>
+cliamp vis list
+cliamp vis Stereo
+
+<span class="comment"># 均衡器预设与播放速度</span>
+cliamp eq Rock
+cliamp speed 1.25
+
+<span class="comment"># 选择输出设备</span>
+cliamp --audio-device list
+cliamp device &quot;USB Audio&quot;
+
+<span class="comment"># 适合小终端的 80 列布局</span>
+cliamp --compact</code></pre></div>
+
+        <p><strong>无界面与脚本化：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 不启动 TUI，提供 IPC 服务</span>
+cliamp --daemon ~/Music
+
+<span class="comment"># 从任何地方控制正在运行的播放器</span>
+cliamp toggle
+cliamp next
+cliamp volume -3
+cliamp seek 90
+cliamp status
+
+<span class="comment"># 把可视化频段送给状态栏</span>
+cliamp visstream | jq -c .
+
+<span class="comment"># 管理 Lua 插件</span>
+cliamp plugins list</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>cliamp 有意建立在系统已有的组件之上：</p>
+            <ul>
+                <li><strong>ALSA：</strong>音频通过 <code>libasound</code> 输出，这也是软件包依赖它的原因，因此在没有桌面会话的裸服务器上同样可用</li>
+                <li><strong>ffmpeg：</strong>推荐依赖，用于内置解码器覆盖不到的格式和流</li>
+                <li><strong>yt-dlp：</strong>建议依赖，播放 YouTube 和 YouTube Music 时必需</li>
+                <li><strong>基于 D-Bus 的 MPRIS：</strong>键盘上的媒体键和桌面的“正在播放”小部件可以像控制其他播放器一样控制 cliamp</li>
+                <li><strong>Waybar、quickshell 与你的 shell：</strong>IPC 套接字和 <code>cliamp visstream</code> 驱动状态栏与小部件，本软件包还自带 bash 和 zsh 补全</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Ubuntu：</strong>没有打包 cliamp，在原始系统上 <code>apt install cliamp</code> 会失败</li>
+                <li><strong>go install：</strong>版本够新，但需要在每台机器上进行 cgo 构建，并且要先准备 ALSA、FLAC、Ogg 和 Vorbis 的开发头文件</li>
+                <li><strong>上游安装脚本：</strong>方便，但它绕过包管理器把可执行文件放进 <code>~/.local/bin</code>，之后 <code>cliamp upgrade</code> 还会按自己的节奏替换该文件</li>
+                <li><strong>deb.griffo.io：</strong>最新版本，自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong>cliamp 既不在 Debian 也不在 Ubuntu 的软件源中；本仓库打包的是官方上游构建</li>
+            <li>✅ <strong>流媒体会坏，也在上游修好：</strong>cliamp 对接的音乐服务一直在变，用不用本月的版本，直接决定某个服务能不能用</li>
+            <li>✅ <strong>自动更新：</strong>上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>完整的软件包：</strong><code>/usr/bin/cliamp</code>、man 手册页、带应用图标的桌面入口，以及 bash 和 zsh 补全</li>
+            <li>✅ <strong>诚实的依赖：</strong>依赖 ALSA，推荐 <code>ffmpeg</code>，建议 <code>yt-dlp</code>，最小安装依然保持最小</li>
+            <li>✅ <strong>两种架构：</strong>amd64 与 arm64，同一个软件包同时覆盖笔记本和树莓派</li>
+            <li>✅ <strong>多发行版：</strong>支持 Ubuntu 22.04、24.04、25.10 和 26.04</li>
+            <li>✅ <strong>维护简单：</strong>使用标准 apt 命令更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/cliamp-debian" target="_blank" rel="noopener">📻 cliamp-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-termusic-in-ubuntu.html">termusic</a> - 另一款终端音乐与播客播放器，如果你更喜欢它的布局</li>
+            <li><a href="/install-latest-lowfi-in-ubuntu.html">lowfi</a> - 一条命令即可播放的 lo-fi 电台播放器，适合完全不想要界面的场景</li>
+            <li><a href="/install-latest-yt-dlp-in-ubuntu.html">yt-dlp</a> - cliamp 播放 YouTube 和 YouTube Music 时调用的下载器</li>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - 终端文件管理器，先找到专辑再播放</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 非常适合：</strong> 通过 SSH 在没有桌面的机器上听自己的音乐库、让网络电台在 tmux 窗格里播一整天、用无界面守护进程驱动 Waybar 的“正在播放”小部件，以及在不放弃 FLAC、Navidrome 和 Spotify 的前提下找回 Winamp 的布局。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>1.63.2</code>: 2026-08-21</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>cliamp 在官方 Ubuntu 软件源中吗？</summary><p>不在, 官方 Ubuntu 源没有打包 cliamp。本仓库目前是唯一的 apt 来源，提供 cliamp 1.63.2。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 cliamp？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install cliamp。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "cliamp 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Ubuntu 源没有打包 cliamp。本仓库目前是唯一的 apt 来源，提供 cliamp 1.63.2。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 cliamp？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install cliamp。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest cliamp on Ubuntu",
+ "description": "Complete guide to installing the latest cliamp retro terminal music player on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-21",
+ "dateModified": "2026-08-21",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "cliamp",
+  "applicationCategory": "Multimedia Application",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Retro terminal music player inspired by Winamp 2.x, with a playlist editor, a graphic equaliser, 29 visualisers and streaming from radio, Spotify, Qobuz, Navidrome, Jellyfin, Emby, Plex, SoundCloud, NetEase and YouTube Music",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Free lane (deb-free.griffo.io)",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/free.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html",
+  "url": "https://deb.griffo.io/cn/install-latest-cliamp-in-ubuntu.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
