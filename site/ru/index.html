@@ -725,6 +725,15 @@ apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там cliamp, Ghostty, lazydocker, Oh My Posh и Zed; любой другой инструмент можно добавить по запросу.</p>
   <p class="free-lane-more"><a href="/free.html">Как работает бесплатное зеркало →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Или доверьте это extrepo.</strong> В Debian — bookworm, trixie, forky и sid — этот репозиторий зарегистрирован в <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, штатном инструменте Debian, который сам создаёт файл sources и устанавливает проверенный ключ подписи:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Укажите <code>griffo-free</code> вместо <code>griffo</code>, чтобы подключить бесплатное навсегда зеркало. extrepo настраивает только файл sources и ключ — учётные данные подписки по-прежнему прописываются в <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu не поддерживается: extrepo публикует метаданные только для выпусков Debian, поэтому там используйте команды выше.</p>
 </div></div><div class="install-block"><h3 class="block-title">Шаг 2: Установить пакеты</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Дополнительно: включить пакеты с исходным кодом</h3><p class="prose">Добавьте строку <code class="inline-code">deb-src</code> в список источников, если хотите скачивать и собирать пакеты из исходного кода с помощью <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
 sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list

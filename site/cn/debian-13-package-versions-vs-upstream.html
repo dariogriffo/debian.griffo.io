@@ -306,6 +306,15 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 也可以交给 extrepo。</strong> 在 Debian（bookworm、trixie、forky、sid）上，本仓库已登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 中，它会替你写好 sources 文件并安装经过校验的签名密钥：</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>把 <code>griffo</code> 换成 <code>griffo-free</code>，即可改为启用永久免费镜像。extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内——extrepo 只发布 Debian 各套件的元数据——在 Ubuntu 上请使用上面的命令。</p>
+</div>
         </div>
 
         <p>这不是唯一的答案：如果你的发行版已经提供了某个工具，且版本足够满足你的

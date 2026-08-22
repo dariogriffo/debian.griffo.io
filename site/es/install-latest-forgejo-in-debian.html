@@ -259,6 +259,15 @@ apt update</code></pre></div>
   <p><strong>🆓 Existe un espejo gratis para siempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> sirve paquetes gratis para siempre: sin cuenta, sin suscripción, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Ahora mismo incluye cliamp, Ghostty, lazydocker, Oh My Posh y Zed; Forgejo no está entre ellas, así que hoy el repositorio de arriba es la única forma de instalarlo — pídelo y puede añadirse.</p>
   <p class="free-lane-more"><a href="/free.html">Cómo funciona el espejo gratuito →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 O deja que lo haga extrepo.</strong> En Debian —bookworm, trixie, forky y sid— este repositorio está registrado en <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, la herramienta propia de Debian, que escribe el archivo de sources e instala por ti la clave de firma verificada:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Usa <code>griffo-free</code> en lugar de <code>griffo</code> para habilitar el espejo gratuito para siempre. extrepo solo configura el archivo de sources y la clave: las credenciales de una suscripción siguen yendo en <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu no está cubierto —extrepo publica metadatos solo para las suites de Debian—, así que allí usa los comandos de arriba.</p>
+</div>
         </div>
 
         <div class="install-block">

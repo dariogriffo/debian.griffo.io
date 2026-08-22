@@ -21,6 +21,20 @@ echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.
 sudo apt update
 ```
 
+On Debian, this mirror is registered with Debian's own `extrepo` (repos/debian/griffo.yaml in
+extrepo-data) under the name `griffo-free`, so the block above is optional:
+
+```sh
+sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update
+```
+
+extrepo writes /etc/apt/sources.list.d/extrepo_griffo-free.sources and installs the signing key
+into /var/lib/extrepo/keys/ after verifying its checksum against signed metadata. It covers
+Debian only: extrepo publishes an index per Debian suite (bookworm, trixie, forky, sid) and none
+for Ubuntu, so on Ubuntu use the commands above.
+
 Then install any package, e.g. `sudo apt install ghostty`.
 
 Optional source packages (for `apt-get source` / `apt-get build-dep`):

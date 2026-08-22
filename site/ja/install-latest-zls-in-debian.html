@@ -260,6 +260,15 @@ apt update</code></pre></div>
   <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは cliamp、Ghostty、lazydocker、Oh My Posh と Zed です。ZLS は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
   <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 extrepo に任せることもできます。</strong> Debian（bookworm、trixie、forky、sid）では、このリポジトリは Debian 標準のツール <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> に登録されています。sources ファイルの作成と、検証済み署名鍵のインストールを代わりに行ってくれます:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p><code>griffo</code> の代わりに <code>griffo-free</code> を指定すると、ずっと無料のミラーを有効にできます。extrepo が用意するのは sources ファイルと鍵だけなので、サブスクリプションの認証情報は引き続き <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に書きます。Ubuntu は対象外です（extrepo は Debian のスイート向けメタデータしか公開していません）。Ubuntu では上のコマンドを使ってください。</p>
+</div>
         </div>
 
         <div class="install-block">

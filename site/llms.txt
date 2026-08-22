@@ -19,6 +19,20 @@ echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/
 sudo apt update
 ```
 
+On Debian, both lanes are registered with Debian's own `extrepo` (repos/debian/griffo.yaml in
+extrepo-data), so the block above is optional:
+
+```sh
+sudo apt install extrepo
+sudo extrepo enable griffo        # or griffo-free, for the always-free mirror
+sudo apt update
+```
+
+extrepo writes /etc/apt/sources.list.d/extrepo_griffo.sources and installs the signing key into
+/var/lib/extrepo/keys/ after verifying its checksum against signed metadata. It covers Debian
+only: extrepo publishes an index per Debian suite (bookworm, trixie, forky, sid) and none for
+Ubuntu, so on Ubuntu use the commands above.
+
 Then install any package, e.g. `sudo apt install ghostty`.
 
 Optional source packages (for `apt-get source` / `apt-get build-dep`):
@@ -43,6 +57,8 @@ curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.a
 echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list > /dev/null
 sudo apt update
 ```
+
+On Debian, `sudo extrepo enable griffo-free` does the same thing.
 
 Configure one repository or the other, not both: with both enabled apt simply installs the higher version.
 

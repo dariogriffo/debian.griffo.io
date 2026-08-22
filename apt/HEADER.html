@@ -41,6 +41,7 @@ login your-email@example.com
 password your-subscription-password
 EOF
 sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf</code></pre>
+    <p class="muted">&#x1F9E9; <strong>On Debian, extrepo can do all of this for you.</strong> Both lanes are registered in <a href="https://salsa.debian.org/extrepo-team/extrepo-data/-/blob/master/repos/debian/griffo.yaml">extrepo-data</a>, so <code>sudo apt install extrepo &amp;&amp; sudo extrepo enable griffo</code> writes the <code>.sources</code> file and installs the verified signing key itself (<code>griffo-free</code> for the always-free mirror). Subscription credentials still go in <code>auth.conf.d</code> as above. Ubuntu is not covered: extrepo publishes metadata for Debian suites only.</p>
     <p class="muted">All packages are signed with GPG key <a href="/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc"><code>EA0F 721D 231F DD3A 0A17&nbsp;&nbsp;B9AC 7808 B4DD 62C4 1256</code></a>. This repository keeps only the latest build of each package &mdash; older versions are replaced when upstream releases a new one. Packaging issues: <a href="https://github.com/dariogriffo/debian.griffo.io/issues">open an issue</a>. Tool issues: contact the upstream project.</p>
   </div>
 </div>

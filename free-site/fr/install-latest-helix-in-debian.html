@@ -139,6 +139,32 @@ apt update
         </div>
 
         <div class="install-steps">
+            <h3>Autre méthode : extrepo (Debian uniquement)</h3>
+            <p>Sur Debian (bookworm, trixie, forky, sid) ce miroir est enregistré sous le nom <code>griffo-free</code> dans <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a>, l'outil de Debian lui-même, qui écrit le fichier de sources et installe la clé de signature vérifiée à votre place, au lieu des commandes ci-dessus. Ubuntu n'est pas couvert : extrepo ne publie de métadonnées que pour les suites Debian.</p>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">Installer avec sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">Installer avec root</button>
+            </div>
+
+            <div id="sudo-tab-extrepo" class="tab-content active">
+                <div class="code-block">
+sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-extrepo" class="tab-content">
+                <div class="code-block">
+apt install extrepo
+extrepo enable griffo-free
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
             <h3>Étape 2 : Installer helix</h3>
 
             <div class="tabs">

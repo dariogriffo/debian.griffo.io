@@ -262,6 +262,15 @@ apt update</code></pre></div>
   <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там cliamp, Ghostty, lazydocker, Oh My Posh и Zed; Unregistry среди них нет, поэтому репозиторий выше — единственный способ установить его сегодня; попросите, и его можно добавить.</p>
   <p class="free-lane-more"><a href="/free.html">Как работает бесплатное зеркало →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Или доверьте это extrepo.</strong> В Debian — bookworm, trixie, forky и sid — этот репозиторий зарегистрирован в <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, штатном инструменте Debian, который сам создаёт файл sources и устанавливает проверенный ключ подписи:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Укажите <code>griffo-free</code> вместо <code>griffo</code>, чтобы подключить бесплатное навсегда зеркало. extrepo настраивает только файл sources и ключ — учётные данные подписки по-прежнему прописываются в <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu не поддерживается: extrepo публикует метаданные только для выпусков Debian, поэтому там используйте команды выше.</p>
+</div>
         </div>
 
         <div class="install-block">

@@ -202,6 +202,15 @@ apt update</code></pre></div>
   <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries cliamp, Ghostty, lazydocker, Oh My Posh and Zed; rclone is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
   <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Or let extrepo do it.</strong> On Debian (bookworm, trixie, forky and sid) this repository is registered with Debian's own <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> tool, which writes the sources file and installs the verified signing key for you:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Use <code>griffo-free</code> in place of <code>griffo</code> to enable the always-free mirror instead. extrepo sets up the sources file and the key only, so a subscription's credentials still go in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu is not covered, because extrepo publishes metadata for Debian suites only, so there use the commands above.</p>
+</div>
 
             <p>The sources line above pins the <strong>bookworm</strong> suite explicitly, so it keeps working
             in containers and images where <code>lsb_release</code> is unavailable.</p>

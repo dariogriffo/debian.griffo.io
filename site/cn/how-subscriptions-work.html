@@ -235,6 +235,15 @@ login your-email@example.com
 password your-subscription-password
 EOF
 apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 也可以交给 extrepo。</strong> 在 Debian（bookworm、trixie、forky、sid）上，本仓库已登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 中，它会替你写好 sources 文件并安装经过校验的签名密钥：</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>把 <code>griffo</code> 换成 <code>griffo-free</code>，即可改为启用永久免费镜像。extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内——extrepo 只发布 Debian 各套件的元数据——在 Ubuntu 上请使用上面的命令。</p>
+</div>
         </div>
 
         <p>这就是全部的接入工作。有三个细节要注意，出问题的也正是这三处：<code>machine</code> 行只写主机名——<code>deb.griffo.io</code>，不带 <code>https://</code>、不带结尾斜杠、不带 <code>/apt</code> 路径；文件名以 <code>.conf</code> 结尾，因为其他扩展名会被 apt 静默忽略；文件属于 root 且权限为 <code>600</code>，因为 apt 拒绝读取其他用户可读的凭据——所以上面先以 <code>600</code> 创建空文件，再往里写入密码。 <a href="/apt-401-unauthorized.html">如果 apt 返回 401，完整的排查清单在这里 →</a></p>

@@ -235,6 +235,15 @@ login your-email@example.com
 password your-subscription-password
 EOF
 apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 extrepo に任せることもできます。</strong> Debian（bookworm、trixie、forky、sid）では、このリポジトリは Debian 標準のツール <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> に登録されています。sources ファイルの作成と、検証済み署名鍵のインストールを代わりに行ってくれます:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p><code>griffo</code> の代わりに <code>griffo-free</code> を指定すると、ずっと無料のミラーを有効にできます。extrepo が用意するのは sources ファイルと鍵だけなので、サブスクリプションの認証情報は引き続き <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に書きます。Ubuntu は対象外です（extrepo は Debian のスイート向けメタデータしか公開していません）。Ubuntu では上のコマンドを使ってください。</p>
+</div>
         </div>
 
         <p>組み込みはこれで全部です。大事な点は 3 つあり、つまずくのもちょうどこの 3 つです。<code>machine</code> の行にはホスト名だけを書きます。<code>deb.griffo.io</code> であって、<code>https://</code> も末尾のスラッシュも <code>/apt</code> というパスも付けません。ファイル名は <code>.conf</code> で終わらせます。それ以外の拡張子を apt は黙って無視します。そしてファイルは root 所有のパーミッション <code>600</code> にします。ほかのユーザーが読める認証情報を apt は読み込もうとしないからです。上のコマンドがパスワードを書き込む前に <code>600</code> の空ファイルを作っているのは、そのためです。<a href="/apt-401-unauthorized.html">apt が 401 を返すときの確認リストはこちら →</a></p>

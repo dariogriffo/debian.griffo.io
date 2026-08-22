@@ -146,6 +146,32 @@ apt update
         </div>
 
         <div class="install-steps">
+            <h3>Alternativa: extrepo (somente Debian)</h3>
+            <p>No Debian (bookworm, trixie, forky, sid) este espelho está registrado como <code>griffo-free</code> no <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a>, a ferramenta do próprio Debian, que escreve o arquivo de sources e instala a chave de assinatura verificada para você, no lugar dos comandos acima. O Ubuntu não é coberto: o extrepo publica metadados só para as suítes do Debian.</p>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">Instalar com sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">Instalar com root</button>
+            </div>
+
+            <div id="sudo-tab-extrepo" class="tab-content active">
+                <div class="code-block">
+sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-extrepo" class="tab-content">
+                <div class="code-block">
+apt install extrepo
+extrepo enable griffo-free
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
             <h3>Passo 2: Instalar TigerBeetle</h3>
 
             <div class="tabs">

@@ -723,6 +723,15 @@ apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；其他任何工具都可应请求加入。</p>
   <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 也可以交给 extrepo。</strong> 在 Debian（bookworm、trixie、forky、sid）上，本仓库已登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 中，它会替你写好 sources 文件并安装经过校验的签名密钥：</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>把 <code>griffo</code> 换成 <code>griffo-free</code>，即可改为启用永久免费镜像。extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内——extrepo 只发布 Debian 各套件的元数据——在 Ubuntu 上请使用上面的命令。</p>
 </div></div><div class="install-block"><h3 class="block-title">步骤 2：安装软件包</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">可选：启用源码包</h3><p class="prose">在软件源列表中加入 <code class="inline-code">deb-src</code> 行，即可用 <code class="inline-code">apt-get source</code> 下载软件包并从源码构建。</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
 sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list

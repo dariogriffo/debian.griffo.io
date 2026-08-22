@@ -250,6 +250,15 @@ apt update</code></pre></div>
   <p><strong>🆓 Es gibt einen für immer kostenlosen Spiegel.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> liefert Pakete für immer kostenlos — ohne Konto, ohne Abo, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Derzeit enthält er cliamp, Ghostty, lazydocker, Oh My Posh und Zed; ZapZap ist nicht dabei, deshalb führt heute nur das Repository oben dorthin — auf Anfrage kann es aufgenommen werden.</p>
   <p class="free-lane-more"><a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Oder extrepo erledigen lassen.</strong> Unter Debian – bookworm, trixie, forky und sid – ist dieses Repository in Debians eigenem Werkzeug <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> registriert, das die Sources-Datei anlegt und den geprüften Signaturschlüssel für dich installiert:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Mit <code>griffo-free</code> statt <code>griffo</code> wird stattdessen der für immer kostenlose Spiegel aktiviert. extrepo richtet nur die Sources-Datei und den Schlüssel ein; die Zugangsdaten eines Abos gehören weiterhin in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu wird nicht abgedeckt – extrepo veröffentlicht Metadaten nur für Debian-Suites –, dort nimmst du die Befehle oben.</p>
+</div>
         </div>
 
         <div class="install-block">

@@ -235,6 +235,15 @@ login your-email@example.com
 password your-subscription-password
 EOF
 apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Ou laissez faire extrepo.</strong> Sur Debian — bookworm, trixie, forky et sid — ce dépôt est enregistré dans <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, l'outil de Debian lui-même, qui écrit le fichier de sources et installe pour vous la clé de signature vérifiée :</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Utilisez <code>griffo-free</code> à la place de <code>griffo</code> pour activer le miroir gratuit à vie. extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert — extrepo ne publie de métadonnées que pour les suites Debian — utilisez-y les commandes ci-dessus.</p>
+</div>
         </div>
 
         <p>C'est toute l'intégration. Trois détails comptent, et ce sont précisément les trois qui coincent : la ligne <code>machine</code> ne contient que l'hôte — <code>deb.griffo.io</code>, sans <code>https://</code>, sans barre oblique finale et sans chemin <code>/apt</code> ; le nom du fichier se termine par <code>.conf</code>, car apt ignore silencieusement toute autre extension ; et le fichier appartient à root en mode <code>600</code>, car apt refuse de lire des identifiants que d'autres utilisateurs peuvent lire — d'où la création du fichier vide en mode <code>600</code> ci-dessus, avant d'y écrire le mot de passe. <a href="/apt-401-unauthorized.html">Si apt renvoie 401, la liste complète des vérifications est ici →</a></p>

@@ -243,6 +243,28 @@ Enabled: yes</code></pre></div>
                 that directory, the same trap as <code>.list</code>.</li>
         </ul>
 
+        <h2>🧩 Or let extrepo write the stanza</h2>
+
+        <p>A repository registered with Debian's own
+        <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>
+        needs none of this by hand. It writes the deb822 file for you, fetches the signing key
+        into <code>/var/lib/extrepo/keys/</code> and verifies it against signed metadata before
+        using it. This repository is registered as <code>griffo</code>, and the always-free
+        mirror as <code>griffo-free</code>:</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo</code></pre></div>
+
+        <p>What lands in <code>/etc/apt/sources.list.d/extrepo_griffo.sources</code> is the
+        stanza above, with <code>Suites:</code> set to the Debian release you are running and
+        <code>Signed-By:</code> pointing at the key it just installed.
+        <code>extrepo disable griffo</code> turns it off again by adding <code>Enabled: no</code>
+        rather than deleting the file, and <code>extrepo update</code> rewrites the stanza when
+        the repository's published metadata changes, which is how a key rotation reaches you
+        without editing anything. It covers Debian only: extrepo publishes metadata per Debian
+        suite and none for Ubuntu, so on Ubuntu write the stanza yourself.</p>
+
         <h2>⚠️ The mistake to avoid</h2>
 
         <p>Converting by hand and forgetting to delete the old file leaves the repository

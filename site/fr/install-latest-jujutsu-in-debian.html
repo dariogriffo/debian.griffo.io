@@ -252,6 +252,15 @@ apt update</code></pre></div>
   <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Ghostty, lazydocker, Oh My Posh et Zed ; Jujutsu n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
   <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Ou laissez faire extrepo.</strong> Sur Debian — bookworm, trixie, forky et sid — ce dépôt est enregistré dans <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, l'outil de Debian lui-même, qui écrit le fichier de sources et installe pour vous la clé de signature vérifiée :</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Utilisez <code>griffo-free</code> à la place de <code>griffo</code> pour activer le miroir gratuit à vie. extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert — extrepo ne publie de métadonnées que pour les suites Debian — utilisez-y les commandes ci-dessus.</p>
+</div>
         </div>
 
         <div class="install-block">

@@ -249,6 +249,15 @@ apt update</code></pre></div>
   <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；viu 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
   <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
 </div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 也可以交给 extrepo。</strong> 在 Debian（bookworm、trixie、forky、sid）上，本仓库已登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 中，它会替你写好 sources 文件并安装经过校验的签名密钥：</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>把 <code>griffo</code> 换成 <code>griffo-free</code>，即可改为启用永久免费镜像。extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内——extrepo 只发布 Debian 各套件的元数据——在 Ubuntu 上请使用上面的命令。</p>
+</div>
         </div>
 
         <div class="install-block">

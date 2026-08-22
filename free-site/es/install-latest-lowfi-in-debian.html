@@ -155,6 +155,32 @@ apt update
         </div>
 
         <div class="install-steps">
+            <h3>Alternativa: extrepo (solo Debian)</h3>
+            <p>En Debian (bookworm, trixie, forky, sid) este espejo está registrado como <code>griffo-free</code> en <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a>, la herramienta propia de Debian, que escribe el archivo de sources e instala la clave de firma verificada por ti en lugar de los comandos de arriba. Ubuntu no está cubierto: extrepo publica metadatos solo para las suites de Debian.</p>
+
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">Instalar con sudo</button>
+                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">Instalar con root</button>
+            </div>
+
+            <div id="sudo-tab-extrepo" class="tab-content active">
+                <div class="code-block">
+sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update
+                </div>
+            </div>
+
+            <div id="root-tab-extrepo" class="tab-content">
+                <div class="code-block">
+apt install extrepo
+extrepo enable griffo-free
+apt update
+                </div>
+            </div>
+        </div>
+
+        <div class="install-steps">
             <h3>Paso 2: Instalar lowfi</h3>
             
             <div class="tabs">

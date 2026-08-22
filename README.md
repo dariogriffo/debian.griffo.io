@@ -116,6 +116,26 @@ echo "deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/
 sudo apt update
 ```
 
+### Or let extrepo do it (Debian only)
+
+Both lanes are registered with Debian's own
+[`extrepo`](https://manpages.debian.org/extrepo/extrepo.1p.en.html)
+([`repos/debian/griffo.yaml`](https://salsa.debian.org/extrepo-team/extrepo-data/-/blob/master/repos/debian/griffo.yaml)
+in extrepo-data), so on Debian the block above is optional. extrepo writes
+`/etc/apt/sources.list.d/extrepo_griffo.sources`, installs the signing key into
+`/var/lib/extrepo/keys/` and verifies its checksum against signed metadata:
+
+```bash
+sudo apt install extrepo
+sudo extrepo enable griffo        # or griffo-free for the always-free mirror
+sudo apt update
+```
+
+`extrepo update` rewrites the stanza when the published metadata changes, and
+`extrepo disable griffo` turns it off without deleting the file. Debian only:
+extrepo publishes an index per Debian suite (bookworm, trixie, forky, sid) and
+none for Ubuntu, so on Ubuntu use the manual commands above.
+
 ### Install packages
 
 ```bash

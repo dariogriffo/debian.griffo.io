@@ -311,6 +311,15 @@ sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Oder extrepo erledigen lassen.</strong> Unter Debian – bookworm, trixie, forky und sid – ist dieses Repository in Debians eigenem Werkzeug <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> registriert, das die Sources-Datei anlegt und den geprüften Signaturschlüssel für dich installiert:</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
+extrepo enable griffo
+apt update</code></pre></div>
+  <p>Mit <code>griffo-free</code> statt <code>griffo</code> wird stattdessen der für immer kostenlose Spiegel aktiviert. extrepo richtet nur die Sources-Datei und den Schlüssel ein; die Zugangsdaten eines Abos gehören weiterhin in <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu wird nicht abgedeckt – extrepo veröffentlicht Metadaten nur für Debian-Suites –, dort nimmst du die Befehle oben.</p>
+</div>
         </div>
 
         <p>Das ist nicht die einzige Antwort: Wenn Ihre Distribution ein Tool bereits in einer
