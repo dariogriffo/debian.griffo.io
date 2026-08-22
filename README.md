@@ -46,6 +46,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Television](https://github.com/alexpasmantier/television) - Very fast, hackable fuzzy finder (tv)
 - [workmux](https://github.com/raine/workmux) - git worktrees + tmux windows for parallel development
 - [cliamp](https://github.com/bjarneo/cliamp) - Retro terminal music player inspired by Winamp 2.x
+- [superfile](https://github.com/yorukot/superfile) - Pretty fancy and modern terminal file manager (spf)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -91,6 +92,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [television-debian](https://github.com/dariogriffo/television-debian) - Fuzzy finder
 - [workmux-debian](https://github.com/dariogriffo/workmux-debian) - git worktree + tmux workflow tool
 - [cliamp-debian](https://github.com/dariogriffo/cliamp-debian) - Retro terminal music player
+- [superfile-debian](https://github.com/dariogriffo/superfile-debian) - Modern terminal file manager
 
 ## 🐧 Supported Debian Distributions
 
@@ -128,6 +130,7 @@ sudo apt install -y zls-master      # Zig Language Server (nightly)
 sudo apt install -y ghostty      # Modern terminal emulator
 sudo apt install -y eza          # Modern ls replacement
 sudo apt install -y yazi         # Terminal file manager
+sudo apt install -y superfile    # Modern terminal file manager (command: spf)
 sudo apt install -y fzf          # Fuzzy finder
 sudo apt install -y zoxide       # Smart cd command
 sudo apt install -y television   # Fuzzy finder (command: tv)
@@ -175,7 +178,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile
 ```
 
 ## ⚠️ Important Information
