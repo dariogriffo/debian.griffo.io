@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Установить superfile в Ubuntu через apt</title>
+<meta name="description" content="superfile 1.6.0 через apt на Jammy, Noble, Questing и Resolute — в официальных архивах Ubuntu его нет. Подпись GPG, пересборка за часы.">
+<meta name="keywords" content="superfile ubuntu, установить superfile ubuntu, файловый менеджер spf, терминальный файловый менеджер, tui файловый менеджер, superfile apt, пакеты ubuntu, jammy, noble, questing, apt superfile">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<meta property="og:title" content="Установить superfile в Ubuntu через apt">
+<meta property="og:description" content="superfile 1.6.0 через apt на Jammy, Noble, Questing и Resolute — в официальных архивах Ubuntu его нет. Подпись GPG, пересборка за часы.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<meta property="twitter:title" content="Установить superfile в Ubuntu через apt">
+<meta property="twitter:description" content="superfile 1.6.0 через apt на Jammy, Noble, Questing и Resolute — в официальных архивах Ubuntu его нет. Подпись GPG, пересборка за часы.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ru/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ru/#packages">Пакеты</a></li>
+    <li><a href="/ru/#install">Установка</a></li>
+    <li><a href="/ru/#versions">Версии</a></li>
+    <li><a href="/ru/#source">Исходники</a></li>
+    <li><a href="/ru/#pricing">Цены</a></li>
+    <li><a href="/ru/#faq">Вопросы</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Выбрать язык"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Русский</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ru/#pricing" class="nav-cta">Оформить подписку</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ru/#packages" class="mobile-menu-link" data-index="01">Пакеты</a>
+      <a href="/ru/#install" class="mobile-menu-link" data-index="02">Установка</a>
+      <a href="/ru/#versions" class="mobile-menu-link" data-index="03">Версии</a>
+      <a href="/ru/#source" class="mobile-menu-link" data-index="04">Исходники</a>
+      <a href="/ru/#pricing" class="mobile-menu-link" data-index="05">Цены</a>
+      <a href="/ru/#faq" class="mobile-menu-link" data-index="06">Вопросы</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ru/#pricing" class="btn-primary">Оформить подписку</a>
+      <p class="mobile-menu-note"><a href="/free.html">Бесплатное зеркало</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Прогресс прокрутки">
+  <span class="side-label">Прокрутка</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Статус">
+  <span class="side-label">Статус</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>52 инструментов разработчика, всегда актуальны</strong> — новые выпуски появляются в <code>apt</code> в течение нескольких часов.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Присоединиться к Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 С <strong><time datetime="2026-10-01T12:00:00+01:00">1 октября 2026 года, 12:00 по времени Великобритании</time></strong> для доступа к apt-зеркалу потребуется подписка.
+      <a href="/ru/#pricing">Посмотреть цены</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Есть вечно бесплатное зеркало</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🗂️ Установка последней версии superfile в Ubuntu</h1>
+        <p class="subtitle">Нарядный и современный файловый менеджер для терминала</p>
+        <div class="version-badge">Последняя версия: 1.6.0 · обновлено 2026-08-22</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Источник</th><th>Версия</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.6.0 ✅</td></tr>
+<tr><td>Официальный Ubuntu</td><td class="vc-lose">🚫 не упакован</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Вернуться на главную</a>
+
+        <div class="notice-box"><strong>📌 Устанавливаете на конкретный выпуск?</strong> <a href="/install-superfile-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-superfile-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-superfile-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-superfile-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Что такое superfile?</h2>
+        <p>superfile — это <strong>файловый менеджер для терминала, построенный вокруг панелей, которые остаются открытыми</strong>. Несколько каталогов стоят рядом, боковая панель держит ярлыки домашнего каталога, закреплённые папки и смонтированные диски, а панель предпросмотра рисует то, что сейчас под курсором: исходник с подсветкой, обычный текст, содержимое каталога, картинку. Копирование, перемещение и упаковка идут в фоне и отчитываются в строке процессов, поэтому большая передача никогда не подвешивает панель, по которой вы ходите. Удалённые файлы попадают в корзину и возвращаются оттуда, архивы распаковываются и собираются на месте, а каждая клавиша, цвет, символ рамки и ширина панели — это строка в TOML-файле. Это один статически слинкованный бинарник на Go, и команда, которую вы набираете, называется <code>spf</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Почему важна последняя версия:</strong> superfile до сих пор добирает базовые возможности от выпуска к выпуску: панель метаданных, переставляемые секции боковой панели, дополнительные колонки в файловой панели, естественная сортировка, постраничная прокрутка, приглашение <code>&gt;</code> и список плагинов, который продолжает расти. Каждая из них приходит с новыми ключами в <code>config.toml</code> и <code>hotkeys.toml</code>, а старый бинарник молча игнорирует ровно те настройки, которые нынешняя документация советует выставить. Ни Debian, ни Ubuntu не пакуют superfile вообще, так что свежая сборка здесь не роскошь: это единственный способ получить его через apt.
+        </div>
+
+        <h3>⚡ Ключевые возможности superfile</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 Панели, а не один каталог</h4>
+                <p><code>n</code> открывает ещё одну файловую панель, <code>tab</code> переключает между ними, у каждой свой путь, своя сортировка и свой выбор. Копирование между двумя деревьями превращается в два нажатия вместо двух длинных путей.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👀 Предпросмотр, который следует за курсором</h4>
+                <p>Боковая панель рисует выделенный файл прямо по ходу движения: код с подсветкой встроенным chroma или через <code>bat</code>, содержимое каталогов и картинки в терминалах, которые умеют их рисовать. <code>f</code> сворачивает панель, когда нужна ширина.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♻️ Удаление, которое можно отменить</h4>
+                <p><code>ctrl+d</code> отправляет файлы в корзину, а не уничтожает их, так что промах по клавише поправим. <code>D</code> — отдельная и осознанная команда безвозвратного удаления, для случаев, когда вы этого действительно хотите.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Строка процессов для долгих задач</h4>
+                <p>Копирование, перемещение и упаковка идут как отслеживаемые фоновые задачи со своим прогрессом и перечислены в панели процессов на <code>p</code>. Файловая панель остаётся рабочей, пока пара гигабайт едет с диска на диск.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗜️ Искать, прыгать, паковать, распаковывать</h4>
+                <p><code>/</code> фильтрует текущий каталог прямо при вводе, <code>z</code> передаёт прыжок zoxide, если он установлен, <code>ctrl+a</code> упаковывает выделение, а <code>ctrl+e</code> распаковывает архив там же, где он лежит.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Настраивается под вас</h4>
+                <p>Один <code>config.toml</code> и один <code>hotkeys.toml</code>: любую клавишу можно переназначить, рядом с раскладкой по умолчанию лежит вариант для Vim, темы — это файлы, которые вы можете написать сами, а ширина боковой панели, символы рамок, сортировка по умолчанию и ширина предпросмотра просто настройки.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Всегда впереди официальных архивов:</strong> Debian и Ubuntu замораживают версии пакетов при выпуске релиза — этот репозиторий публикует новые версии обычно в течение нескольких часов. Простое <code>apt upgrade</code> держит вас на последней версии.
+        </div>
+
+        <h2>📦 Установка из deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Выберите способ запуска команд"><span class="variant-toggle-label">Запуск команд</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">через sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">от root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Шаг 1: Добавить репозиторий</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там cliamp, Ghostty, lazydocker, Oh My Posh и Zed; superfile среди них нет, поэтому репозиторий выше — единственный способ установить его сегодня; попросите, и его можно добавить.</p>
+  <p class="free-lane-more"><a href="/free.html">Как работает бесплатное зеркало →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Шаг 2: Установить superfile</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Установить последнюю версию superfile</span>
+sudo apt install superfile
+
+<span class="comment"># По желанию, для плагинов, которым это нужно: exiftool для панели</span>
+<span class="comment"># метаданных, zoxide для умного прыжка по каталогам</span>
+sudo apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Проверить установку: команда называется spf, а не superfile</span>
+spf --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Установить последнюю версию superfile</span>
+apt install superfile
+
+<span class="comment"># По желанию, для плагинов, которым это нужно: exiftool для панели</span>
+<span class="comment"># метаданных, zoxide для умного прыжка по каталогам</span>
+apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Проверить установку: команда называется spf, а не superfile</span>
+spf --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Шаг 3: Первый запуск</h3>
+            <div class="code-block"><pre><code><span class="comment"># Открыть каталог, в котором вы находитесь</span>
+spf
+
+<span class="comment"># Или начать в другом месте</span>
+spf ~/Downloads
+
+<span class="comment"># Два пути в командной строке — это две панели</span>
+spf ~/src ~/Downloads
+
+<span class="comment"># Где лежат конфиг, горячие клавиши, тема, лог и данные</span>
+spf path-list
+
+<span class="comment"># Внутри superfile клавиша ? открывает полный список клавиш</span>
+spf --help</code></pre></div>
+        </div>
+
+        <h3>🎯 Базовые примеры использования</h3>
+
+        <p><strong>Запуск:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Текущий каталог</span>
+spf
+
+<span class="comment"># Каталог, который вы назвали</span>
+spf /var/log
+
+<span class="comment"># По панели на каждый путь, открытые рядом</span>
+spf ~/src ~/Downloads /mnt/backup
+
+<span class="comment"># Попробовать настройки, не трогая свои файлы</span>
+spf --config-file /tmp/spf.toml --hotkey-file /tmp/spf-keys.toml
+
+<span class="comment"># Какая версия установлена?</span>
+spf --version</code></pre></div>
+
+        <p><strong>Поддерживать конфигурацию свежей:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Добавить поля и клавиши, появившиеся в новом выпуске,</span>
+<span class="comment"># не трогая то, что вы уже поменяли</span>
+spf --fix-config-file
+spf --fix-hotkeys
+
+<span class="comment"># Вывести все пути, которыми пользуется superfile</span>
+spf path-list
+
+<span class="comment"># Окружение, терминал и версия для отчёта об ошибке</span>
+spf --debug-info</code></pre></div>
+
+        <p><strong>Вписать в свою оболочку:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Поставьте cd_on_quit = true в config.toml и добавьте это в</span>
+<span class="comment"># ~/.bashrc или ~/.zshrc: выход по Q оставит вас в том каталоге,</span>
+<span class="comment"># который показывала панель</span>
+spf() {
+    export SPF_LAST_DIR=&quot;${XDG_STATE_HOME:-$HOME/.local/state}/superfile/lastdir&quot;
+    command spf &quot;$@&quot;
+    [ ! -f &quot;$SPF_LAST_DIR&quot; ] || { . &quot;$SPF_LAST_DIR&quot;; rm -f -- &quot;$SPF_LAST_DIR&quot;; }
+}
+
+<span class="comment"># Путь, который читает эта функция</span>
+spf path-list --lastdir-file
+
+<span class="comment"># superfile как выбор файла для другой программы: он записывает</span>
+<span class="comment"># выбранный путь в файл и завершается</span>
+spf --chooser-file /tmp/picked</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Интеграции</h4>
+            <p>superfile намеренно оставляет специализированные задачи инструментам, которые у вас уже есть:</p>
+            <ul>
+                <li><strong>Ваш редактор:</strong> <code>e</code> открывает выделенный файл в <code>$EDITOR</code>, а <code>E</code> открывает каталог в <code>dir_editor</code>, так что редактором остаётся Neovim или Helix, а superfile остаётся навигатором</li>
+                <li><strong>zoxide:</strong> с <code>zoxide_support = true</code> клавиша <code>z</code> прыгает по той же базе, которую ваша оболочка собирает месяцами</li>
+                <li><strong>exiftool:</strong> с установленным <code>libimage-exiftool-perl</code> и <code>metadata = true</code> панель метаданных показывает полные поля EXIF и медиа, а не только основное</li>
+                <li><strong>bat и chroma:</strong> предпросмотр подсвечивает встроенный chroma или <code>bat</code>, если вам ближе его темы и вы указали <code>code_previewer = "bat"</code></li>
+                <li><strong>Ваш терминал и оболочка:</strong> предпросмотр картинок использует графический протокол самого терминала, <code>xdg-open</code> берёт на себя типы файлов, не описанные в <code>[open_with]</code>, а <code>cd_on_quit</code> возвращает последний каталог в bash, zsh или fish</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Почему стоит выбрать deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Сравнение репозиториев:</strong>
+            <ul>
+                <li><strong>Официальная Ubuntu:</strong> не содержит superfile — <code>apt install superfile</code> на стандартной системе не сработает</li>
+                <li><strong>Сборка из исходников:</strong> свежо, но требует тулчейн Go на каждой машине и оставляет бинарник, о котором apt ничего не знает</li>
+                <li><strong>Скрипт установки от разработчика:</strong> один <code>curl</code> с superfile.dev, удобно, но он пишет в систему мимо пакетного менеджера, а потом бинарник сам напоминает вам о своих обновлениях</li>
+                <li><strong>deb.griffo.io:</strong> последняя версия с автоматическими обновлениями</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Единственный источник apt:</strong> superfile нет ни в архивах Debian, ни в архивах Ubuntu; этот репозиторий пакует официальный выпуск upstream</li>
+            <li>✅ <strong>Команда называется spf:</strong> пакет назван superfile, потому что так называется проект, а в PATH он кладёт <code>/usr/bin/spf</code> — ту самую команду, которой пользуются все руководства и все страницы горячих клавиш</li>
+            <li>✅ <strong>Автоматические обновления:</strong> пакеты обновляются в течение нескольких часов после релиза upstream, так что <code>auto_check_update</code> можно выключить и оставить проверку apt</li>
+            <li>✅ <strong>Полный пакет:</strong> официальная сборка upstream для Linux, установленная как <code>/usr/bin/spf</code>, ничего не добавлено и не пропатчено</li>
+            <li>✅ <strong>Честные зависимости:</strong> самому бинарнику не нужно ничего, <code>xdg-utils</code> лишь рекомендуется, а exiftool, zoxide, ffmpeg, poppler-utils и инструмент для буфера обмена предложены для тех необязательных возможностей, которые их используют</li>
+            <li>✅ <strong>Две архитектуры:</strong> amd64 и arm64, оба статически слинкованные бинарники на Go, поэтому один и тот же пакет работает на любом выпуске</li>
+            <li>✅ <strong>Много дистрибутивов:</strong> работает на Ubuntu 22.04, 24.04, 25.10 и 26.04</li>
+            <li>✅ <strong>Простое обслуживание:</strong> обновления обычными командами apt</li>
+        </ul>
+
+        <h3>📦 Репозиторий сборки пакета</h3>
+        <p>Пакеты для Ubuntu собираются и поддерживаются автоматически в этом репозитории GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/superfile-debian" target="_blank" rel="noopener">🗂️ superfile-debian</a> - Сборки последних выпусков</li>
+        </ul>
+
+        <h3>🔗 Похожие пакеты</h3>
+        <p>Также доступны в deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - Второй терминальный файловый менеджер здесь, если вам ближе одна панель и плагины на Lua</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - База переходов, стоящая за клавишей <code>z</code> в superfile</li>
+            <li><a href="/install-latest-eza-in-ubuntu.html">eza</a> - Современный ls для тех списков, ради которых не стоит открывать файловый менеджер</li>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Нечёткий поиск для всего, что начинается в приглашении оболочки</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Отлично подходит для того, чтобы:</strong> разбирать файлы сервера по SSH, где нет никакого графического файлового менеджера, перекладывать вещи между двумя каталогами, не набирая ни один путь дважды, распаковывать и запаковывать архивы, не отрывая рук от клавиатуры, и получить предпросмотр, корзину и полосу прогресса в терминале, где до сих пор был только <code>mv</code>.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ Часто задаваемые вопросы</h2>
+<details><summary>Есть ли superfile в официальных репозиториях Ubuntu?</summary><p>Нет, superfile не упакован в официальных архивах Ubuntu. Этот репозиторий сейчас единственный источник apt и предлагает superfile 1.6.0.</p></details>
+<details><summary>Как установить последнюю версию superfile в Ubuntu?</summary><p>Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install superfile. Новые версии приходят через обычный sudo apt upgrade.</p></details>
+<details><summary>Подписаны ли пакеты и как они собираются?</summary><p>Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой.</p></details>
+<details><summary>Какие версии Ubuntu поддерживаются?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Есть ли superfile в официальных репозиториях Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Нет, superfile не упакован в официальных архивах Ubuntu. Этот репозиторий сейчас единственный источник apt и предлагает superfile 1.6.0."}}, {"@type": "Question", "name": "Как установить последнюю версию superfile в Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Добавьте репозиторий deb.griffo.io один раз по инструкции выше, затем выполните: sudo apt install superfile. Новые версии приходят через обычный sudo apt upgrade."}}, {"@type": "Question", "name": "Подписаны ли пакеты и как они собираются?", "acceptedAnswer": {"@type": "Answer", "text": "Каждый пакет подписан GPG-ключом репозитория (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) и собирается из релизов upstream в публичных репозиториях GitHub, которые может проверить любой."}}, {"@type": "Question", "name": "Какие версии Ubuntu поддерживаются?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing и 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Бесплатное зеркало</a>
+    <a href="/how-packages-are-built.html">Как собираются пакеты</a>
+    <a href="/ru/how-subscriptions-work.html">Как устроен доступ</a>
+    <a href="/terms.html">Условия использования</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Все права защищены.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest superfile on Ubuntu",
+ "description": "Complete guide to installing the latest superfile terminal file manager on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-22",
+ "dateModified": "2026-08-22",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "superfile",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Modern terminal file manager with a multi-panel layout, a pinned-directory sidebar, a file preview pane, background copy and move jobs, archive handling, a trash bin and fully configurable themes and hotkeys, shipped as the spf command",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html",
+  "url": "https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html",
+  "inLanguage": "ru"
+ },
+ "inLanguage": "ru"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

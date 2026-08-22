@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar o superfile no Debian via apt</title>
+<meta name="description" content="superfile 1.6.0 via apt no Bookworm, Trixie, Forky e Sid — não está nos arquivos oficiais do Debian. Assinado com GPG, recompilado em horas.">
+<meta name="keywords" content="superfile debian, instalar superfile debian, gerenciador de arquivos spf, gerenciador de arquivos de terminal, gerenciador de arquivos tui, superfile apt, pacotes debian, bookworm, trixie, sid, apt superfile">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html">
+<meta property="og:title" content="Instalar o superfile no Debian via apt">
+<meta property="og:description" content="superfile 1.6.0 via apt no Bookworm, Trixie, Forky e Sid — não está nos arquivos oficiais do Debian. Assinado com GPG, recompilado em horas.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html">
+<meta property="twitter:title" content="Instalar o superfile no Debian via apt">
+<meta property="twitter:description" content="superfile 1.6.0 via apt no Bookworm, Trixie, Forky e Sid — não está nos arquivos oficiais do Debian. Assinado com GPG, recompilado em horas.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-superfile-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-superfile-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="05">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="06">Perguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/pt-br/#pricing" class="btn-primary">Assinar</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>52 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 A partir de <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exigirá uma assinatura.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🗂️ Instalar o superfile mais recente no Debian</h1>
+        <p class="subtitle">Um gerenciador de arquivos de terminal moderno e caprichado</p>
+        <div class="version-badge">Última versão: 1.6.0 · atualizado em 2026-08-22</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.6.0 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-superfile-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-superfile-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-superfile-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-superfile-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>O que é o superfile?</h2>
+        <p>O superfile é um <strong>gerenciador de arquivos de terminal construído em torno de painéis que você deixa abertos</strong>. Vários diretórios ficam lado a lado, uma barra lateral guarda seus atalhos da home, as pastas fixadas e os discos montados, e um painel de pré-visualização desenha o que estiver sob o cursor: código com realce de sintaxe, texto puro, o conteúdo de um diretório, uma imagem. Copiar, mover e compactar acontece em segundo plano e se reporta numa barra de processos, então uma transferência grande nunca congela o painel que você está navegando. Os arquivos apagados vão para a lixeira e podem voltar, os arquivos compactados são extraídos e criados no lugar, e cada tecla, cor, caractere de borda e largura de painel é uma linha num arquivo TOML. É um único binário estático em Go, e o comando que você digita é <code>spf</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que a versão mais recente importa:</strong> O superfile ainda ganha recursos de base a cada lançamento: o painel de metadados, seções reordenáveis na barra lateral, colunas extras no painel de arquivos, ordenação natural, rolagem por página, o prompt <code>&gt;</code> e uma lista de plugins que só cresce. Cada um deles chega com chaves novas no <code>config.toml</code> e no <code>hotkeys.toml</code>, e um binário antigo ignora em silêncio justamente as opções que a documentação atual manda configurar. Nem o Debian nem o Ubuntu empacotam o superfile, então uma build atual não é um luxo aqui: é a única forma de tê-lo via apt.
+        </div>
+
+        <h3>⚡ Principais recursos do superfile</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 Painéis, não um diretório só</h4>
+                <p><code>n</code> abre outro painel de arquivos e <code>tab</code> alterna entre eles, cada um com seu caminho, sua ordenação e sua seleção. Copiar entre duas árvores vira duas teclas em vez de dois caminhos longos.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👀 Uma pré-visualização que segue o cursor</h4>
+                <p>O painel lateral desenha o arquivo em destaque conforme você anda: código realçado pelo chroma embutido ou pelo <code>bat</code>, conteúdo de diretórios e imagens nos terminais que sabem desenhá-las. <code>f</code> recolhe tudo quando você quer a largura de volta.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♻️ Exclusões com volta</h4>
+                <p><code>ctrl+d</code> manda os arquivos para a lixeira em vez de destruí-los, então uma tecla errada tem conserto. <code>D</code> é a exclusão permanente separada e deliberada, para quando você realmente quer isso.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Uma barra de processos para o que demora</h4>
+                <p>Cópias, movimentações e compactações rodam como tarefas de fundo acompanhadas, com progresso próprio, listadas no painel de processos em <code>p</code>. O painel de arquivos continua usável enquanto alguns gigabytes atravessam o disco.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗜️ Buscar, saltar, compactar, extrair</h4>
+                <p><code>/</code> filtra o diretório atual enquanto você digita, <code>z</code> entrega o salto ao zoxide quando ele está instalado, <code>ctrl+a</code> compacta a seleção e <code>ctrl+e</code> extrai um arquivo ali mesmo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Configurado do seu jeito</h4>
+                <p>Um <code>config.toml</code> e um <code>hotkeys.toml</code>: toda tecla é remapeável e um conjunto Vim vem junto com o padrão, temas são arquivos que você pode escrever, e largura da barra lateral, caracteres de borda, ordenação padrão e largura da pré-visualização são ajustes.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos arquivos oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes quando lançam uma release — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar o repositório</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz cliamp, Ghostty, lazydocker, Oh My Posh e Zed; superfile não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
+  <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar o superfile</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar o superfile mais recente</span>
+sudo apt install superfile
+
+<span class="comment"># Opcional, para os plugins que precisam deles: exiftool para o</span>
+<span class="comment"># painel de metadados, zoxide para o salto esperto de diretórios</span>
+sudo apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Verificar a instalação, o comando é spf e não superfile</span>
+spf --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar o superfile mais recente</span>
+apt install superfile
+
+<span class="comment"># Opcional, para os plugins que precisam deles: exiftool para o</span>
+<span class="comment"># painel de metadados, zoxide para o salto esperto de diretórios</span>
+apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Verificar a instalação, o comando é spf e não superfile</span>
+spf --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Primeira execução</h3>
+            <div class="code-block"><pre><code><span class="comment"># Abrir o diretório em que você está</span>
+spf
+
+<span class="comment"># Ou começar em outro lugar</span>
+spf ~/Downloads
+
+<span class="comment"># Dois caminhos na linha de comando significam dois painéis</span>
+spf ~/src ~/Downloads
+
+<span class="comment"># Onde ficam a configuração, as teclas, o tema, o log e os dados</span>
+spf path-list
+
+<span class="comment"># Dentro do superfile, ? abre a lista completa de teclas</span>
+spf --help</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemplos básicos de uso</h3>
+
+        <p><strong>Iniciando:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># O diretório atual</span>
+spf
+
+<span class="comment"># Um diretório que você indica</span>
+spf /var/log
+
+<span class="comment"># Um painel por caminho, abertos lado a lado</span>
+spf ~/src ~/Downloads /mnt/backup
+
+<span class="comment"># Testar ajustes sem tocar nos seus próprios arquivos</span>
+spf --config-file /tmp/spf.toml --hotkey-file /tmp/spf-keys.toml
+
+<span class="comment"># Qual versão está instalada?</span>
+spf --version</code></pre></div>
+
+        <p><strong>Mantendo a configuração em dia:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Adicionar os campos e as teclas que um lançamento novo trouxe,</span>
+<span class="comment"># sem mexer no que você já tinha alterado</span>
+spf --fix-config-file
+spf --fix-hotkeys
+
+<span class="comment"># Imprimir todos os caminhos que o superfile usa</span>
+spf path-list
+
+<span class="comment"># Ambiente, terminal e versão para um relatório de bug</span>
+spf --debug-info</code></pre></div>
+
+        <p><strong>Encaixando na sua shell:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Coloque cd_on_quit = true no config.toml e isto no ~/.bashrc</span>
+<span class="comment"># ou ~/.zshrc: ao sair com Q você fica no diretório que o painel</span>
+<span class="comment"># estava mostrando</span>
+spf() {
+    export SPF_LAST_DIR=&quot;${XDG_STATE_HOME:-$HOME/.local/state}/superfile/lastdir&quot;
+    command spf &quot;$@&quot;
+    [ ! -f &quot;$SPF_LAST_DIR&quot; ] || { . &quot;$SPF_LAST_DIR&quot;; rm -f -- &quot;$SPF_LAST_DIR&quot;; }
+}
+
+<span class="comment"># O caminho que essa função lê</span>
+spf path-list --lastdir-file
+
+<span class="comment"># superfile como seletor de arquivos para outro programa: ele</span>
+<span class="comment"># escreve o caminho escolhido no arquivo e sai</span>
+spf --chooser-file /tmp/picked</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações</h4>
+            <p>O superfile deixa de propósito as tarefas especializadas para as ferramentas que você já usa:</p>
+            <ul>
+                <li><strong>Seu editor:</strong> <code>e</code> abre o arquivo em destaque no <code>$EDITOR</code> e <code>E</code> abre o diretório no <code>dir_editor</code>, então o Neovim ou o Helix continua sendo o editor e o superfile continua sendo o navegador</li>
+                <li><strong>zoxide:</strong> com <code>zoxide_support = true</code>, a tecla <code>z</code> salta usando o mesmo banco que sua shell vem construindo há meses</li>
+                <li><strong>exiftool:</strong> com <code>libimage-exiftool-perl</code> instalado e <code>metadata = true</code>, o painel de metadados mostra os campos EXIF e de mídia completos em vez do básico</li>
+                <li><strong>bat e chroma:</strong> as pré-visualizações são realçadas pelo chroma embutido, ou pelo <code>bat</code> se você preferir os temas dele e definir <code>code_previewer = "bat"</code></li>
+                <li><strong>Seu terminal e sua shell:</strong> a pré-visualização de imagens usa o protocolo de imagens do próprio terminal, o <code>xdg-open</code> cuida dos tipos que você não mapeou em <code>[open_with]</code>, e o <code>cd_on_quit</code> devolve o último diretório para o bash, o zsh ou o fish</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativo de repositórios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> não empacota o superfile — <code>apt install superfile</code> falha num sistema padrão</li>
+                <li><strong>Compilar do código-fonte:</strong> atual, mas exige uma toolchain Go em cada máquina e deixa um binário que o apt desconhece</li>
+                <li><strong>O script de instalação upstream:</strong> um <code>curl</code> do superfile.dev, prático, mas escreve no seu sistema por trás do gerenciador de pacotes e depois o próprio binário fica avisando sobre as atualizações dele</li>
+                <li><strong>deb.griffo.io:</strong> versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>A única fonte apt:</strong> o superfile não está nos arquivos do Debian nem do Ubuntu; este repositório empacota o lançamento oficial upstream</li>
+            <li>✅ <strong>O comando é spf:</strong> o pacote se chama superfile porque o projeto se chama assim, e ele coloca <code>/usr/bin/spf</code> no seu PATH, que é o comando usado por todo tutorial e toda página de teclas</li>
+            <li>✅ <strong>Atualizações automáticas:</strong> os pacotes são atualizados poucas horas após cada lançamento upstream, então o <code>auto_check_update</code> pode ir para false e quem confere é o apt</li>
+            <li>✅ <strong>Pacote completo:</strong> a build oficial upstream para Linux instalada como <code>/usr/bin/spf</code>, sem nada adicionado nem remendado</li>
+            <li>✅ <strong>Dependências honestas:</strong> o binário não precisa de nada, o <code>xdg-utils</code> é apenas recomendado, e exiftool, zoxide, ffmpeg, poppler-utils e uma ferramenta de área de transferência ficam como sugeridos para os recursos opcionais que os usam</li>
+            <li>✅ <strong>Duas arquiteturas:</strong> amd64 e arm64, ambos binários Go com ligação estática, então o mesmo pacote roda em todas as suítes</li>
+            <li>✅ <strong>Multi-distribuição:</strong> funciona no Bookworm, Trixie, Forky e Sid</li>
+            <li>✅ <strong>Manutenção simples:</strong> atualizações com os comandos apt de sempre</li>
+        </ul>
+
+        <h3>📦 Repositório de build do pacote</h3>
+        <p>Os pacotes Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/superfile-debian" target="_blank" rel="noopener">🗂️ superfile-debian</a> - Builds dos últimos lançamentos</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-yazi-in-debian.html">Yazi</a> - O outro gerenciador de arquivos de terminal daqui, se um painel só e plugins em Lua combinam mais com você</li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide</a> - O banco de saltos por trás da tecla <code>z</code> do superfile</li>
+            <li><a href="/install-latest-eza-in-debian.html">eza</a> - Um ls moderno, para as listagens que não merecem abrir um gerenciador de arquivos</li>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Busca difusa para o que começa no prompt da shell</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> percorrer os arquivos de um servidor por SSH onde não existe nenhum gerenciador gráfico, mover coisas entre dois diretórios sem digitar nenhum dos dois caminhos duas vezes, descompactar e recompactar sem soltar o teclado, e ter pré-visualização, lixeira e barra de progresso num terminal que até então só tinha o <code>mv</code>.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O superfile está nos repositórios oficiais do Debian?</summary><p>Não, superfile não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo superfile 1.6.0.</p></details>
+<details><summary>Como instalo o superfile mais recente no Debian?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install superfile. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Debian são suportadas?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O superfile está nos repositórios oficiais do Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Não, superfile não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo superfile 1.6.0."}}, {"@type": "Question", "name": "Como instalo o superfile mais recente no Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install superfile. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Debian são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espelho gratuito</a>
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a>
+    <a href="/pt-br/how-subscriptions-work.html">Como funciona o acesso</a>
+    <a href="/terms.html">Termos e Condições</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos os direitos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest superfile on Debian",
+ "description": "Complete guide to installing the latest superfile terminal file manager on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-22",
+ "dateModified": "2026-08-22",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "superfile",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Modern terminal file manager with a multi-panel layout, a pinned-directory sidebar, a file preview pane, background copy and move jobs, archive handling, a trash bin and fully configurable themes and hotkeys, shipped as the spf command",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html",
+  "url": "https://deb.griffo.io/pt-br/install-latest-superfile-in-debian.html",
+  "inLanguage": "pt-BR"
+ },
+ "inLanguage": "pt-BR"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上用 apt 安装 superfile</title>
+<meta name="description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 superfile 1.6.0，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。多面板终端文件管理器，命令是 spf。">
+<meta name="keywords" content="superfile ubuntu, 安装 superfile, spf 文件管理器, 终端文件管理器, tui 文件管理器, superfile apt, ubuntu 软件包, jammy, noble, questing, apt superfile">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上用 apt 安装 superfile">
+<meta property="og:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 superfile 1.6.0，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。多面板终端文件管理器，命令是 spf。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上用 apt 安装 superfile">
+<meta property="twitter:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 superfile 1.6.0，官方 Ubuntu 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。多面板终端文件管理器，命令是 spf。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>52 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🗂️ 在 Ubuntu 上安装最新版 superfile</h1>
+        <p class="subtitle">好看又现代的终端文件管理器</p>
+        <div class="version-badge">最新版本：1.6.0 · 更新于 2026-08-22</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.6.0 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-superfile-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-superfile-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-superfile-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-superfile-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>什么是 superfile？</h2>
+        <p>superfile 是一个<strong>围绕常开面板设计的终端文件管理器</strong>。多个目录并排显示，侧边栏放着家目录快捷方式、置顶文件夹和已挂载的磁盘，预览面板会画出光标当前所在的内容：带语法高亮的源码、纯文本、目录列表，或者一张图片。复制、移动和压缩都在后台进行，并在进程栏里汇报进度，因此大文件传输永远不会卡住你正在浏览的面板。删掉的文件会进回收站，可以再取回来；压缩包就地解压和创建；每一个按键、颜色、边框字符和面板宽度都是 TOML 文件里的一行。它是一个静态链接的 Go 二进制文件，而你敲的命令叫 <code>spf</code>。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> superfile 仍在一个版本接一个版本地补齐核心功能：元数据面板、可重排的侧边栏分区、文件面板的额外列、自然排序、翻页滚动、<code>&gt;</code> 提示符，以及还在变长的插件列表。这些功能都会带来 <code>config.toml</code> 和 <code>hotkeys.toml</code> 里的新配置项，而旧的二进制文件会默默忽略当前文档让你设置的那些选项。Debian 和 Ubuntu 根本没有收录 superfile，所以最新构建在这里不是锦上添花，而是通过 apt 获得它的唯一途径。
+        </div>
+
+        <h3>⚡ superfile 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 面板，而不是一个目录</h4>
+                <p><code>n</code> 再开一个文件面板，<code>tab</code> 在面板之间切换，每个面板有自己的路径、排序和选中项。在两棵目录树之间复制，从此是两次按键，而不是两条长路径。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👀 跟着光标走的预览</h4>
+                <p>侧边面板会随着你移动渲染选中的文件：由内置 chroma 或 <code>bat</code> 高亮的源码、目录内容，以及在支持绘图的终端里显示的图片。想要宽度时，<code>f</code> 就能把它收起来。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♻️ 可以反悔的删除</h4>
+                <p><code>ctrl+d</code> 把文件送进回收站而不是销毁，按错一下还有救。<code>D</code> 是单独且明确的永久删除，留给你真的想这么做的时候。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 长任务有进程栏</h4>
+                <p>复制、移动和压缩作为受跟踪的后台任务运行，各有各的进度，列在 <code>p</code> 打开的进程面板里。几个 GB 在搬家的时候，文件面板照样能用。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗜️ 搜索、跳转、压缩、解压</h4>
+                <p><code>/</code> 边打字边过滤当前目录，装了 zoxide 时 <code>z</code> 把跳转交给它，<code>ctrl+a</code> 压缩选中项，<code>ctrl+e</code> 就地解压一个压缩包。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 由你来配置</h4>
+                <p>一个 <code>config.toml</code> 和一个 <code>hotkeys.toml</code>：每个按键都能重新绑定，默认配置旁边还附带一套 Vim 键位；主题是你可以自己写的文件；侧边栏宽度、边框字符、默认排序和预览宽度全都是设置项。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；superfile 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 superfile</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 superfile</span>
+sudo apt install superfile
+
+<span class="comment"># 可选，给需要它们的插件用：exiftool 用于元数据面板，</span>
+<span class="comment"># zoxide 用于智能目录跳转</span>
+sudo apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># 验证安装，命令是 spf，不是 superfile</span>
+spf --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 superfile</span>
+apt install superfile
+
+<span class="comment"># 可选，给需要它们的插件用：exiftool 用于元数据面板，</span>
+<span class="comment"># zoxide 用于智能目录跳转</span>
+apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># 验证安装，命令是 spf，不是 superfile</span>
+spf --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一次运行</h3>
+            <div class="code-block"><pre><code><span class="comment"># 打开你所在的目录</span>
+spf
+
+<span class="comment"># 或者从别的地方开始</span>
+spf ~/Downloads
+
+<span class="comment"># 命令行上给两个路径，就是两个面板</span>
+spf ~/src ~/Downloads
+
+<span class="comment"># 配置、快捷键、主题、日志和数据文件都在哪里</span>
+spf path-list
+
+<span class="comment"># 在 superfile 里，? 会打开完整的快捷键列表</span>
+spf --help</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>启动它：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 当前目录</span>
+spf
+
+<span class="comment"># 你指定的目录</span>
+spf /var/log
+
+<span class="comment"># 每个路径一个面板，并排打开</span>
+spf ~/src ~/Downloads /mnt/backup
+
+<span class="comment"># 试配置而不动你自己的文件</span>
+spf --config-file /tmp/spf.toml --hotkey-file /tmp/spf-keys.toml
+
+<span class="comment"># 装的是哪个版本？</span>
+spf --version</code></pre></div>
+
+        <p><strong>让配置保持最新：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 补上新版本带来的配置项和快捷键，</span>
+<span class="comment"># 你已经改过的内容一律不动</span>
+spf --fix-config-file
+spf --fix-hotkeys
+
+<span class="comment"># 打印 superfile 用到的所有路径</span>
+spf path-list
+
+<span class="comment"># 提交问题报告时用的环境、终端和版本信息</span>
+spf --debug-info</code></pre></div>
+
+        <p><strong>接进你的 shell：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 在 config.toml 里设置 cd_on_quit = true，再把下面这段</span>
+<span class="comment"># 放进 ~/.bashrc 或 ~/.zshrc，这样用 Q 退出时，你就会停在</span>
+<span class="comment"># 面板最后显示的那个目录里</span>
+spf() {
+    export SPF_LAST_DIR=&quot;${XDG_STATE_HOME:-$HOME/.local/state}/superfile/lastdir&quot;
+    command spf &quot;$@&quot;
+    [ ! -f &quot;$SPF_LAST_DIR&quot; ] || { . &quot;$SPF_LAST_DIR&quot;; rm -f -- &quot;$SPF_LAST_DIR&quot;; }
+}
+
+<span class="comment"># 这个函数读取的路径</span>
+spf path-list --lastdir-file
+
+<span class="comment"># 把 superfile 当作别的程序的文件选择器：它会把选中的路径</span>
+<span class="comment"># 写进这个文件然后退出</span>
+spf --chooser-file /tmp/picked</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>superfile 刻意把专门的活儿留给你已经在用的工具：</p>
+            <ul>
+                <li><strong>你的编辑器：</strong> <code>e</code> 用 <code>$EDITOR</code> 打开选中的文件，<code>E</code> 用 <code>dir_editor</code> 打开目录，编辑器还是 Neovim 或 Helix，superfile 只负责浏览</li>
+                <li><strong>zoxide：</strong> 设置 <code>zoxide_support = true</code>，<code>z</code> 键就会用你 shell 攒了几个月的同一个数据库来跳转</li>
+                <li><strong>exiftool：</strong> 装上 <code>libimage-exiftool-perl</code> 并设置 <code>metadata = true</code> 后，元数据面板会显示完整的 EXIF 和媒体字段，而不只是基础信息</li>
+                <li><strong>bat 与 chroma：</strong> 预览由内置的 chroma 高亮，如果你更喜欢 <code>bat</code> 的主题，设置 <code>code_previewer = "bat"</code> 即可</li>
+                <li><strong>你的终端和 shell：</strong> 图片预览走终端自己的图像协议，<code>xdg-open</code> 处理你没有在 <code>[open_with]</code> 里映射的文件类型，<code>cd_on_quit</code> 则把最后所在的目录交回给 bash、zsh 或 fish</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Ubuntu：</strong> 没有收录 superfile，标准系统上 <code>apt install superfile</code> 会失败</li>
+                <li><strong>自己从源码构建：</strong> 版本够新，但每台机器都要一套 Go 工具链，而且留下一个 apt 完全不知道的二进制文件</li>
+                <li><strong>上游的安装脚本：</strong> 从 superfile.dev 拉一条 <code>curl</code>，很方便，但它绕过包管理器往系统里写文件，之后二进制文件还会自己提醒你更新</li>
+                <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong> Debian 与 Ubuntu 官方源都没有 superfile；本仓库打包官方上游发布版</li>
+            <li>✅ <strong>命令是 spf：</strong> 软件包叫 superfile 是因为上游项目就叫这个名字，而它装进 PATH 的是 <code>/usr/bin/spf</code>，也就是所有教程和快捷键文档里用的那条命令</li>
+            <li>✅ <strong>自动更新：</strong> 上游发布后数小时内更新软件包，所以 <code>auto_check_update</code> 可以关掉，检查交给 apt</li>
+            <li>✅ <strong>完整的软件包：</strong> 官方上游的 Linux 构建，安装为 <code>/usr/bin/spf</code>，不加料、不打补丁</li>
+            <li>✅ <strong>诚实的依赖：</strong> 二进制文件本身什么都不需要，<code>xdg-utils</code> 只是推荐，exiftool、zoxide、ffmpeg、poppler-utils 和剪贴板工具则作为建议，供用到它们的可选功能使用</li>
+            <li>✅ <strong>两种架构：</strong> amd64 和 arm64，都是静态链接的 Go 二进制文件，同一个包在所有版本上都能运行</li>
+            <li>✅ <strong>多发行版：</strong> 支持 Ubuntu 22.04、24.04、25.10 和 26.04</li>
+            <li>✅ <strong>易于维护：</strong> 使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/superfile-debian" target="_blank" rel="noopener">🗂️ superfile-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - 这里的另一个终端文件管理器，如果你更喜欢单面板和 Lua 插件</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - superfile 的 <code>z</code> 键背后的跳转数据库</li>
+            <li><a href="/install-latest-eza-in-ubuntu.html">eza</a> - 现代版 ls，用于那些不值得开文件管理器的列目录</li>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf 模糊查找器</a> - 从 shell 提示符开始的那类搜索</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 通过 SSH 翻服务器上的文件，那里没有任何图形文件管理器；在两个目录之间搬东西，而不必把两条路径各敲两遍；不离开键盘就完成解压和重新打包；以及在一个此前只有 <code>mv</code> 的终端里，拥有预览面板、回收站和进度条。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ 常见问题</h2>
+<details><summary>superfile 在官方 Ubuntu 软件源中吗？</summary><p>不在, 官方 Ubuntu 源没有打包 superfile。本仓库目前是唯一的 apt 来源，提供 superfile 1.6.0。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 superfile？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install superfile。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "superfile 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Ubuntu 源没有打包 superfile。本仓库目前是唯一的 apt 来源，提供 superfile 1.6.0。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 superfile？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install superfile。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest superfile on Ubuntu",
+ "description": "Complete guide to installing the latest superfile terminal file manager on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-22",
+ "dateModified": "2026-08-22",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "superfile",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Modern terminal file manager with a multi-panel layout, a pinned-directory sidebar, a file preview pane, background copy and move jobs, archive handling, a trash bin and fully configurable themes and hotkeys, shipped as the spf command",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html",
+  "url": "https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]), so the default is
+   the absence of a decision rather than a value that must be present. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>superfile unter Ubuntu per apt installieren</title>
+<meta name="description" content="superfile 1.6.0 per apt auf Jammy, Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta name="keywords" content="superfile ubuntu, superfile installieren ubuntu, spf dateimanager, terminal dateimanager, tui dateimanager, superfile apt, ubuntu pakete, jammy, noble, questing, apt superfile">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<meta property="og:title" content="superfile unter Ubuntu per apt installieren">
+<meta property="og:description" content="superfile 1.6.0 per apt auf Jammy, Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<meta property="twitter:title" content="superfile unter Ubuntu per apt installieren">
+<meta property="twitter:description" content="superfile 1.6.0 per apt auf Jammy, Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-superfile-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-superfile-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-superfile-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/de/#pricing" class="btn-primary">Abo abschließen</a>
+      <p class="mobile-menu-note"><a href="/free.html">Kostenloser Spiegel</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>52 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🗂️ Neuestes superfile unter Ubuntu installieren</h1>
+        <p class="subtitle">Ein schicker, moderner Dateimanager fürs Terminal</p>
+        <div class="version-badge">Neueste Version: 1.6.0 · aktualisiert 2026-08-22</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.6.0 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-superfile-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-superfile-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-superfile-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-superfile-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist superfile?</h2>
+        <p>superfile ist ein <strong>Dateimanager fürs Terminal, der auf offenen Panels aufbaut</strong>. Mehrere Verzeichnisse liegen nebeneinander, eine Seitenleiste hält deine Home-Verknüpfungen, angehefteten Ordner und eingehängten Laufwerke bereit, und ein Vorschaufenster zeigt, was gerade unter dem Cursor liegt: Quelltext mit Syntaxhervorhebung, einfacher Text, ein Verzeichnisinhalt, ein Bild. Kopieren, Verschieben und Packen laufen im Hintergrund und melden sich in einer Prozessleiste, ein großer Transfer friert das Panel also nie ein. Gelöschte Dateien landen im Papierkorb und lassen sich zurückholen, Archive werden an Ort und Stelle entpackt und erzeugt, und jede Taste, jede Farbe, jedes Rahmenzeichen und jede Panelbreite ist eine Zeile in einer TOML-Datei. Es ist eine einzige statische Go-Binärdatei, und der Befehl, den du tippst, heißt <code>spf</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum die neueste Version zählt:</strong> superfile bekommt immer noch von Release zu Release grundlegende Funktionen dazu: das Metadaten-Panel, umsortierbare Bereiche der Seitenleiste, zusätzliche Spalten im Dateipanel, natürliche Sortierung, seitenweises Blättern, den <code>&gt;</code>-Prompt und eine Plugin-Liste, die weiter wächst. Jede dieser Funktionen bringt neue Schlüssel in <code>config.toml</code> und <code>hotkeys.toml</code> mit, und eine alte Binärdatei ignoriert stillschweigend genau die Optionen, die die aktuelle Dokumentation dir empfiehlt. Weder Debian noch Ubuntu paketieren superfile überhaupt, ein aktueller Build ist hier also kein Luxus, sondern der einzige Weg, es über apt zu bekommen.
+        </div>
+
+        <h3>⚡ Hauptfunktionen von superfile</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🪟 Panels statt eines Verzeichnisses</h4>
+                <p><code>n</code> öffnet ein weiteres Dateipanel, <code>tab</code> wechselt dazwischen, jedes mit eigenem Pfad, eigener Sortierung und eigener Auswahl. Kopieren zwischen zwei Bäumen sind damit zwei Tastendrücke statt zweier langer Pfade.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👀 Eine Vorschau, die dem Cursor folgt</h4>
+                <p>Das Seitenfenster zeigt beim Bewegen die markierte Datei: Quelltext mit Hervorhebung durch das eingebaute chroma oder durch <code>bat</code>, Verzeichnisinhalte und Bilder in Terminals, die sie zeichnen können. <code>f</code> klappt es weg, wenn du die Breite brauchst.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♻️ Löschen mit Rückweg</h4>
+                <p><code>ctrl+d</code> verschiebt Dateien in den Papierkorb, statt sie zu vernichten, ein Fehlgriff bleibt also reparabel. <code>D</code> ist der eigene, bewusste Befehl zum endgültigen Löschen, wenn du es wirklich so meinst.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📊 Eine Prozessleiste für lange Aufgaben</h4>
+                <p>Kopieren, Verschieben und Packen laufen als verfolgte Hintergrundaufgaben mit eigenem Fortschritt, aufgelistet im Prozess-Panel auf <code>p</code>. Das Dateipanel bleibt benutzbar, während ein paar Gigabyte unterwegs sind.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗜️ Suchen, springen, packen, entpacken</h4>
+                <p><code>/</code> filtert das aktuelle Verzeichnis beim Tippen, <code>z</code> übergibt den Sprung an zoxide, sofern installiert, <code>ctrl+a</code> packt die Auswahl und <code>ctrl+e</code> entpackt ein Archiv genau dort, wo es liegt.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Ganz nach deiner Konfiguration</h4>
+                <p>Eine <code>config.toml</code> und eine <code>hotkeys.toml</code>: jede Taste ist neu belegbar und ein Vim-Satz liegt neben der Standardbelegung, Themes sind Dateien, die du selbst schreiben kannst, und Seitenleistenbreite, Rahmenzeichen, Sortiervorgaben und Vorschaubreite sind Einstellungen.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer vor den offiziellen Archiven:</strong> Debian und Ubuntu frieren Paketversionen beim Release ein. Dieses Repository veröffentlicht neue Upstream-Releases in der Regel innerhalb von Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation aus deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Schritt 1: Repository hinzufügen</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Es gibt einen für immer kostenlosen Spiegel.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> liefert Pakete für immer kostenlos — ohne Konto, ohne Abo, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Derzeit enthält er cliamp, Ghostty, lazydocker, Oh My Posh und Zed; superfile ist nicht dabei, deshalb führt heute nur das Repository oben dorthin — auf Anfrage kann es aufgenommen werden.</p>
+  <p class="free-lane-more"><a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Schritt 2: superfile installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Neuestes superfile installieren</span>
+sudo apt install superfile
+
+<span class="comment"># Optional, für die Plugins, die sie brauchen: exiftool für das</span>
+<span class="comment"># Metadaten-Panel, zoxide für den schlauen Verzeichnissprung</span>
+sudo apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Installation prüfen, der Befehl heißt spf und nicht superfile</span>
+spf --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Neuestes superfile installieren</span>
+apt install superfile
+
+<span class="comment"># Optional, für die Plugins, die sie brauchen: exiftool für das</span>
+<span class="comment"># Metadaten-Panel, zoxide für den schlauen Verzeichnissprung</span>
+apt install libimage-exiftool-perl zoxide
+
+<span class="comment"># Installation prüfen, der Befehl heißt spf und nicht superfile</span>
+spf --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: Der erste Start</h3>
+            <div class="code-block"><pre><code><span class="comment"># Das Verzeichnis öffnen, in dem du gerade bist</span>
+spf
+
+<span class="comment"># Oder woanders anfangen</span>
+spf ~/Downloads
+
+<span class="comment"># Zwei Pfade auf der Kommandozeile bedeuten zwei Panels</span>
+spf ~/src ~/Downloads
+
+<span class="comment"># Wo Konfiguration, Hotkeys, Theme, Log und Daten liegen</span>
+spf path-list
+
+<span class="comment"># In superfile öffnet ? die vollständige Tastenliste</span>
+spf --help</code></pre></div>
+        </div>
+
+        <h3>🎯 Grundlegende Verwendungsbeispiele</h3>
+
+        <p><strong>Starten:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Das aktuelle Verzeichnis</span>
+spf
+
+<span class="comment"># Ein Verzeichnis, das du nennst</span>
+spf /var/log
+
+<span class="comment"># Ein Panel pro Pfad, nebeneinander geöffnet</span>
+spf ~/src ~/Downloads /mnt/backup
+
+<span class="comment"># Einstellungen ausprobieren, ohne die eigenen Dateien anzufassen</span>
+spf --config-file /tmp/spf.toml --hotkey-file /tmp/spf-keys.toml
+
+<span class="comment"># Was ist installiert?</span>
+spf --version</code></pre></div>
+
+        <p><strong>Die Konfiguration aktuell halten:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Die Felder und Hotkeys ergänzen, die ein neues Release</span>
+<span class="comment"># mitgebracht hat, ohne deine Änderungen anzurühren</span>
+spf --fix-config-file
+spf --fix-hotkeys
+
+<span class="comment"># Alle Pfade ausgeben, die superfile benutzt</span>
+spf path-list
+
+<span class="comment"># Umgebung, Terminal und Version für einen Fehlerbericht</span>
+spf --debug-info</code></pre></div>
+
+        <p><strong>In die Shell einbauen:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># cd_on_quit = true in der config.toml setzen und das hier in</span>
+<span class="comment"># ~/.bashrc oder ~/.zshrc legen, dann landest du beim Beenden</span>
+<span class="comment"># mit Q im Verzeichnis, das das Panel zuletzt zeigte</span>
+spf() {
+    export SPF_LAST_DIR=&quot;${XDG_STATE_HOME:-$HOME/.local/state}/superfile/lastdir&quot;
+    command spf &quot;$@&quot;
+    [ ! -f &quot;$SPF_LAST_DIR&quot; ] || { . &quot;$SPF_LAST_DIR&quot;; rm -f -- &quot;$SPF_LAST_DIR&quot;; }
+}
+
+<span class="comment"># Der Pfad, den diese Funktion liest</span>
+spf path-list --lastdir-file
+
+<span class="comment"># superfile als Dateiauswahl für ein anderes Programm: es schreibt</span>
+<span class="comment"># den gewählten Pfad in die Datei und beendet sich</span>
+spf --chooser-file /tmp/picked</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Werkzeug-Integrationen</h4>
+            <p>superfile überlässt die Spezialaufgaben bewusst den Werkzeugen, die du schon benutzt:</p>
+            <ul>
+                <li><strong>Dein Editor:</strong> <code>e</code> öffnet die markierte Datei in <code>$EDITOR</code> und <code>E</code> das Verzeichnis im <code>dir_editor</code>, Neovim oder Helix bleibt also der Editor und superfile der Browser</li>
+                <li><strong>zoxide:</strong> mit <code>zoxide_support = true</code> springt die Taste <code>z</code> durch dieselbe Datenbank, die deine Shell seit Monaten aufbaut</li>
+                <li><strong>exiftool:</strong> mit installiertem <code>libimage-exiftool-perl</code> und <code>metadata = true</code> zeigt das Metadaten-Panel die vollständigen EXIF- und Medienfelder statt nur der Grunddaten</li>
+                <li><strong>bat und chroma:</strong> Vorschauen hebt das eingebaute chroma hervor, oder <code>bat</code>, wenn dir dessen Themes lieber sind und du <code>code_previewer = "bat"</code> setzt</li>
+                <li><strong>Dein Terminal und deine Shell:</strong> Bildvorschauen nutzen das Bildprotokoll des Terminals, <code>xdg-open</code> übernimmt die Dateitypen, die du nicht in <code>[open_with]</code> zugeordnet hast, und <code>cd_on_quit</code> gibt das letzte Verzeichnis an bash, zsh oder fish zurück</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> paketiert superfile nicht, <code>apt install superfile</code> schlägt auf einem Standardsystem fehl</li>
+                <li><strong>Selbst aus dem Quelltext bauen:</strong> aktuell, aber eine Go-Toolchain auf jeder Maschine und eine Binärdatei, von der apt nichts weiß</li>
+                <li><strong>Das Upstream-Installationsskript:</strong> ein <code>curl</code> von superfile.dev, bequem, aber es schreibt am Paketmanager vorbei ins System und die Binärdatei erinnert dich danach selbst an ihre Updates</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Die einzige apt-Quelle:</strong> superfile ist weder in den Debian- noch in den Ubuntu-Archiven; dieses Repository paketiert das offizielle Upstream-Release</li>
+            <li>✅ <strong>Der Befehl heißt spf:</strong> das Paket heißt superfile, weil upstream so heißt, und es legt <code>/usr/bin/spf</code> in deinen PATH, den Befehl, den jedes Tutorial und jede Hotkey-Seite benutzt</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete werden innerhalb von Stunden nach dem Upstream-Release aktualisiert, <code>auto_check_update</code> darf also auf false und apt übernimmt das Nachsehen</li>
+            <li>✅ <strong>Vollständiges Paket:</strong> der offizielle Upstream-Linux-Build als <code>/usr/bin/spf</code>, nichts hinzugefügt, nichts gepatcht</li>
+            <li>✅ <strong>Ehrliche Abhängigkeiten:</strong> die Binärdatei braucht nichts, <code>xdg-utils</code> ist nur empfohlen, und exiftool, zoxide, ffmpeg, poppler-utils und ein Zwischenablage-Werkzeug sind für die optionalen Funktionen vorgeschlagen, die sie nutzen</li>
+            <li>✅ <strong>Zwei Architekturen:</strong> amd64 und arm64, beide statisch gelinkte Go-Binärdateien, dasselbe Paket läuft damit auf jeder Suite</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 22.04, 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Updates mit den üblichen apt-Befehlen</li>
+        </ul>
+
+        <h3>📦 Paket-Build-Repository</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/superfile-debian" target="_blank" rel="noopener">🗂️ superfile-debian</a> - Builds der neuesten Releases</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls verfügbar über deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-yazi-in-ubuntu.html">Yazi</a> - Der andere Terminal-Dateimanager hier, falls dir ein einzelnes Panel und Lua-Plugins besser passen</li>
+            <li><a href="/install-latest-zoxide-in-ubuntu.html">zoxide</a> - Die Sprungdatenbank hinter superfiles <code>z</code>-Taste</li>
+            <li><a href="/install-latest-eza-in-ubuntu.html">eza</a> - Modernes ls für die Auflistungen, für die du keinen Dateimanager öffnen willst</li>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf Fuzzy Finder</a> - Unscharfe Suche für alles, was am Shell-Prompt beginnt</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal für:</strong> die Dateien eines Servers per SSH durchgehen, wo es keinen grafischen Dateimanager gibt, Dinge zwischen zwei Verzeichnissen bewegen, ohne beide Pfade zweimal zu tippen, Archive entpacken und neu packen, ohne die Tastatur zu verlassen, und ein Vorschaufenster, einen Papierkorb und eine Fortschrittsanzeige in einem Terminal zu haben, das bisher nur <code>mv</code> kannte.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist superfile in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein, superfile ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert superfile 1.6.0.</p></details>
+<details><summary>Wie installiere ich das neueste superfile unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install superfile. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist superfile in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein, superfile ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert superfile 1.6.0."}}, {"@type": "Question", "name": "Wie installiere ich das neueste superfile unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install superfile. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Kostenloser Spiegel</a>
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a>
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a>
+    <a href="/terms.html">Nutzungsbedingungen</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Alle Rechte vorbehalten.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest superfile on Ubuntu",
+ "description": "Complete guide to installing the latest superfile terminal file manager on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-22",
+ "dateModified": "2026-08-22",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "superfile",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Modern terminal file manager with a multi-panel layout, a pinned-directory sidebar, a file preview pane, background copy and move jobs, archive handling, a trash bin and fully configurable themes and hotkeys, shipped as the spf command",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html",
+  "url": "https://deb.griffo.io/de/install-latest-superfile-in-ubuntu.html",
+  "inLanguage": "de"
+ },
+ "inLanguage": "de"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
