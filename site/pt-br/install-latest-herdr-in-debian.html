@@ -17,14 +17,18 @@
 
    Failure modes, all of which must still render "with sudo":
      nothing stored / garbage stored / localStorage throwing / attribute absent
-   The CSS selector is :not([data-install-variant="root"]), so the default is
-   the absence of a decision rather than a value that must be present. */
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   try {
     var v = localStorage.getItem('deb-griffo-install-variant');
-    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
   } catch (e) {}
 })();
 </script>
@@ -246,28 +250,25 @@
 
         <h2>📦 Instalação a partir do deb.griffo.io</h2>
 
-        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">com extrepo</button></div></div>
         <div class="install-block">
             <h3 class="block-title">Passo 1: Adicionar repositório</h3>
-            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
-apt update</code></pre></div>
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz cliamp, Ghostty, lazydocker, Oh My Posh e Zed; herdr não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
   <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
 </div>
 <div class="notice-box extrepo">
-  <p><strong>🧩 Ou deixe o extrepo fazer isso.</strong> No Debian — bookworm, trixie, forky e sid — este repositório está registrado no <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, a ferramenta do próprio Debian, que escreve o arquivo de sources e instala a chave de assinatura verificada para você:</p>
-  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
-sudo extrepo enable griffo
-sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
-extrepo enable griffo
-apt update</code></pre></div>
-  <p>Use <code>griffo-free</code> no lugar de <code>griffo</code> para habilitar o espelho gratuito para sempre. O extrepo configura apenas o arquivo de sources e a chave: as credenciais de uma assinatura continuam indo em <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. O Ubuntu não é coberto — o extrepo publica metadados só para as suítes do Debian —, então lá use os comandos acima.</p>
+  <p><strong>🧩 Sobre a opção extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> é a ferramenta do próprio Debian para repositórios externos: ela escreve o arquivo de sources e instala a chave de assinatura para você, conferindo a chave contra metadados assinados antes de usá-la. Este repositório está registrado nela como <code>griffo</code>, e o espelho gratuito para sempre como <code>griffo-free</code>, então no Debian (bookworm, trixie, forky e sid) os comandos acima são toda a configuração.</p>
+  <p>O extrepo configura apenas o arquivo de sources e a chave: as credenciais de uma assinatura continuam indo em <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. O Ubuntu não é coberto, porque o extrepo publica metadados só para as suítes do Debian: lá, use os comandos com sudo ou como root.</p>
 </div>
         </div>
 

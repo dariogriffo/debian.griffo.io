@@ -114,6 +114,7 @@
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Install with sudo</button>
                 <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Install with root</button>
+                <button class="tab-button" onclick="switchTab(event, 'extrepo-tab-1')">Install with extrepo</button>
             </div>
 
             <div id="sudo-tab-1" class="tab-content active">
@@ -133,18 +134,8 @@ echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.
 apt update
                 </div>
             </div>
-        </div>
 
-        <div class="install-steps">
-            <h3>Alternative: extrepo (Debian only)</h3>
-            <p>On Debian (bookworm, trixie, forky, sid) this mirror is registered with Debian's own <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a> under the name <code>griffo-free</code>, so it can write the sources file and install the verified signing key for you instead of the commands above. Ubuntu is not covered: extrepo publishes metadata for Debian suites only.</p>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">Install with sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">Install with root</button>
-            </div>
-
-            <div id="sudo-tab-extrepo" class="tab-content active">
+            <div id="extrepo-tab-1" class="tab-content">
                 <div class="code-block">
 sudo apt install extrepo
 sudo extrepo enable griffo-free
@@ -152,13 +143,7 @@ sudo apt update
                 </div>
             </div>
 
-            <div id="root-tab-extrepo" class="tab-content">
-                <div class="code-block">
-apt install extrepo
-extrepo enable griffo-free
-apt update
-                </div>
-            </div>
+            <p><a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a> is Debian's own tool for external repositories: it writes the sources file and installs the signing key for you, after checking that key against signed metadata. This mirror is registered with it as <code>griffo-free</code>. Debian only (bookworm, trixie, forky, sid): extrepo publishes metadata for Debian suites only, so on Ubuntu use one of the other two tabs.</p>
         </div>
 
         <div class="install-steps">

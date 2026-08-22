@@ -17,14 +17,18 @@
 
    Failure modes, all of which must still render "with sudo":
      nothing stored / garbage stored / localStorage throwing / attribute absent
-   The CSS selector is :not([data-install-variant="root"]), so the default is
-   the absence of a decision rather than a value that must be present. */
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   try {
     var v = localStorage.getItem('deb-griffo-install-variant');
-    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
   } catch (e) {}
 })();
 </script>
@@ -240,28 +244,25 @@
 
         <h2>📦 deb.griffo.io からインストールする</h2>
         
-        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">extrepo で実行</button></div></div>
         <div class="install-block">
             <h3 class="block-title">ステップ 1: リポジトリを追加する</h3>
-            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
-apt update</code></pre></div>
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは cliamp、Ghostty、lazydocker、Oh My Posh と Zed です。eza は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
   <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
 </div>
 <div class="notice-box extrepo">
-  <p><strong>🧩 extrepo に任せることもできます。</strong> Debian（bookworm、trixie、forky、sid）では、このリポジトリは Debian 標準のツール <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> に登録されています。sources ファイルの作成と、検証済み署名鍵のインストールを代わりに行ってくれます:</p>
-  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
-sudo extrepo enable griffo
-sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
-extrepo enable griffo
-apt update</code></pre></div>
-  <p><code>griffo</code> の代わりに <code>griffo-free</code> を指定すると、ずっと無料のミラーを有効にできます。extrepo が用意するのは sources ファイルと鍵だけなので、サブスクリプションの認証情報は引き続き <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に書きます。Ubuntu は対象外です（extrepo は Debian のスイート向けメタデータしか公開していません）。Ubuntu では上のコマンドを使ってください。</p>
+  <p><strong>🧩 extrepo オプションについて。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> は外部リポジトリを扱う Debian 標準のツールです。署名済みメタデータと照合して鍵を検証したうえで、sources ファイルの作成と署名鍵のインストールを代わりに行います。このリポジトリは <code>griffo</code>、ずっと無料のミラーは <code>griffo-free</code> という名前で登録されているので、Debian（bookworm、trixie、forky、sid）では上のコマンドだけで設定は完了です。</p>
+  <p>extrepo が用意するのは sources ファイルと鍵だけなので、サブスクリプションの認証情報は引き続き <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に書きます。extrepo は Debian のスイート向けメタデータしか公開していないため Ubuntu は対象外です。Ubuntu では sudo または root のコマンドを使ってください。</p>
 </div>
         </div>
 

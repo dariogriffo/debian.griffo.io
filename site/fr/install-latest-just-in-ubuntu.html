@@ -17,14 +17,18 @@
 
    Failure modes, all of which must still render "with sudo":
      nothing stored / garbage stored / localStorage throwing / attribute absent
-   The CSS selector is :not([data-install-variant="root"]), so the default is
-   the absence of a decision rather than a value that must be present. */
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   try {
     var v = localStorage.getItem('deb-griffo-install-variant');
-    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
   } catch (e) {}
 })();
 </script>

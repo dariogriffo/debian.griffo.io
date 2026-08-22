@@ -17,14 +17,18 @@
 
    Failure modes, all of which must still render "with sudo":
      nothing stored / garbage stored / localStorage throwing / attribute absent
-   The CSS selector is :not([data-install-variant="root"]), so the default is
-   the absence of a decision rather than a value that must be present. */
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   try {
     var v = localStorage.getItem('deb-griffo-install-variant');
-    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
   } catch (e) {}
 })();
 </script>
@@ -709,9 +713,9 @@
       versions de vos outils de développement préférés.
     </p>
 
-    <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>
+    <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">avec extrepo</button></div></div>
     <div class="reveal reveal-d3">
-<div class="install-block"><h3 class="block-title">Étape 1 : ajouter le dépôt</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+<div class="install-block"><h3 class="block-title">Étape 1 : ajouter le dépôt</h3><div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
@@ -721,19 +725,16 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 
-apt update</code></pre></div>
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Ghostty, lazydocker, Oh My Posh et Zed ; tout autre outil peut y être ajouté sur demande.</p>
   <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
 </div>
 <div class="notice-box extrepo">
-  <p><strong>🧩 Ou laissez faire extrepo.</strong> Sur Debian — bookworm, trixie, forky et sid — ce dépôt est enregistré dans <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a>, l'outil de Debian lui-même, qui écrit le fichier de sources et installe pour vous la clé de signature vérifiée :</p>
-  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
-sudo extrepo enable griffo
-sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
-extrepo enable griffo
-apt update</code></pre></div>
-  <p>Utilisez <code>griffo-free</code> à la place de <code>griffo</code> pour activer le miroir gratuit à vie. extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert — extrepo ne publie de métadonnées que pour les suites Debian — utilisez-y les commandes ci-dessus.</p>
+  <p><strong>🧩 À propos de l'option extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> est l'outil de Debian pour les dépôts externes : il écrit le fichier de sources et installe la clé de signature à votre place, après l'avoir vérifiée face à des métadonnées signées. Ce dépôt y est enregistré sous le nom <code>griffo</code>, et le miroir gratuit à vie sous <code>griffo-free</code> ; sur Debian (bookworm, trixie, forky et sid), les commandes ci-dessus constituent donc toute l'installation.</p>
+  <p>extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert, car extrepo ne publie de métadonnées que pour les suites Debian : utilisez-y les commandes avec sudo ou en root.</p>
 </div></div><div class="install-block"><h3 class="block-title">Étape 2 : installer les paquets</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Optionnel : activer les paquets sources</h3><p class="prose">Ajoutez la ligne <code class="inline-code">deb-src</code> à votre liste de sources si vous voulez télécharger et construire les paquets depuis les sources avec <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
 sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
@@ -1445,7 +1446,7 @@ dpkg-buildpackage -b --no-sign
 
 <span class="comment"># Le .deb produit apparaît un niveau au-dessus</span>
 ls ../zig-stable_*.deb</code></pre></div>
-      <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>      <h3 class="block-title">Alternative : uniquement les dépendances de construction</h3>
+      <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">avec extrepo</button></div></div>      <h3 class="block-title">Alternative : uniquement les dépendances de construction</h3>
 <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Installer automatiquement toutes les dépendances de construction d&#039;un paquet</span>
 sudo apt-get build-dep zig
 

@@ -17,14 +17,18 @@
 
    Failure modes, all of which must still render "with sudo":
      nothing stored / garbage stored / localStorage throwing / attribute absent
-   The CSS selector is :not([data-install-variant="root"]), so the default is
-   the absence of a decision rather than a value that must be present. */
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
 (function () {
   var d = document.documentElement;
   d.classList.add('js');
   try {
     var v = localStorage.getItem('deb-griffo-install-variant');
-    if (v === 'root' || v === 'sudo') { d.setAttribute('data-install-variant', v); }
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
   } catch (e) {}
 })();
 </script>
@@ -247,28 +251,25 @@
 
         <h2>📦 从 deb.griffo.io 安装</h2>
 
-        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
         <div class="install-block">
             <h3 class="block-title">步骤 1：添加仓库</h3>
-            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
-apt update</code></pre></div>
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；Fastfetch 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
   <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
 </div>
 <div class="notice-box extrepo">
-  <p><strong>🧩 也可以交给 extrepo。</strong> 在 Debian（bookworm、trixie、forky、sid）上，本仓库已登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 中，它会替你写好 sources 文件并安装经过校验的签名密钥：</p>
-  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install extrepo
-sudo extrepo enable griffo
-sudo apt update</code></pre><pre class="variant variant-root"><code>apt install extrepo
-extrepo enable griffo
-apt update</code></pre></div>
-  <p>把 <code>griffo</code> 换成 <code>griffo-free</code>，即可改为启用永久免费镜像。extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内——extrepo 只发布 Debian 各套件的元数据——在 Ubuntu 上请使用上面的命令。</p>
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
 </div>
         </div>
 

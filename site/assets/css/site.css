@@ -677,10 +677,16 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   color: #fff; background: linear-gradient(135deg, var(--debian) 0%, var(--debian-deep) 100%);
 }
 
-/* the switch itself: one attribute decides which form every block shows */
+/* the switch itself: one attribute decides which form every block shows.
+   "extrepo" is a third form of the repository-setup transcript only, so blocks
+   that do not carry one (install commands, source packages) keep showing the
+   sudo form while it is selected rather than going blank — data-variants tells
+   the two apart without needing :has(). */
 .variant { display: none; }
 :root[data-install-variant="root"] .variant-root { display: block; }
-:root:not([data-install-variant="root"]) .variant-sudo { display: block; }
+:root[data-install-variant="extrepo"] [data-variants="extrepo"] .variant-extrepo { display: block; }
+:root[data-install-variant="extrepo"] .code-block:not([data-variants="extrepo"]) .variant-sudo { display: block; }
+:root:not([data-install-variant="root"]):not([data-install-variant="extrepo"]) .variant-sudo { display: block; }
 
 /* ── Notices ── */
 .notice-box, .highlight-box {
@@ -705,10 +711,9 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .free-lane p + p { margin-top: 10px; }
 .free-lane-more { font-size: 13.5px; }
 
-/* The extrepo alternative sits under the free-lane note and must not read as a
-   second free-lane box: Debian red rather than green, same internal spacing. */
+/* The prose explaining the switch's third form. It sits under the free-lane
+   note and must not read as a second free-lane box: Debian red, not green. */
 .extrepo { border-left: 2px solid var(--debian); }
-.extrepo .code-block { margin: 14px 0 4px; }
 .extrepo p + p { margin-top: 10px; }
 
 /* ── "Request a package" prompt above the grid ── */

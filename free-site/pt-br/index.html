@@ -166,6 +166,7 @@
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">Instalar com sudo</button>
                 <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">Instalar com root</button>
+                <button class="tab-button" onclick="switchTab(event, 'extrepo-tab-1')">Instalar com extrepo</button>
             </div>
 
             <div id="sudo-tab-1" class="tab-content active">
@@ -185,18 +186,8 @@ echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.
 apt update
                 </div>
             </div>
-        </div>
 
-        <div class="install-section">
-            <h3>Alternativa: extrepo (somente Debian)</h3>
-            <p>No Debian (bookworm, trixie, forky, sid) este espelho está registrado como <code>griffo-free</code> no <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a>, a ferramenta do próprio Debian, que escreve o arquivo de sources e instala a chave de assinatura verificada para você, no lugar dos comandos acima. O Ubuntu não é coberto: o extrepo publica metadados só para as suítes do Debian.</p>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">Instalar com sudo</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">Instalar com root</button>
-            </div>
-
-            <div id="sudo-tab-extrepo" class="tab-content active">
+            <div id="extrepo-tab-1" class="tab-content">
                 <div class="code-block">
 sudo apt install extrepo
 sudo extrepo enable griffo-free
@@ -204,13 +195,7 @@ sudo apt update
                 </div>
             </div>
 
-            <div id="root-tab-extrepo" class="tab-content">
-                <div class="code-block">
-apt install extrepo
-extrepo enable griffo-free
-apt update
-                </div>
-            </div>
+            <p><a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a> é a ferramenta do próprio Debian para repositórios externos: ela escreve o arquivo de sources e instala a chave de assinatura para você, depois de conferi-la contra metadados assinados. Este espelho está registrado nela como <code>griffo-free</code>. Somente Debian (bookworm, trixie, forky, sid): o extrepo publica metadados só para as suítes do Debian, então no Ubuntu use uma das outras duas abas.</p>
         </div>
 
         <div class="install-section">

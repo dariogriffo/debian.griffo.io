@@ -99,6 +99,7 @@
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-1')">使用 sudo 安装</button>
                 <button class="tab-button" onclick="switchTab(event, 'root-tab-1')">使用 root 安装</button>
+                <button class="tab-button" onclick="switchTab(event, 'extrepo-tab-1')">使用 extrepo 安装</button>
             </div>
 
             <div id="sudo-tab-1" class="tab-content active">
@@ -118,18 +119,8 @@ echo "deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.
 apt update
                 </div>
             </div>
-        </div>
 
-        <div class="install-steps">
-            <h3>备选方案：extrepo（仅限 Debian）</h3>
-            <p>在 Debian（bookworm、trixie、forky、sid）上，本镜像已以 <code>griffo-free</code> 之名登记在 Debian 官方工具 <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a> 中，因此可以由它替你写好 sources 文件并安装经过校验的签名密钥，无需执行上面的命令。Ubuntu 不在覆盖范围内：extrepo 只发布 Debian 各套件的元数据。</p>
-
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab(event, 'sudo-tab-extrepo')">使用 sudo 安装</button>
-                <button class="tab-button" onclick="switchTab(event, 'root-tab-extrepo')">使用 root 安装</button>
-            </div>
-
-            <div id="sudo-tab-extrepo" class="tab-content active">
+            <div id="extrepo-tab-1" class="tab-content">
                 <div class="code-block">
 sudo apt install extrepo
 sudo extrepo enable griffo-free
@@ -137,13 +128,7 @@ sudo apt update
                 </div>
             </div>
 
-            <div id="root-tab-extrepo" class="tab-content">
-                <div class="code-block">
-apt install extrepo
-extrepo enable griffo-free
-apt update
-                </div>
-            </div>
+            <p><a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html">extrepo</a> 是 Debian 官方用于管理第三方仓库的工具：它会先对照签名元数据校验密钥，然后替你写好 sources 文件并安装签名密钥。本镜像以 <code>griffo-free</code> 之名登记其中。仅限 Debian（bookworm、trixie、forky、sid）：extrepo 只发布 Debian 各套件的元数据，在 Ubuntu 上请使用另外两个标签页中的命令。</p>
         </div>
 
 <div class="install-steps">

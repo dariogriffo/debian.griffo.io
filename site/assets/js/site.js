@@ -179,11 +179,23 @@
     });
   }
 
-  // ── sudo / root toggle ──
+  // ── sudo / root / extrepo toggle ──
   // One state for the whole page, held on <html> so CSS does the switching.
   // Every toggle instance reflects it, and the choice is remembered.
   var VARIANT_KEY = 'deb-griffo-install-variant';
   var variantButtons = document.querySelectorAll('.variant-btn');
+
+  // "extrepo" only exists where the page offers it: Ubuntu and PPA pages have
+  // no extrepo route at all, and a stored choice must not leave their switch
+  // with no button pressed. It degrades to sudo there, without overwriting the
+  // stored preference, so returning to a Debian page still honours it.
+  function offered(variant) {
+    if (variant !== 'root' && variant !== 'sudo' && variant !== 'extrepo') { return null; }
+    if (variant === 'extrepo' && !document.querySelector('.variant-btn[data-variant="extrepo"]')) {
+      return 'sudo';
+    }
+    return variant;
+  }
 
   function applyVariant(variant, persist) {
     document.documentElement.dataset.installVariant = variant;
@@ -198,15 +210,16 @@
   if (variantButtons.length) {
     var stored = null;
     try { stored = localStorage.getItem(VARIANT_KEY); } catch (e) { /* private mode */ }
-    if (stored === 'root' || stored === 'sudo') { applyVariant(stored, false); }
+    var initial = offered(stored);
+    if (initial) { applyVariant(initial, false); }
     variantButtons.forEach(function (btn) {
       btn.addEventListener('click', function () { applyVariant(btn.dataset.variant, true); });
     });
     // Keep other open tabs in step — the preference is per-visitor, not per-tab.
     window.addEventListener('storage', function (e) {
-      if (e.key === VARIANT_KEY && (e.newValue === 'root' || e.newValue === 'sudo')) {
-        applyVariant(e.newValue, false);
-      }
+      if (e.key !== VARIANT_KEY) { return; }
+      var next = offered(e.newValue);
+      if (next) { applyVariant(next, false); }
     });
   }
 
