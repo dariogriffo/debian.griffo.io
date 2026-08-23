@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Debian 上用 apt 安装 rumdl</title>
+<meta name="description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 rumdl 0.2.60，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。Rust 写的 Markdown 检查与格式化工具，兼容 markdownlint 规则。">
+<meta name="keywords" content="rumdl debian, 安装 rumdl, markdown 检查工具, markdownlint 替代, markdown 格式化工具, rumdl apt, debian 软件包, bookworm, trixie, sid, apt rumdl">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html">
+<meta property="og:title" content="在 Debian 上用 apt 安装 rumdl">
+<meta property="og:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 rumdl 0.2.60，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。Rust 写的 Markdown 检查与格式化工具，兼容 markdownlint 规则。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html">
+<meta property="twitter:title" content="在 Debian 上用 apt 安装 rumdl">
+<meta property="twitter:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 rumdl 0.2.60，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。Rust 写的 Markdown 检查与格式化工具，兼容 markdownlint 规则。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-rumdl-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-rumdl-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-rumdl-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="05">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="06">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>53 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像将需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📐 在 Debian 上安装最新版 rumdl</h1>
+        <p class="subtitle">用 Rust 写的快速 Markdown 检查与格式化工具</p>
+        <div class="version-badge">最新版本：0.2.60 · 更新于 2026-08-23</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.2.60 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-rumdl-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-rumdl-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-rumdl-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-rumdl-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>什么是 rumdl？</h2>
+        <p>rumdl 是一个<strong>用 Rust 写的 Markdown 检查与格式化工具</strong>。它实现了大家早已从 markdownlint 熟悉的那套规则，也就是 MD001 到 MD059 这些针对标题层级、列表缩进、行长度、代码围栏风格、链接语法和行尾空格的检查，而它跑完一整棵文档树只要几毫秒，不是几秒。这些规则大多带有修复方案，所以 <code>rumdl check --fix</code> 会把它报出来的问题直接改好，而不是丢给你一份清单，<code>rumdl fmt</code> 则能把一个文件整体重新排版。配置是一个 <code>rumdl.toml</code> 文件，或者 <code>pyproject.toml</code> 里的一张 <code>[tool.rumdl]</code> 表；已经有的 <code>.markdownlint.json</code> 可以用 <code>rumdl import</code> 转换过来；<code>rumdl server</code> 讲的是 Language Server Protocol，所以同一个二进制文件也会在你的编辑器里把问题标出来。把它理解成 Ruff 之于 Python，只是对象换成了 Markdown。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> rumdl 仍在一个版本接一个版本地增加规则、修复方案和配置项，而每一条新规则，都是你的文档在升级之前享受不到的一项检查。修复行为也在同样这些版本里被不断打磨，所以旧的二进制文件可能会用当前版本早已不再采用的方式改写文件，而照着今天的文档写出来的 <code>rumdl.toml</code>，里面的选项旧构建可能会默默忽略。Debian 和 Ubuntu 根本没有收录 rumdl，所以最新构建在这里不是锦上添花，而是通过 apt 获得它的唯一途径。
+        </div>
+
+        <h3>⚡ rumdl 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🏎️ 用 Rust 的速度跑 markdownlint 规则</h4>
+                <p>熟悉的 MD001 到 MD059 检查，由一个编译好的二进制文件执行，没有解释器要启动。以前在 CI 里要单独占一步的文档树，现在快到每次保存都能跑一遍。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔧 会修，而不只是抱怨</h4>
+                <p><code>rumdl check --fix</code> 会修好那些有安全修复方案的问题：标题标点、列表标记与缩进、块前后的空行、行尾空格、围栏风格，整棵树就地改完。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖊️ 它同时也是格式化工具</h4>
+                <p><code>rumdl fmt</code> 像代码格式化工具那样重排 Markdown，一个文件长什么样，从此不再是评审意见。<code>--check</code> 则把它变成一道什么都不改的 CI 关卡。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 编辑器集成是内置的</h4>
+                <p><code>rumdl server</code> 是一个 Language Server，所以 VS Code、Neovim、Helix 和 Zed 得到的诊断和修复，跟命令行上的一模一样，都出自你装的那一个二进制文件。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♻️ 保留你的 markdownlint 配置</h4>
+                <p><code>rumdl import</code> 读取已有的 <code>.markdownlint.json</code> 或 <code>.markdownlintrc</code>，写出等价的 <code>rumdl.toml</code>，所以把一个仓库切过来是一条命令，而不是一次规则审计。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📖 会自己解释的规则</h4>
+                <p><code>rumdl rule</code> 列出每一条检查，<code>rumdl explain MD013</code> 把其中一条讲清楚，包括它修什么、怎么配置，谁都不用再猜 CI 日志里那个代码是什么意思。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；rumdl 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 rumdl</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 rumdl</span>
+sudo apt install rumdl
+
+<span class="comment"># 验证安装</span>
+rumdl --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 rumdl</span>
+apt install rumdl
+
+<span class="comment"># 验证安装</span>
+rumdl --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一次运行</h3>
+            <div class="code-block"><pre><code><span class="comment"># 检查当前目录下的每一个 Markdown 文件</span>
+rumdl check .
+
+<span class="comment"># 把所有有安全修复方案的问题都修掉</span>
+rumdl check --fix .
+
+<span class="comment"># 生成一份可以直接改的 rumdl.toml</span>
+rumdl init
+
+<span class="comment"># 看看某个规则代码是什么意思</span>
+rumdl explain MD013
+
+<span class="comment"># 所有的子命令和参数</span>
+rumdl --help</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>检查与修复：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 一个文件、一个目录，或者一个通配符</span>
+rumdl check README.md
+rumdl check docs/
+rumdl check &quot;**/*.md&quot;
+
+<span class="comment"># 就地修复，然后看看还剩下什么</span>
+rumdl check --fix .
+
+<span class="comment"># 这一次运行先把某条太吵的规则关掉</span>
+rumdl check --disable MD013 .
+
+<span class="comment"># 只跑此刻你真正在意的那几条规则</span>
+rumdl check --enable MD001,MD009,MD047 .
+
+<span class="comment"># 机器可读的输出，交给 CI 里那一步</span>
+<span class="comment"># 把问题标注回代码的任务</span>
+rumdl check --output-format json .</code></pre></div>
+
+        <p><strong>格式化：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 就地重新排版这些文件</span>
+rumdl fmt docs/
+
+<span class="comment"># 什么都不写入，只要有该改的地方就失败，</span>
+<span class="comment"># 这是 CI 里用的那种形式</span>
+rumdl fmt --check docs/
+
+<span class="comment"># 在接受之前先看看它想改哪些地方，</span>
+<span class="comment"># 确认没问题再动手</span>
+rumdl fmt --diff docs/</code></pre></div>
+
+        <p><strong>配置与规则：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 在这个仓库里创建 rumdl.toml</span>
+rumdl init
+
+<span class="comment"># 转换你已经有的 markdownlint 配置</span>
+rumdl import .markdownlint.json
+
+<span class="comment"># 实际生效的配置是什么，又分别来自哪里</span>
+rumdl config
+
+<span class="comment"># 列出每一条规则，再把其中一条读完整</span>
+rumdl rule
+rumdl explain MD024
+
+<span class="comment"># Shell 补全，直接写到你的 shell</span>
+<span class="comment"># 会去读取的那个位置</span>
+rumdl completions bash | sudo tee /etc/bash_completion.d/rumdl &gt; /dev/null</code></pre><pre class="variant variant-root"><code><span class="comment"># 在这个仓库里创建 rumdl.toml</span>
+rumdl init
+
+<span class="comment"># 转换你已经有的 markdownlint 配置</span>
+rumdl import .markdownlint.json
+
+<span class="comment"># 实际生效的配置是什么，又分别来自哪里</span>
+rumdl config
+
+<span class="comment"># 列出每一条规则，再把其中一条读完整</span>
+rumdl rule
+rumdl explain MD024
+
+<span class="comment"># Shell 补全，直接写到你的 shell</span>
+<span class="comment"># 会去读取的那个位置</span>
+rumdl completions bash | tee /etc/bash_completion.d/rumdl &gt; /dev/null</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>rumdl 生来就是要顶替 markdownlint 已经待着的那些位置：</p>
+            <ul>
+                <li><strong>你的编辑器：</strong> <code>rumdl server</code> 是一个 Language Server，所以 Neovim、Helix、VS Code 和 Zed 会把诊断直接显示在行内，并以代码操作的形式应用修复</li>
+                <li><strong>markdownlint 配置：</strong> <code>rumdl import</code> 把 <code>.markdownlint.json</code> 或 <code>.markdownlintrc</code> 变成 <code>rumdl.toml</code>，而规则代码还是你的团队早就在争论的那些</li>
+                <li><strong>pyproject.toml：</strong> 一张 <code>[tool.rumdl]</code> 表让这些设置和你的 Ruff、pytest 配置待在一起，而不是再多一个点文件</li>
+                <li><strong>CI 与 pre-commit：</strong> <code>rumdl check .</code> 有违规就以非零状态退出，<code>rumdl fmt --check</code> 则守住格式这一关，而构建机上不必先装 Node 或 Python 运行时</li>
+                <li><strong>静态站点生成器：</strong> MkDocs、Hugo、Docusaurus 和 mdBook 的文档源文件都是普通 Markdown，所以同一条检查可以在构建之前先跑一遍</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Debian：</strong> 没有收录 rumdl，标准系统上 <code>apt install rumdl</code> 会失败</li>
+                <li><strong>npm 或 pip：</strong> 能用，但会把一次 Markdown 检查绑在 Node 或 Python 环境上，而且每个项目、每个 CI 镜像都要重装一遍</li>
+                <li><strong>自己从源码构建：</strong> 版本够新，但每台机器都要一套 Rust 工具链，而且留下一个 apt 完全不知道的二进制文件</li>
+                <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong> Debian 与 Ubuntu 官方源都没有 rumdl；本仓库打包官方上游发布版</li>
+            <li>✅ <strong>全系统可用，不带运行时：</strong> 机器上所有仓库共用一个 <code>/usr/bin/rumdl</code>，背后既没有 npm install，也没有虚拟环境</li>
+            <li>✅ <strong>自动更新：</strong> 上游发布后数小时内更新软件包，所以新规则和新修复靠一条普通的 <code>apt upgrade</code> 就能到手</li>
+            <li>✅ <strong>完整的软件包：</strong> 官方上游的 Linux 构建，安装为 <code>/usr/bin/rumdl</code>，不加料、不打补丁</li>
+            <li>✅ <strong>诚实的依赖：</strong> 一个静态链接的 Rust 二进制文件，检查、修复、格式化和跑服务都不需要再装别的东西</li>
+            <li>✅ <strong>两种架构：</strong> amd64 和 arm64，同一个包覆盖你的笔记本、服务器和 arm64 构建机</li>
+            <li>✅ <strong>多发行版：</strong> 支持 Bookworm、Trixie、Forky 和 Sid</li>
+            <li>✅ <strong>易于维护：</strong> 使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/rumdl-debian" target="_blank" rel="noopener">📐 rumdl-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-ruff-in-debian.html">Ruff</a> - 同样的思路用在 Python 源码上，一个二进制文件里装着检查器和格式化工具</li>
+            <li><a href="/install-latest-uv-in-debian.html">uv</a> - Rust 速度的 Python 打包工具，正好服务于那些文档正被你检查的项目</li>
+            <li><a href="/install-latest-neovim-in-debian.html">Neovim</a> - 一个会和 <code>rumdl server</code> 对话的编辑器，你打字的时候就把诊断显示出来</li>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep</a> - 用来在同一棵 Markdown 树里做那些检查器回答不了的搜索</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 让一个文档站保持一致，而不必在评审里争论标题层级；在一条不再需要 Node 的 CI 流水线里替掉 markdownlint-cli；用一次 <code>--fix</code> 收拾积攒多年的 Markdown 走样；以及在编辑器里就看到构建将来会给你的那些警告。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.2.60</code>: 2026-08-23</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>rumdl 在官方 Debian 软件源中吗？</summary><p>不在, 官方 Debian 源没有打包 rumdl。本仓库目前是唯一的 apt 来源，提供 rumdl 0.2.60。</p></details>
+<details><summary>如何在 Debian 上安装最新版 rumdl？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install rumdl。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "rumdl 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Debian 源没有打包 rumdl。本仓库目前是唯一的 apt 来源，提供 rumdl 0.2.60。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 rumdl？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install rumdl。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest rumdl on Debian",
+ "description": "Complete guide to installing the latest rumdl Markdown linter and formatter on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-23",
+ "dateModified": "2026-08-23",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "rumdl",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Fast Markdown linter and formatter written in Rust, implementing the markdownlint rule set with automatic fixes, a formatter, a Language Server for editors and TOML configuration",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "20",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html",
+  "url": "https://deb.griffo.io/cn/install-latest-rumdl-in-debian.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
