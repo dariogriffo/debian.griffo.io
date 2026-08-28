@@ -48,6 +48,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [cliamp](https://github.com/bjarneo/cliamp) - Retro terminal music player inspired by Winamp 2.x
 - [superfile](https://github.com/yorukot/superfile) - Pretty fancy and modern terminal file manager (spf)
 - [rumdl](https://github.com/rvben/rumdl) - Fast Markdown linter and formatter written in Rust
+- [Fastpotify](https://fastpotify.rocks/) - Fast, native Spotify client written in Rust
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -95,6 +96,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [cliamp-debian](https://github.com/dariogriffo/cliamp-debian) - Retro terminal music player
 - [superfile-debian](https://github.com/dariogriffo/superfile-debian) - Modern terminal file manager
 - [rumdl-debian](https://github.com/dariogriffo/rumdl-debian) - Markdown linter and formatter
+- [fastpotify-debian](https://github.com/dariogriffo/fastpotify-debian) - Native Spotify client
 
 ## 🐧 Supported Debian Distributions
 
@@ -170,6 +172,7 @@ sudo apt install -y rumdl        # Markdown linter and formatter
 sudo apt install -y lowfi        # Lofi music player
 sudo apt install -y termusic     # Terminal music player
 sudo apt install -y cliamp       # Winamp-style terminal music player
+sudo apt install -y fastpotify   # Native Spotify client
 sudo apt install -y yt-dlp       # Audio/video downloader
 
 # Container & Cloud Tools
@@ -199,7 +202,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify
 ```
 
 ## ⚠️ Important Information
