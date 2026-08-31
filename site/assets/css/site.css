@@ -903,8 +903,13 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
    and the markup is a plain <table> either way, so it still reads correctly to
    a screen reader and still copies as a table.
 
-   The mark carries a shape as well as a colour (✓ / ● / –), because "green
-   means yes" is not information a red-green colourblind reader receives. */
+   Cells contain a mark and nothing else. Full and partial are both ticks,
+   separated by colour AND by the suite names printed under the amber one, so
+   the distinction survives for a reader who cannot see the colour; "not built"
+   is a stop sign, which differs from a tick in shape before it differs in
+   colour. The wording a screen reader needs rides on the mark's aria-label
+   rather than in a hidden span, so nothing lands in the cell that a copy of
+   the table has to carry. */
 .arch-matrix-wrap { overflow-x: auto; margin: 22px 0; }
 .arch-matrix { min-width: 640px; }
 /* opaque, not the .lane-table th's translucent fill: a sticky header lets
@@ -916,8 +921,12 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .arch-matrix .arch-tool { text-align: left; color: var(--slate-light); font-size: 12.5px; }
 .arch-mark { font-size: 15px; line-height: 1; }
 .arch-yes .arch-mark { color: var(--win); }
-.arch-some .arch-mark { color: var(--ubuntu); font-size: 11px; }
-.arch-no .arch-mark { color: var(--slate-warm); opacity: 0.55; }
+.arch-some .arch-mark { color: var(--ubuntu); }
+/* the stop sign is an emoji: it brings its own colour, so it takes a size and
+   nothing else, and it is set a shade smaller than the ticks because a solid
+   glyph at the same point size reads as louder than an outline one, and 138 of
+   them should not be the first thing the eye lands on */
+.arch-no .arch-mark { font-size: 12.5px; opacity: 0.85; }
 /* the suite list is the whole point of a partial cell, so it is printed, not
    left to a tooltip a touch device cannot open */
 .arch-suites {
@@ -931,11 +940,6 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   background: var(--panel-bg); border: 1px solid var(--panel-border);
 }
 .chip-arch code { color: var(--ivory); font-size: 11.5px; }
-
-.visually-hidden {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-}
 
 @media (max-width: 760px) {
   .arch-matrix-wrap { overflow-x: visible; }
