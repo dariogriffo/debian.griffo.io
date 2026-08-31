@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Supported architectures for every apt package</title>
+<meta name="description" content="Which of amd64, arm64, armhf and riscv64 each package on deb.griffo.io is built for, read from the mirror itself and regenerated whenever a package ships.">
+<meta name="keywords" content="debian arm64 packages, ubuntu arm64 apt repository, armhf debian packages, riscv64 debian packages, apt repository architectures, raspberry pi apt repository, arm64 developer tools debian">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/supported-architectures.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/supported-architectures.html">
+<meta property="og:title" content="Supported architectures for every apt package">
+<meta property="og:description" content="Every package on deb.griffo.io against amd64, arm64, armhf and riscv64. Read from the mirror, regenerated whenever a package ships.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/supported-architectures.html">
+<meta property="twitter:title" content="Supported architectures for every apt package">
+<meta property="twitter:description" content="Every package on deb.griffo.io against amd64, arm64, armhf and riscv64. Read from the mirror, regenerated whenever a package ships.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/#pricing" class="btn-primary">Get a subscription</a>
+      <p class="mobile-menu-note"><a href="/free.html">Free mirror</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>54 developer tools, always updated</strong>, new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="/#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🧬 Supported architectures</h1>
+        <p class="subtitle">Every package this repository serves, against every architecture it is built for, as of 2026-08-31</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ The short answer.</strong> All <strong>72 packages</strong> are
+            built for <code>amd64</code>. <strong>46</strong> are also built for
+            <code>arm64</code>, which is what a Raspberry Pi 4 or 5, an Ampere server or an
+            Apple-silicon VM needs; <strong>20</strong> for 32-bit <code>armhf</code>,
+            and <strong>18</strong> for <code>riscv64</code>. The table below is
+            read out of the mirror's own <code>Packages</code> files, so it is what
+            <code>apt</code> will actually find rather than what anyone remembers building.
+        </div>
+
+        <h2>📋 The matrix</h2>
+
+        <p>Rows are <strong>apt package names</strong>, not tool names, because that is what
+        you type: a tool that ships more than one package (<code>bun-one</code>,
+        <code>zig-oldstable</code>, a <code>-dbgsym</code>) gets a row per package, with the
+        tool it belongs to in the second column. Sorted by package name.</p>
+
+        <div class="arch-matrix-wrap">
+        <table class="lane-table arch-matrix">
+            <thead>
+                <tr>
+                    <th scope="col">apt package</th>
+                    <th scope="col">Tool</th>
+                    <th scope="col">amd64</th>
+                    <th scope="col">arm64</th>
+                    <th scope="col">armhf</th>
+                    <th scope="col">riscv64</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row"><code>atuin</code></th><td class="arch-tool">Atuin</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>btm</code></th><td class="arch-tool">bottom</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>bun</code></th><td class="arch-tool">Bun</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>bun-one</code></th><td class="arch-tool">Bun</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>bun-profile</code></th><td class="arch-tool">Bun</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>cliamp</code></th><td class="arch-tool">cliamp</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>deno</code></th><td class="arch-tool">Deno</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>denort</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>difftastic</code></th><td class="arch-tool">difftastic</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>docker-pussh</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>duckdb</code></th><td class="arch-tool">DuckDB</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>eza</code></th><td class="arch-tool">eza</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>fastfetch</code></th><td class="arch-tool">Fastfetch</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>fastpotify</code></th><td class="arch-tool">Fastpotify</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>fish</code></th><td class="arch-tool">fish</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>forgejo</code></th><td class="arch-tool">Forgejo</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>forgejo-runner</code></th><td class="arch-tool">Forgejo Runner</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>fzf</code></th><td class="arch-tool">fzf</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>garage</code></th><td class="arch-tool">Garage</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ghostty</code></th><td class="arch-tool">Ghostty</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ghostty-dbgsym</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ghostty-tip</code></th><td class="arch-tool">Ghostty</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>gitui</code></th><td class="arch-tool">GitUI</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>headscale</code></th><td class="arch-tool">Headscale</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>helix</code></th><td class="arch-tool">Helix</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>herdr</code></th><td class="arch-tool">herdr</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>jujutsu</code></th><td class="arch-tool">Jujutsu</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>just</code></th><td class="arch-tool">just</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>k9s</code></th><td class="arch-tool">k9s</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>lazydocker</code></th><td class="arch-tool">lazydocker</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>lazygit</code></th><td class="arch-tool">lazygit</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>libghostty-vt-dev-tip</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>libghostty-vt0-tip</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>lowfi</code></th><td class="arch-tool">lowfi</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim</code></th><td class="arch-tool">Neovim</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim-latest</code></th><td class="arch-tool">Neovim</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim-latest-runtime</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim-latest-unstripped</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim-runtime</code></th><td class="arch-tool">Neovim</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>neovim-unstripped</code></th><td class="arch-tool">Neovim</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>nushell</code></th><td class="arch-tool">Nushell</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>oh-my-posh</code></th><td class="arch-tool">Oh My Posh</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>rclone</code></th><td class="arch-tool">rclone</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ripgrep</code></th><td class="arch-tool">ripgrep</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ruff</code></th><td class="arch-tool">Ruff</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Jammy, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Jammy, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Jammy, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>rumdl</code></th><td class="arch-tool">rumdl</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>serie</code></th><td class="arch-tool">Serie</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>starship</code></th><td class="arch-tool">Starship</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble only</span></td></tr>
+                <tr><th scope="row"><code>superfile</code></th><td class="arch-tool">superfile</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>television</code></th><td class="arch-tool">Television</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>termusic</code></th><td class="arch-tool">Termusic</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>tigerbeetle</code></th><td class="arch-tool">TigerBeetle</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>ulauncher</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>uncloud</code></th><td class="arch-tool">Uncloud</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>uncloudd</code></th><td class="arch-tool">&#8212;</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>unregistry</code></th><td class="arch-tool">Unregistry</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>uv</code></th><td class="arch-tool">uv</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble only</span></td></tr>
+                <tr><th scope="row"><code>viu</code></th><td class="arch-tool">viu</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>workmux</code></th><td class="arch-tool">workmux</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>yazi</code></th><td class="arch-tool">Yazi</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>yq</code></th><td class="arch-tool">yq</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-some" data-arch="riscv64" title="Trixie, Forky, Sid, Noble, Questing, Resolute"><span class="arch-mark" aria-hidden="true">●</span><span class="arch-suites">Trixie, Forky, Sid, Noble, Questing, Resolute</span><span class="visually-hidden">built for riscv64 on Trixie, Forky, Sid, Noble, Questing, Resolute only</span></td></tr>
+                <tr><th scope="row"><code>yt-dlp</code></th><td class="arch-tool">yt-dlp</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zapzap</code></th><td class="arch-tool">ZapZap</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-yes" data-arch="armhf"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zed</code></th><td class="arch-tool">Zed</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zellij</code></th><td class="arch-tool">Zellij</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zig</code></th><td class="arch-tool">Zig</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zig-0</code></th><td class="arch-tool">Zig</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zig-oldstable</code></th><td class="arch-tool">Zig</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zig-stable</code></th><td class="arch-tool">Zig</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-yes" data-arch="arm64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-yes" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zls</code></th><td class="arch-tool">ZLS</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zls-0</code></th><td class="arch-tool">ZLS</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+                <tr><th scope="row"><code>zoxide</code></th><td class="arch-tool">zoxide</td><td class="arch-yes" data-arch="amd64"><span class="arch-mark" aria-hidden="true">✓</span><span class="visually-hidden">built for amd64</span></td><td class="arch-no" data-arch="arm64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for arm64</span></td><td class="arch-no" data-arch="armhf"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for armhf</span></td><td class="arch-no" data-arch="riscv64"><span class="arch-mark" aria-hidden="true">–</span><span class="visually-hidden">not built for riscv64</span></td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>🔍 How to read it</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Cell</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="arch-key arch-yes"><span class="arch-mark">✓</span></span></td>
+                    <td>Built for that architecture on <strong>every suite</strong> the package is served on</td></tr>
+                <tr><td><span class="arch-key arch-some"><span class="arch-mark">●</span></span></td>
+                    <td>Built <strong>on some suites only</strong>. The suites are named next to the mark, and in the cell's tooltip</td></tr>
+                <tr><td><span class="arch-key arch-no"><span class="arch-mark">–</span></span></td>
+                    <td>Not built for that architecture at all. <code>apt install</code> will not find it there</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <p>The middle state is the one worth understanding. <code>riscv64</code> is not a
+        thing Debian 12 Bookworm or Ubuntu 22.04 Jammy can be built against here, so a package
+        like <code>starship</code> or <code>uv</code> ships riscv64 on the newer suites and not
+        on the older ones. Collapsing that into a single yes would tell a Bookworm reader
+        something untrue, and collapsing it into a no would hide a build that exists, so the
+        cell names the suites instead.</p>
+
+        <h2>🧭 Why a package might be missing an architecture</h2>
+
+        <ul>
+            <li><strong>Upstream publishes no binary for it.</strong> Most packages here
+                repackage the release artefacts the upstream project builds. Where upstream
+                ships amd64 only, so does this repository:
+                that is why <code>bun</code> is amd64 alone.</li>
+            <li><strong>The suite predates the architecture.</strong> <code>riscv64</code>
+                is only carried on the newer Debian and Ubuntu suites, which is where the
+                partial cells come from.</li>
+            <li><strong>The build needs a newer glibc than the suite has.</strong> This
+                removes whole suites rather than architectures, so it shows up as a package
+                that is simply absent from Bookworm or Jammy rather than as an empty cell.</li>
+        </ul>
+
+        <p>If a tool you need is missing an architecture you use, say so in
+        <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">the Discord</a>. Where upstream
+        publishes a binary for it, adding it is usually a small change to that tool's
+        packaging repository. <a href="/how-packages-are-built.html">How packages are built →</a></p>
+
+        <p class="back-link"><a href="/">← Back to the main page</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Free mirror</a>
+    <a href="/how-packages-are-built.html">How packages are built</a>
+    <a href="/how-subscriptions-work.html">How access works</a>
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. All rights reserved.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
