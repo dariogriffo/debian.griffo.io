@@ -308,6 +308,22 @@ sudo apt update</code></pre></div>
 
         <p>Seu endereço de e-mail, a referência de cliente do Stripe, o hash bcrypt da sua senha e as datas da sua assinatura. Esse é o registro inteiro. Os dados de pagamento são tratados pelo Stripe e nunca chegam a este servidor. Os únicos e-mails enviados são os que o serviço exige: suas credenciais, uma confirmação quando o acesso lifetime é ativado e um aviso quando o acesso termina. Sem marketing, sem lista. <a href="/terms.html">Termos e Condições →</a></p>
 
+        <h2 id="why">🌱 9. Por que a assinatura existe</h2>
+
+        <p>Vale responder direto, porque essa pergunta está embaixo de todas as outras desta página. Em janeiro de 2025 este repositório compilava exatamente um pacote, o Ghostty, porque o Debian não trazia nenhum e eu queria um atual. Hoje ele compila <strong>54</strong>, para oito versões de Debian e Ubuntu, e a lista continua crescendo quase todo mês.</p>
+
+        <p>Nada desse crescimento é software pelo qual você esteja pagando. Toda ferramenta aqui é de código aberto, a licença dela não muda, e todo <code>.deb</code> continua livre para baixar nas releases públicas do GitHub. O que cresceu foi tudo em volta: as máquinas que recompilam cada ferramenta por suíte e por arquitetura a cada lançamento upstream, o armazenamento do pool, a esteira de assinatura e publicação, e a banda para servir tudo isso a um número de pessoas que já faz tempo que deixou de ser pequeno.</p>
+
+        <p>É isso que uma assinatura financia, e ela compra três coisas concretas que doações ocasionais não compravam:</p>
+
+        <ul>
+            <li><strong>Capacidade que acompanha o catálogo.</strong> Cada ferramenta adicionada é mais um build para rodar a cada lançamento upstream, de agora em diante. Uma receita previsível é o que faz a resposta ao próximo bom pedido de pacote ser &quot;sim&quot; em vez de &quot;este ano não&quot;.</li>
+            <li><strong>Infraestrutura que acompanha o tráfego.</strong> O número de máquinas rodando <code>apt upgrade</code> contra este espelho cresceu mais rápido do que qualquer outra coisa aqui. Folga comprada antes de ser necessária é a diferença entre um espelho que continua rápido e um que começa a dar timeout.</li>
+            <li><strong>Uma CDN, prevista para o início de 2027.</strong> Hoje tudo é servido de uma única máquina: ótimo se você está perto, menos ótimo do outro lado do mundo. Colocar uma CDN na frente do espelho é o próximo passo de infraestrutura, e são as assinaturas que pagam por ele.</li>
+        </ul>
+
+        <p>O que é grátis continua grátis, e isso não é um arranjo temporário: o espelho sempre gratuito em <a href="https://deb-free.griffo.io">deb-free.griffo.io</a>, todo <code>.deb</code> no GitHub, o <code>apt update</code> e a navegação pelos índices. <a href="/free.html">O que o espelho gratuito carrega →</a></p>
+
         <h2>❓ Ainda em dúvida?</h2>
 
         <p>Pergunte antes de pagar — <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">o Discord</a> é o jeito mais rápido de falar comigo, e perguntas sobre como tudo isso funciona são bem-vindas. Se você apoiou o projeto no Buy Me a Coffee, diga por lá: você ganha uma assinatura lifetime gratuita.</p>
@@ -338,6 +354,8 @@ sudo apt update</code></pre></div>
   "@type": "FAQPage",
   "inLanguage": "pt-BR",
   "mainEntity": [
+    {"@type": "Question", "name": "Por que o deb.griffo.io precisa de uma assinatura?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Não pelo software: toda ferramenta é de código aberto e todo .deb continua livre para baixar nas releases públicas do GitHub. A assinatura financia o empacotamento e a infraestrutura em volta. O repositório compilava um pacote em janeiro de 2025, o Ghostty, e hoje compila 54, para oito versões de Debian e Ubuntu, recompilando cada uma por suíte e por arquitetura a cada lançamento upstream. As assinaturas pagam essa capacidade de build, o armazenamento e a banda enquanto o catálogo e o tráfego continuam crescendo, e financiam uma CDN na frente do espelho prevista para o início de 2027."}},
     {"@type": "Question", "name": "Como o acesso é autenticado depois de pagar no deb.griffo.io?",
      "acceptedAnswer": {"@type": "Answer", "text": "Com autenticação HTTP Basic sobre HTTPS, que o apt suporta nativamente. Depois do pagamento, um e-mail é enviado com um login — o endereço de e-mail usado no checkout do Stripe — e uma senha gerada aleatoriamente. Essas duas linhas vão em um arquivo sob /etc/apt/auth.conf.d/ chamado deb.griffo.io.conf, pertencente ao root com modo 600, e o apt as envia a cada download de pacote. Não há portal do cliente, nem token para rotacionar, nem arquivo de licença."}},
     {"@type": "Question", "name": "Quanto tempo depois do pagamento chegam as credenciais?",

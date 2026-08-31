@@ -308,6 +308,22 @@ sudo apt update</code></pre></div>
 
         <p>Ihre E-Mail-Adresse, die Stripe-Kundenreferenz, der bcrypt-Hash Ihres Passworts und die Daten Ihres Abonnements. Das ist der gesamte Datensatz. Zahlungsdaten verarbeitet Stripe; sie erreichen diesen Server nie. Versendet werden nur die E-Mails, die der Dienst selbst braucht: Ihre Zugangsdaten, eine Bestätigung bei Aktivierung des Lifetime-Zugangs und eine Mitteilung, wenn der Zugang endet. Keine Werbung, kein Verteiler. <a href="/terms.html">Nutzungsbedingungen →</a></p>
 
+        <h2 id="why">🌱 9. Warum es das Abo gibt</h2>
+
+        <p>Diese Frage verdient eine direkte Antwort, denn sie liegt unter allen anderen auf dieser Seite. Im Januar 2025 baute dieses Repository genau ein Paket, Ghostty, weil Debian keines mitbrachte und ich ein aktuelles wollte. Heute baut es <strong>54</strong>, für acht Debian- und Ubuntu-Suites, und die Liste wächst fast jeden Monat weiter.</p>
+
+        <p>Nichts an diesem Wachstum ist Software, für die Ihnen etwas berechnet wird. Jedes Werkzeug hier ist Open Source, seine Lizenz bleibt unangetastet, und jedes <code>.deb</code> bleibt kostenlos aus den öffentlichen GitHub-Releases herunterladbar. Gewachsen ist alles drumherum: die Build-Maschinen, die jedes Werkzeug bei jeder Upstream-Version pro Suite und pro Architektur neu bauen, der Speicher für den Pool, die Signier- und Veröffentlichungskette und die Bandbreite, um das alles an eine Zahl von Leuten auszuliefern, die schon länger nicht mehr klein ist.</p>
+
+        <p>Das ist es, was ein Abo finanziert, und es kauft drei konkrete Dinge, die gelegentliche Spenden nicht gekauft haben:</p>
+
+        <ul>
+            <li><strong>Kapazität, die mit dem Katalog Schritt hält.</strong> Jedes hinzugefügte Werkzeug ist ein weiterer Build bei jeder Upstream-Version, von jetzt an dauerhaft. Ein planbares Einkommen ist das, was aus der Antwort auf den nächsten guten Paketwunsch ein „ja&#8220; macht statt ein „dieses Jahr nicht&#8220;.</li>
+            <li><strong>Infrastruktur, die mit dem Verkehr Schritt hält.</strong> Die Zahl der Maschinen, die <code>apt upgrade</code> gegen diesen Spiegel laufen lassen, ist schneller gewachsen als alles andere hier. Luft, die man kauft, bevor man sie braucht, ist der Unterschied zwischen einem Spiegel, der schnell bleibt, und einem, der in Zeitüberschreitungen läuft.</li>
+            <li><strong>Ein CDN, geplant für Anfang 2027.</strong> Heute wird alles von einer einzigen Maschine ausgeliefert: gut, wenn Sie in der Nähe sind, weniger gut auf der anderen Seite der Welt. Ein CDN vor den Spiegel zu setzen ist der nächste Infrastrukturschritt, und bezahlt wird er von den Abos.</li>
+        </ul>
+
+        <p>Was kostenlos ist, bleibt kostenlos, und das ist keine Übergangslösung: der für immer kostenlose Spiegel unter <a href="https://deb-free.griffo.io">deb-free.griffo.io</a>, jedes <code>.deb</code> auf GitHub, <code>apt update</code> und das Durchsehen der Indexe. <a href="/free.html">Was der kostenlose Spiegel führt →</a></p>
+
         <h2>❓ Noch unsicher?</h2>
 
         <p>Fragen Sie vor dem Kauf — <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">der Discord</a> ist der schnellste Weg zu mir, und Fragen dazu, wie das alles funktioniert, sind willkommen. Wenn Sie das Projekt früher über Buy Me a Coffee unterstützt haben, sagen Sie dort Bescheid: Sie bekommen ein kostenloses Lifetime-Abo.</p>
@@ -338,6 +354,8 @@ sudo apt update</code></pre></div>
   "@type": "FAQPage",
   "inLanguage": "de",
   "mainEntity": [
+    {"@type": "Question", "name": "Warum braucht deb.griffo.io überhaupt ein Abonnement?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Nicht für die Software: jedes Werkzeug ist Open Source und jedes .deb bleibt kostenlos aus den öffentlichen GitHub-Releases herunterladbar. Das Abo finanziert die Paketierung und die Infrastruktur drumherum. Das Repository baute im Januar 2025 ein Paket, Ghostty, und baut heute 54, für acht Debian- und Ubuntu-Suites, jedes davon bei jeder Upstream-Version pro Suite und pro Architektur neu. Abos bezahlen diese Build-Kapazität, den Speicher und die Bandbreite, während Katalog und Verkehr weiter wachsen, und finanzieren ein CDN vor dem Spiegel, geplant für Anfang 2027."}},
     {"@type": "Question", "name": "Wie wird der Zugang nach der Zahlung bei deb.griffo.io authentifiziert?",
      "acceptedAnswer": {"@type": "Answer", "text": "Mit HTTP-Basic-Authentifizierung über HTTPS, die apt nativ unterstützt. Nach der Zahlung kommt eine E-Mail mit einem Login — der beim Stripe-Checkout verwendeten E-Mail-Adresse — und einem zufällig erzeugten Passwort. Beide Zeilen kommen in eine Datei unter /etc/apt/auth.conf.d/ namens deb.griffo.io.conf, root gehörend mit Modus 600, und apt sendet sie bei jedem Paket-Download mit. Es gibt kein Kundenportal, kein Token zum Rotieren und keine Lizenzdatei."}},
     {"@type": "Question", "name": "Wie schnell kommen die Zugangsdaten nach der Zahlung an?",

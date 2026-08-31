@@ -356,6 +356,46 @@ sudo apt update</code></pre></div>
         activated, and a notice when access ends. No marketing, no list.
         <a href="/terms.html">Terms &amp; Conditions →</a></p>
 
+        <h2 id="why">🌱 9. Why the subscription exists</h2>
+
+        <p>Worth answering directly, because it sits underneath every other question on
+        this page. In January 2025 this repository built exactly one package, Ghostty,
+        because Debian shipped none and I wanted a current one. It now builds
+        <strong>54</strong>, for eight Debian and Ubuntu suites, and the list
+        still grows most months.</p>
+
+        <p>None of that growth is software you are being charged for. Every tool here is
+        open source, its licence is untouched, and every <code>.deb</code> stays free to
+        download from the public GitHub releases. What grew is everything around them:
+        the build machines that rebuild each tool per suite and per architecture on every
+        upstream release, the storage for the pool, the signing and publishing pipeline,
+        and the bandwidth to serve all of it to a number of people that stopped being
+        small some time ago.</p>
+
+        <p>That is what a subscription funds, and there are three specific things it buys
+        that occasional donations did not:</p>
+
+        <ul>
+            <li><strong>Capacity that keeps up with the catalogue.</strong> Every tool
+                added is another build to run on every upstream release, from now on.
+                A predictable income is what makes the answer to the next good package
+                request &quot;yes&quot; rather than &quot;not this year&quot;.</li>
+            <li><strong>Infrastructure that keeps up with the traffic.</strong> The number
+                of machines running <code>apt upgrade</code> against this mirror has grown
+                faster than anything else here. Headroom bought before it is needed is the
+                difference between a mirror that stays fast and one that starts timing
+                out.</li>
+            <li><strong>A CDN, planned for early 2027.</strong> Everything is served from a
+                single machine today: fine if you are near it, less fine on the other side
+                of the world. Putting a CDN in front of the mirror is the next
+                infrastructure step, and subscriptions are what pay for it.</li>
+        </ul>
+
+        <p>What is free stays free, and that is not a temporary arrangement: the
+        always-free mirror at <a href="https://deb-free.griffo.io">deb-free.griffo.io</a>,
+        every <code>.deb</code> on GitHub, <code>apt update</code>, and browsing the
+        indexes. <a href="/free.html">What the free mirror carries →</a></p>
+
         <h2>❓ Still unsure?</h2>
 
         <p>Ask before you pay, <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">the
@@ -388,6 +428,8 @@ sudo apt update</code></pre></div>
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {"@type": "Question", "name": "Why does deb.griffo.io need a subscription at all?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Not for the software: every tool is open source and every .deb stays free to download from the public GitHub releases. The subscription funds the packaging and the infrastructure around them. The repository built one package in January 2025, Ghostty, and now builds 54, for eight Debian and Ubuntu suites, rebuilding each one per suite and per architecture on every upstream release. Subscriptions pay for that build capacity, the storage and the bandwidth as the catalogue and the traffic both keep growing, and fund a CDN in front of the mirror planned for early 2027."}},
     {"@type": "Question", "name": "How is access authenticated after paying for deb.griffo.io?",
      "acceptedAnswer": {"@type": "Answer", "text": "With HTTP Basic authentication over HTTPS, which apt supports natively. After payment an email is sent with a login (the email address used at Stripe checkout) and a randomly generated password. Those two lines go in a file under /etc/apt/auth.conf.d/ named deb.griffo.io.conf, owned by root with mode 600, and apt sends them with every package download. There is no account portal, no token to rotate and no licence file."}},
     {"@type": "Question", "name": "How soon after payment do the credentials arrive?",

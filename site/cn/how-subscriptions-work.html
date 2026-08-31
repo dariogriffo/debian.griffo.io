@@ -308,6 +308,22 @@ sudo apt update</code></pre></div>
 
         <p>你的邮箱地址、Stripe 客户标识、你密码的 bcrypt 哈希，以及订阅的起止日期。整条记录就这些。支付信息由 Stripe 处理，从不会到达这台服务器。发出的邮件只有服务本身需要的那几封：你的凭据、终身访问激活时的确认，以及访问结束时的通知。没有营销，没有邮件列表。 <a href="/terms.html">条款和条件 →</a></p>
 
+        <h2 id="why">🌱 9. 为什么会有订阅</h2>
+
+        <p>这个问题值得直接回答，因为它藏在本页其他所有问题的底下。2025 年 1 月，这个仓库只构建一个包，Ghostty，因为 Debian 没有提供，而我想要一个新版本。如今它构建 <strong>54</strong> 个工具，覆盖八个 Debian 与 Ubuntu 版本，而且这份清单几乎每个月都在变长。</p>
+
+        <p>这些增长里没有一样是在向你收取软件费用。这里的每个工具都是开源的，许可证原样不动，每个 <code>.deb</code> 都仍然可以从 GitHub 的公开发布页免费下载。真正增长的是它们周围的一切：在每次上游发布时按发行版、按架构重新构建每个工具的构建机，存放 pool 的存储，签名与发布的流水线，以及把这一切分发出去所需的带宽——而接收的人数早已不再是个小数字。</p>
+
+        <p>这就是订阅所资助的东西。它买到了三样偶尔的捐赠买不到的具体事项：</p>
+
+        <ul>
+            <li><strong>跟得上目录规模的构建能力。</strong>每新增一个工具，就意味着此后每次上游发布都多一次构建。可预期的收入，才能让下一个合理的打包请求得到「好」的答复，而不是「今年不行」。</li>
+            <li><strong>跟得上流量的基础设施。</strong>对这个镜像执行 <code>apt upgrade</code> 的机器数量，比这里其他任何指标都增长得快。在需要之前就买下余量，正是「镜像依然很快」和「镜像开始超时」之间的差别。</li>
+            <li><strong>CDN，计划于 2027 年初。</strong>目前所有内容都由一台机器提供：离它近就没问题，在地球另一端就没那么好了。在镜像前面加一层 CDN 是下一步的基础设施建设，而买单的正是订阅。</li>
+        </ul>
+
+        <p>免费的部分依然免费，这不是权宜之计：<a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 上永久免费的镜像、GitHub 上的每个 <code>.deb</code>、<code>apt update</code>，以及浏览索引。<a href="/free.html">免费镜像包含哪些内容 →</a></p>
+
         <h2>❓ 还是拿不准？</h2>
 
         <p>付款之前尽管问——<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord</a>是联系我最快的方式，关于这一切如何运作的问题都很欢迎。如果你以前在 Buy Me a Coffee 支持过这个项目，去那里说一声：你可以获得免费的终身订阅。</p>
@@ -338,6 +354,8 @@ sudo apt update</code></pre></div>
   "@type": "FAQPage",
   "inLanguage": "zh-CN",
   "mainEntity": [
+    {"@type": "Question", "name": "deb.griffo.io 为什么需要订阅？",
+     "acceptedAnswer": {"@type": "Answer", "text": "不是为软件收费：每个工具都是开源的，每个 .deb 都仍然可以从 GitHub 的公开发布页免费下载。订阅资助的是围绕它们的打包工作和基础设施。2025 年 1 月这个仓库只构建一个包，Ghostty，如今构建 54 个，覆盖八个 Debian 与 Ubuntu 版本，并在每次上游发布时按发行版、按架构逐一重新构建。订阅支付这些构建能力、存储与带宽——目录和流量都还在增长——并资助计划于 2027 年初部署在镜像前面的 CDN。"}},
     {"@type": "Question", "name": "在 deb.griffo.io 付款之后，访问是如何认证的？",
      "acceptedAnswer": {"@type": "Answer", "text": "使用 HTTPS 上的 HTTP Basic 认证，apt 原生支持。付款后会收到一封邮件，包含登录名（即 Stripe 结账时使用的邮箱地址）和一个随机生成的密码。这两行写入 /etc/apt/auth.conf.d/ 下名为 deb.griffo.io.conf 的文件，属主为 root、权限 600，apt 会在每次下载软件包时发送它们。没有用户面板，没有需要轮换的令牌，也没有许可证文件。"}},
     {"@type": "Question", "name": "付款后多久能收到凭据？",
