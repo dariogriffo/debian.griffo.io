@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Fastpotify unter Ubuntu per apt installieren</title>
+<meta name="description" content="Fastpotify 0.2.0 per apt auf Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta name="keywords" content="fastpotify ubuntu, fastpotify installieren ubuntu, nativer spotify client, spotify linux desktop, spotify connect linux, fastpotify apt, ubuntu pakete, noble, questing, resolute, apt fastpotify">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html">
+<meta property="og:title" content="Fastpotify unter Ubuntu per apt installieren">
+<meta property="og:description" content="Fastpotify 0.2.0 per apt auf Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html">
+<meta property="twitter:title" content="Fastpotify unter Ubuntu per apt installieren">
+<meta property="twitter:description" content="Fastpotify 0.2.0 per apt auf Noble, Questing und Resolute — nicht in den offiziellen Ubuntu-Archiven. GPG-signiert, neu gebaut in Stunden.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-fastpotify-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-fastpotify-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-fastpotify-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Abo abschließen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="05">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/de/#pricing" class="btn-primary">Abo abschließen</a>
+      <p class="mobile-menu-note"><a href="/free.html">Kostenloser Spiegel</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>54 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      📅 Ab <strong><time datetime="2026-10-01T12:00:00+01:00">1. Oktober 2026, 12:00 Uhr UK-Zeit</time></strong> ist für den apt-Mirror ein Abo erforderlich.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🎵 Neuestes Fastpotify unter Ubuntu installieren</h1>
+        <p class="subtitle">Ein schneller, nativer Spotify-Client für den Linux-Desktop, geschrieben in Rust</p>
+        <div class="version-badge">Neueste Version: 0.2.0 · aktualisiert 2026-08-28</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Quelle</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.2.0 ✅</td></tr>
+<tr><td>Offizielles Ubuntu</td><td class="vc-lose">🚫 nicht paketiert</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+
+        <div class="notice-box"><strong>📌 Installation auf einer bestimmten Version?</strong> <a href="/install-fastpotify-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-fastpotify-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-fastpotify-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Was ist Fastpotify?</h2>
+        <p>Fastpotify ist <strong>ein nativer Spotify-Client für den Desktop</strong>, geschrieben in Rust mit <a href="https://github.com/emilk/egui" target="_blank" rel="noopener">egui</a> und spielt Musik über <a href="https://github.com/librespot-org/librespot" target="_blank" rel="noopener">librespot</a> ab. Im gesamten Prozess steckt keine Browser-Engine, und genau darum geht es: Er startet in deutlich unter einer Sekunde und bleibt im Betrieb klein, auf einer Maschine, auf der der offizielle Client beides nicht schafft. Er ist selbst ein Spotify-Connect-Gerät, spielt also auf diesem Rechner und steuert zugleich die Wiedergabe auf jedem anderen Gerät des Kontos. Die ganze Bibliothek ist da: Playlists, Lieblingssongs, gespeicherte Alben, gefolgte Künstler, Podcasts und Episoden, dazu Suche, Künstler-, Album- und Playlist-Seiten, eine Warteschlange, ein Equalizer, Medientasten und ein Tray-Symbol.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Warum die neueste Version zählt:</strong> Fastpotify ist jung und bewegt sich schnell, mit mehreren Releases pro Woche, und es spricht mit zwei Dingen, die sich darunter ständig ändern: Spotifys Web-API und librespot. Eine Änderung auf Spotifys Seite, die eine Seite oder die Anmeldung kaputtmacht, wird im Release dieser Woche repariert, nicht in einem Build vom letzten Monat. Weder Debian noch Ubuntu paketieren es überhaupt, ein aktueller Build ist hier also keine Bequemlichkeit, sondern die einzige Möglichkeit, es über apt zu bekommen.
+        </div>
+
+        <h3>⚡ Wichtige Funktionen von Fastpotify</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⚡ Nativ, und klein</h4>
+                <p>Rust und egui, direkt auf die GPU gezeichnet. Kein Electron, kein eingebettetes Chromium, kein Webview. Er öffnet sich in deutlich unter einer Sekunde und sein Speicherbedarf bleibt dort, wo er angefangen hat, was ihn auf einem alten Laptop oder einem Raspberry Pi überhaupt erst brauchbar macht.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔊 Ein Spotify-Connect-Gerät</h4>
+                <p>Wiedergabe hier über librespot, lückenlos und mit bis zu 320 kbit/s, mit optionaler Lautstärke-Normalisierung und einem Audio-Cache auf der Platte. Oder wähle diese Maschine vom Handy aus. Die Geräteauswahl schiebt die Wiedergabe auf einen Lautsprecher oder einen anderen Rechner und steuert sie von hier aus weiter.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📡 Findet Lautsprecher im LAN</h4>
+                <p>Ein librespot, spotifyd oder ein Hardware-Empfänger, der im Netz wartet, ist für Spotifys API unsichtbar, solange kein Konto daran hängt. Fastpotify entdeckt sie über mDNS und verbindet sie für dich; danach verhalten sie sich wie jedes andere Connect-Gerät.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📚 Die ganze Bibliothek</h4>
+                <p>Playlists, Lieblingssongs, gespeicherte Alben, gefolgte Künstler, Podcasts und gespeicherte Episoden, in der Seitenleiste filterbar. Suche über alle Typen, eine Startseite mit „Für dich“ und zuletzt Gespieltem, und Künstler-, Album-, Playlist- und Podcast-Seiten, die aus jeder Zeile heraus abspielen.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎛️ Winamp-Mini-Player</h4>
+                <p><kbd>Strg+M</kbd> schrumpft das Fenster zu einem klassischen Mini-Player, der echte <code>.wsz</code>-Skins trägt, pixelgenau in 1x bis 4x gezeichnet, mit Spektrumanalyse, Playlist und Zehnband-Equalizer darunter. Die MilkDrop-Visualisierung läuft über projectM in einem eigenen Fenster.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Richtige Desktop-Integration</h4>
+                <p>MPRIS über D-Bus, also sehen Medientasten, deine Shell und <code>playerctl</code> ihn wie jeden anderen Player. Das Fenster schließt wirklich, während die Musik aus dem Tray weiterläuft, ein zweiter Start holt das vorhandene Fenster nach vorn, und jede häufige Aktion hat ein Tastenkürzel.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Immer den offiziellen Archiven voraus:</strong> Debian und Ubuntu frieren Paketversionen ein, sobald ein Release erscheint. Dieses Repository veröffentlicht neue Upstream-Versionen typischerweise innerhalb von Stunden. Ein einfaches <code>apt upgrade</code> hält dich auf der neuesten Version.
+        </div>
+
+        <h2>📦 Installation von deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Schritt 1: Repository hinzufügen</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Es gibt einen für immer kostenlosen Spiegel.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> liefert Pakete für immer kostenlos — ohne Konto, ohne Abo, höchstens 2 Monate hinter Upstream, Sicherheitsfixes sofort. Derzeit enthält er cliamp, Ghostty, lazydocker, Oh My Posh und Zed; Fastpotify ist nicht dabei, deshalb führt heute nur das Repository oben dorthin — auf Anfrage kann es aufgenommen werden.</p>
+  <p class="free-lane-more"><a href="/free.html">So funktioniert der kostenlose Spiegel →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Schritt 2: Fastpotify installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Neuestes Fastpotify installieren</span>
+sudo apt install fastpotify
+
+<span class="comment"># Empfohlen, damit Titel in nicht-lateinischer Schrift keine Kästchen werden</span>
+sudo apt install fonts-noto-cjk fonts-noto-core
+
+<span class="comment"># Installation prüfen</span>
+fastpotify --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Neuestes Fastpotify installieren</span>
+apt install fastpotify
+
+<span class="comment"># Empfohlen, damit Titel in nicht-lateinischer Schrift keine Kästchen werden</span>
+apt install fonts-noto-cjk fonts-noto-core
+
+<span class="comment"># Installation prüfen</span>
+fastpotify --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 3: der erste Start</h3>
+            <div class="code-block"><pre><code><span class="comment"># Starten, oder Fastpotify aus dem Anwendungsmenü wählen</span>
+fastpotify
+
+<span class="comment"># Im Browserfenster anmelden, das sich öffnet, dann schließen.</span>
+<span class="comment"># Wiedergabe auf diesem Rechner braucht ein Spotify-Premium-Konto;</span>
+<span class="comment"># ein kostenloses Konto kann die Bibliothek durchsuchen, aber nicht abspielen.</span>
+
+<span class="comment"># Steht das Fenster, listet Strg+/ oder ? alle Tastenkürzel auf</span></code></pre></div>
+        </div>
+
+        <h3>🎯 Grundlegende Anwendungsbeispiele</h3>
+
+        <p><strong>Rund ums Fenster:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Starten, oder die laufende Kopie nach vorn holen</span>
+fastpotify
+
+<span class="comment"># Ctrl+M   der Winamp-Mini-Player, und wieder zurück</span>
+<span class="comment"># Ctrl+Q   richtig beenden, Tray-Symbol inklusive</span>
+<span class="comment"># Ctrl+/   alle Tastenkürzel auf einem Bildschirm</span></code></pre></div>
+
+        <p><strong>Aus der Shell steuern, über MPRIS:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># playerctl spricht mit Fastpotify wie mit jedem anderen Player</span>
+playerctl -p fastpotify play-pause
+playerctl -p fastpotify next
+playerctl -p fastpotify position 90
+
+<span class="comment"># Was läuft gerade, für eine Statusleiste</span>
+playerctl -p fastpotify metadata --format &#039;{{artist}} - {{title}}&#039;</code></pre></div>
+
+        <p><strong>Wo es seine Dinge ablegt:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Einstellungen, Sitzung und Audio-Cache</span>
+ls ~/.config/fastpotify
+ls ~/.cache/fastpotify
+
+<span class="comment"># Der Desktop-Eintrag und das Symbol, die das Paket installiert</span>
+ls /usr/share/applications/fastpotify.desktop
+ls /usr/share/icons/hicolor/*/apps/fastpotify.png</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrationen</h4>
+            <p>Fastpotify setzt bewusst auf das auf, was dein Desktop schon hat:</p>
+            <ul>
+                <li><strong>PulseAudio und PipeWire:</strong> Audio geht über den Soundserver der Sitzung hinaus, mit ALSA darunter, weshalb das Paket von <code>libpulse0</code> und <code>libasound2t64</code> abhängt</li>
+                <li><strong>MPRIS über D-Bus:</strong> die Medientasten deiner Tastatur, das „Läuft gerade“-Widget deines Desktops und <code>playerctl</code> steuern ihn wie jeden anderen Player</li>
+                <li><strong>Das System-Tray:</strong> ein Status-Notifier-Item, sodass das Schließen des Fensters die Musik weiterlaufen lässt und ein Klick aufs Tray sie zurückholt, unter GNOME, KDE und jedem Tiling-Compositor gleichermaßen</li>
+                <li><strong>Wayland und X11:</strong> beides, über die üblichen Client-Bibliotheken; das Paket hängt von ihnen ab, statt eigene Kopien mitzubringen</li>
+                <li><strong>Noto-Schriften:</strong> empfohlen, und zuständig dafür, dass chinesische, japanische, koreanische, arabische, hebräische, thailändische und indische Titel als Schrift und nicht als Kästchen erscheinen</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Warum deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository-Vergleich:</strong>
+            <ul>
+                <li><strong>Offizielles Ubuntu:</strong> paketiert Fastpotify nicht, <code>apt install fastpotify</code> schlägt auf einem unveränderten System fehl</li>
+                <li><strong>cargo install:</strong> aktuell, baut aber libprojectM auf jeder Maschine aus dem Quelltext, du brauchst also zuerst CMake, einen C++-Compiler, libclang und die Entwicklungsheader von ALSA, PulseAudio und des Fenstersystems</li>
+                <li><strong>Das Upstream-Binary:</strong> eine einzelne Datei, die du selbst ablegst, außerhalb der Paketverwaltung, ohne Desktop-Eintrag, ohne Symbol und ohne Abhängigkeitsprüfung</li>
+                <li><strong>deb.griffo.io:</strong> neueste Version mit automatischen Updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Die einzige apt-Quelle:</strong> Fastpotify ist weder in den Debian- noch in den Ubuntu-Archiven; dieses Repository paketiert den offiziellen Upstream-Build</li>
+            <li>✅ <strong>Es bewegt sich schnell:</strong> mehrere Releases pro Woche, und eine Änderung auf Spotifys Seite, die eine Seite kaputtmacht, ist upstream binnen Tagen repariert, aktuell zu sein zählt hier also wirklich</li>
+            <li>✅ <strong>Automatische Updates:</strong> Pakete innerhalb von Stunden nach dem Upstream-Release aktualisiert</li>
+            <li>✅ <strong>Vollständiges Paket:</strong> <code>/usr/bin/fastpotify</code>, ein Desktop-Eintrag und das Anwendungssymbol, er taucht also wie alles andere im Anwendungsmenü auf</li>
+            <li>✅ <strong>Ehrliche Abhängigkeiten:</strong> die echten ALSA-, PulseAudio-, OpenGL-, X11- und Wayland-Bibliotheken sind deklariert, und die Noto-Schriften werden empfohlen statt still mitinstalliert</li>
+            <li>✅ <strong>Zwei Architekturen:</strong> amd64 und arm64, die einzigen Linux-Builds, die upstream veröffentlicht werden</li>
+            <li>✅ <strong>Multi-Distribution:</strong> läuft auf Ubuntu 24.04, 25.10 und 26.04</li>
+            <li>✅ <strong>Einfache Wartung:</strong> Updates mit den üblichen apt-Befehlen</li>
+        </ul>
+
+        <div class="notice-box"><strong>ℹ️ Jammy wird nicht unterstützt.</strong> Die upstream veröffentlichten Binaries sind gegen glibc gelinkt und auf glibc 2.39 gebaut, das Paket deklariert daher <code>libc6 (&gt;= 2.39)</code> und auf Ubuntu 22.04 mit glibc 2.35 gibt es nichts zu installieren. Noble, Questing und Resolute sind alle in Ordnung.</div>
+
+        <h3>📦 Repository für den Paketbau</h3>
+        <p>Die Ubuntu-Pakete werden in diesem GitHub-Repository automatisch gebaut und gepflegt:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/fastpotify-debian" target="_blank" rel="noopener">🎵 fastpotify-debian</a> - Builds der neuesten Version</li>
+        </ul>
+
+        <h3>🔗 Verwandte Pakete</h3>
+        <p>Ebenfalls von deb.griffo.io verfügbar:</p>
+        <ul>
+            <li><a href="/install-latest-cliamp-in-ubuntu.html">cliamp</a> - Ein Retro-Musikplayer fürs Terminal, für die Zeit fern vom Desktop</li>
+            <li><a href="/install-latest-termusic-in-ubuntu.html">termusic</a> - Noch ein Musik- und Podcast-Player fürs Terminal, für lokale Sammlungen</li>
+            <li><a href="/install-latest-lowfi-in-ubuntu.html">lowfi</a> - Ein Lo-Fi-Radioplayer mit einem einzigen Befehl, wenn du gar keine Oberfläche willst</li>
+            <li><a href="/install-latest-yt-dlp-in-ubuntu.html">yt-dlp</a> - Für die Stücke, die es auf Spotify gar nicht gibt</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfekt für:</strong> einen Spotify-Client, der sofort startet auf einem Laptop, den die offizielle App zum Kriechen bringt, die eigene Bibliothek auf einem Raspberry Pi an den guten Lautsprechern, die Steuerung des Empfängers im anderen Zimmer, ohne zum Handy zu greifen, und den Winamp-Skin samt MilkDrop zurück, oben auf einem modernen Streaming-Konto.
+        </div>
+
+        <div class="notice-box"><strong>⚠️ Nicht mit Spotify verbunden.</strong> Fastpotify ist ein unabhängiges Open-Source-Projekt, und dies ist eine inoffizielle Paketierung davon. Spotify ist eine Marke von Spotify AB. Die Wiedergabe auf diesem Rechner erfordert ein Spotify-Premium-Konto.</div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Neueste Releases aus diesem Repository</h2>
+<ul class="release-list">
+<li><code>0.2.0</code>: 2026-08-28</li>
+</ul>
+<h2>❓ Häufig gestellte Fragen</h2>
+<details><summary>Ist Fastpotify in den offiziellen Ubuntu-Paketquellen?</summary><p>Nein, Fastpotify ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert Fastpotify 0.2.0.</p></details>
+<details><summary>Wie installiere ich das neueste Fastpotify unter Ubuntu?</summary><p>Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install fastpotify. Neue Releases kommen über das normale sudo apt upgrade.</p></details>
+<details><summary>Sind die Pakete signiert und wie werden sie gebaut?</summary><p>Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann.</p></details>
+<details><summary>Welche Ubuntu-Versionen werden unterstützt?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist Fastpotify in den offiziellen Ubuntu-Paketquellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein, Fastpotify ist nicht in den offiziellen Ubuntu-Archiven paketiert. Dieses Repository ist derzeit die einzige apt-Quelle und liefert Fastpotify 0.2.0."}}, {"@type": "Question", "name": "Wie installiere ich das neueste Fastpotify unter Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Fügen Sie das deb.griffo.io-Repository einmalig hinzu (Anleitung oben) und führen Sie dann aus: sudo apt install fastpotify. Neue Releases kommen über das normale sudo apt upgrade."}}, {"@type": "Question", "name": "Sind die Pakete signiert und wie werden sie gebaut?", "acceptedAnswer": {"@type": "Answer", "text": "Jedes Paket ist mit dem GPG-Schlüssel des Repositories (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) signiert und wird aus Upstream-Releases in öffentlichen GitHub-Repositories gebaut, die jeder einsehen kann."}}, {"@type": "Question", "name": "Welche Ubuntu-Versionen werden unterstützt?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing und 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Kostenloser Spiegel</a>
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a>
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a>
+    <a href="/terms.html">Nutzungsbedingungen</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Alle Rechte vorbehalten.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Fastpotify on Ubuntu",
+ "description": "Complete guide to installing the latest Fastpotify native Spotify client on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-08-31",
+ "dateModified": "2026-08-28",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Fastpotify",
+  "applicationCategory": "Multimedia Application",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Fast, native Spotify client for the desktop written in Rust with egui and librespot, a Spotify Connect device that plays your whole library locally and controls every other device on the account, with a Winamp mini player, an equalizer and MilkDrop visuals",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html",
+  "url": "https://deb.griffo.io/de/install-latest-fastpotify-in-ubuntu.html",
+  "inLanguage": "de"
+ },
+ "inLanguage": "de"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
