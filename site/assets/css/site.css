@@ -1455,7 +1455,25 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
 }
 .review-source:hover { border-bottom-color: var(--link); }
 
-.review-dots { display: flex; justify-content: center; gap: 9px; margin-top: 22px; }
+/* ── Browsing the reviews ──
+   The dots say where you are; the arrows are how you move. Both live in one
+   row under the track instead of floating over the cards: at 780px the gutter
+   beside a card is thin and on a phone there is none at all, so a side arrow
+   would sit on top of the quote it is asking you to read. */
+.review-nav {
+  display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 22px;
+}
+.review-arrow {
+  display: grid; place-items: center; width: 38px; height: 38px; padding: 0; flex: none;
+  border: 1px solid var(--panel-border); border-radius: 50%; cursor: pointer;
+  background: var(--panel-bg); color: var(--slate-light);
+  transition: color 0.4s var(--silk-ease), border-color 0.4s var(--silk-ease),
+              transform 0.4s var(--silk-ease);
+}
+.review-arrow:hover { color: var(--ivory); border-color: rgba(255, 123, 168, 0.28); }
+.review-arrow:active { transform: scale(0.94); }
+
+.review-dots { display: flex; justify-content: center; gap: 9px; }
 .review-dot {
   width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
   background: var(--graphite-soft); transition: background 0.4s var(--silk-ease), width 0.4s var(--silk-ease);
@@ -1491,7 +1509,8 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
        one attribution rather than as a stray link under a card */
     margin-left: calc(var(--review-avatar) + 12px); margin-right: auto; width: auto;
   }
-  .review-dots { margin-top: 18px; }
+  .review-nav { margin-top: 18px; gap: 12px; }
+  .review-arrow { width: 36px; height: 36px; }
   .review-cta { margin-top: 20px; }
 }
 /* Someone who has asked the OS for less motion gets a static, swipeable row;

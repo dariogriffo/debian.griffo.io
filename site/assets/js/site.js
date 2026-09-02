@@ -317,6 +317,12 @@
     dots.forEach(function (d) {
       d.addEventListener('click', function () { show(+d.dataset.index); start(); });
     });
+    // The arrows. show() wraps, so neither end is ever a dead button, and both
+    // restart the timer from the review just chosen rather than mid-interval.
+    var prev = root.querySelector('[data-review-prev]');
+    var next = root.querySelector('[data-review-next]');
+    if (prev) { prev.addEventListener('click', function () { show(index - 1); start(); }); }
+    if (next) { next.addEventListener('click', function () { show(index + 1); start(); }); }
     // Pause while it is being read or interacted with, and while the tab is
     // hidden — rotating in a background tab burns battery for nobody.
     root.addEventListener('mouseenter', stop);
