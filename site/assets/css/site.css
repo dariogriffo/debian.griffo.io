@@ -1151,6 +1151,36 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   font-size: clamp(28px, 4.6vw, 46px); font-weight: 200; line-height: 1.15;
   letter-spacing: -0.025em; margin-bottom: 14px;
 }
+
+/* ---------- tool marks ----------
+   The tool's own logo, above the H1, where the page's emoji used to be. Every
+   one of them is height-constrained and width-auto rather than boxed into a
+   square: the cached files keep their real proportions, so a wide mark (k9s,
+   difftastic, unregistry) must be allowed to be wide instead of squashed. The
+   width/height attributes on the <img> already carry that ratio, so nothing
+   reflows as they load.
+
+   line-height: 0 on the wrapper because an inline image otherwise sits on a
+   text baseline that is not there, and the phantom descender showed up as a
+   few unexplained pixels between the mark and the heading. */
+.tool-logo-wrap { line-height: 0; margin-bottom: 20px; }
+.tool-logo { height: 56px; width: auto; max-width: min(260px, 78vw); }
+@media (max-width: 720px) { .tool-logo { height: 44px; } }
+
+/* The same marks small, in the homepage cards and the category hub listings.
+   flex: none stops a wide one being squeezed by the name beside it. */
+.package-logo, .hub-logo {
+  height: 28px; width: auto; max-width: 130px; flex: none;
+}
+.hub-tool { display: flex; align-items: center; gap: 10px; }
+
+/* Both max-widths are a runaway guard, not a layout tool, and they are
+   deliberately wider than the widest mark in the set (difftastic, 4.29:1,
+   which wants 240px in the header and 120px in a card). A cap that actually
+   bit would shrink the image below the box its width/height attributes had
+   already reserved, and the page would shift as it loaded. The pair is
+   mirrored in layout.LOGO_MAX_W / LOGO_MAX_W_SMALL, and check_logo_widths()
+   fails the render rather than let a new logo quietly cross them. */
 .container .subtitle {
   font-size: 15px; color: var(--ivory-muted); line-height: 1.7;
   max-width: 640px; margin: 0 auto;
