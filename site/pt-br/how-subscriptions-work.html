@@ -158,7 +158,7 @@
       <!-- The clause that follows the bold count carries its own leading
            space: English opens it with a comma, every other language
            opens it with a spaced dash. Do not add one here. -->
-      ⚡ <strong>54 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      ⚡ <strong>55 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
       <!-- general channel; the package-request prompt uses a different
            invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
@@ -310,7 +310,7 @@ sudo apt update</code></pre></div>
 
         <h2 id="why">🌱 9. Por que a assinatura existe</h2>
 
-        <p>Vale responder direto, porque essa pergunta está embaixo de todas as outras desta página. Em janeiro de 2025 este repositório compilava exatamente um pacote, o Ghostty, porque o Debian não trazia nenhum e eu queria um atual. Hoje ele compila <strong>54</strong>, para oito versões de Debian e Ubuntu, e a lista continua crescendo quase todo mês.</p>
+        <p>Vale responder direto, porque essa pergunta está embaixo de todas as outras desta página. Em janeiro de 2025 este repositório compilava exatamente um pacote, o Ghostty, porque o Debian não trazia nenhum e eu queria um atual. Hoje ele compila <strong>55</strong>, para oito versões de Debian e Ubuntu, e a lista continua crescendo quase todo mês.</p>
 
         <p>Nada desse crescimento é software pelo qual você esteja pagando. Toda ferramenta aqui é de código aberto, a licença dela não muda, e todo <code>.deb</code> continua livre para baixar nas releases públicas do GitHub. O que cresceu foi tudo em volta: as máquinas que recompilam cada ferramenta por suíte e por arquitetura a cada lançamento upstream, o armazenamento do pool, a esteira de assinatura e publicação, e a banda para servir tudo isso a um número de pessoas que já faz tempo que deixou de ser pequeno.</p>
 
@@ -356,7 +356,7 @@ sudo apt update</code></pre></div>
   "inLanguage": "pt-BR",
   "mainEntity": [
     {"@type": "Question", "name": "Por que o deb.griffo.io precisa de uma assinatura?",
-     "acceptedAnswer": {"@type": "Answer", "text": "Não pelo software: toda ferramenta é de código aberto e todo .deb continua livre para baixar nas releases públicas do GitHub. A assinatura financia o empacotamento e a infraestrutura em volta. O repositório compilava um pacote em janeiro de 2025, o Ghostty, e hoje compila 54, para oito versões de Debian e Ubuntu, recompilando cada uma por suíte e por arquitetura a cada lançamento upstream. As assinaturas pagam essa capacidade de build, o armazenamento e a banda enquanto o catálogo e o tráfego continuam crescendo, e financiam uma CDN na frente do espelho prevista para o início de 2027."}},
+     "acceptedAnswer": {"@type": "Answer", "text": "Não pelo software: toda ferramenta é de código aberto e todo .deb continua livre para baixar nas releases públicas do GitHub. A assinatura financia o empacotamento e a infraestrutura em volta. O repositório compilava um pacote em janeiro de 2025, o Ghostty, e hoje compila 55, para oito versões de Debian e Ubuntu, recompilando cada uma por suíte e por arquitetura a cada lançamento upstream. As assinaturas pagam essa capacidade de build, o armazenamento e a banda enquanto o catálogo e o tráfego continuam crescendo, e financiam uma CDN na frente do espelho prevista para o início de 2027."}},
     {"@type": "Question", "name": "Como o acesso é autenticado depois de pagar no deb.griffo.io?",
      "acceptedAnswer": {"@type": "Answer", "text": "Com autenticação HTTP Basic sobre HTTPS, que o apt suporta nativamente. Depois do pagamento, um e-mail é enviado com um login — o endereço de e-mail usado no checkout do Stripe — e uma senha gerada aleatoriamente. Essas duas linhas vão em um arquivo sob /etc/apt/auth.conf.d/ chamado deb.griffo.io.conf, pertencente ao root com modo 600, e o apt as envia a cada download de pacote. Não há portal do cliente, nem token para rotacionar, nem arquivo de licença."}},
     {"@type": "Question", "name": "Quanto tempo depois do pagamento chegam as credenciais?",

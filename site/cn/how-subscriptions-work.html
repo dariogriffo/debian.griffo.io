@@ -158,7 +158,7 @@
       <!-- The clause that follows the bold count carries its own leading
            space: English opens it with a comma, every other language
            opens it with a spaced dash. Do not add one here. -->
-      ⚡ <strong>54 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      ⚡ <strong>55 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
       <!-- general channel; the package-request prompt uses a different
            invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
@@ -310,7 +310,7 @@ sudo apt update</code></pre></div>
 
         <h2 id="why">🌱 9. 为什么会有订阅</h2>
 
-        <p>这个问题值得直接回答，因为它藏在本页其他所有问题的底下。2025 年 1 月，这个仓库只构建一个包，Ghostty，因为 Debian 没有提供，而我想要一个新版本。如今它构建 <strong>54</strong> 个工具，覆盖八个 Debian 与 Ubuntu 版本，而且这份清单几乎每个月都在变长。</p>
+        <p>这个问题值得直接回答，因为它藏在本页其他所有问题的底下。2025 年 1 月，这个仓库只构建一个包，Ghostty，因为 Debian 没有提供，而我想要一个新版本。如今它构建 <strong>55</strong> 个工具，覆盖八个 Debian 与 Ubuntu 版本，而且这份清单几乎每个月都在变长。</p>
 
         <p>这些增长里没有一样是在向你收取软件费用。这里的每个工具都是开源的，许可证原样不动，每个 <code>.deb</code> 都仍然可以从 GitHub 的公开发布页免费下载。真正增长的是它们周围的一切：在每次上游发布时按发行版、按架构重新构建每个工具的构建机，存放 pool 的存储，签名与发布的流水线，以及把这一切分发出去所需的带宽——而接收的人数早已不再是个小数字。</p>
 
@@ -356,7 +356,7 @@ sudo apt update</code></pre></div>
   "inLanguage": "zh-CN",
   "mainEntity": [
     {"@type": "Question", "name": "deb.griffo.io 为什么需要订阅？",
-     "acceptedAnswer": {"@type": "Answer", "text": "不是为软件收费：每个工具都是开源的，每个 .deb 都仍然可以从 GitHub 的公开发布页免费下载。订阅资助的是围绕它们的打包工作和基础设施。2025 年 1 月这个仓库只构建一个包，Ghostty，如今构建 54 个，覆盖八个 Debian 与 Ubuntu 版本，并在每次上游发布时按发行版、按架构逐一重新构建。订阅支付这些构建能力、存储与带宽——目录和流量都还在增长——并资助计划于 2027 年初部署在镜像前面的 CDN。"}},
+     "acceptedAnswer": {"@type": "Answer", "text": "不是为软件收费：每个工具都是开源的，每个 .deb 都仍然可以从 GitHub 的公开发布页免费下载。订阅资助的是围绕它们的打包工作和基础设施。2025 年 1 月这个仓库只构建一个包，Ghostty，如今构建 55 个，覆盖八个 Debian 与 Ubuntu 版本，并在每次上游发布时按发行版、按架构逐一重新构建。订阅支付这些构建能力、存储与带宽——目录和流量都还在增长——并资助计划于 2027 年初部署在镜像前面的 CDN。"}},
     {"@type": "Question", "name": "在 deb.griffo.io 付款之后，访问是如何认证的？",
      "acceptedAnswer": {"@type": "Answer", "text": "使用 HTTPS 上的 HTTP Basic 认证，apt 原生支持。付款后会收到一封邮件，包含登录名（即 Stripe 结账时使用的邮箱地址）和一个随机生成的密码。这两行写入 /etc/apt/auth.conf.d/ 下名为 deb.griffo.io.conf 的文件，属主为 root、权限 600，apt 会在每次下载软件包时发送它们。没有用户面板，没有需要轮换的令牌，也没有许可证文件。"}},
     {"@type": "Question", "name": "付款后多久能收到凭据？",

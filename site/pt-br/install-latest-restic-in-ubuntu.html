@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar restic no Ubuntu via apt — versão atual</title>
+<meta name="description" content="restic 0.19.1 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04 — o Ubuntu oficial traz apenas 0.18.1. Assinado com GPG, recompilado em horas.">
+<meta name="keywords" content="restic ubuntu, instalar restic ubuntu, backup restic, backup com deduplicação, backup criptografado linux, restic apt, pacotes ubuntu, jammy, noble, questing, resolute, apt restic">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html">
+<meta property="og:title" content="Instalar restic no Ubuntu via apt — versão atual">
+<meta property="og:description" content="restic 0.19.1 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04 — o Ubuntu oficial traz apenas 0.18.1. Assinado com GPG, recompilado em horas.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html">
+<meta property="twitter:title" content="Instalar restic no Ubuntu via apt — versão atual">
+<meta property="twitter:description" content="restic 0.19.1 via apt para Ubuntu 22.04, 24.04, 25.10 e 26.04 — o Ubuntu oficial traz apenas 0.18.1. Assinado com GPG, recompilado em horas.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-restic-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-restic-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="05">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="06">Perguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/pt-br/#pricing" class="btn-primary">Assinar</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>55 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 A partir de <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exigirá uma assinatura.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/restic-logo.webp" alt="Logotipo do restic" width="56" height="56" decoding="async"></div>
+        <h1>Instalar o restic mais recente no Ubuntu</h1>
+        <p class="subtitle">Backups rápidos, seguros e eficientes, com deduplicação e criptografia no cliente</p>
+        <div class="version-badge">Última versão: 0.19.1 · atualizado em 2026-09-08</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.19.1 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">0.18.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-restic-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-restic-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-restic-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-restic-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>O que é o restic?</h2>
+        <p>O restic é um <strong>programa de backup rápido, eficiente e seguro</strong>. Ele quebra seus arquivos em blocos definidos pelo conteúdo e guarda cada bloco uma única vez, então um segundo backup de um diretório quase inalterado transfere quase nada. Tudo é criptografado e autenticado na sua máquina, com AES-256 e Poly1305-AES, antes que um único byte saia dela — o repositório pode viver em um lugar em que você não confia por completo. Os snapshots são somente-acréscimo e podem ser listados, comparados, montados como sistema de arquivos e restaurados arquivo a arquivo, cada coisa com um comando e sem nenhum arquivo de configuração para escrever.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que a versão mais recente importa:</strong> uma ferramenta de backup vale o que valem suas restaurações, e é nos lançamentos do restic que entram o trabalho sobre o formato do repositório, as correções de <code>prune</code> e <code>check</code>, a redução de memória em repositórios grandes e o suporte a novos backends. A versão da stable do Debian está anos atrás: um repositório escrito por um restic atual pode ser ilegível para um antigo, então a máquina que restaura precisa ser pelo menos tão nova quanto a que fez o backup. Rodar a versão atual em todo lugar é o jeito mais simples de garantir isso.
+        </div>
+
+        <h3>⚡ Principais recursos do restic</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🧩 Deduplicação que funciona de verdade</h4>
+                <p>O fatiamento por conteúdo faz com que um arquivo inalterado, um arquivo movido e um arquivo que existe em dez máquinas sejam guardados uma vez só. Snapshots diários da mesma árvore custam a diferença, não a árvore inteira.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Criptografado antes de sair</h4>
+                <p>AES-256 para o conteúdo e Poly1305-AES para a autenticação, feito no cliente. O repositório não guarda texto em claro nem dado não autenticado: um armazenamento hostil pode perder o seu backup, mas não lê nem forja.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>☁️ Backends para todo lugar</h4>
+                <p>Um diretório local, SFTP, o servidor REST, Amazon S3 e tudo que é compatível com S3, OpenStack Swift, Backblaze B2, Azure Blob Storage, Google Cloud Storage e qualquer outra coisa através do rclone.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📸 Snapshots que dá para navegar</h4>
+                <p><code>restic snapshots</code> lista, <code>restic diff</code> mostra o que mudou entre dois e <code>restic mount</code> coloca todos eles sob um diretório, para recuperar um arquivo solto com um <code>cp</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧹 Retenção e limpeza</h4>
+                <p><code>forget --keep-daily/--keep-weekly/--keep-monthly</code> expressa a política de retenção direto, e <code>--prune</code> recupera depois o espaço dentro do repositório.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔎 Repositórios verificáveis</h4>
+                <p><code>restic check</code> valida a estrutura do repositório e <code>--read-data</code> relê e reverifica cada arquivo de pack, então "o backup existe" e "o backup está íntegro" viram duas perguntas que você consegue mesmo responder.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos arquivos oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes quando lançam uma release — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar o repositório</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz cliamp, Ghostty, lazydocker, Oh My Posh e Zed; restic não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
+  <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar o restic</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar o restic mais recente</span>
+sudo apt install restic
+
+<span class="comment"># Verificar a instalação</span>
+restic version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar o restic mais recente</span>
+apt install restic
+
+<span class="comment"># Verificar a instalação</span>
+restic version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Criar seu primeiro repositório</h3>
+            <div class="code-block"><pre><code><span class="comment"># Um repositório é um diretório, local ou remoto. Escolha uma senha e guarde:</span>
+<span class="comment"># sem ela os dados se perdem, e não existe caminho de recuperação, por projeto.</span>
+restic init --repo /srv/backup/restic
+
+<span class="comment"># Fazer backup de alguma coisa</span>
+restic -r /srv/backup/restic backup ~/Documents
+
+<span class="comment"># Ver o que você tem</span>
+restic -r /srv/backup/restic snapshots
+
+<span class="comment"># As páginas de manual e as conclusões de bash, fish e zsh vêm no pacote</span>
+man restic</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemplos básicos de uso</h3>
+
+        <p><strong>Fazendo backup:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Guarde a senha em um arquivo em vez de digitá-la em cada comando</span>
+echo &#039;uma frase secreta longa&#039; | sudo tee /etc/restic-password &gt; /dev/null
+sudo chmod 600 /etc/restic-password
+export RESTIC_REPOSITORY=/srv/backup/restic
+export RESTIC_PASSWORD_FILE=/etc/restic-password
+
+<span class="comment"># Backup de vários caminhos, pulando o que uma restauração não quereria</span>
+restic backup ~/Documents ~/Pictures --exclude &#039;**/node_modules&#039; --exclude &#039;*.iso&#039;
+
+<span class="comment"># Ou conduza a partir de um arquivo, um padrão por linha</span>
+restic backup ~ --exclude-file ~/.config/restic-excludes --exclude-caches
+
+<span class="comment"># Marque um snapshot para encontrá-lo depois</span>
+restic backup /etc --tag config --tag &quot;$(hostname)&quot;</code></pre><pre class="variant variant-root"><code><span class="comment"># Guarde a senha em um arquivo em vez de digitá-la em cada comando</span>
+echo &#039;uma frase secreta longa&#039; | tee /etc/restic-password &gt; /dev/null
+chmod 600 /etc/restic-password
+export RESTIC_REPOSITORY=/srv/backup/restic
+export RESTIC_PASSWORD_FILE=/etc/restic-password
+
+<span class="comment"># Backup de vários caminhos, pulando o que uma restauração não quereria</span>
+restic backup ~/Documents ~/Pictures --exclude &#039;**/node_modules&#039; --exclude &#039;*.iso&#039;
+
+<span class="comment"># Ou conduza a partir de um arquivo, um padrão por linha</span>
+restic backup ~ --exclude-file ~/.config/restic-excludes --exclude-caches
+
+<span class="comment"># Marque um snapshot para encontrá-lo depois</span>
+restic backup /etc --tag config --tag &quot;$(hostname)&quot;</code></pre></div>
+
+        <p><strong>Restaurando e navegando:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># O que há no repositório</span>
+restic snapshots
+restic ls latest /etc
+
+<span class="comment"># Restaurar tudo do snapshot mais novo</span>
+restic restore latest --target /tmp/restore
+
+<span class="comment"># Ou só os caminhos que você realmente perdeu</span>
+restic restore latest --target / --include /etc/nginx
+
+<span class="comment"># Montar o histórico inteiro e copiar um arquivo na mão (precisa de FUSE)</span>
+sudo apt install fuse3
+mkdir -p ~/mnt/backup
+restic mount ~/mnt/backup
+
+<span class="comment"># O que mudou entre dois snapshots</span>
+restic diff 1a2b3c4d 5e6f7a8b</code></pre><pre class="variant variant-root"><code><span class="comment"># O que há no repositório</span>
+restic snapshots
+restic ls latest /etc
+
+<span class="comment"># Restaurar tudo do snapshot mais novo</span>
+restic restore latest --target /tmp/restore
+
+<span class="comment"># Ou só os caminhos que você realmente perdeu</span>
+restic restore latest --target / --include /etc/nginx
+
+<span class="comment"># Montar o histórico inteiro e copiar um arquivo na mão (precisa de FUSE)</span>
+apt install fuse3
+mkdir -p ~/mnt/backup
+restic mount ~/mnt/backup
+
+<span class="comment"># O que mudou entre dois snapshots</span>
+restic diff 1a2b3c4d 5e6f7a8b</code></pre></div>
+
+        <p><strong>Repositórios remotos:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># SFTP: qualquer máquina em que você já entra por ssh</span>
+restic -r sftp:backup@nas:/srv/restic init
+
+<span class="comment"># S3 e tudo que é compatível com S3, incluindo Garage ou MinIO auto-hospedados</span>
+export AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=...
+restic -r s3:https://s3.example.com/backups init
+
+<span class="comment"># Backblaze B2</span>
+export B2_ACCOUNT_ID=... B2_ACCOUNT_KEY=...
+restic -r b2:my-bucket:backups init
+
+<span class="comment"># Qualquer coisa que o rclone alcance, que é todo o resto</span>
+restic -r rclone:mydrive:backups init</code></pre></div>
+
+        <p><strong>Retenção, limpeza e verificação:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Uma política de retenção, aplicada ao repositório inteiro</span>
+restic forget --keep-daily 7 --keep-weekly 5 --keep-monthly 12 --prune
+
+<span class="comment"># Simule primeiro, porque forget apaga snapshots</span>
+restic forget --keep-daily 7 --dry-run
+
+<span class="comment"># Verificação de estrutura, barata, rode com frequência</span>
+restic check
+
+<span class="comment"># Reler e reverificar uma amostra dos dados reais, cara, rode uma vez por mês</span>
+restic check --read-data-subset 10%
+
+<span class="comment"># Para onde vai o espaço</span>
+restic stats --mode raw-data</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações com outras ferramentas</h4>
+            <p>O restic foi feito para ser conduzido pelo que você já roda:</p>
+            <ul>
+                <li><strong>systemd:</strong> um serviço mais um timer é o arranjo desatendido de sempre; <code>RESTIC_REPOSITORY</code> e <code>RESTIC_PASSWORD_FILE</code> vão na unit, não no perfil do shell</li>
+                <li><strong>rclone:</strong> o backend <code>rclone:</code> dá ao restic todos os provedores que o rclone suporta, sem que o restic precise falar nenhum deles</li>
+                <li><strong>FUSE:</strong> <code>fuse3</code> (ou <code>fuse</code>) transforma <code>restic mount</code> em um diretório navegável com todos os snapshots, o jeito mais rápido de recuperar um arquivo</li>
+                <li><strong>rest-server:</strong> o backend HTTP do próprio projeto, com modo somente-acréscimo, para que um cliente comprometido não apague os backups que fez</li>
+                <li><strong>Bancos de dados:</strong> <code>--stdin</code> aceita um dump na entrada padrão, então <code>pg_dump … | restic backup --stdin --stdin-filename db.sql</code> nunca toca o disco</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativo de repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu oficial:</strong> traz o restic no universe, congelado no dia da release, então um LTS pode estar anos atrás em trabalho de repositório e de limpeza</li>
+                <li><strong>Binário upstream:</strong> atual, mas é um binário comprimido em bzip2 que você mesmo descompacta em <code>/usr/local/bin</code>, fora do apt, e depois mantém com <code>restic self-update</code></li>
+                <li><strong>Snap:</strong> confinado, o que torna mais trabalhoso do que deveria fazer backup de caminhos fora da sua pasta pessoal e montar snapshots</li>
+                <li><strong>deb.griffo.io:</strong> versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>O mesmo pacote, mais novo:</strong> mesmo nome, mesma seção e mesmos caminhos do <code>restic</code> do próprio Ubuntu, então ele substitui o oficial em vez de instalar uma segunda cópia</li>
+            <li>✅ <strong>Builds upstream verificados:</strong> cada binário é conferido contra o <code>SHA256SUMS</code> do upstream, e esse arquivo contra a chave de lançamento do restic, antes de ser empacotado</li>
+            <li>✅ <strong>Atualizações automáticas:</strong> os pacotes são atualizados poucas horas após cada lançamento upstream</li>
+            <li>✅ <strong>Pacote completo:</strong> o binário oficial upstream, o conjunto inteiro de páginas de manual (<code>restic.1</code> mais uma por subcomando) e as conclusões de bash, fish e zsh</li>
+            <li>✅ <strong>Seis arquiteturas:</strong> amd64, arm64, armhf, ppc64el, s390x e riscv64, então o NAS, o Pi e o mainframe recebem o mesmo restic</li>
+            <li>✅ <strong>Multi-distribuição:</strong> funciona no Ubuntu 22.04, 24.04, 25.10 e 26.04</li>
+            <li>✅ <strong>Manutenção simples:</strong> atualizações com os comandos apt de sempre</li>
+        </ul>
+
+        <h3>📦 Repositório de build do pacote</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/restic-debian" target="_blank" rel="noopener">💾 restic-debian</a> - Builds dos últimos lançamentos</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-rclone-in-ubuntu.html">rclone</a> - O backend que dá ao restic todos os provedores que faltam</li>
+            <li><a href="/install-latest-garage-in-ubuntu.html">Garage</a> - Armazenamento S3 auto-hospedado para apontar um repositório</li>
+            <li><a href="/install-latest-zellij-in-ubuntu.html">Zellij</a> - Multiplexador para deixar rodando um primeiro backup longo</li>
+            <li><a href="/install-latest-btm-in-ubuntu.html">bottom</a> - Ver o que um backup grande faz com a máquina</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfeito para:</strong> backups noturnos de um notebook ou servidor para um armazenamento que você não controla, guardar um ano de snapshots sem gastar um ano de disco, recuperar um arquivo de três semanas atrás e qualquer arranjo em que quem guarda os backups não deva conseguir lê-los.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.19.1</code>: 2026-09-08</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O restic está nos repositórios oficiais do Ubuntu?</summary><p>Sim, mas o arquivo oficial do Ubuntu traz restic 0.18.1, enquanto este repositório oferece restic 0.19.1, recompilado poucas horas após cada lançamento upstream.</p></details>
+<details><summary>Como instalo o restic mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install restic. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O restic está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sim, mas o arquivo oficial do Ubuntu traz restic 0.18.1, enquanto este repositório oferece restic 0.19.1, recompilado poucas horas após cada lançamento upstream."}}, {"@type": "Question", "name": "Como instalo o restic mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install restic. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espelho gratuito</a>
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a>
+    <a href="/supported-architectures.html">Arquiteturas</a>
+    <a href="/pt-br/how-subscriptions-work.html">Como funciona o acesso</a>
+    <a href="/terms.html">Termos e Condições</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos os direitos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Instalar o restic mais recente no Ubuntu",
+ "description": "Guia completo para instalar a versão mais recente do programa de backup restic no Ubuntu usando o repositório deb.griffo.io.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-09-08",
+ "dateModified": "2026-09-08",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "restic",
+  "applicationCategory": "Command Line Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Programa de backup rápido, eficiente e seguro que deduplica os dados no nível de bloco e os criptografa e autentica no cliente, guardando snapshots em discos locais, SFTP, object storage compatível com S3, B2, Azure, Google Cloud Storage ou qualquer remoto do rclone",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "image": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/assets/img/tools/restic-logo.webp",
+   "width": 96,
+   "height": 96
+  },
+  "url": "https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html",
+  "url": "https://deb.griffo.io/pt-br/install-latest-restic-in-ubuntu.html",
+  "inLanguage": "pt-BR"
+ },
+ "inLanguage": "pt-BR"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
