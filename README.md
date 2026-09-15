@@ -50,6 +50,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [rumdl](https://github.com/rvben/rumdl) - Fast Markdown linter and formatter written in Rust
 - [Fastpotify](https://fastpotify.rocks/) - Fast, native Spotify client written in Rust
 - [restic](https://restic.net/) - Fast, secure backup program with deduplication and encryption
+- [Tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) - Generate, build, test and run Tree-sitter parsers (tree-sitter)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -99,6 +100,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [rumdl-debian](https://github.com/dariogriffo/rumdl-debian) - Markdown linter and formatter
 - [fastpotify-debian](https://github.com/dariogriffo/fastpotify-debian) - Native Spotify client
 - [restic-debian](https://github.com/dariogriffo/restic-debian) - Backup program with deduplication
+- [tree-sitter-cli-debian](https://github.com/dariogriffo/tree-sitter-cli-debian) - Tree-sitter parser development CLI
 
 ## 🐧 Supported Debian Distributions
 
@@ -161,14 +163,15 @@ sudo apt install -y television   # Fuzzy finder (command: tv)
 sudo apt install -y btm          # Process/system monitor
 
 # Development Tools
-sudo apt install -y lazygit      # Git terminal UI
-sudo apt install -y lazydocker   # Docker terminal UI
-sudo apt install -y workmux      # git worktrees + tmux windows
-sudo apt install -y uv           # Fast Python package manager
-sudo apt install -y gitui        # Terminal UI for git
-sudo apt install -y difftastic   # Structural diff (command: difft)
-sudo apt install -y serie        # Git commit graph viewer
-sudo apt install -y rumdl        # Markdown linter and formatter
+sudo apt install -y lazygit         # Git terminal UI
+sudo apt install -y lazydocker      # Docker terminal UI
+sudo apt install -y workmux         # git worktrees + tmux windows
+sudo apt install -y uv              # Fast Python package manager
+sudo apt install -y gitui           # Terminal UI for git
+sudo apt install -y difftastic      # Structural diff (command: difft)
+sudo apt install -y serie           # Git commit graph viewer
+sudo apt install -y rumdl           # Markdown linter and formatter
+sudo apt install -y tree-sitter-cli # Tree-sitter parser tooling (command: tree-sitter)
 
 # Media & Entertainment
 sudo apt install -y lowfi        # Lofi music player
@@ -205,7 +208,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli
 ```
 
 ## ⚠️ Important Information
