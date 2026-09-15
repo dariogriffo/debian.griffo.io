@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Install Latest tree-sitter-cli on Ubuntu via apt</title>
+<meta name="description" content="Get tree-sitter-cli 0.27.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 0.25.9. GPG-signed, rebuilt hours after each release.">
+<meta name="keywords" content="tree-sitter-cli ubuntu, install tree-sitter-cli ubuntu, tree-sitter cli, tree-sitter generate, parser generator, tree-sitter grammar, tree-sitter-cli apt, ubuntu packages, jammy, noble, questing, resolute, apt tree-sitter-cli">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html">
+<meta property="og:title" content="Install Latest tree-sitter-cli on Ubuntu via apt">
+<meta property="og:description" content="Get tree-sitter-cli 0.27.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 0.25.9. GPG-signed, rebuilt hours after each release.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html">
+<meta property="twitter:title" content="Install Latest tree-sitter-cli on Ubuntu via apt">
+<meta property="twitter:description" content="Get tree-sitter-cli 0.27.0 via apt on Ubuntu 22.04, 24.04, 25.10 and 26.04, official Ubuntu ships only 0.25.9. GPG-signed, rebuilt hours after each release.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-tree-sitter-cli-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-tree-sitter-cli-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta">Get a subscription</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="05">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="06">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/#pricing" class="btn-primary">Get a subscription</a>
+      <p class="mobile-menu-note"><a href="/free.html">Free mirror</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>56 developer tools, always updated</strong>, new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 From <strong><time datetime="2026-10-01T12:00:00+01:00">1 October 2026, 12:00 UK time</time></strong>, the apt mirror will require a subscription.
+      <a href="/#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/tree-sitter-cli-logo.webp" alt="tree-sitter-cli logo" width="56" height="56" decoding="async"></div>
+        <h1>Install Latest tree-sitter-cli on Ubuntu</h1>
+        <p class="subtitle">Generate, build, test and debug Tree-sitter parsers and grammars from the command line</p>
+        <div class="version-badge">Latest version: 0.27.0 · updated 2026-09-15</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.27.0 ✅</td></tr>
+<tr><td>Official Ubuntu</td><td class="vc-lose">0.25.9 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Back to home</a>
+
+        <div class="notice-box"><strong>📌 Installing on a specific release?</strong> <a href="/install-tree-sitter-cli-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-tree-sitter-cli-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-tree-sitter-cli-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-tree-sitter-cli-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>What is tree-sitter-cli?</h2>
+        <p>tree-sitter-cli is the <strong>command-line tool for developing Tree-sitter parsers</strong>. Tree-sitter is a parser generator and an incremental parsing library: it builds a concrete syntax tree for a source file and updates it cheaply as the file is edited, which is why Neovim, Helix, Zed and GitHub use it for highlighting, folding, text objects and code navigation. The CLI is how grammars get made: it scaffolds a grammar repository, generates a C parser from <code>grammar.js</code>, compiles it to a shared library or to WebAssembly, runs corpus tests, parses, queries, highlights and tags files, and serves a web playground. It is a single Rust binary, and the command you type is <code>tree-sitter</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Why Latest Versions Matter:</strong> grammars move with the CLI: the current parser ABI, the <code>tree-sitter.json</code> layout that <code>tree-sitter init</code> writes and the built-in QuickJS runtime behind <code>--js-runtime native</code> all arrived after the versions frozen into the archives. A grammar repository generated with a current CLI expects the same or newer on every contributor's machine and in CI. Debian stable's 0.22.6 and Ubuntu 24.04's 0.20.8 predate most of that, and upstream's own Linux binaries need glibc 2.39, so they do not even start on Debian 12 or Ubuntu 22.04.
+        </div>
+
+        <h3>⚡ Key Features of tree-sitter-cli</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🧱 Grammar Repositories in One Command</h4>
+                <p><code>tree-sitter init</code> asks a few questions and writes <code>grammar.js</code>, <code>tree-sitter.json</code> and the binding and package files, so the grammar is ready to publish for Node.js, Python, Rust, Go, Swift and C from day one.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Parser Generation</h4>
+                <p><code>tree-sitter generate</code> turns <code>grammar.js</code> into a dependency-free C parser in <code>src/</code> and reports conflicts. It runs the grammar with node, or with the built-in QuickJS runtime via <code>--js-runtime native</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔨 Native and WebAssembly Builds</h4>
+                <p><code>tree-sitter build</code> compiles the parser into a shared library that editors load, and <code>--wasm</code> produces a <code>.wasm</code> module for web-tree-sitter and the playground.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧪 Corpus Tests</h4>
+                <p><code>tree-sitter test</code> parses the examples under <code>test/corpus</code>, compares the trees with the expected S-expressions and runs highlight and tag tests too. <code>--update</code> rewrites the expectations after an intended change.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Parse, Query, Highlight, Tag</h4>
+                <p><code>parse</code> prints the syntax tree, <code>query</code> runs a <code>.scm</code> query and lists its captures, <code>highlight</code> renders to the terminal or to HTML, and <code>tags</code> extracts definitions and references.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛝 Web Playground</h4>
+                <p><code>tree-sitter playground</code> serves a local page where you type code, watch the tree update as you edit and run queries against it, which is the fastest way to see why a rule does not match.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Always ahead of the official archives:</strong> Debian and Ubuntu freeze package versions when a release ships. This repository publishes new upstream releases typically within hours. A simple <code>apt upgrade</code> keeps you on the latest version.
+        </div>
+
+        <h2>📦 Installation from deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Step 1: Add Repository</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 There is an always-free mirror.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> serves packages free forever, no account, no subscription, at most 2 months behind upstream, security fixes immediately. It currently carries cliamp, Ghostty, lazydocker, Oh My Posh and Zed; tree-sitter-cli is not one of them, so the repository above is the only way to get it today, ask and it can be enrolled.</p>
+  <p class="free-lane-more"><a href="/free.html">How the free mirror works →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Step 2: Install tree-sitter-cli</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Install latest tree-sitter-cli</span>
+sudo apt install tree-sitter-cli
+
+<span class="comment"># Verify installation, the command is tree-sitter and not tree-sitter-cli</span>
+tree-sitter --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Install latest tree-sitter-cli</span>
+apt install tree-sitter-cli
+
+<span class="comment"># Verify installation, the command is tree-sitter and not tree-sitter-cli</span>
+tree-sitter --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Step 3: Create your first grammar</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># The command is tree-sitter. Building and testing parsers needs a C compiler,</span>
+<span class="comment"># and generate runs grammar.js with node unless you pick the built-in runtime</span>
+sudo apt install build-essential nodejs
+
+<span class="comment"># Scaffold a grammar repository, answering a few questions</span>
+mkdir tree-sitter-mylang &amp;&amp; cd tree-sitter-mylang
+tree-sitter init
+
+<span class="comment"># Generate the parser, compile it and run the corpus tests</span>
+tree-sitter generate
+tree-sitter build
+tree-sitter test
+
+<span class="comment"># bash, zsh, fish and nushell completions ship with the package</span>
+tree-sitter --help</code></pre><pre class="variant variant-root"><code><span class="comment"># The command is tree-sitter. Building and testing parsers needs a C compiler,</span>
+<span class="comment"># and generate runs grammar.js with node unless you pick the built-in runtime</span>
+apt install build-essential nodejs
+
+<span class="comment"># Scaffold a grammar repository, answering a few questions</span>
+mkdir tree-sitter-mylang &amp;&amp; cd tree-sitter-mylang
+tree-sitter init
+
+<span class="comment"># Generate the parser, compile it and run the corpus tests</span>
+tree-sitter generate
+tree-sitter build
+tree-sitter test
+
+<span class="comment"># bash, zsh, fish and nushell completions ship with the package</span>
+tree-sitter --help</code></pre></div>
+        </div>
+
+        <h3>🎯 Basic Usage Examples</h3>
+
+        <p><strong>Working on a grammar:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Regenerate after each grammar.js change, without node, using the built-in QuickJS</span>
+tree-sitter generate --js-runtime native
+
+<span class="comment"># Run only the tests whose names match, then accept new output as the expectation</span>
+tree-sitter test --include &#039;function&#039;
+tree-sitter test --update
+
+<span class="comment"># Build a shared library, or a WebAssembly module for web-tree-sitter</span>
+tree-sitter build -o mylang.so
+tree-sitter build --wasm</code></pre></div>
+
+        <p><strong>Parsing files:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Print the syntax tree of a file</span>
+tree-sitter parse examples/hello.mylang
+
+<span class="comment"># Parse many files quietly and report how many succeeded</span>
+tree-sitter parse examples/*.mylang --quiet --stat
+
+<span class="comment"># Time a parse, useful when a grammar change slows things down</span>
+tree-sitter parse examples/big.mylang --time</code></pre></div>
+
+        <p><strong>Queries, highlighting and tags:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Run a query against a file and list what it captures</span>
+tree-sitter query queries/highlights.scm examples/hello.mylang
+
+<span class="comment"># Highlight a file in the terminal, or render a standalone HTML page</span>
+tree-sitter highlight examples/hello.mylang
+tree-sitter highlight --html examples/hello.mylang &gt; hello.html
+
+<span class="comment"># Extract definitions and references with the tags query</span>
+tree-sitter tags examples/hello.mylang</code></pre></div>
+
+        <p><strong>Existing grammars and the playground:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Work on an existing grammar</span>
+git clone https://github.com/tree-sitter/tree-sitter-json
+cd tree-sitter-json
+tree-sitter generate &amp;&amp; tree-sitter test
+
+<span class="comment"># Write a config file, then list your grammar checkouts under parser-directories</span>
+tree-sitter init-config
+
+<span class="comment"># Build to WebAssembly and open the interactive playground in a browser</span>
+tree-sitter build --wasm
+tree-sitter playground</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Tool Integrations</h4>
+            <p>The Tree-sitter CLI sits between a grammar and the tools that load it:</p>
+            <ul>
+                <li><strong>Neovim:</strong> the main branch of nvim-treesitter compiles parsers with the <code>tree-sitter</code> CLI and asks for a recent release, newer than Debian stable or Ubuntu LTS ship</li>
+                <li><strong>Helix:</strong> highlighting, indents and text objects are Tree-sitter queries; check a change to <code>highlights.scm</code> with <code>tree-sitter query</code> before rebuilding grammars with <code>hx --grammar build</code></li>
+                <li><strong>Zed:</strong> language extensions pin a grammar repository and commit, so generate and test the grammar locally before bumping the pin</li>
+                <li><strong>CI:</strong> <code>tree-sitter generate</code> followed by <code>git diff --exit-code src/</code> fails a pull request whose committed parser is stale</li>
+                <li><strong>Package registries:</strong> the bindings <code>tree-sitter init</code> writes let one grammar publish to npm, PyPI and crates.io</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Why Choose deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Repository Comparison:</strong>
+            <ul>
+                <li><strong>Official Ubuntu:</strong> ships tree-sitter-cli in universe, but 24.04 LTS carries 0.20.8, 26.04 is already behind upstream, and 22.04 has no package at all</li>
+                <li><strong>Upstream binary:</strong> current, but upstream's prebuilt Linux binaries are linked against glibc 2.39, so they do not start on Debian 12 or Ubuntu 22.04, and they live outside apt in <code>/usr/local/bin</code></li>
+                <li><strong>cargo or npm:</strong> <code>cargo install tree-sitter-cli</code> needs a Rust toolchain and a full compile on every upgrade, and the npm package downloads the same prebuilt binary with the same glibc requirement</li>
+                <li><strong>deb.griffo.io:</strong> latest version with automatic updates</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Same Package, Newer Version:</strong> same name as Ubuntu's own <code>tree-sitter-cli</code> and the same <code>/usr/bin/tree-sitter</code>, so apt treats it as an upgrade and not a second installation</li>
+            <li>✅ <strong>Built From the Upstream Tag:</strong> compiled with cargo from the tagged upstream source on Ubuntu 22.04, because upstream's prebuilt Linux binaries require glibc 2.39; this one runs on every suite from Bookworm and Jammy up</li>
+            <li>✅ <strong>Automatic Updates:</strong> packages updated within hours of upstream releases</li>
+            <li>✅ <strong>Complete Package:</strong> the <code>tree-sitter</code> binary built from the upstream source tag, bash, zsh, fish and nushell completions, and no dependencies beyond <code>libc6</code> and <code>libgcc-s1</code></li>
+            <li>✅ <strong>Four Architectures:</strong> amd64, arm64, armhf and i386, so the Raspberry Pi and the old 32-bit laptop get the same tree-sitter</li>
+            <li>✅ <strong>Multi-Distribution:</strong> works on Ubuntu 22.04, 24.04, 25.10 and 26.04</li>
+            <li>✅ <strong>Easy Maintenance:</strong> standard apt commands for updates</li>
+        </ul>
+
+        <h3>📦 Package Build Repository</h3>
+        <p>The Ubuntu packages are automatically built and maintained in this GitHub repository:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/tree-sitter-cli-debian" target="_blank" rel="noopener">🌲 tree-sitter-cli-debian</a> - Latest release builds</li>
+        </ul>
+
+        <h3>🔗 Related Packages</h3>
+        <p>Also available from deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-neovim-in-ubuntu.html">Neovim</a> - nvim-treesitter builds its parsers with this CLI</li>
+            <li><a href="/install-latest-helix-in-ubuntu.html">Helix</a> - Editor whose highlighting and text objects are Tree-sitter queries</li>
+            <li><a href="/install-latest-zed-in-ubuntu.html">Zed</a> - Editor whose language extensions ship Tree-sitter grammars</li>
+            <li><a href="/install-latest-difftastic-in-ubuntu.html">difftastic</a> - Structural diff built on Tree-sitter parsers</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Perfect for:</strong> writing a grammar for a new language, keeping an existing grammar's parser and corpus tests current, testing highlight and injection queries for Neovim, Helix or Zed, CI jobs that check a committed parser is up to date, and Debian 12 or Ubuntu 22.04 machines where upstream's own binary will not start.
+        </div>
+
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; margin-top: 30px;">
+            <h2 style="color: white; margin-bottom: 20px;">💝 Support This Project</h2>
+            <p style="color: white; font-size: 1.1em; margin-bottom: 25px;">
+                If this repository saves you time and effort, please consider supporting it!
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <a href="https://github.com/dariogriffo/debian.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #333; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"
+                   onmouseover="this.style.background='#555'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#333'; this.style.transform='translateY(0)'">
+                    ⭐ Star on GitHub
+                </a>
+
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: #1da1f2; color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(29,161,242,0.3);"
+                   onmouseover="this.style.background='#0d8bd9'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#1da1f2'; this.style.transform='translateY(0)'">
+                    🐦 Share on Twitter
+                </a>
+            </div>
+
+
+        </section>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<p>Just after the command? See <a href="/apt-install-tree-sitter-cli.html">apt install tree-sitter-cli</a>, one page covering Debian and Ubuntu.</p>
+<h2>📦 Recent releases from this repository</h2>
+<ul class="release-list">
+<li><code>0.27.0</code>: 2026-09-15</li>
+</ul>
+<h2>📚 Release-specific install guides</h2>
+<ul class="release-list">
+<li><a href="/install-tree-sitter-cli-on-debian-12-bookworm.html">Install tree-sitter-cli on Debian 12 “Bookworm”</a></li>
+<li><a href="/install-tree-sitter-cli-on-debian-13-trixie.html">Install tree-sitter-cli on Debian 13 “Trixie”</a></li>
+<li><a href="/install-tree-sitter-cli-on-debian-14-forky.html">Install tree-sitter-cli on Debian 14 “Forky”</a></li>
+<li><a href="/install-tree-sitter-cli-on-debian-sid.html">Install tree-sitter-cli on Debian Sid</a></li>
+<li><a href="/install-tree-sitter-cli-on-ubuntu-22-04-jammy.html">Install tree-sitter-cli on Ubuntu 22.04 LTS “Jammy Jellyfish”</a></li>
+<li><a href="/install-tree-sitter-cli-on-ubuntu-24-04-noble.html">Install tree-sitter-cli on Ubuntu 24.04 LTS “Noble Numbat”</a></li>
+<li><a href="/install-tree-sitter-cli-on-ubuntu-25-10-questing.html">Install tree-sitter-cli on Ubuntu 25.10 “Questing Quokka”</a></li>
+<li><a href="/install-tree-sitter-cli-on-ubuntu-26-04-resolute.html">Install tree-sitter-cli on Ubuntu 26.04 LTS “Resolute”</a></li>
+</ul>
+<h2>❓ Frequently asked questions</h2>
+<details><summary>Is tree-sitter-cli in the official Ubuntu repositories?</summary><p>Yes, but the official Ubuntu archive ships tree-sitter-cli 0.25.9, while this repository serves tree-sitter-cli 0.27.0, rebuilt within hours of each upstream release.</p></details>
+<details><summary>How do I install the latest tree-sitter-cli on Ubuntu?</summary><p>Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install tree-sitter-cli. New releases arrive through the normal sudo apt upgrade.</p></details>
+<details><summary>Are the packages signed and how are they built?</summary><p>Every package is signed with the repository&#x27;s GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect.</p></details>
+<details><summary>Which Ubuntu releases are supported?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is tree-sitter-cli in the official Ubuntu repositories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, but the official Ubuntu archive ships tree-sitter-cli 0.25.9, while this repository serves tree-sitter-cli 0.27.0, rebuilt within hours of each upstream release."}}, {"@type": "Question", "name": "How do I install the latest tree-sitter-cli on Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Add the deb.griffo.io repository once using the instructions above, then run: sudo apt install tree-sitter-cli. New releases arrive through the normal sudo apt upgrade."}}, {"@type": "Question", "name": "Are the packages signed and how are they built?", "acceptedAnswer": {"@type": "Answer", "text": "Every package is signed with the repository's GPG key (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) and built from upstream releases in public GitHub packaging repositories that anyone can inspect."}}, {"@type": "Question", "name": "Which Ubuntu releases are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing and 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Free mirror</a>
+    <a href="/how-packages-are-built.html">How packages are built</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/how-subscriptions-work.html">How access works</a>
+    <a href="/terms.html">Terms &amp; Conditions</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. All rights reserved.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest tree-sitter-cli on Ubuntu",
+ "description": "Complete guide to installing the latest tree-sitter-cli (the tree-sitter command) on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-09-15",
+ "dateModified": "2026-09-15",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "tree-sitter-cli",
+  "applicationCategory": "Command Line Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "Command-line tool for developing Tree-sitter parsers: scaffolds grammar repositories, generates parsers and compiles them to native libraries or WebAssembly, runs corpus tests, parses, queries, highlights and tags files, and serves a web playground",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "image": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/assets/img/tools/tree-sitter-cli-logo.webp",
+   "width": 96,
+   "height": 96
+  },
+  "url": "https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html",
+  "url": "https://deb.griffo.io/install-latest-tree-sitter-cli-in-ubuntu.html",
+  "inLanguage": "en"
+ },
+ "inLanguage": "en"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
