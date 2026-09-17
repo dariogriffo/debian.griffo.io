@@ -178,7 +178,7 @@
         <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/uncloud-logo.webp" alt="Logo Uncloud" width="56" height="56" decoding="async"></div>
         <h1>Installer la dernière version de uncloud sur Ubuntu</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">Dernière version : 0.20.0 · mis à jour le 2026-07-08</div>
+        <div class="version-badge">Dernière version : 0.20.0 · mis à jour le 2026-09-17</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
@@ -258,7 +258,14 @@ curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | 
 echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Ghostty, lazydocker, Oh My Posh et Zed ; Uncloud n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
+  <p><strong>🆓 Alternative gratuite pour toujours.</strong> Uncloud est aussi dans le miroir gratuit pour toujours <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Ajoutez ce dépôt au lieu de celui ci-dessus :</p>
+  <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
   <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
 </div>
         </div>
@@ -369,6 +376,7 @@ uc machine rm server2</code></pre></div>
 <section>
 <h2>📦 Dernières versions publiées par ce dépôt</h2>
 <ul class="release-list">
+<li><code>0.20.0</code>: 2026-09-17</li>
 <li><code>0.20.0</code>: 2026-07-08</li>
 </ul>
 <h2>❓ Questions fréquentes</h2>
@@ -410,7 +418,7 @@ uc machine rm server2</code></pre></div>
   "url": "https://github.com/dariogriffo"
  },
  "datePublished": "2025-10-01",
- "dateModified": "2026-07-08",
+ "dateModified": "2026-09-17",
  "publisher": {
   "@type": "Organization",
   "name": "deb.griffo.io",
@@ -430,6 +438,14 @@ uc machine rm server2</code></pre></div>
   "softwareVersion": "latest",
   "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities",
   "offers": [
+   {
+    "@type": "Offer",
+    "name": "Free lane (deb-free.griffo.io)",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/free.html"
+   },
    {
     "@type": "Offer",
     "name": "Yearly subscription",

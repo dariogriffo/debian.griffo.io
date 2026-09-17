@@ -178,7 +178,7 @@
         <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/uncloud-logo.webp" alt="Uncloud 标志" width="56" height="56" decoding="async"></div>
         <h1>安装最新的 uncloud 在 Debian 上</h1>
         <p class="subtitle">Lightweight container orchestration bridging Docker and Kubernetes</p>
-        <div class="version-badge">最新版本：0.20.0 · 更新于 2026-07-08</div>
+        <div class="version-badge">最新版本：0.20.0 · 更新于 2026-09-17</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
@@ -260,7 +260,16 @@ apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt insta
 sudo extrepo enable griffo
 sudo apt update</code></pre></div>
 <div class="notice-box free-lane">
-  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh 和 Zed；Uncloud 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p><strong>🆓 永久免费的替代方案。</strong> Uncloud 也在永久免费的镜像 <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 中 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。可以改用该仓库替代上面的仓库：</p>
+  <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update</code></pre></div>
   <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
 </div>
 <div class="notice-box extrepo">
@@ -375,6 +384,7 @@ uc machine rm server2</code></pre></div>
 <section>
 <h2>📦 本仓库最近发布</h2>
 <ul class="release-list">
+<li><code>0.20.0</code>: 2026-09-17</li>
 <li><code>0.20.0</code>: 2026-07-08</li>
 </ul>
 <h2>❓ 常见问题</h2>
@@ -416,7 +426,7 @@ uc machine rm server2</code></pre></div>
   "url": "https://github.com/dariogriffo"
  },
  "datePublished": "2025-10-01",
- "dateModified": "2026-07-08",
+ "dateModified": "2026-09-17",
  "publisher": {
   "@type": "Organization",
   "name": "deb.griffo.io",
@@ -436,6 +446,14 @@ uc machine rm server2</code></pre></div>
   "softwareVersion": "latest",
   "description": "Lightweight container orchestration tool bridging Docker simplicity with multi-machine deployment capabilities",
   "offers": [
+   {
+    "@type": "Offer",
+    "name": "Free lane (deb-free.griffo.io)",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/free.html"
+   },
    {
     "@type": "Offer",
     "name": "Yearly subscription",
