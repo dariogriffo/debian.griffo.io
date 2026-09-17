@@ -615,6 +615,23 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 .vc-lose { color: var(--slate-warm); }
 .vc-lose .vc-version { color: var(--lose); }
 .vc-flag { margin-left: 5px; font-size: 11px; }
+/* The free lane's table has a fifth state the main site's does not: the
+   tool is packaged and current, just not enrolled in the free mirror yet.
+   Neither a win nor a loss, so it is neither green nor red, and the cell
+   carries the link to where the package actually is. */
+.vc-pending { color: var(--slate-warm); }
+/* Muted on purpose: on the free lane most rows are pending, and painting fifty
+   of them in the accent colour made the handful of tools that ARE free the
+   quietest thing in the table. */
+.vc-table td.vc-pending a { color: var(--slate-light); font-weight: 500;
+  text-decoration: underline; text-decoration-color: rgba(156,163,175,0.35); }
+.vc-table td.vc-pending a:hover { color: var(--debian);
+  text-decoration-color: var(--debian-glow); }
+/* Enrolled in the free lane, not yet published. A transient state between the
+   enrolment commit and the next free-lane publish, and its own colour so it
+   does not read as either of the two settled ones. */
+.vc-coming { color: var(--star); }
+.vc-coming .vc-version { color: var(--star); }
 
 /* ── Code blocks ── */
 .code-block {

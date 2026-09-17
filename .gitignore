@@ -13,6 +13,13 @@ reprepro-free/db/**
 .versions-free/
 # guard: an apt tree must never live (or be committed) inside site/
 site/apt/**
+
+# The free homepage shares the main site's stylesheet, fonts, script and logos.
+# sitegen/generate_free.py copies site/assets/ here so the free host can be
+# previewed and deployed standalone, and bin/deploy_site.sh copies them again
+# from site/assets/ at deploy time. Committing a byte-identical 1.3 MB of fonts
+# and webp twice is what this line exists to avoid.
+free-site/assets/**
 reprepro/db/**
 
 # Deploy script — root-privileged, VPS-only, never committed
