@@ -51,6 +51,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Fastpotify](https://fastpotify.rocks/) - Fast, native Spotify client written in Rust
 - [restic](https://restic.net/) - Fast, secure backup program with deduplication and encryption
 - [Tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) - Generate, build, test and run Tree-sitter parsers (tree-sitter)
+- [GPU Screen Recorder](https://git.dec05eba.com/gpu-screen-recorder/about/) - ShadowPlay-like screen recorder that records on the GPU
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -101,6 +102,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [fastpotify-debian](https://github.com/dariogriffo/fastpotify-debian) - Native Spotify client
 - [restic-debian](https://github.com/dariogriffo/restic-debian) - Backup program with deduplication
 - [tree-sitter-cli-debian](https://github.com/dariogriffo/tree-sitter-cli-debian) - Tree-sitter parser development CLI
+- [gpu-screen-recorder-debian](https://github.com/dariogriffo/gpu-screen-recorder-debian) - GPU screen recorder (amd64)
 
 ## 🐧 Supported Debian Distributions
 
@@ -174,11 +176,12 @@ sudo apt install -y rumdl           # Markdown linter and formatter
 sudo apt install -y tree-sitter-cli # Tree-sitter parser tooling (command: tree-sitter)
 
 # Media & Entertainment
-sudo apt install -y lowfi        # Lofi music player
-sudo apt install -y termusic     # Terminal music player
-sudo apt install -y cliamp       # Winamp-style terminal music player
-sudo apt install -y fastpotify   # Native Spotify client
-sudo apt install -y yt-dlp       # Audio/video downloader
+sudo apt install -y lowfi               # Lofi music player
+sudo apt install -y termusic            # Terminal music player
+sudo apt install -y cliamp              # Winamp-style terminal music player
+sudo apt install -y fastpotify          # Native Spotify client
+sudo apt install -y yt-dlp              # Audio/video downloader
+sudo apt install -y gpu-screen-recorder # GPU screen recorder with instant replay (amd64)
 
 # Container & Cloud Tools
 sudo apt install -y unregistry   # Container registry
@@ -208,7 +211,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli gpu-screen-recorder
 ```
 
 ## ⚠️ Important Information
