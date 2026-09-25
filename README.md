@@ -102,7 +102,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [fastpotify-debian](https://github.com/dariogriffo/fastpotify-debian) - Native Spotify client
 - [restic-debian](https://github.com/dariogriffo/restic-debian) - Backup program with deduplication
 - [tree-sitter-cli-debian](https://github.com/dariogriffo/tree-sitter-cli-debian) - Tree-sitter parser development CLI
-- [gpu-screen-recorder-debian](https://github.com/dariogriffo/gpu-screen-recorder-debian) - GPU screen recorder (amd64)
+- [gpu-screen-recorder-debian-cli](https://github.com/dariogriffo/gpu-screen-recorder-debian-cli) - GPU screen recorder (amd64)
 
 ## 🐧 Supported Debian Distributions
 
@@ -181,7 +181,7 @@ sudo apt install -y termusic            # Terminal music player
 sudo apt install -y cliamp              # Winamp-style terminal music player
 sudo apt install -y fastpotify          # Native Spotify client
 sudo apt install -y yt-dlp              # Audio/video downloader
-sudo apt install -y gpu-screen-recorder # GPU screen recorder with instant replay (amd64)
+sudo apt install -y gpu-screen-recorder-cli # GPU screen recorder with instant replay (amd64)
 
 # Container & Cloud Tools
 sudo apt install -y unregistry   # Container registry
@@ -211,7 +211,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli gpu-screen-recorder
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli gpu-screen-recorder-cli
 ```
 
 ## ⚠️ Important Information
