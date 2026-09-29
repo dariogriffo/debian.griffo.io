@@ -52,6 +52,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [restic](https://restic.net/) - Fast, secure backup program with deduplication and encryption
 - [Tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) - Generate, build, test and run Tree-sitter parsers (tree-sitter)
 - [GPU Screen Recorder](https://git.dec05eba.com/gpu-screen-recorder/about/) - ShadowPlay-like screen recorder that records on the GPU
+- [mitmproxy](https://mitmproxy.org) - Interactive TLS-capable intercepting HTTP proxy (mitmproxy, mitmdump, mitmweb)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -103,6 +104,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [restic-debian](https://github.com/dariogriffo/restic-debian) - Backup program with deduplication
 - [tree-sitter-cli-debian](https://github.com/dariogriffo/tree-sitter-cli-debian) - Tree-sitter parser development CLI
 - [gpu-screen-recorder-debian-cli](https://github.com/dariogriffo/gpu-screen-recorder-debian-cli) - GPU screen recorder (amd64)
+- [mitmproxy-debian](https://github.com/dariogriffo/mitmproxy-debian) - Intercepting HTTP proxy
 
 ## 🐧 Supported Debian Distributions
 
@@ -174,6 +176,7 @@ sudo apt install -y difftastic      # Structural diff (command: difft)
 sudo apt install -y serie           # Git commit graph viewer
 sudo apt install -y rumdl           # Markdown linter and formatter
 sudo apt install -y tree-sitter-cli # Tree-sitter parser tooling (command: tree-sitter)
+sudo apt install -y mitmproxy       # Intercepting HTTP proxy (mitmproxy, mitmdump, mitmweb)
 
 # Media & Entertainment
 sudo apt install -y lowfi               # Lofi music player
@@ -211,7 +214,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli gpu-screen-recorder-cli
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl fastpotify restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy
 ```
 
 ## ⚠️ Important Information
