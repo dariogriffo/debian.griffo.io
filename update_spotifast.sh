@@ -1,7 +1,7 @@
-REPO=fastpotify-debian
+REPO=spotifast-debian
 PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
-PACKAGE_NAME=fastpotify
+PACKAGE_NAME=spotifast
 # Upstream publishes x86_64 and aarch64 Linux builds only. They need
 # GLIBC_2.39, so there is nothing for bookworm or jammy; the generic
 # downloaders just find no asset for those suites.
