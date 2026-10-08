@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Ubuntu 上通过 apt 安装最新版 lazyjira</title>
+<meta name="description" content="官方 Ubuntu 软件源中没有 lazyjira。本仓库通过 apt 提供 lazyjira 2.19.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，上游发布后数小时内重新构建。这是一款 lazygit 风格的 Jira 终端界面。">
+<meta name="keywords" content="lazyjira ubuntu, 安装 lazyjira ubuntu, lazyjira, jira 终端界面, jira tui, jira 命令行, lazygit jira, jql, lazyjira apt, ubuntu 软件包, jammy, noble, questing, resolute, apt lazyjira">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html">
+<meta property="og:title" content="在 Ubuntu 上通过 apt 安装最新版 lazyjira">
+<meta property="og:description" content="官方 Ubuntu 软件源中没有 lazyjira。本仓库通过 apt 提供 lazyjira 2.19.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，上游发布后数小时内重新构建。这是一款 lazygit 风格的 Jira 终端界面。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html">
+<meta property="twitter:title" content="在 Ubuntu 上通过 apt 安装最新版 lazyjira">
+<meta property="twitter:description" content="官方 Ubuntu 软件源中没有 lazyjira。本仓库通过 apt 提供 lazyjira 2.19.2，支持 Ubuntu 22.04、24.04、25.10 和 26.04。GPG 签名，上游发布后数小时内重新构建。这是一款 lazygit 风格的 Jira 终端界面。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-lazyjira-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-lazyjira-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-lazyjira-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>60 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🎫 在 Ubuntu 上安装最新版 lazyjira</h1>
+        <p class="subtitle">Jira 版的 lazygit：Jira 终端界面</p>
+        <div class="version-badge">最新版本：2.19.2 · 更新于 2026-10-08</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">2.19.2 ✅</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-lazyjira-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-lazyjira-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-lazyjira-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-lazyjira-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>什么是 lazyjira？</h2>
+        <p>lazyjira 是一款<strong>以键盘操作为主的 Jira 终端界面</strong>，仿照 lazygit 的风格，用 Go 编写。四个面板并排显示你的 issue、项目、当前选中的 issue 及其状态，支持 vim 风格导航和鼠标操作。用 JQL 搜索，然后修改 issue 的流转状态、优先级、经办人或标签，添加评论，在你的 <code>$EDITOR</code> 中编辑描述，或者新建 issue，全程无需打开浏览器。它支持 Jira Cloud 和 Jira Server/Data Center，首次运行时会通过设置向导引导你完成连接。软件包和命令都叫 <code>lazyjira</code>。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> lazyjira 是一个年轻且迭代很快的项目，每个版本都会带来新的编辑操作、更多 Jira 字段支持和新的配置选项。Debian 和 Ubuntu 的官方软件源中完全没有它；上游只在 GitHub releases 中发布二进制文件，没有 apt 仓库，所以手动复制到 PATH 里的二进制文件永远不会自动更新。
+        </div>
+
+        <h3>⚡ lazyjira 的主要特性</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔍 JQL 搜索</h4>
+                <p>输入 JQL 时有自动补全和语法高亮，并能通过持久化的历史记录找回以前的查询。保存的 JQL 标签页让日常视图一键可达。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗂️ 四面板布局</h4>
+                <p>issue、项目、issue 详情和状态并排显示，终端较窄时也可以上下堆叠。用 vim 风格按键或鼠标导航。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✏️ 直接编辑</h4>
+                <p>修改流转状态、优先级、经办人和标签，添加评论，并在你的 <code>$EDITOR</code> 中编辑描述。新 issue 也在同一界面中创建。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌿 Git 集成</h4>
+                <p>从选中的 issue 创建 git 分支，或者打开当前分支对应的 issue，让工单和代码始终对得上。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ 可配置</h4>
+                <p>快捷键、JQL 标签页、issue 列和自定义字段都在 <code>~/.config/lazyjira/</code> 中设置，可选默认 ANSI 主题或 Catppuccin 主题。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔐 Cloud 与 Server</h4>
+                <p>Jira Cloud 使用邮箱和 API 令牌登录，Jira Server 和 Data Center 使用个人访问令牌，同时支持 mTLS 客户端证书。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed；lazyjira 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 lazyjira</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 lazyjira</span>
+sudo apt install lazyjira
+
+<span class="comment"># 验证安装</span>
+lazyjira --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 lazyjira</span>
+apt install lazyjira
+
+<span class="comment"># 验证安装</span>
+lazyjira --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：连接 Jira</h3>
+            <div class="code-block"><pre><code><span class="comment"># 首次运行会打开 Jira 连接的设置向导</span>
+lazyjira
+
+<span class="comment"># 也可以直接设置或删除凭据</span>
+lazyjira auth
+lazyjira logout</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>不写入任何内容地试用：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Dry run：连接你真实的 Jira，但不做任何修改</span>
+lazyjira --dry-run
+
+<span class="comment"># 使用时写入日志文件</span>
+lazyjira --log /tmp/lazyjira.log</code></pre></div>
+
+        <p><strong>在 git 仓库中使用：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 在你工作的仓库中启动 lazyjira：从 issue 创建的分支</span>
+<span class="comment"># 会落在这里，当前分支也会对应到它的 issue</span>
+cd ~/src/my-service
+lazyjira</code></pre></div>
+
+        <p><strong>在自己的编辑器中编辑描述：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 描述会在 $EDITOR 中打开</span>
+export EDITOR=nvim
+lazyjira</code></pre></div>
+
+        <p><strong>配置与可选辅助工具：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 快捷键、JQL 标签页、列、自定义字段和主题都在这里</span>
+ls ~/.config/lazyjira/
+
+<span class="comment"># 建议安装的软件包：git 用于分支，xclip 用于复制到剪贴板，</span>
+<span class="comment"># xdg-utils 用于在浏览器中打开 issue</span>
+sudo apt install git xclip xdg-utils
+
+<span class="comment"># 更新日志以及 Config、Keybindings 和 Custom Fields 文档</span>
+ls /usr/share/doc/lazyjira</code></pre><pre class="variant variant-root"><code><span class="comment"># 快捷键、JQL 标签页、列、自定义字段和主题都在这里</span>
+ls ~/.config/lazyjira/
+
+<span class="comment"># 建议安装的软件包：git 用于分支，xclip 用于复制到剪贴板，</span>
+<span class="comment"># xdg-utils 用于在浏览器中打开 issue</span>
+apt install git xclip xdg-utils
+
+<span class="comment"># 更新日志以及 Config、Keybindings 和 Custom Fields 文档</span>
+ls /usr/share/doc/lazyjira</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>lazyjira 可以直接融入现有的终端工作流：</p>
+            <ul>
+                <li><strong>Git：</strong> 从选中的 issue 创建分支，或跳转到当前分支对应的 issue</li>
+                <li><strong>编辑器：</strong> 描述在 <code>$EDITOR</code> 中打开，Neovim、Helix 或任何其他编辑器都可以负责写作</li>
+                <li><strong>浏览器：</strong> 需要完整的 Jira 网页视图时，通过 <code>xdg-open</code> 在浏览器中打开选中的 issue</li>
+                <li><strong>剪贴板：</strong> 用 <code>xclip</code> 复制，可直接粘贴到提交信息或聊天中</li>
+                <li><strong>企业 Jira：</strong> 个人访问令牌和 mTLS 客户端证书可以应对配置更严格的 Server 和 Data Center 部署</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Ubuntu：</strong> 未打包：任何 Ubuntu 版本的 main 和 universe 中都没有 lazyjira</li>
+                <li><strong>上游二进制文件:</strong> 下载当天是最新的，但上游只在 GitHub releases 中发布二进制文件，没有 apt 仓库，所以 <code>apt upgrade</code> 永远看不到新版本，每次发布都要再手动下载一次</li>
+                <li><strong>用 go install 构建:</strong> 需要 Go 工具链，每次升级都要重新编译，而且没有更新日志和文档</li>
+                <li><strong>deb.griffo.io：</strong>最新版本，自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>无运行时依赖:</strong> lazyjira 是单个静态链接的 Go 二进制文件；git、xclip 和 xdg-utils 只是建议安装，分别用于分支、剪贴板和在浏览器中打开 issue</li>
+            <li>✅ <strong>上游版本通过 apt 更新:</strong> 上游提供二进制文件但没有仓库；这里每个版本都会进入 GPG 签名的 apt 仓库，并为每个 Debian 和 Ubuntu 版本分别构建</li>
+            <li>✅ <strong>自动更新：</strong>上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>完整软件包:</strong> <code>lazyjira</code> 二进制文件，外加上游的更新日志以及 Config、Keybindings 和 Custom Fields 文档，位于 <code>/usr/share/doc/lazyjira</code></li>
+            <li>✅ <strong>两种架构:</strong> 仅 amd64 和 arm64，笔记本、服务器和 64 位 ARM 开发板都能用上同一个 lazyjira</li>
+            <li>✅ <strong>多发行版：</strong>支持 Ubuntu 22.04、24.04、25.10 和 26.04</li>
+            <li>✅ <strong>易于维护：</strong>使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Ubuntu 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lazyjira-debian" target="_blank" rel="noopener">🎫 lazyjira-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - git 的终端界面，lazyjira 的风格正是来自它</li>
+            <li><a href="/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - 同一风格的 Docker 和 docker-compose 终端界面</li>
+            <li><a href="/install-latest-k9s-in-ubuntu.html">k9s</a> - 管理 Kubernetes 集群的终端界面</li>
+            <li><a href="/install-latest-yq-in-ubuntu.html">yq</a> - 命令行 YAML、JSON 和 XML 处理器</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 习惯在终端里工作、不想在浏览器中打开 Jira 的开发者，用键盘分拣和更新 issue，让 git 分支与 issue 编号保持一致，以及在客户端写入任何内容之前先用 dry run 安全地试用。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>2.19.2</code>: 2026-10-08</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>lazyjira 在官方 Ubuntu 软件源中吗？</summary><p>不在, 官方 Ubuntu 源没有打包 lazyjira。本仓库目前是唯一的 apt 来源，提供 lazyjira 2.19.2。</p></details>
+<details><summary>如何在 Ubuntu 上安装最新版 lazyjira？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install lazyjira。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "lazyjira 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Ubuntu 源没有打包 lazyjira。本仓库目前是唯一的 apt 来源，提供 lazyjira 2.19.2。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 lazyjira？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install lazyjira。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest lazyjira on Ubuntu",
+ "description": "Complete guide to installing the latest lazyjira, a terminal UI for Jira, on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-08",
+ "dateModified": "2026-10-08",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "lazyjira",
+  "applicationCategory": "DevOps Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "A keyboard-driven terminal UI for Jira Cloud and Server in the style of lazygit: JQL search with autocomplete and history, inline editing of transitions, priority, assignee, labels and comments, issue creation, and git branches created from issues",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html",
+  "url": "https://deb.griffo.io/cn/install-latest-lazyjira-in-ubuntu.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
