@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar ble.sh en Debian vía apt — última versión</title>
+<meta name="description" content="ble.sh 0.4.0 vía apt en Bookworm, Trixie, Forky y Sid — no está en el archivo estable de Debian. Firmado con GPG, compilado desde las nightlies.">
+<meta name="keywords" content="ble.sh debian, instalar ble.sh debian, Bash Line Editor, resaltado de sintaxis bash, autosugerencias bash, modo vim bash, alternativa a readline, ble.sh apt, paquetes debian, bookworm, trixie, sid, apt ble.sh">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<meta property="og:title" content="Instalar ble.sh en Debian vía apt — última versión">
+<meta property="og:description" content="ble.sh 0.4.0 vía apt en Bookworm, Trixie, Forky y Sid — no está en el archivo estable de Debian. Firmado con GPG, compilado desde las nightlies.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<meta property="twitter:title" content="Instalar ble.sh en Debian vía apt — última versión">
+<meta property="twitter:description" content="ble.sh 0.4.0 vía apt en Bookworm, Trixie, Forky y Sid — no está en el archivo estable de Debian. Firmado con GPG, compilado desde las nightlies.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/es/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/es/#packages">Paquetes</a></li>
+    <li><a href="/es/#install">Instalación</a></li>
+    <li><a href="/es/#versions">Versiones</a></li>
+    <li><a href="/es/#source">Código fuente</a></li>
+    <li><a href="/es/#reviews">Opiniones</a></li>
+    <li><a href="/es/#pricing">Precios</a></li>
+    <li><a href="/es/#faq">Preguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Seleccionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Español</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/es/#pricing" class="nav-cta">Obtener suscripción</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menú" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/es/#packages" class="mobile-menu-link" data-index="01">Paquetes</a>
+      <a href="/es/#install" class="mobile-menu-link" data-index="02">Instalación</a>
+      <a href="/es/#versions" class="mobile-menu-link" data-index="03">Versiones</a>
+      <a href="/es/#source" class="mobile-menu-link" data-index="04">Código fuente</a>
+      <a href="/es/#reviews" class="mobile-menu-link" data-index="05">Opiniones</a>
+      <a href="/es/#pricing" class="mobile-menu-link" data-index="06">Precios</a>
+      <a href="/es/#faq" class="mobile-menu-link" data-index="07">Preguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/es/#pricing" class="btn-primary">Obtener suscripción</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espejo gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progreso de desplazamiento">
+  <span class="side-label">Desplazar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Estado">
+  <span class="side-label">Estado</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>62 herramientas de desarrollo, siempre actualizadas</strong> — cada nueva versión upstream llega a <code>apt</code> en cuestión de horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Únete al Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 Desde el <strong><time datetime="2026-10-01T12:00:00+01:00">1 de octubre de 2026, 12:00 hora del Reino Unido</time></strong>, el mirror de apt requiere una suscripción.
+      <a href="/es/#pricing">Ver precios</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe un espejo gratis para siempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">¿apt devuelve 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🖍️ Instalar la última versión de ble.sh en Debian</h1>
+        <p class="subtitle">Bash Line Editor: resaltado de sintaxis, autosugerencias, modos vim y emacs y autocompletado avanzado, en Bash puro</p>
+        <div class="version-badge">Última versión: 0.4.0 · actualizado 2026-10-13</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.4.0 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 no empaquetado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Volver al inicio</a>
+
+        <div class="notice-box"><strong>📌 ¿Instalas en una versión concreta?</strong> <a href="/install-blesh-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-blesh-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-blesh-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-blesh-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>¿Qué es ble.sh?</h2>
+        <p>ble.sh, el <strong>Bash Line Editor</strong>, es un editor de línea escrito en Bash puro que sustituye a GNU Readline en las sesiones interactivas de Bash. Conservas Bash, tu <code>~/.bashrc</code>, tus alias y tus scripts, y ganas lo que normalmente obliga a cambiar de shell: resaltado de sintaxis mientras escribes, autosugerencias del historial al estilo de fish, un modo vim completo junto a los atajos de emacs, autocompletado con menús y descripciones, abreviaturas e integración con bash-completion y fzf. Lo escribe Koichi Murase y se publica bajo la licencia BSD-3-Clause. No hay ningún binario que ejecutar: el paquete instala el script en <code>/usr/share/blesh/ble.sh</code> y dos líneas en tu <code>~/.bashrc</code> lo activan.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importa la última versión:</strong> ble.sh se desarrolla de forma continua en su rama master y las versiones estables etiquetadas son escasas y muy espaciadas, así que las instrucciones de instalación de upstream remiten a la compilación nightly o a un checkout de git. Debian y Ubuntu empaquetan una instantánea que queda congelada durante toda la vida de la release (Debian estable ni siquiera lo incluye). Este repositorio sigue las instantáneas nightly de upstream, de modo que los arreglos para nuevas versiones de Bash, terminales e integraciones de autocompletado te llegan con <code>apt upgrade</code>.
+        </div>
+
+        <h3>⚡ Funciones clave de ble.sh</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Resaltado de sintaxis</h4>
+                <p>Comandos, palabras clave, cadenas, variables, redirecciones y nombres de archivo se colorean mientras escribes, y un comando desconocido o un error de sintaxis se ve antes de pulsar Enter.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>💡 Autosugerencias</h4>
+                <p>Sugerencias al estilo de fish, tomadas del historial y del autocompletado, aparecen en gris tras el cursor. Acepta la sugerencia completa con la flecha derecha o <code>C-f</code>, o palabra a palabra con <code>M-f</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ Modos vim y emacs</h4>
+                <p>Atajos de emacs por defecto y un modo vi/vim completo con <code>set -o vi</code>: modos normal, inserción y visual, objetos de texto, registros y una línea de estado opcional al estilo de vim-airline.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📋 Menú de autocompletado</h4>
+                <p>Tab abre un menú de candidatos que recorres con las flechas, con descripciones cuando las hay y coincidencia ambigua (difusa).</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✂️ Abreviaturas</h4>
+                <p><code>ble-sabbrev</code> define abreviaturas que se expanden al escribir, como las abreviaturas de fish o los alias globales de zsh, de modo que <code>L</code> se convierte en <code>| less</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Bash puro, sin binario</h4>
+                <p>Nada que compilar y nada dependiente de la arquitectura: ble.sh es un script de Bash que funciona allí donde funcione Bash 3.0 o posterior, y no interfiere en shells no interactivas ni en scripts.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes cuando publican una release; este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene en la última versión.
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Elige cómo ejecutar los comandos"><span class="variant-toggle-label">Ejecutar los comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">con sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">con extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Paso 1: Añadir el repositorio</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe un espejo gratis para siempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> sirve paquetes gratis para siempre: sin cuenta, sin suscripción, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Ahora mismo incluye cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud y Zed; ble.sh no está entre ellas, así que hoy el repositorio de arriba es la única forma de instalarlo — pídelo y puede añadirse.</p>
+  <p class="free-lane-more"><a href="/free.html">Cómo funciona el espejo gratuito →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Sobre la opción extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> es la herramienta propia de Debian para repositorios externos: escribe el archivo de sources e instala la clave de firma por ti, comprobándola antes contra metadatos firmados. Este repositorio está registrado en ella como <code>griffo</code>, y el espejo gratuito para siempre como <code>griffo-free</code>, así que en Debian (bookworm, trixie, forky y sid) los comandos de arriba son toda la configuración.</p>
+  <p>extrepo solo configura el archivo de sources y la clave: las credenciales de una suscripción siguen yendo en <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu no está cubierto, porque extrepo publica metadatos solo para las suites de Debian: allí usa los comandos con sudo o como root.</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Paso 2: Instalar ble.sh</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar la última versión de ble.sh</span>
+sudo apt install ble.sh
+
+<span class="comment"># Opcional: temas de vim-airline para la línea de estado del modo vi</span>
+sudo apt install ble.sh-airline-themes</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar la última versión de ble.sh</span>
+apt install ble.sh
+
+<span class="comment"># Opcional: temas de vim-airline para la línea de estado del modo vi</span>
+apt install ble.sh-airline-themes</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 3: Activar ble.sh en tu ~/.bashrc</h3>
+            <div class="code-block"><pre><code><span class="comment"># ble.sh no tiene un comando propio: Bash lo carga desde ~/.bashrc.</span>
+<span class="comment"># Pon esta línea cerca del PRINCIPIO de ~/.bashrc:</span>
+[[ $- == *i* ]] &amp;&amp; source /usr/share/blesh/ble.sh --noattach
+
+<span class="comment"># ...el resto de tu ~/.bashrc queda igual...</span>
+
+<span class="comment"># Y esta línea justo al FINAL de ~/.bashrc:</span>
+[[ ${BLE_VERSION-} ]] &amp;&amp; ble-attach
+
+<span class="comment"># Abre una terminal nueva y luego:</span>
+<span class="comment"># Verificar la instalación</span>
+echo $BLE_VERSION</code></pre></div>
+        </div>
+
+        <h3>🎯 Ejemplos básicos de uso</h3>
+
+        <p><strong>Uso diario:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Comprobar que ble.sh está activo en esta shell</span>
+echo $BLE_VERSION
+
+<span class="comment"># Recargar ble.sh tras cambiar sus ajustes</span>
+ble-reload
+
+<span class="comment"># Las actualizaciones llegan por apt; ble-update te remite allí</span>
+sudo apt update &amp;&amp; sudo apt upgrade</code></pre><pre class="variant variant-root"><code><span class="comment"># Comprobar que ble.sh está activo en esta shell</span>
+echo $BLE_VERSION
+
+<span class="comment"># Recargar ble.sh tras cambiar sus ajustes</span>
+ble-reload
+
+<span class="comment"># Las actualizaciones llegan por apt; ble-update te remite allí</span>
+apt update &amp;&amp; apt upgrade</code></pre></div>
+
+        <p><strong>Ajustes en ~/.blerc:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># ble.sh lee sus ajustes de ~/.blerc (o ~/.config/blesh/init.sh)</span>
+<span class="comment"># Atajos de vim en lugar de emacs</span>
+set -o vi
+
+<span class="comment"># Esperar 300 ms antes de mostrar una autosugerencia</span>
+bleopt complete_auto_delay=300
+
+<span class="comment"># Desactivar por completo las autosugerencias</span>
+bleopt complete_auto_complete=
+
+<span class="comment"># Cambiar el color del texto sugerido</span>
+ble-face auto_complete=&#039;fg=242&#039;</code></pre></div>
+
+        <p><strong>Abreviaturas, atajos de teclado e integraciones:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Expandir &quot;L&quot; a &quot;| less&quot; mientras escribes</span>
+ble-sabbrev L=&#039;| less&#039;
+
+<span class="comment"># Que Ctrl+C descarte la línea actual</span>
+ble-bind -f &#039;C-c&#039; discard-line
+
+<span class="comment"># Autocompletado y atajos de fzf, adaptados a ble.sh</span>
+ble-import -d integration/fzf-completion
+ble-import -d integration/fzf-key-bindings
+
+<span class="comment"># Línea de estado al estilo de vim-airline (requiere ble.sh-airline-themes)</span>
+ble-import vim-airline
+bleopt vim_airline_theme=dark</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integraciones con otras herramientas</h4>
+            <p>ble.sh se coloca debajo de tu configuración de Bash en lugar de sustituirla:</p>
+            <ul>
+                <li><strong>bash-completion:</strong> los autocompletados del paquete <code>bash-completion</code> se detectan automáticamente y aparecen en el menú</li>
+                <li><strong>fzf:</strong> <code>ble-import</code> carga versiones del autocompletado y los atajos de fzf adaptadas a ble.sh</li>
+                <li><strong>Atuin:</strong> la integración de Atuin con Bash es compatible con ble.sh, que le da hooks preexec fiables para registrar el historial</li>
+                <li><strong>Starship / Oh My Posh:</strong> los prompts que generan siguen funcionando sin cambios</li>
+                <li><strong>Archivo de configuración:</strong> <code>~/.blerc</code> guarda tus ajustes de <code>bleopt</code>, <code>ble-face</code> y <code>ble-bind</code>, separados de <code>~/.bashrc</code></li>
+            </ul>
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativa de repositorios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> solo en testing e inestable; las versiones estables (bookworm y trixie) no lo incluyen</li>
+                <li><strong>git clone + make:</strong> actualizado, pero compilado e instalado a mano en <code>~/.local</code>, y tienes que mantenerlo al día tú mismo con <code>ble-update</code></li>
+                <li><strong>deb.griffo.io:</strong> última versión con actualizaciones automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Instantáneas recientes:</strong> las instantáneas nightly de upstream, con arreglos para nuevas versiones de Bash y terminales</li>
+            <li>✅ <strong>Sin configuración manual:</strong> sin git clone, sin <code>make</code>, sin una copia de ble.sh en tu directorio personal que mantener</li>
+            <li>✅ <strong>Actualizaciones automáticas:</strong> paquetes actualizados pocas horas después de cada release upstream</li>
+            <li>✅ <strong>Paquete completo:</strong> el árbol completo de ble.sh en <code>/usr/share/blesh</code>, su documentación y el paquete opcional <code>ble.sh-airline-themes</code></li>
+            <li>✅ <strong>Todas las arquitecturas:</strong> se publica como <code>Architecture: all</code>, así que amd64, arm64, armhf, riscv64 y el resto instalan el mismo paquete</li>
+            <li>✅ <strong>Multidistribución:</strong> funciona en Bookworm, Trixie, Forky y Sid</li>
+            <li>✅ <strong>Mantenimiento sencillo:</strong> comandos apt de siempre para actualizar</li>
+        </ul>
+
+        <h3>📦 Repositorio de compilación del paquete</h3>
+        <p>Los paquetes de Debian se compilan y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ble.sh-debian" target="_blank" rel="noopener">🖍️ ble.sh-debian</a> - Compilaciones de las últimas versiones</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponibles en deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf</a> - Buscador difuso con el que ble.sh se integra</li>
+            <li><a href="/install-latest-atuin-in-debian.html">Atuin</a> - Historial de la shell en una base de datos, compatible con ble.sh</li>
+            <li><a href="/install-latest-starship-in-debian.html">Starship</a> - Prompt multishell que funciona bajo ble.sh</li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide</a> - Un cd más inteligente que aprende tus directorios</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> usuarios de Bash que quieren las comodidades de fish o zsh sin salir de Bash, servidores donde Bash es la única shell disponible, usuarios de vim que quieren edición modal de verdad en la línea de comandos, y cualquiera que prefiera conservar su <code>~/.bashrc</code> antes que reescribirlo para otra shell.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está ble.sh en los repositorios oficiales de Debian?</summary><p>No, ble.sh no está empaquetado en los archivos oficiales de Debian. Este repositorio es actualmente la única fuente apt y ofrece ble.sh 0.4.0.</p></details>
+<details><summary>¿Cómo instalo el último ble.sh en Debian?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install ble.sh. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Debian son compatibles?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está ble.sh en los repositorios oficiales de Debian?", "acceptedAnswer": {"@type": "Answer", "text": "No, ble.sh no está empaquetado en los archivos oficiales de Debian. Este repositorio es actualmente la única fuente apt y ofrece ble.sh 0.4.0."}}, {"@type": "Question", "name": "¿Cómo instalo el último ble.sh en Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install ble.sh. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Debian son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espejo gratuito</a>
+    <a href="/how-packages-are-built.html">Cómo se construyen los paquetes</a>
+    <a href="/supported-architectures.html">Arquitecturas</a>
+    <a href="/es/how-subscriptions-work.html">Cómo funciona el acceso</a>
+    <a href="/terms.html">Términos y Condiciones</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos los derechos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest ble.sh on Debian",
+ "description": "Complete guide to installing the latest ble.sh Bash Line Editor on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-13",
+ "dateModified": "2026-10-13",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "ble.sh",
+  "applicationCategory": "Command Line Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Bash Line Editor written in pure Bash that replaces GNU Readline with syntax highlighting, auto-suggestions, vim and emacs modes and menu completion",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/es/install-latest-blesh-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/es/install-latest-blesh-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/es/install-latest-blesh-in-debian.html",
+  "url": "https://deb.griffo.io/es/install-latest-blesh-in-debian.html",
+  "inLanguage": "es"
+ },
+ "inLanguage": "es"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>

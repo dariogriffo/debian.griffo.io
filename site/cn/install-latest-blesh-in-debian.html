@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Debian 上通过 apt 安装最新版 ble.sh</title>
+<meta name="description" content="Debian 稳定版软件源中没有 ble.sh。本仓库通过 apt 提供 ble.sh 0.4.0，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，基于上游 nightly 快照构建，apt upgrade 即可保持最新。">
+<meta name="keywords" content="ble.sh debian, 安装 ble.sh debian, Bash Line Editor, bash 语法高亮, bash 自动建议, bash vim 模式, readline 替代, ble.sh apt, debian 软件包, bookworm, trixie, sid, apt ble.sh">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<meta property="og:title" content="在 Debian 上通过 apt 安装最新版 ble.sh">
+<meta property="og:description" content="Debian 稳定版软件源中没有 ble.sh。本仓库通过 apt 提供 ble.sh 0.4.0，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，基于上游 nightly 快照构建，apt upgrade 即可保持最新。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<meta property="twitter:title" content="在 Debian 上通过 apt 安装最新版 ble.sh">
+<meta property="twitter:description" content="Debian 稳定版软件源中没有 ble.sh。本仓库通过 apt 提供 ble.sh 0.4.0，支持 Bookworm、Trixie、Forky 和 Sid。GPG 签名，基于上游 nightly 快照构建，apt upgrade 即可保持最新。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-blesh-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-blesh-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-blesh-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>62 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像需要订阅。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🖍️ 在 Debian 上安装最新版 ble.sh</h1>
+        <p class="subtitle">Bash Line Editor：纯 Bash 实现的语法高亮、自动建议、vim 与 emacs 模式以及强大的补全</p>
+        <div class="version-badge">最新版本：0.4.0 · 更新于 2026-10-13</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.4.0 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-blesh-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-blesh-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-blesh-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-blesh-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>什么是 ble.sh？</h2>
+        <p>ble.sh，即 <strong>Bash Line Editor</strong>，是一个用纯 Bash 编写的命令行编辑器，在交互式 Bash 会话中取代 GNU Readline。你保留 Bash、你的 <code>~/.bashrc</code>、别名和脚本，同时获得通常只有换 shell 才有的功能：输入时的语法高亮、类似 fish 的历史自动建议、与 emacs 键位并存的完整 vim 模式、带菜单和说明的补全、缩写，以及与 bash-completion 和 fzf 的集成。作者是 Koichi Murase，以 BSD-3-Clause 许可证发布。它没有需要运行的二进制程序：软件包把脚本安装到 <code>/usr/share/blesh/ble.sh</code>，在 <code>~/.bashrc</code> 中加两行即可启用。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> ble.sh 在 master 分支上持续开发，带标签的稳定版本很少且间隔很长，因此上游的安装说明推荐使用 nightly 构建或 git 检出。Debian 和 Ubuntu 打包的是一个快照，在整个发行版生命周期内保持冻结（Debian 稳定版甚至没有收录）。本仓库跟随上游的 nightly 快照，针对新版 Bash、终端和补全集成的修复都会通过 <code>apt upgrade</code> 送到你手上。
+        </div>
+
+        <h3>⚡ ble.sh 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 语法高亮</h4>
+                <p>命令、关键字、字符串、变量、重定向和文件名在输入时即被着色，未知命令或语法错误在按下回车之前就能看出来。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>💡 自动建议</h4>
+                <p>类似 fish 的建议来自历史记录和补全，以灰色显示在光标之后。用右方向键或 <code>C-f</code> 接受整条建议，或用 <code>M-f</code> 逐词接受。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⌨️ vim 与 emacs 模式</h4>
+                <p>默认使用 emacs 键位，执行 <code>set -o vi</code> 即可获得完整的 vi/vim 模式：普通、插入和可视模式，文本对象、寄存器，以及可选的 vim-airline 风格状态栏。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📋 菜单补全</h4>
+                <p>按 Tab 打开候选菜单，可用方向键移动，有说明时显示说明，并支持模糊匹配。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>✂️ 缩写</h4>
+                <p><code>ble-sabbrev</code> 定义在输入时展开的缩写，类似 fish 的缩写或 zsh 的全局别名，例如把 <code>L</code> 展开为 <code>| less</code>。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 纯 Bash，无二进制</h4>
+                <p>无需编译，也不依赖架构：ble.sh 是一个 Bash 脚本，只要有 Bash 3.0 或更新版本就能运行，并且不会干扰非交互式 shell 和脚本。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed；ble.sh 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 ble.sh</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 ble.sh</span>
+sudo apt install ble.sh
+
+<span class="comment"># 可选：用于 vi 模式状态栏的 vim-airline 主题</span>
+sudo apt install ble.sh-airline-themes</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 ble.sh</span>
+apt install ble.sh
+
+<span class="comment"># 可选：用于 vi 模式状态栏的 vim-airline 主题</span>
+apt install ble.sh-airline-themes</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：在 ~/.bashrc 中启用 ble.sh</h3>
+            <div class="code-block"><pre><code><span class="comment"># ble.sh 没有要运行的命令：由 Bash 从 ~/.bashrc 加载。</span>
+<span class="comment"># 把这一行放在 ~/.bashrc 的开头附近：</span>
+[[ $- == *i* ]] &amp;&amp; source /usr/share/blesh/ble.sh --noattach
+
+<span class="comment"># ...~/.bashrc 其余内容保持不变...</span>
+
+<span class="comment"># 再把这一行放在 ~/.bashrc 的最末尾：</span>
+[[ ${BLE_VERSION-} ]] &amp;&amp; ble-attach
+
+<span class="comment"># 打开一个新终端，然后：</span>
+<span class="comment"># 验证安装</span>
+echo $BLE_VERSION</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>日常使用：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 检查当前 shell 中 ble.sh 是否已启用</span>
+echo $BLE_VERSION
+
+<span class="comment"># 修改设置后重新加载 ble.sh</span>
+ble-reload
+
+<span class="comment"># 更新通过 apt 获取；ble-update 也会引导你使用 apt</span>
+sudo apt update &amp;&amp; sudo apt upgrade</code></pre><pre class="variant variant-root"><code><span class="comment"># 检查当前 shell 中 ble.sh 是否已启用</span>
+echo $BLE_VERSION
+
+<span class="comment"># 修改设置后重新加载 ble.sh</span>
+ble-reload
+
+<span class="comment"># 更新通过 apt 获取；ble-update 也会引导你使用 apt</span>
+apt update &amp;&amp; apt upgrade</code></pre></div>
+
+        <p><strong>~/.blerc 中的设置：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># ble.sh 从 ~/.blerc（或 ~/.config/blesh/init.sh）读取设置</span>
+<span class="comment"># 使用 vim 键位而不是 emacs</span>
+set -o vi
+
+<span class="comment"># 停顿 300 毫秒后再显示自动建议</span>
+bleopt complete_auto_delay=300
+
+<span class="comment"># 完全关闭自动建议</span>
+bleopt complete_auto_complete=
+
+<span class="comment"># 修改建议文字的颜色</span>
+ble-face auto_complete=&#039;fg=242&#039;</code></pre></div>
+
+        <p><strong>缩写、按键绑定与集成：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 输入时把 &quot;L&quot; 展开为 &quot;| less&quot;</span>
+ble-sabbrev L=&#039;| less&#039;
+
+<span class="comment"># 让 Ctrl+C 丢弃当前行</span>
+ble-bind -f &#039;C-c&#039; discard-line
+
+<span class="comment"># 适配 ble.sh 的 fzf 补全与按键绑定</span>
+ble-import -d integration/fzf-completion
+ble-import -d integration/fzf-key-bindings
+
+<span class="comment"># vim-airline 风格状态栏（需要 ble.sh-airline-themes）</span>
+ble-import vim-airline
+bleopt vim_airline_theme=dark</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>ble.sh 位于你现有的 Bash 配置之下，而不是取而代之：</p>
+            <ul>
+                <li><strong>bash-completion：</strong><code>bash-completion</code> 软件包提供的补全会被自动识别并显示在菜单中</li>
+                <li><strong>fzf：</strong><code>ble-import</code> 加载适配 ble.sh 的 fzf 补全和按键绑定</li>
+                <li><strong>Atuin：</strong>Atuin 的 Bash 集成支持 ble.sh，借此获得可靠的 preexec 钩子来记录历史</li>
+                <li><strong>Starship / Oh My Posh：</strong>它们生成的提示符照常工作，无需改动</li>
+                <li><strong>配置文件：</strong><code>~/.blerc</code> 保存你的 <code>bleopt</code>、<code>ble-face</code> 和 <code>ble-bind</code> 设置，与 <code>~/.bashrc</code> 分开</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Debian：</strong>仅在 testing 和 unstable 中提供；稳定版（bookworm 和 trixie）未收录</li>
+                <li><strong>git clone + make：</strong>版本最新，但需要手动构建并安装到 <code>~/.local</code>，还得自己用 <code>ble-update</code> 保持更新</li>
+                <li><strong>deb.griffo.io：</strong>最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>最新快照：</strong>上游的 nightly 快照，包含针对新版 Bash 和终端的修复</li>
+            <li>✅ <strong>无需手动配置：</strong>不用 git clone，不用 <code>make</code>，也不必在家目录里维护一份 ble.sh 副本</li>
+            <li>✅ <strong>自动更新：</strong>上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>完整软件包：</strong><code>/usr/share/blesh</code> 中完整的 ble.sh 文件、文档，以及可选的 <code>ble.sh-airline-themes</code> 软件包</li>
+            <li>✅ <strong>所有架构：</strong>以 <code>Architecture: all</code> 发布，amd64、arm64、armhf、riscv64 等安装的是同一个包</li>
+            <li>✅ <strong>多发行版：</strong>支持 Bookworm、Trixie、Forky 和 Sid</li>
+            <li>✅ <strong>易于维护：</strong>使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/ble.sh-debian" target="_blank" rel="noopener">🖍️ ble.sh-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf</a> - 与 ble.sh 集成的模糊查找器</li>
+            <li><a href="/install-latest-atuin-in-debian.html">Atuin</a> - 把 shell 历史存入数据库，支持 ble.sh</li>
+            <li><a href="/install-latest-starship-in-debian.html">Starship</a> - 在 ble.sh 下同样可用的跨 shell 提示符</li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide</a> - 能记住常用目录的更聪明的 cd</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong>想在不离开 Bash 的前提下获得 fish 或 zsh 便利功能的 Bash 用户、只有 Bash 可用的服务器、希望在命令行中进行真正模态编辑的 vim 用户，以及宁愿保留 <code>~/.bashrc</code> 也不想为另一个 shell 重写配置的所有人。
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>❓ 常见问题</h2>
+<details><summary>ble.sh 在官方 Debian 软件源中吗？</summary><p>不在, 官方 Debian 源没有打包 ble.sh。本仓库目前是唯一的 apt 来源，提供 ble.sh 0.4.0。</p></details>
+<details><summary>如何在 Debian 上安装最新版 ble.sh？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install ble.sh。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "ble.sh 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Debian 源没有打包 ble.sh。本仓库目前是唯一的 apt 来源，提供 ble.sh 0.4.0。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 ble.sh？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install ble.sh。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest ble.sh on Debian",
+ "description": "Complete guide to installing the latest ble.sh Bash Line Editor on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-13",
+ "dateModified": "2026-10-13",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "ble.sh",
+  "applicationCategory": "Command Line Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Bash Line Editor written in pure Bash that replaces GNU Readline with syntax highlighting, auto-suggestions, vim and emacs modes and menu completion",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-blesh-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-blesh-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-blesh-in-debian.html",
+  "url": "https://deb.griffo.io/cn/install-latest-blesh-in-debian.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
