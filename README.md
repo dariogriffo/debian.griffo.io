@@ -55,6 +55,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [mitmproxy](https://mitmproxy.org) - Interactive TLS-capable intercepting HTTP proxy (mitmproxy, mitmdump, mitmweb)
 - [Fresh](https://getfresh.dev/) - Terminal based IDE & text editor: easy, powerful and fast (fresh)
 - [lazyjira](https://github.com/textfuel/lazyjira) - Lazygit-style terminal UI for Jira
+- [rgrc](https://github.com/lazywalker/rgrc) - Rusty Generic Colouriser: grc-style colorized output for ping, df, ls, docker, journalctl and more, but fast
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -109,6 +110,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [mitmproxy-debian](https://github.com/dariogriffo/mitmproxy-debian) - Intercepting HTTP proxy
 - [fresh-debian](https://github.com/dariogriffo/fresh-debian) - Terminal IDE and text editor
 - [lazyjira-debian](https://github.com/dariogriffo/lazyjira-debian) - Jira terminal UI
+- [rgrc-debian](https://github.com/dariogriffo/rgrc-debian) - Generic command output colorizer
 
 ## 🐧 Supported Debian Distributions
 
@@ -169,6 +171,7 @@ sudo apt install -y fzf          # Fuzzy finder
 sudo apt install -y zoxide       # Smart cd command
 sudo apt install -y television   # Fuzzy finder (command: tv)
 sudo apt install -y btm          # Process/system monitor
+sudo apt install -y rgrc         # Colorize command output (grc-style, fast)
 
 # Development Tools
 sudo apt install -y lazygit         # Git terminal UI
@@ -220,7 +223,7 @@ sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc
 ```
 
 ## ⚠️ Important Information
