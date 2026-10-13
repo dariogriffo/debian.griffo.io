@@ -14,8 +14,8 @@ find deb/ -mindepth 2 -type f \( \
   \) -delete
 
 for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
-  ./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
-  ./download_stable_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG}
+  ./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG} amd64,arm64
+  ./download_stable_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PKG} amd64,arm64
 done
 
 cd ${PWD}
