@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar o tldr (tlrc) no Debian via apt</title>
+<meta name="description" content="tldr 1.13.1 via apt no Trixie, Forky e Sid: o tlrc, cliente oficial em Rust do tldr-pages, não o de Haskell do Debian. Assinado com GPG, recompilado em horas.">
+<meta name="keywords" content="tldr debian, instalar tldr debian, tlrc, tldr pages, cliente tldr rust, páginas man simplificadas, tldr apt, pacotes debian, trixie, forky, sid, apt tldr">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html">
+<meta property="og:title" content="Instalar o tldr (tlrc) no Debian via apt">
+<meta property="og:description" content="tldr 1.13.1 via apt no Trixie, Forky e Sid: o tlrc, cliente oficial em Rust do tldr-pages, não o de Haskell do Debian. Assinado com GPG, recompilado em horas.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html">
+<meta property="twitter:title" content="Instalar o tldr (tlrc) no Debian via apt">
+<meta property="twitter:description" content="tldr 1.13.1 via apt no Trixie, Forky e Sid: o tlrc, cliente oficial em Rust do tldr-pages, não o de Haskell do Debian. Assinado com GPG, recompilado em horas.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-tldr-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#reviews">Avaliações</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-tldr-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#reviews" class="mobile-menu-link" data-index="05">Avaliações</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="06">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="07">Perguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/pt-br/#pricing" class="btn-primary">Assinar</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>63 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 Desde <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exige uma assinatura.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt retornando 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>📖 Instalar o tldr mais recente no Debian</h1>
+        <p class="subtitle">O cliente oficial do tldr-pages, escrito em Rust</p>
+        <div class="version-badge">Última versão: 1.13.1 · atualizado em 2026-10-14</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.13.1 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-tldr-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-tldr-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-tldr-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>O que é o tldr?</h2>
+        <p>O tldr é <strong>o cliente oficial em Rust do tldr-pages</strong>, a coleção de páginas man simplificadas mantida pela comunidade: cada página é uma descrição de uma linha do comando seguida de um punhado dos exemplos que as pessoas realmente digitam. O projeto upstream se chama tlrc; o pacote e o comando se chamam <code>tldr</code>. É um único binário estático sem dependências, guarda a coleção inteira num cache local para que cada consulta seja instantânea e funcione offline, e renova esse cache sozinho quando ele envelhece. As páginas vêm por plataforma (Linux, macOS, Windows, Android, os BSDs) e em dezenas de idiomas, as cores e o layout da saída ficam num arquivo TOML, e o pacote traz a página man e o autocompletar para bash, zsh e fish.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que a versão mais recente importa:</strong> O tlrc acompanha a especificação de clientes do tldr-pages: os novos diretórios de plataforma, as regras de fallback entre idiomas, a busca de páginas, o diretório de páginas próprias e as chaves de configuração que controlam a idade do cache e as cores chegaram lançamento a lançamento, e um binário antigo ou os ignora ou desenha errado as páginas mais novas. O pacote <code>tldr</code> do próprio Debian é outro programa, o cliente em Haskell tldr-hs, e o <code>tealdeer</code> do Debian também instala um <code>/usr/bin/tldr</code>; nenhum dos dois é o tlrc, então este repositório é o jeito de ter o cliente oficial via apt.
+        </div>
+
+        <h3>⚡ Principais recursos do tldr</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>📄 Exemplos primeiro</h4>
+                <p><code>tldr tar</code> imprime as oito formas como você realmente usa o tar em vez das duzentas opções que ele aceita. Comandos de várias palavras funcionam como você digita: <code>tldr git rebase</code>, <code>tldr docker compose</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚡ Um cache local, não uma requisição</h4>
+                <p>A primeira execução baixa a coleção inteira; cada consulta depois disso é a leitura de um arquivo, então a página aparece antes de você tirar o dedo do Enter, num trem ou atrás de um proxy. O cache se atualiza sozinho quando passa da idade que você definir, ou com <code>--update</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖥️ Todas as plataformas, um comando</h4>
+                <p>As páginas são organizadas por plataforma. Você recebe a do Linux por padrão e <code>-p macos</code> ou <code>-p windows</code> quando está escrevendo instruções para uma máquina que não é a que está na sua frente.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌍 O seu idioma</h4>
+                <p>O tldr-pages é traduzido para dezenas de idiomas. O tlrc segue <code>LANG</code> e <code>LANGUAGE</code> e recorre ao inglês página a página, ou <code>-L</code> escolhe um idioma para uma única consulta.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Encontrar a página que você não conhece</h4>
+                <p><code>--list</code> imprime todos os nomes de página da plataforma atual, <code>--search</code> procura em nomes e descrições, e <code>--info</code> diz que idade o cache tem e quais idiomas ele guarda.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 Configurado do seu jeito</h4>
+                <p>Um <code>config.toml</code>: cada cor e estilo da página desenhada, a idade do cache antes de uma atualização automática, os idiomas a baixar, a plataforma preferida e um diretório de páginas suas que é consultado antes do cache.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos arquivos oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes quando lançam uma release — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">com extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar o repositório</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud e Zed; tldr não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
+  <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Sobre a opção extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> é a ferramenta do próprio Debian para repositórios externos: ela escreve o arquivo de sources e instala a chave de assinatura para você, conferindo a chave contra metadados assinados antes de usá-la. Este repositório está registrado nela como <code>griffo</code>, e o espelho gratuito para sempre como <code>griffo-free</code>, então no Debian (bookworm, trixie, forky e sid) os comandos acima são toda a configuração.</p>
+  <p>O extrepo configura apenas o arquivo de sources e a chave: as credenciais de uma assinatura continuam indo em <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. O Ubuntu não é coberto, porque o extrepo publica metadados só para as suítes do Debian: lá, use os comandos com sudo ou como root.</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar o tldr</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar o tldr mais recente</span>
+<span class="comment"># Se o tealdeer estiver instalado, o apt o remove primeiro: os dois</span>
+<span class="comment"># pacotes colocam /usr/bin/tldr no seu PATH, então este o substitui</span>
+sudo apt install tldr
+
+<span class="comment"># Verificar a instalação</span>
+tldr --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar o tldr mais recente</span>
+<span class="comment"># Se o tealdeer estiver instalado, o apt o remove primeiro: os dois</span>
+<span class="comment"># pacotes colocam /usr/bin/tldr no seu PATH, então este o substitui</span>
+apt install tldr
+
+<span class="comment"># Verificar a instalação</span>
+tldr --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Primeira execução</h3>
+            <div class="code-block"><pre><code><span class="comment"># A primeira consulta baixa o cache de páginas, então precisa</span>
+<span class="comment"># de internet uma vez; tudo depois disso é local</span>
+tldr tar
+
+<span class="comment"># Renovar o cache à mão quando quiser</span>
+tldr --update
+
+<span class="comment"># Onde o cache fica, que idade tem e quais idiomas guarda</span>
+tldr --info
+
+<span class="comment"># Todas as opções</span>
+tldr --help</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemplos básicos de uso</h3>
+
+        <p><strong>Consultando:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># A página de um comando</span>
+tldr tar
+
+<span class="comment"># Subcomandos, escritos como você digitaria</span>
+tldr git rebase
+
+<span class="comment"># Uma página de outra plataforma</span>
+tldr -p macos brew
+tldr -p windows choco
+
+<span class="comment"># Uma página em outro idioma, para uma única consulta</span>
+tldr -L pt_BR tar
+
+<span class="comment"># Todos os nomes de página desta plataforma, e uma busca por</span>
+<span class="comment"># nomes e descrições quando você não sabe o comando</span>
+tldr --list
+tldr --search &quot;compress&quot;</code></pre></div>
+
+        <p><strong>Moldando a saída:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Markdown puro, para encadear em outra coisa</span>
+tldr -R tar
+
+<span class="comment"># Sem as linhas em branco, num terminal pequeno</span>
+tldr --compact tar
+
+<span class="comment"># Sem cores, para logs e scripts</span>
+tldr --color never tar
+
+<span class="comment"># Nunca tocar na rede, mesmo com o cache vencido</span>
+tldr --offline tar
+
+<span class="comment"># Desenhar uma página que você está escrevendo antes de mandá-la upstream</span>
+tldr -r my-command.md</code></pre></div>
+
+        <p><strong>Deixando do seu jeito:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># De onde a configuração é lida, e um padrão para começar</span>
+tldr --config-path
+mkdir -p &quot;$(dirname &quot;$(tldr --config-path)&quot;)&quot;
+tldr --gen-config &gt; &quot;$(tldr --config-path)&quot;
+
+<span class="comment"># Depois, no config.toml: idade do cache antes de uma atualização</span>
+<span class="comment"># automática, os idiomas a manter, a plataforma preferida</span>
+<span class="comment"># e as cores de cada parte de uma página</span>
+
+<span class="comment"># Limpar o cache se um download deu errado</span>
+tldr --clean-cache</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações</h4>
+            <p>O tldr é uma consulta, então ele se encaixa ao lado das ferramentas que você já usa:</p>
+            <ul>
+                <li><strong>Sua shell:</strong> o pacote instala o autocompletar para bash, zsh e fish, então <code>tldr gi&lt;tab&gt;</code> completa nomes de página a partir do cache, e <code>man tldr</code> está lá para o próprio cliente</li>
+                <li><strong>fzf:</strong> <code>tldr --list | fzf | xargs tldr</code> é um seletor difuso de páginas em uma linha, e a saída de <code>--raw</code> alimenta o painel de pré-visualização</li>
+                <li><strong>Corrigir uma página:</strong> <code>tldr --edit tar</code> imprime um link que abre essa página no editor web do GitHub, então corrigir uma página tldr está a um pull request de distância</li>
+                <li><strong>man:</strong> o tldr não substitui o manual, é a primeira coisa a ler; a página completa está a um <code>man</code> de distância assim que você sabe qual opção quer</li>
+                <li><strong>Scripts e docs:</strong> <code>--color never</code> e <code>--raw</code> deixam a saída segura para colar num README, num ticket ou num log</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativo de repositórios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> <code>apt install tldr</code> entrega o tldr-hs, o cliente em Haskell, e o <code>tealdeer</code> é outro cliente em Rust com o mesmo nome de comando; nenhum dos dois é o tlrc oficial</li>
+                <li><strong>Compilar do código-fonte:</strong> atual, mas exige uma toolchain Rust em cada máquina e deixa um binário que o apt desconhece</li>
+                <li><strong>O tarball do lançamento upstream:</strong> o mesmo binário estático, mas descompactado à mão no seu PATH, sem autocompletar, sem página man e sem atualizações</li>
+                <li><strong>deb.griffo.io:</strong> versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>O cliente oficial:</strong> o tlrc, o cliente que o próprio projeto tldr-pages mantém, não uma das muitas reimplementações</li>
+            <li>✅ <strong>O comando é tldr:</strong> o pacote se chama tldr porque esse é o comando, e ele conflita com o <code>tealdeer</code> e o substitui, então nunca há disputa pelo <code>/usr/bin/tldr</code></li>
+            <li>✅ <strong>Atualizações automáticas:</strong> os pacotes são atualizados poucas horas após cada lançamento upstream, e o cache de páginas se atualiza sozinho por cima</li>
+            <li>✅ <strong>Pacote completo:</strong> o binário, a página man e o autocompletar para bash, zsh e fish</li>
+            <li>✅ <strong>Zero dependências:</strong> um binário musl com ligação estática, nada mais é puxado</li>
+            <li>✅ <strong>Duas arquiteturas:</strong> amd64 e arm64, o mesmo binário estático em todas as suítes</li>
+            <li>✅ <strong>Multi-distribuição:</strong> funciona no Debian 13 (trixie) ou mais novo: Trixie, Forky e Sid</li>
+            <li>✅ <strong>Manutenção simples:</strong> atualizações com os comandos apt de sempre</li>
+        </ul>
+
+        <h3>📦 Repositório de build do pacote</h3>
+        <p>Os pacotes Debian são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/tldr-debian" target="_blank" rel="noopener">📖 tldr-debian</a> - Builds dos últimos lançamentos</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-fzf-in-debian.html">fzf Fuzzy Finder</a> - Transforma <code>tldr --list</code> num seletor de páginas interativo</li>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep</a> - A ferramenta de busca cuja página do tldr você vai ler primeiro</li>
+            <li><a href="/install-latest-eza-in-debian.html">eza</a> - Um ls moderno, mais um comando com bem menos opções para decorar</li>
+            <li><a href="/install-latest-zoxide-in-debian.html">zoxide</a> - Um cd mais esperto para a shell em que você lê as páginas</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> lembrar a única chamada de tar de que você precisa duas vezes por ano, escrever um comando para um colega no macOS ou no Windows sem uma segunda máquina, ler os exemplos no seu idioma, e ter uma cola de cada comando num servidor por SSH, sem navegador e sem rede depois da primeira execução.
+        </div>
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>1.13.1</code>: 2026-10-14</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O tldr está nos repositórios oficiais do Debian?</summary><p>Não, tldr não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo tldr 1.13.1.</p></details>
+<details><summary>Como instalo o tldr mais recente no Debian?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install tldr. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Debian são suportadas?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O tldr está nos repositórios oficiais do Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Não, tldr não está empacotado nos arquivos oficiais do Debian. Este repositório é atualmente a única fonte apt, oferecendo tldr 1.13.1."}}, {"@type": "Question", "name": "Como instalo o tldr mais recente no Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install tldr. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Debian são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky e Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espelho gratuito</a>
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a>
+    <a href="/supported-architectures.html">Arquiteturas</a>
+    <a href="/pt-br/how-subscriptions-work.html">Como funciona o acesso</a>
+    <a href="/terms.html">Termos e Condições</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos os direitos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest tldr on Debian",
+ "description": "Complete guide to installing the latest tldr (tlrc), the official Rust tldr-pages client, on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-14",
+ "dateModified": "2026-10-14",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "tldr",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Official tldr-pages client written in Rust (tlrc): simplified man pages with practical examples, served from a self-updating offline cache, with platform-specific pages, multiple languages, page search, a TOML config for colours and output, shell completions and a man page",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html",
+  "url": "https://deb.griffo.io/pt-br/install-latest-tldr-in-debian.html",
+  "inLanguage": "pt-BR"
+ },
+ "inLanguage": "pt-BR"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
