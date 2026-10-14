@@ -38,9 +38,12 @@ cd apt
 for dist in "${DISTS[@]}"; do
     echo "Processing distribution: $dist"
 
+    # A dist-agnostic .deb is one file in deb/common/ linked from every suite
+    # that serves it (download_bin.sh). Including the real path into each suite
+    # stores it once in the pool: reprepro keys the pool by filename+checksum.
     if ls "$current/deb/$dist/"*deb >/dev/null 2>&1; then
         for deb in "$current/deb/$dist/"*deb; do
-            try_include includedeb "$dist" "$deb"
+            try_include includedeb "$dist" "$(readlink -f "$deb")"
         done
     else
         echo "  No .deb files for $dist, skipping."
@@ -52,6 +55,15 @@ for dist in "${DISTS[@]}"; do
         done
     else
         echo "  No .dsc files for $dist, skipping."
+    fi
+
+    # Dist-agnostic sources: src/<dist>/*.dsc link into src/common/, where the
+    # orig and debian tarballs live; reprepro looks for them next to the .dsc
+    # path it is given, hence the real path.
+    if ls "$current/src/$dist/"*.dsc >/dev/null 2>&1; then
+        for dsc in "$current/src/$dist/"*.dsc; do
+            try_include includedsc "$dist" "$(readlink -f "$dsc")"
+        done
     fi
 
     cd "dists/$dist"
@@ -72,7 +84,7 @@ if ls "$current/free/deb/"*/*deb >/dev/null 2>&1 || ls "$current/free/src/"*.dsc
 
         if ls "$current/free/deb/$dist/"*deb >/dev/null 2>&1; then
             for deb in "$current/free/deb/$dist/"*deb; do
-                try_include_free includedeb "$dist" "$deb"
+                try_include_free includedeb "$dist" "$(readlink -f "$deb")"
             done
         else
             echo "  No free-lane .deb files for $dist, skipping."
@@ -84,6 +96,12 @@ if ls "$current/free/deb/"*/*deb >/dev/null 2>&1 || ls "$current/free/src/"*.dsc
             done
         else
             echo "  No free-lane .dsc files for $dist, skipping."
+        fi
+
+        if ls "$current/free/src/$dist/"*.dsc >/dev/null 2>&1; then
+            for dsc in "$current/free/src/$dist/"*.dsc; do
+                try_include_free includedsc "$dist" "$(readlink -f "$dsc")"
+            done
         fi
 
         if [ -f "dists/$dist/Release" ]; then

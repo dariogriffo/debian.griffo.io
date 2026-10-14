@@ -1,32 +1,7 @@
-REPO=$1
-PACKAGE_VERSION=$2
-RELEASE_VERSION=$3
-BUILD_VERSION=$4
-PACKAGE_NAME=$5
-ARCHITECTURES=${6:-"amd64"}
-PWD=`pwd`
-declare -a arr=("bookworm" "trixie" "forky" "sid")
-declare -a architectures=(${ARCHITECTURES//,/ })
-for i in "${arr[@]}"
-do
-    DEBIAN_DIST=$i
-    mkdir -p deb/${DEBIAN_DIST}
-    cd deb/${DEBIAN_DIST}
-    for ARCH in ${architectures[@]}
-    do
-      BASE_URL=https://github.com/dariogriffo/${REPO}/releases/download/${RELEASE_VERSION}%2B${BUILD_VERSION}
-      # Newer repos use ~dist in the package version; GitHub mangles ~ to . in
-      # release asset names, so try ~, then the mangled . name (saved back under
-      # the ~ name), then fall back to the legacy +dist name.
-      TILDE_NAME=${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}~${DEBIAN_DIST}_${ARCH}.deb
-      DOT_NAME=${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}.${DEBIAN_DIST}_${ARCH}.deb
-      if wget ${BASE_URL}/${TILDE_NAME}; then
-        :
-      elif wget ${BASE_URL}/${DOT_NAME}; then
-        mv ${DOT_NAME} ${TILDE_NAME}
-      else
-        wget ${BASE_URL}/${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}+${DEBIAN_DIST}_${ARCH}.deb || true
-      fi
-    done
-    cd ../..
-done
+#!/bin/bash
+# Debian, every suite, for a package whose version differs from the release
+# tag it ships in (zig-oldstable rides the zig-stable release). Thin wrapper
+# over download_bin.sh.
+#   download_oldstable_deb_file.sh <repo> <package_version> <release_version> <build> <package> [archs]
+RELEASE_VERSION="$3" exec "$(dirname "$0")/download_bin.sh" "$1" "$2" "$4" "$5" "${6:-amd64}" debian \
+     bookworm trixie forky sid
