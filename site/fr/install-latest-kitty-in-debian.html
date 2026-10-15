@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="fr" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Installer kitty sur Debian avec apt</title>
+<meta name="description" content="kitty 0.49.2 via apt sur Bookworm, Trixie, Forky et Sid — Debian officiel n'a que 0.41.1. Signé GPG, reconstruit en quelques heures.">
+<meta name="keywords" content="kitty debian, installer kitty debian, kitty terminal, émulateur de terminal gpu, kitten ssh, kitty terminfo, kitty apt, paquets debian, bookworm, trixie, sid, apt kitty">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/install-latest-kitty-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/install-latest-kitty-in-debian.html">
+<meta property="og:title" content="Installer kitty sur Debian avec apt">
+<meta property="og:description" content="kitty 0.49.2 via apt sur Bookworm, Trixie, Forky et Sid — Debian officiel n'a que 0.41.1. Signé GPG, reconstruit en quelques heures.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-kitty-in-debian.html">
+<meta property="twitter:title" content="Installer kitty sur Debian avec apt">
+<meta property="twitter:description" content="kitty 0.49.2 via apt sur Bookworm, Trixie, Forky et Sid — Debian officiel n'a que 0.41.1. Signé GPG, reconstruit en quelques heures.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-kitty-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-kitty-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#reviews">Avis</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-kitty-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/fr/#pricing" class="nav-cta">S'abonner</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#reviews" class="mobile-menu-link" data-index="05">Avis</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="06">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/fr/#pricing" class="btn-primary">S'abonner</a>
+      <p class="mobile-menu-note"><a href="/free.html">Miroir gratuit</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      📅 Depuis le <strong><time datetime="2026-10-01T12:00:00+01:00">1er octobre 2026, 12h00 heure du Royaume-Uni</time></strong>, le miroir apt nécessite un abonnement.
+      <a href="/fr/#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt renvoie 401 ?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🐱 Installer le dernier kitty sur Debian</h1>
+        <p class="subtitle">Émulateur de terminal rapide, complet et basé sur le GPU</p>
+        <div class="version-badge">Dernière version : 0.49.2 · mis à jour le 2026-10-15</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.49.2 ✅</td></tr>
+<tr><td>Debian officiel</td><td class="vc-lose">0.41.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-kitty-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-kitty-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-kitty-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-kitty-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Qu'est-ce que kitty ?</h2>
+        <p>kitty est un <strong>émulateur de terminal basé sur le GPU, pour ceux qui y passent leurs journées</strong>. Il rend avec OpenGL, donc un journal de compilation ou un mur de sortie colorée défile sans à-coups, et il traite le terminal comme une plateforme plutôt que comme une boîte de texte : des fenêtres et des onglets disposés par des agencements en mosaïque, un protocole graphique qui dessine de vraies images dans le flux, un protocole clavier qui permet aux programmes de distinguer <code>shift+enter</code> de <code>enter</code>, des hyperliens cliquables, des ligatures, et une intégration au shell qui sait où commence et où finit chaque invite et la sortie de chaque commande. À côté du terminal vient <code>kitten</code>, un unique exécutable compagnon qui réunit les petits outils autour desquels le terminal est construit : <code>kitten icat</code> affiche une image, <code>kitten ssh</code> emporte votre terminfo et votre intégration shell sur un hôte distant, <code>kitten diff</code> est un diff côte à côte qui gère aussi les images, <code>kitten clipboard</code>, <code>kitten themes</code>, et <code>kitten @</code> pilote le terminal lui-même depuis un script. Il est écrit par Kovid Goyal, l'auteur de calibre, et tout se configure dans un seul <code>kitty.conf</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi la dernière version compte :</strong> kitty sort une version à peu près tous les mois, et chacune fait bouger les protocoles sur lesquels d'autres outils s'appuient : le protocole graphique avec lequel dessinent yazi, viu et les plugins d'images de Neovim, le protocole clavier que négocient les éditeurs, le dimensionnement du texte, les hooks d'intégration shell, les commandes de contrôle à distance. Debian trixie est gelée à 0.41.1, et la 0.26.5 de Bookworm est antérieure à l'exécutable <code>kitten</code> autonome, si bien que les commandes <code>kitten ssh</code> et <code>kitten icat</code> de la documentation actuelle n'y existent tout simplement pas. Un vieux kitty ignore aussi en silence les options de <code>kitty.conf</code> que la documentation actuelle vous dit de régler, et chaque kitten récent (<code>choose-fonts</code>, <code>notify</code>, <code>quick-access-terminal</code>, <code>panel</code>) manque purement et simplement. Le terminal est le seul programme que vous utilisez toute la journée ; il devrait être à jour.
+        </div>
+
+        <h3>⚡ Fonctionnalités clés de kitty</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎮 Rendu par le GPU</h4>
+                <p>kitty dessine avec OpenGL, confie le travail des glyphes au GPU et garde le CPU pour le programme que vous exécutez vraiment. Les grosses sorties défilent à la fréquence de rafraîchissement de l'écran et le terminal reste réactif sous un déluge de texte.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🪟 Fenêtres, onglets et agencements</h4>
+                <p>Découpez un onglet en fenêtres et laissez un agencement (tall, fat, grid, splits, stack) les ranger : <code>ctrl+shift+enter</code> ouvre une fenêtre, <code>ctrl+shift+t</code> un onglet. Un fichier de session recrée tout un espace de travail, chaque fenêtre avec son répertoire et sa commande.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🖼️ Le protocole graphique</h4>
+                <p>De vraies images, pas des caractères en blocs. <code>kitten icat</code> affiche une image dans le flux, et ce même protocole est celui qu'utilisent yazi, viu, les plugins d'images de Neovim et les backends matplotlib quand ils dessinent dans votre terminal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐈 Kittens</h4>
+                <p><code>kitten</code> est un unique exécutable statique rempli de petits outils : <code>icat</code>, <code>ssh</code>, <code>diff</code>, <code>clipboard</code>, <code>themes</code>, <code>hints</code> pour attraper au clavier des URL, des chemins ou des hachages affichés à l'écran, <code>unicode_input</code>, <code>transfer</code> pour copier des fichiers à travers une session ssh, et d'autres encore.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎛️ Contrôle à distance</h4>
+                <p>Avec <code>allow_remote_control</code> activé, <code>kitten @</code> pilote le terminal depuis n'importe quel script : ouvrir des fenêtres, leur envoyer du texte, changer les couleurs, redimensionner, lister ce qui tourne. Des agencements scriptés sans multiplexeur entre les deux.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐚 Intégration au shell</h4>
+                <p>kitty sait où commence chaque invite : sautez d'une invite à l'autre avec <code>ctrl+shift+z</code>, ouvrez la sortie de la dernière commande dans un pager, cliquez pour déplacer le curseur dans la ligne courante, et faites s'ouvrir les nouvelles fenêtres dans le répertoire courant. bash, zsh et fish, fournis par <code>kitty-shell-integration</code>.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les dépôts officiels :</strong> Debian et Ubuntu gèlent les versions des paquets à la sortie d'une release. Ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous garde sur la dernière version.
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">avec extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Étape 1 : ajouter le dépôt</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud et Zed ; kitty n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
+  <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 À propos de l'option extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> est l'outil de Debian pour les dépôts externes : il écrit le fichier de sources et installe la clé de signature à votre place, après l'avoir vérifiée face à des métadonnées signées. Ce dépôt y est enregistré sous le nom <code>griffo</code>, et le miroir gratuit à vie sous <code>griffo-free</code> ; sur Debian (bookworm, trixie, forky et sid), les commandes ci-dessus constituent donc toute l'installation.</p>
+  <p>extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert, car extrepo ne publie de métadonnées que pour les suites Debian : utilisez-y les commandes avec sudo ou en root.</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Étape 2 : installer kitty</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Installer le dernier kitty ; kitty-terminfo et kitty-shell-integration viennent avec</span>
+sudo apt install kitty
+
+<span class="comment"># Facultatif, la documentation HTML sous /usr/share/doc/kitty/html</span>
+sudo apt install kitty-doc
+
+<span class="comment"># Vérifier l&#039;installation, le terminal et la CLI compagnon</span>
+kitty --version
+kitten --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Installer le dernier kitty ; kitty-terminfo et kitty-shell-integration viennent avec</span>
+apt install kitty
+
+<span class="comment"># Facultatif, la documentation HTML sous /usr/share/doc/kitty/html</span>
+apt install kitty-doc
+
+<span class="comment"># Vérifier l&#039;installation, le terminal et la CLI compagnon</span>
+kitty --version
+kitten --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Étape 3 : premier lancement</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Ouvrir une fenêtre kitty</span>
+kitty
+
+<span class="comment"># Faire de kitty le terminal par défaut pour x-terminal-emulator</span>
+sudo update-alternatives --config x-terminal-emulator
+
+<span class="comment"># La configuration est ~/.config/kitty/kitty.conf : ctrl+shift+f2 l&#039;ouvre</span>
+<span class="comment"># dans kitty, ctrl+shift+f5 la recharge. Ceci affiche la configuration effective</span>
+kitty --debug-config
+
+<span class="comment"># Parcourir les thèmes de couleurs fournis et en appliquer un</span>
+kitten themes</code></pre><pre class="variant variant-root"><code><span class="comment"># Ouvrir une fenêtre kitty</span>
+kitty
+
+<span class="comment"># Faire de kitty le terminal par défaut pour x-terminal-emulator</span>
+update-alternatives --config x-terminal-emulator
+
+<span class="comment"># La configuration est ~/.config/kitty/kitty.conf : ctrl+shift+f2 l&#039;ouvre</span>
+<span class="comment"># dans kitty, ctrl+shift+f5 la recharge. Ceci affiche la configuration effective</span>
+kitty --debug-config
+
+<span class="comment"># Parcourir les thèmes de couleurs fournis et en appliquer un</span>
+kitten themes</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+
+        <p><strong>Le lancer :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Un terminal</span>
+kitty
+
+<span class="comment"># Lancer une commande dans une nouvelle fenêtre kitty et la garder ouverte ensuite</span>
+kitty --hold htop
+
+<span class="comment"># Surcharger n&#039;importe quelle option de kitty.conf en ligne de commande</span>
+kitty -o font_size=14 -o background_opacity=0.9
+
+<span class="comment"># Démarrer dans un répertoire</span>
+kitty --directory ~/src
+
+<span class="comment"># Restaurer tout un espace de travail depuis un fichier de session</span>
+kitty --session ~/.config/kitty/work.session
+
+<span class="comment"># Quelle version est installée ?</span>
+kitty --version</code></pre></div>
+
+        <p><strong>Les kittens :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Afficher une image directement dans le terminal</span>
+kitten icat photo.png
+
+<span class="comment"># ssh en emportant terminfo et intégration shell</span>
+kitten ssh user@server
+
+<span class="comment"># Diff côte à côte, images comprises</span>
+kitten diff old.txt new.txt
+
+<span class="comment"># Copier vers le presse-papiers du système et y lire</span>
+echo hello | kitten clipboard
+kitten clipboard --get-clipboard
+
+<span class="comment"># Appliquer un thème à toutes les fenêtres kitty ouvertes</span>
+kitten themes --reload-in=all Catppuccin-Mocha
+
+<span class="comment"># Choisir une police de manière interactive</span>
+kitten choose-fonts</code></pre></div>
+
+        <p><strong>Contrôle à distance :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Mettez allow_remote_control yes dans kitty.conf, puis depuis n&#039;importe</span>
+<span class="comment"># quel shell lancé dans kitty : ouvrir une nouvelle fenêtre à droite de celle-ci</span>
+kitten @ launch --location=vsplit --cwd=current
+
+<span class="comment"># Taper une commande dans une autre fenêtre, choisie par son titre</span>
+kitten @ send-text --match title:logs &quot;tail -f /var/log/syslog\n&quot;
+
+<span class="comment"># Changer les couleurs à la volée</span>
+kitten @ set-colors background=#1e1e2e
+
+<span class="comment"># Ce qui est ouvert en ce moment</span>
+kitten @ ls</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Intégrations</h4>
+            <p>kitty est le terminal sous tout le reste, donc l'intégration concerne surtout ce qui tourne dedans :</p>
+            <ul>
+                <li><strong>Serveurs distants :</strong> kitty positionne <code>TERM=xterm-kitty</code>, et un hôte sans ce terminfo vous laisse un retour arrière cassé et des plaintes de <code>less</code> et <code>clear</code>. <code>kitten ssh</code> le copie pour vous ; pour les hôtes que vous atteignez avec un simple <code>ssh</code>, installez-y <code>kitty-terminfo</code>, un paquet indépendant de l'architecture qui ne contient que l'entrée terminfo et n'entraîne rien d'autre</li>
+                <li><strong>Votre shell :</strong> <code>kitty-shell-integration</code> fournit les hooks bash, zsh et fish sous <code>/usr/share/kitty/shell-integration</code>, et <code>shell_integration enabled</code> dans <code>kitty.conf</code>, la valeur par défaut, les active sans toucher à vos fichiers rc</li>
+                <li><strong>yazi, viu et Neovim :</strong> tous trois dessinent les images par le protocole graphique de kitty, et Neovim parle nativement le protocole clavier de kitty : c'est le terminal dans lequel ils ont été testés</li>
+                <li><strong>Zellij et tmux :</strong> les fenêtres, onglets et agencements de kitty couvrent l'essentiel de ce que fait un multiplexeur local ; passez à Zellij quand une session doit survivre à la fenêtre, et donnez à tmux <code>extended-keys</code> et le passthrough pour que les protocoles de kitty survivent au trajet</li>
+                <li><strong>Votre bureau :</strong> le paquet installe l'entrée de bureau, les icônes et les pages de manuel et enregistre l'alternative <code>x-terminal-emulator</code>, donc kitty apparaît dans votre lanceur et un appel à <code>update-alternatives</code> en fait le terminal par défaut du système</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparaison des dépôts :</strong>
+            <ul>
+                <li><strong>Debian officiel :</strong> fournit kitty 0.41.1 dans trixie et 0.26.5 dans Bookworm, chacun gelé pour toute la vie de sa version</li>
+                <li><strong>L'installateur upstream :</strong> un <code>curl | sh</code> vers <code>~/.local/kitty.app</code>, à jour, mais par utilisateur, sans entrée de bureau, pages de manuel ni <code>x-terminal-emulator</code> à moins de les câbler vous-même, et mis à jour en relançant l'installateur</li>
+                <li><strong>Compiler depuis les sources :</strong> Python, Go, une longue liste de paquets <code>-dev</code> et un bon moment, pour un binaire dont apt ignore tout</li>
+                <li><strong>deb.griffo.io:</strong> dernière version avec mises à jour automatiques</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Les mêmes noms de paquets que Debian :</strong> <code>kitty</code>, <code>kitty-terminfo</code>, <code>kitty-shell-integration</code> et <code>kitty-doc</code>, exactement comme l'archive Debian les nomme, donc ce dépôt met à jour le kitty d'origine sur place et un <code>apt remove</code> ultérieur ne laisse rien derrière</li>
+            <li>✅ <strong>La construction officielle :</strong> le bundle précompilé upstream, les mêmes octets que l'installateur de kitty, placé sous <code>/opt/kitty</code> avec les liens <code>/usr/bin/kitty</code> et <code>/usr/bin/kitten</code> ; pas de compilation, pas de rustine</li>
+            <li>✅ <strong>Bien intégré :</strong> entrée de bureau, icônes, pages de manuel, terminfo et intégration shell aux emplacements Debian standard, et l'alternative <code>x-terminal-emulator</code> enregistrée</li>
+            <li>✅ <strong>kitty-terminfo voyage seul :</strong> un paquet indépendant de l'architecture qui ne contient que le terminfo <code>xterm-kitty</code>, pour les serveurs où vous vous connectez en ssh</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> les paquets sont mis à jour quelques heures après chaque version upstream</li>
+            <li>✅ <strong>Deux architectures :</strong> amd64 et arm64, les deux pour lesquelles upstream publie des bundles ; pas de construction i386, armhf ni riscv64</li>
+            <li>✅ <strong>Multi-distribution :</strong> fonctionne sur Bookworm, Trixie, Forky et Sid</li>
+            <li>✅ <strong>Maintenance simple :</strong> des mises à jour avec les commandes apt habituelles</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction du paquet</h3>
+        <p>Les paquets Debian sont construits et maintenus automatiquement dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/kitty-debian" target="_blank" rel="noopener">🐱 kitty-debian</a> - Constructions des dernières versions</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles sur deb.griffo.io :</p>
+        <ul>
+            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty</a> - L'autre terminal GPU d'ici, avec une interface GTK native et d'autres compromis</li>
+            <li><a href="/install-latest-zellij-in-debian.html">Zellij</a> - Un multiplexeur d'espaces de travail pour les sessions qui doivent survivre à une fenêtre</li>
+            <li><a href="/install-latest-yazi-in-debian.html">Yazi File Manager</a> - Dessine ses aperçus par le protocole graphique de kitty</li>
+            <li><a href="/install-latest-viu-in-debian.html">viu Image Viewer</a> - Une visionneuse d'images en terminal qui parle aussi le protocole graphique de kitty</li>
+            <li><a href="/install-latest-neovim-in-debian.html">Neovim</a> - Les plugins d'images et le protocole clavier de kitty fonctionnent d'emblée dans ce terminal</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> les développeurs qui veulent un terminal qui remplace terminal plus multiplexeur, quiconque vit dans ssh et veut que les images, les diffs et le presse-papiers passent sur le fil, ceux qui quittent Alacritty ou GNOME Terminal pour les onglets et les agencements, et les utilisateurs de yazi, Neovim ou de tout outil qui dessine des images dans le terminal.
+        </div>
+
+    </div>
+</div>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FKYKE1SD5C');
+</script>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>0.49.2</code>: 2026-10-15</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>kitty est-il dans les dépôts officiels de Debian ?</summary><p>Oui, mais l&#x27;archive officielle de Debian fournit kitty 0.41.1, alors que ce dépôt propose kitty 0.49.2, reconstruit quelques heures après chaque version upstream.</p></details>
+<details><summary>Comment installer le dernier kitty sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install kitty. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "kitty est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Debian fournit kitty 0.41.1, alors que ce dépôt propose kitty 0.49.2, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier kitty sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install kitty. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Miroir gratuit</a>
+    <a href="/how-packages-are-built.html">Comment les paquets sont construits</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/fr/how-subscriptions-work.html">Comment fonctionne l'accès</a>
+    <a href="/terms.html">Conditions Générales</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Tous droits réservés.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest kitty on Debian",
+ "description": "Complete guide to installing the latest kitty GPU based terminal emulator on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-15",
+ "dateModified": "2026-10-15",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "kitty",
+  "applicationCategory": "Developer Tool",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "Fast, feature-rich, GPU based terminal emulator with tiling windows and tabs, a graphics protocol for inline images, a keyboard protocol, shell integration, remote control and the kitten companion CLI for ssh, images, diffs and the clipboard",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/fr/install-latest-kitty-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/fr/install-latest-kitty-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/fr/install-latest-kitty-in-debian.html",
+  "url": "https://deb.griffo.io/fr/install-latest-kitty-in-debian.html",
+  "inLanguage": "fr"
+ },
+ "inLanguage": "fr"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
