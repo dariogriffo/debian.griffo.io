@@ -58,6 +58,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [rgrc](https://github.com/lazywalker/rgrc) - Rusty Generic Colouriser: grc-style colorized output for ping, df, ls, docker, journalctl and more, but fast
 - [ble.sh](https://github.com/akinomyoga/ble.sh) - Bash Line Editor: syntax highlighting, auto suggestions and vim modes for interactive Bash, written in pure Bash
 - [tldr](https://github.com/tldr-pages/tlrc) - Official tldr client written in Rust: simplified, community-driven man pages (tldr)
+- [kitty](https://github.com/kovidgoyal/kitty) - Fast, feature-rich, GPU based terminal emulator (kitty, kitten); pulls in kitty-terminfo and kitty-shell-integration, install kitty-terminfo alone on servers you ssh into
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -115,6 +116,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [rgrc-debian](https://github.com/dariogriffo/rgrc-debian) - Generic command output colorizer
 - [ble.sh-debian](https://github.com/dariogriffo/ble.sh-debian) - Bash line editor
 - [tldr-debian](https://github.com/dariogriffo/tldr-debian) - tldr client (Debian trixie+ only)
+- [kitty-debian](https://github.com/dariogriffo/kitty-debian) - kitty terminal emulator (kitty, kitty-terminfo, kitty-shell-integration, kitty-doc)
 
 ## 🐧 Supported Debian Distributions
 
@@ -168,6 +170,7 @@ sudo apt install -y zls-master      # Zig Language Server (nightly)
 
 # Terminal & File Management
 sudo apt install -y ghostty      # Modern terminal emulator
+sudo apt install -y kitty        # GPU based terminal emulator (kitty + kitten)
 sudo apt install -y eza          # Modern ls replacement
 sudo apt install -y yazi         # Terminal file manager
 sudo apt install -y superfile    # Modern terminal file manager (command: spf)
@@ -230,7 +233,7 @@ sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty
 ```
 
 ## ⚠️ Important Information
