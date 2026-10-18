@@ -111,7 +111,7 @@
         <a href="/pt-br/install-latest-garage-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/ru/#pricing" class="nav-cta">Оформить подписку</a>
+    <a href="/ru/#pricing" class="nav-cta" data-trial>Пробный период</a>
     <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/ru/#pricing" class="btn-primary">Оформить подписку</a>
+      <a href="/ru/#pricing" class="btn-primary" data-trial>Пробный период</a>
       <p class="mobile-menu-note"><a href="/free.html">Бесплатное зеркало</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Присоединиться к Discord</a>
     </p>
     <p class="announce-notice">
-      📅 С <strong><time datetime="2026-10-01T12:00:00+01:00">1 октября 2026 года, 12:00 по времени Великобритании</time></strong> для доступа к apt-зеркалу требуется подписка.
+      🎁 Для apt-зеркала нужна подписка. <strong>Попробуйте все инструменты бесплатно 14 дней</strong>, без карты.
       <a href="/ru/#pricing">Посмотреть цены</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -252,10 +252,10 @@
             <h3 class="block-title">Шаг 1: Добавить репозиторий</h3>
             <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 Есть вечно бесплатное зеркало.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> раздаёт пакеты бесплатно навсегда — без аккаунта, без подписки, не более 2 месяцев позади upstream, исправления безопасности сразу. Сейчас там cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud и Zed; Garage среди них нет, поэтому репозиторий выше — единственный способ установить его сегодня; попросите, и его можно добавить.</p>
@@ -402,6 +402,51 @@ garage bucket allow --read --write my-bucket --key my-app-key</code></pre></div>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ru">
+  <button type="button" class="trial-close" data-trial-close aria-label="Закрыть">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Начните бесплатный 14-дневный период</h2>
+    <p class="trial-lead">Укажите email, и мы пришлём учётные данные для apt за несколько минут. Карта не нужна.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Адрес электронной почты</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Он станет вашим логином для apt. Если останетесь, оплатите с того же адреса, и на ваших машинах ничего не изменится.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Загружаем проверку…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Прислать учётные данные"
+              data-sending="Отправляем…" disabled>Прислать учётные данные</button>
+    </form>
+    <p class="trial-fineprint">Один пробный период на адрес. За два дня до окончания пришлём ссылку, чтобы сохранить доступ. Если ничего не делать, доступ закончится, и ничего не спишется.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Проверьте почту</h2>
+    <p class="trial-lead" data-trial-success data-template="Учётные данные отправлены на {email}. Обычно они приходят за пару минут; если нет, загляните в спам."></p>
+    <p class="trial-lead">Затем запустите скрипт настройки из письма, и всё готово.</p>
+    <p class="trial-help">Письмо не пришло за 15 минут? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Создайте issue на GitHub</a> или <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">напишите мне в Discord</a>, и я всё исправлю.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Закрыть</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">У этого адреса уже есть аккаунт или уже был пробный период. Выберите тариф, чтобы продолжить, или ответьте на приветственное письмо, если что-то не так. <a href="/ru/#pricing" data-trial-close>Тарифы &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Не удалось подтвердить, что вы человек. Попробуйте ещё раз.</span>
+    <span data-code="INVALID_EMAIL">Этот адрес электронной почты выглядит неверно.</span>
+    <span data-code="MISSING_EMAIL">Этот адрес электронной почты выглядит неверно.</span>
+    <span data-code="RATE_LIMITED">Сегодня из вашей сети уже была попытка. Попробуйте завтра.</span>
+    <span data-code="GENERIC">У нас что-то пошло не так. Попробуйте ещё раз или спросите в Discord.</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

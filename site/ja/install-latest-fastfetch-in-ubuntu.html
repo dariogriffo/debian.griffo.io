@@ -111,7 +111,7 @@
         <a href="/pt-br/install-latest-fastfetch-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <a href="/ja/#pricing" class="nav-cta" data-trial>無料で試す</a>
     <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <a href="/ja/#pricing" class="btn-primary" data-trial>無料で試す</a>
       <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
     </p>
     <p class="announce-notice">
-      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要です。
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>全ツールを 14 日間無料でお試しいただけます</strong>。カード不要。
       <a href="/ja/#pricing">料金を見る</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -261,10 +261,10 @@
             <h3 class="block-title">ステップ 1: リポジトリを追加する</h3>
             <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud と Zed です。Fastfetch は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
@@ -346,6 +346,51 @@ fastfetch --config /usr/share/fastfetch/presets/neofetch.jsonc</code></pre></div
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ja">
+  <button type="button" class="trial-close" data-trial-close aria-label="閉じる">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">14 日間の無料トライアルを始める</h2>
+    <p class="trial-lead">メールアドレスを入力すると、数分以内に apt の認証情報をお送りします。カード不要。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">メールアドレス</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">これが apt のログインになります。続ける場合は同じアドレスでお支払いいただければ、マシン側の変更は不要です。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="認証を読み込み中…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="認証情報を送信"
+              data-sending="送信中…" disabled>認証情報を送信</button>
+    </form>
+    <p class="trial-fineprint">トライアルはメールアドレスごとに 1 回です。終了の 2 日前にアクセスを続けるためのリンクをお送りします。何もしなければアクセスは終了し、料金は発生しません。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">受信トレイをご確認ください</h2>
+    <p class="trial-lead" data-trial-success data-template="認証情報を {email} に送信しました。通常は数分以内に届きます。届かない場合は迷惑メールフォルダをご確認ください。"></p>
+    <p class="trial-lead">あとはメールのセットアップスクリプトを実行するだけです。</p>
+    <p class="trial-help">15 分経ってもメールが届かない場合は、<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">GitHub で issue を作成する</a>か<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">Discord で連絡してください</a>。すぐに対応します。</p>
+    <button type="button" class="btn-secondary" data-trial-close>閉じる</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">このアドレスには既にアカウントがあるか、トライアル済みです。プランを選んで続けるか、問題があればウェルカムメールに返信してください。 <a href="/ja/#pricing" data-trial-close>プランを見る &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">人間であることを確認できませんでした。もう一度お試しください。</span>
+    <span data-code="INVALID_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="MISSING_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="RATE_LIMITED">本日はすでにお使いのネットワークから試行されています。明日もう一度お試しください。</span>
+    <span data-code="GENERIC">こちら側で問題が発生しました。もう一度お試しいただくか、Discord でお尋ねください。</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

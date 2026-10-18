@@ -86,8 +86,15 @@
     return link.hash;
   }
 
+  // Trial buttons are #pricing links only as a fallback; where the dialog can
+  // open, they open it instead (see the trial section below) and must not also
+  // scroll the page behind it.
+  var trialDialogWorks = !!document.getElementById('trialDialog')
+    && typeof document.getElementById('trialDialog').showModal === 'function';
+
   document.querySelectorAll('a[href*="#"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
+      if (trialDialogWorks && link.hasAttribute('data-trial')) { return; }
       var hash = sameDocumentHash(link);
       if (!hash) { return; }
       if (hash === '#') {
@@ -334,4 +341,187 @@
 
     show(0, false);
   });
+  // ── Long lists, folded ──
+  // The version table and the package grid each list every tool, which is
+  // most of the page's height. Script folds them to a preview with a button
+  // to show the rest; the markup always carries every row, so search engines
+  // and readers without script still get the whole list.
+  document.querySelectorAll('[data-fold]').forEach(function (box) {
+    var keep = parseInt(box.dataset.fold, 10);
+    var items = box.querySelector('tbody')
+      ? box.querySelectorAll('tbody tr')
+      : box.children;
+    if (!keep || items.length <= keep + 2) { return; }
+    Array.prototype.forEach.call(items, function (el, i) {
+      if (i >= keep) { el.setAttribute('data-folded', ''); }
+    });
+    box.classList.add('is-folded');
+    var more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'btn-secondary fold-toggle';
+    more.textContent = box.dataset.foldLabel || 'Show all';
+    more.addEventListener('click', function () {
+      box.classList.remove('is-folded');
+      more.remove();
+    });
+    box.insertAdjacentElement('afterend', more);
+  });
+
+  // ── "Under the hood" opens on its own anchor ──
+  // The section is a collapsed <details>, so a nav link or a search result
+  // landing on #source would otherwise arrive at a closed box.
+  var deepDive = document.querySelector('#source details');
+  function openDeepDive() {
+    if (deepDive && location.hash === '#source') { deepDive.open = true; }
+  }
+  openDeepDive();
+  window.addEventListener('hashchange', openDeepDive);
+
+  // ── Free trial dialog ──
+  // Every [data-trial] element is a real link to #pricing, where the trial card
+  // makes the same offer; script upgrades it to this dialog. The captcha script
+  // is only fetched the first time the dialog opens, so pages that never open
+  // it never talk to Cloudflare.
+  var trial = document.getElementById('trialDialog');
+  if (trial && typeof trial.showModal === 'function') {
+    var form = trial.querySelector('.trial-form');
+    var email = trial.querySelector('#trialEmail');
+    var submit = trial.querySelector('.trial-submit');
+    var errorBox = trial.querySelector('[data-trial-error]');
+    var captchaBox = trial.querySelector('[data-trial-captcha]');
+    var messages = trial.querySelector('[data-trial-messages]');
+    var token = null;
+    var widget = null;
+    var sending = false;
+
+    var track = function (name) {
+      if (typeof window.gtag === 'function') { window.gtag('event', name); }
+    };
+
+    // Stricter than type="email", which accepts "d@d": a domain needs a dot and a
+    // two-letter-or-longer top level. The API applies the same rule, and every
+    // attempt it sees counts against the one-a-day limit, so a typo is caught here.
+    var EMAIL_RULE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[^\s@.]{2,}$/;
+    var validEmail = function () {
+      var address = email.value.trim();
+      return address.length <= 256 && EMAIL_RULE.test(address);
+    };
+
+    var updateSubmit = function () {
+      submit.disabled = sending || !token || !validEmail();
+      email.setAttribute('aria-invalid', email.value.trim() && !validEmail() ? 'true' : 'false');
+    };
+
+    var showError = function (code) {
+      var match = messages.content.querySelector('[data-code="' + code + '"]')
+        || messages.content.querySelector('[data-code="GENERIC"]');
+      errorBox.textContent = '';
+      Array.prototype.forEach.call(match.childNodes, function (n) {
+        errorBox.appendChild(n.cloneNode(true));
+      });
+      errorBox.hidden = false;
+    };
+
+    var renderCaptcha = function () {
+      if (widget !== null || !window.turnstile) { return; }
+      captchaBox.textContent = '';
+      widget = window.turnstile.render(captchaBox, {
+        sitekey: trial.dataset.sitekey,
+        theme: 'dark',
+        language: trial.dataset.lang || 'auto',
+        callback: function (t) { token = t; updateSubmit(); },
+        'expired-callback': function () { token = null; updateSubmit(); },
+        'error-callback': function () { token = null; updateSubmit(); showError('CAPTCHA_FAILED'); }
+      });
+    };
+
+    var loadCaptcha = function () {
+      if (window.turnstile) { renderCaptcha(); return; }
+      if (document.getElementById('turnstileScript')) { return; }
+      window.__dagTurnstileReady = renderCaptcha;
+      var script = document.createElement('script');
+      script.id = 'turnstileScript';
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__dagTurnstileReady';
+      script.async = true;
+      script.defer = true;
+      script.onerror = function () { showError('GENERIC'); };
+      document.head.appendChild(script);
+    };
+
+    var openTrial = function () {
+      if (trial.open) { return; }
+      trial.showModal();
+      if (!trial.querySelector('[data-trial-step="done"]').hidden) { return; }
+      loadCaptcha();
+      // after the opening frame, or the browser scrolls the page to the input
+      setTimeout(function () { email.focus({ preventScroll: true }); }, 60);
+      track('trial_dialog_open');
+    };
+
+    document.addEventListener('click', function (e) {
+      var opener = e.target.closest && e.target.closest('[data-trial]');
+      if (opener) { e.preventDefault(); openTrial(); return; }
+      var closer = e.target.closest && e.target.closest('[data-trial-close]');
+      if (closer && trial.contains(closer)) { trial.close(); }
+    });
+    // a click on the backdrop lands on the <dialog> element itself
+    trial.addEventListener('click', function (e) { if (e.target === trial) { trial.close(); } });
+    email.addEventListener('input', function () { errorBox.hidden = true; updateSubmit(); });
+    // Say what is wrong once they leave the field, not on every keystroke.
+    email.addEventListener('blur', function () {
+      if (email.value.trim() && !validEmail()) { showError('INVALID_EMAIL'); }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (sending) { return; }
+      var address = email.value.trim();
+      if (!validEmail()) { showError('INVALID_EMAIL'); email.focus(); return; }
+      if (!token) { showError('CAPTCHA_FAILED'); return; }
+
+      sending = true;
+      errorBox.hidden = true;
+      submit.textContent = submit.dataset.sending;
+      updateSubmit();
+
+      var finish = function (code) {
+        sending = false;
+        submit.textContent = submit.dataset.label;
+        // a Turnstile token is single use: whatever happened, get a fresh one
+        token = null;
+        if (widget !== null && window.turnstile) { window.turnstile.reset(widget); }
+        updateSubmit();
+        if (code) { showError(code); }
+      };
+
+      fetch(trial.dataset.api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'omit',
+        body: JSON.stringify({ email: address, turnstile_token: token })
+      }).then(function (r) {
+        if (r.status === 202) {
+          sending = false;
+          var out = trial.querySelector('[data-trial-success]');
+          var parts = out.dataset.template.split('{email}');
+          out.textContent = parts[0];
+          var strong = document.createElement('strong');
+          strong.textContent = address;
+          out.appendChild(strong);
+          out.appendChild(document.createTextNode(parts.slice(1).join('{email}')));
+          trial.querySelector('[data-trial-step="form"]').hidden = true;
+          trial.querySelector('[data-trial-step="done"]').hidden = false;
+          track('trial_started');
+          return;
+        }
+        if (r.status === 429) { finish('RATE_LIMITED'); return; }
+        if (r.status === 422) {
+          return r.json().then(function (errors) {
+            finish(errors && errors[0] && errors[0].code ? errors[0].code : 'GENERIC');
+          }, function () { finish('GENERIC'); });
+        }
+        finish('GENERIC');
+      }).catch(function () { finish('GENERIC'); });
+    });
+  }
 })();

@@ -111,7 +111,7 @@
         <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/es/#pricing" class="nav-cta">Obtener suscripción</a>
+    <a href="/es/#pricing" class="nav-cta" data-trial>Prueba gratis</a>
     <button class="nav-toggle" id="navToggle" aria-label="Alternar menú" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/es/#pricing" class="btn-primary">Obtener suscripción</a>
+      <a href="/es/#pricing" class="btn-primary" data-trial>Prueba gratis</a>
       <p class="mobile-menu-note"><a href="/free.html">Espejo gratuito</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Únete al Discord</a>
     </p>
     <p class="announce-notice">
-      📅 Desde el <strong><time datetime="2026-10-01T12:00:00+01:00">1 de octubre de 2026, 12:00 hora del Reino Unido</time></strong>, el mirror de apt requiere una suscripción.
+      🎁 El mirror apt requiere suscripción. <strong>Prueba todas las herramientas gratis durante 14 días</strong>, sin tarjeta.
       <a href="/es/#pricing">Ver precios</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -800,12 +800,12 @@
 <div class="install-block"><h3 class="block-title">Paso 1: Agregar el repositorio</h3><div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 
 apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
 sudo extrepo enable griffo
@@ -817,9 +817,9 @@ sudo apt update</code></pre></div>
 <div class="notice-box extrepo">
   <p><strong>🧩 Sobre la opción extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> es la herramienta propia de Debian para repositorios externos: escribe el archivo de sources e instala la clave de firma por ti, comprobándola antes contra metadatos firmados. Este repositorio está registrado en ella como <code>griffo</code>, y el espejo gratuito para siempre como <code>griffo-free</code>, así que en Debian (bookworm, trixie, forky y sid) los comandos de arriba son toda la configuración.</p>
   <p>extrepo solo configura el archivo de sources y la clave: las credenciales de una suscripción siguen yendo en <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu no está cubierto, porque extrepo publica metadatos solo para las suites de Debian: allí usa los comandos con sudo o como root.</p>
-</div></div><div class="install-block"><h3 class="block-title">Paso 2: Instalar paquetes</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Opcional: activar los paquetes fuente</h3><p class="prose">Agregue la línea <code class="inline-code">deb-src</code> a su lista de fuentes si quiere descargar y compilar paquetes desde el código fuente con <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+</div></div><div class="install-block"><h3 class="block-title">Paso 2: Instalar paquetes</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Opcional: activar los paquetes fuente</h3><p class="prose">Agregue la línea <code class="inline-code">deb-src</code> a su lista de fuentes si quiere descargar y compilar paquetes desde el código fuente con <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
-sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
 apt update</code></pre></div></div>    </div>
   </section>
@@ -2029,8 +2029,23 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     </div>
   </div>
 
-  <div class="pricing-grid">
-    <div class="pricing-card reveal reveal-d1">
+  <!-- Three paths, cheapest commitment first: the trial is the step anyone can
+       take today, so it leads; lifetime stays the featured card, since that
+       is the plan the page recommends to someone ready to pay. -->
+  <div class="pricing-grid pricing-grid-three">
+    <div class="pricing-card pricing-card-trial reveal reveal-d1">
+      <div class="pricing-tier">Prueba gratis</div>
+      <div class="pricing-price">
+        <span class="price-value">Gratis</span>
+        <span class="price-period">durante 14 días</span>
+      </div>
+      <p class="pricing-note">Sin tarjeta. Nada que cancelar.</p>
+      <p class="pricing-desc">Todo el repositorio durante 14 días. Solo pagas si decides quedarte.</p>
+      <ul class="pricing-features"><li>Todas las herramientas del repositorio</li><li>Credenciales por email en minutos</li><li>Máquinas ilimitadas</li><li>Mismas credenciales al pagar</li><li>Termina sola si no haces nada</li></ul>
+      <a href="#pricing" class="btn-secondary btn-trial" data-trial>Empieza tu prueba gratis</a>
+    </div>
+
+    <div class="pricing-card reveal reveal-d2">
       <div class="pricing-tier">Anual</div>
       <div class="pricing-price">
         <span class="price-value" data-amount="15">€15</span>
@@ -2042,7 +2057,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       <a href="https://buy.stripe.com/fZubJ0fJT7Ojepq8qienS08" class="btn-secondary">Suscribirse<sup class="pricing-star" aria-hidden="true">*</sup></a>
     </div>
 
-    <div class="pricing-card featured reveal reveal-d2">
+    <div class="pricing-card featured reveal reveal-d3">
       <div class="pricing-badge">Mejor valor</div>
       <div class="pricing-tier">De por vida</div>
       <div class="pricing-price">
@@ -2107,7 +2122,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       En cualquier caso, todos los .deb siguen siendo gratuitos en GitHub.
     </p>
     <div class="footer-ctas reveal reveal-d3">
-      <a href="#pricing" class="btn-primary">⚡ Obtener suscripción</a>
+      <a href="/es/#pricing" class="btn-primary" data-trial>⚡ Empieza tu prueba gratis</a>
       <a href="https://github.com/dariogriffo/debian.griffo.io" class="btn-secondary" target="_blank" rel="noopener">⭐ Dar estrella en GitHub</a>
       <a href="https://discord.gg/E2yHQNkuZy" class="btn-secondary" target="_blank" rel="noopener">💬 Discord</a>
       <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
@@ -2133,6 +2148,51 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="es">
+  <button type="button" class="trial-close" data-trial-close aria-label="Cerrar">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Empieza tu prueba gratis de 14 días</h2>
+    <p class="trial-lead">Escribe tu email y te enviaremos tus credenciales de apt en pocos minutos. Sin tarjeta.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Dirección de email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Será tu usuario de apt. Si te quedas, paga con la misma dirección y nada cambia en tus máquinas.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Cargando la verificación…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Enviar mis credenciales"
+              data-sending="Enviando…" disabled>Enviar mis credenciales</button>
+    </form>
+    <p class="trial-fineprint">Una prueba por dirección de email. Dos días antes de que termine te enviamos un enlace para mantener el acceso. Si no haces nada, el acceso termina y no se cobra nada.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Revisa tu bandeja de entrada</h2>
+    <p class="trial-lead" data-trial-success data-template="Tus credenciales van de camino a {email}. Suelen llegar en un par de minutos; si no, revisa la carpeta de spam."></p>
+    <p class="trial-lead">Después ejecuta el script de instalación del email y listo.</p>
+    <p class="trial-help">¿Sin email después de 15 minutos? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Abre un issue en GitHub</a> o <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">escríbeme en Discord</a> y lo soluciono.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Cerrar</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Esta dirección ya tiene una cuenta o ya tuvo una prueba. Elige un plan para continuar, o responde a tu email de bienvenida si algo no cuadra. <a href="/es/#pricing" data-trial-close>Ver planes &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">No pudimos confirmar que eres humano. Inténtalo de nuevo.</span>
+    <span data-code="INVALID_EMAIL">Esa dirección de email no parece correcta.</span>
+    <span data-code="MISSING_EMAIL">Esa dirección de email no parece correcta.</span>
+    <span data-code="RATE_LIMITED">Ya se intentó hoy desde tu red. Inténtalo de nuevo mañana.</span>
+    <span data-code="GENERIC">Algo falló de nuestro lado. Inténtalo de nuevo o pregunta en Discord.</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

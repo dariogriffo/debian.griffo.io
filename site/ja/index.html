@@ -111,7 +111,7 @@
         <a href="/pt-br/" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/ja/#pricing" class="nav-cta">サブスクを購入</a>
+    <a href="/ja/#pricing" class="nav-cta" data-trial>無料で試す</a>
     <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/ja/#pricing" class="btn-primary">サブスクを購入</a>
+      <a href="/ja/#pricing" class="btn-primary" data-trial>無料で試す</a>
       <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
     </p>
     <p class="announce-notice">
-      📅 <strong><time datetime="2026-10-01T12:00:00+01:00">2026年10月1日 12:00（英国時間）</time></strong>より、apt ミラーの利用にはサブスクリプションが必要です。
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>全ツールを 14 日間無料でお試しいただけます</strong>。カード不要。
       <a href="/ja/#pricing">料金を見る</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -799,12 +799,12 @@
 <div class="install-block"><h3 class="block-title">Step 1: Add the repository</h3><div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
 
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 
 apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
 sudo extrepo enable griffo
@@ -816,9 +816,9 @@ sudo apt update</code></pre></div>
 <div class="notice-box extrepo">
   <p><strong>🧩 extrepo オプションについて。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> は外部リポジトリを扱う Debian 標準のツールです。署名済みメタデータと照合して鍵を検証したうえで、sources ファイルの作成と署名鍵のインストールを代わりに行います。このリポジトリは <code>griffo</code>、ずっと無料のミラーは <code>griffo-free</code> という名前で登録されているので、Debian（bookworm、trixie、forky、sid）では上のコマンドだけで設定は完了です。</p>
   <p>extrepo が用意するのは sources ファイルと鍵だけなので、サブスクリプションの認証情報は引き続き <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code> に書きます。extrepo は Debian のスイート向けメタデータしか公開していないため Ubuntu は対象外です。Ubuntu では sudo または root のコマンドを使ってください。</p>
-</div></div><div class="install-block"><h3 class="block-title">Step 2: Install packages</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Optional: enable source packages</h3><p class="prose">Add the <code class="inline-code">deb-src</code> line to your sources list if you want to download and build packages from source using <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+</div></div><div class="install-block"><h3 class="block-title">Step 2: Install packages</h3><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre><pre class="variant variant-root"><code>apt install zig ghostty lazygit yazi viu eza uv fzf zoxide bun tigerbeetle deno forgejo forgejo-runner helix jujutsu zellij starship atuin k9s headscale garage just nushell duckdb herdr ripgrep fish</code></pre></div></div><div class="install-block"><h3 class="block-title">Optional: enable source packages</h3><p class="prose">Add the <code class="inline-code">deb-src</code> line to your sources list if you want to download and build packages from source using <code class="inline-code">apt-get source</code>.</p><div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>echo &quot;deb-src https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
-sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
+sudo apt update</code></pre><pre class="variant variant-root"><code>echo &quot;deb-src https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee -a /etc/apt/sources.list.d/deb.griffo.io.list
 
 apt update</code></pre></div></div>    </div>
   </section>
@@ -2028,8 +2028,23 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
     </div>
   </div>
 
-  <div class="pricing-grid">
-    <div class="pricing-card reveal reveal-d1">
+  <!-- Three paths, cheapest commitment first: the trial is the step anyone can
+       take today, so it leads; lifetime stays the featured card, since that
+       is the plan the page recommends to someone ready to pay. -->
+  <div class="pricing-grid pricing-grid-three">
+    <div class="pricing-card pricing-card-trial reveal reveal-d1">
+      <div class="pricing-tier">無料トライアル</div>
+      <div class="pricing-price">
+        <span class="price-value">無料</span>
+        <span class="price-period">14 日間</span>
+      </div>
+      <p class="pricing-note">カード不要。解約手続きも不要。</p>
+      <p class="pricing-desc">リポジトリ全体を 14 日間。続ける場合のみお支払いください。</p>
+      <ul class="pricing-features"><li>リポジトリの全ツール</li><li>数分以内にメールで認証情報</li><li>マシン台数無制限</li><li>支払い後も同じ認証情報</li><li>何もしなければ自動で終了</li></ul>
+      <a href="#pricing" class="btn-secondary btn-trial" data-trial>無料トライアルを始める</a>
+    </div>
+
+    <div class="pricing-card reveal reveal-d2">
       <div class="pricing-tier">年額</div>
       <div class="pricing-price">
         <span class="price-value" data-amount="15">€15</span>
@@ -2041,7 +2056,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       <a href="https://buy.stripe.com/fZubJ0fJT7Ojepq8qienS08" class="btn-secondary">購読する<sup class="pricing-star" aria-hidden="true">*</sup></a>
     </div>
 
-    <div class="pricing-card featured reveal reveal-d2">
+    <div class="pricing-card featured reveal reveal-d3">
       <div class="pricing-badge">いちばんお得</div>
       <div class="pricing-tier">買い切り</div>
       <div class="pricing-price">
@@ -2106,7 +2121,7 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
       どちらにしても、すべての .deb は GitHub で無料のままです。
     </p>
     <div class="footer-ctas reveal reveal-d3">
-      <a href="#pricing" class="btn-primary">⚡ サブスクを購入</a>
+      <a href="/ja/#pricing" class="btn-primary" data-trial>⚡ 無料トライアルを始める</a>
       <a href="https://github.com/dariogriffo/debian.griffo.io" class="btn-secondary" target="_blank" rel="noopener">⭐ GitHub でスターを付ける</a>
       <a href="https://discord.gg/E2yHQNkuZy" class="btn-secondary" target="_blank" rel="noopener">💬 Discord</a>
       <a href="https://twitter.com/intent/tweet?text=Check%20out%20deb.griffo.io%20-%20get%20the%20latest%20versions%20of%20Zig,%20Ghostty,%20lazygit,%20and%20other%20modern%20dev%20tools%20as%20Debian%20packages!&url=https://deb.griffo.io"
@@ -2132,6 +2147,51 @@ https://deb.griffo.io/apt/dists/noble/main/source/Sources</code></pre></div>    
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ja">
+  <button type="button" class="trial-close" data-trial-close aria-label="閉じる">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">14 日間の無料トライアルを始める</h2>
+    <p class="trial-lead">メールアドレスを入力すると、数分以内に apt の認証情報をお送りします。カード不要。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">メールアドレス</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">これが apt のログインになります。続ける場合は同じアドレスでお支払いいただければ、マシン側の変更は不要です。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="認証を読み込み中…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="認証情報を送信"
+              data-sending="送信中…" disabled>認証情報を送信</button>
+    </form>
+    <p class="trial-fineprint">トライアルはメールアドレスごとに 1 回です。終了の 2 日前にアクセスを続けるためのリンクをお送りします。何もしなければアクセスは終了し、料金は発生しません。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">受信トレイをご確認ください</h2>
+    <p class="trial-lead" data-trial-success data-template="認証情報を {email} に送信しました。通常は数分以内に届きます。届かない場合は迷惑メールフォルダをご確認ください。"></p>
+    <p class="trial-lead">あとはメールのセットアップスクリプトを実行するだけです。</p>
+    <p class="trial-help">15 分経ってもメールが届かない場合は、<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">GitHub で issue を作成する</a>か<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">Discord で連絡してください</a>。すぐに対応します。</p>
+    <button type="button" class="btn-secondary" data-trial-close>閉じる</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">このアドレスには既にアカウントがあるか、トライアル済みです。プランを選んで続けるか、問題があればウェルカムメールに返信してください。 <a href="/ja/#pricing" data-trial-close>プランを見る &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">人間であることを確認できませんでした。もう一度お試しください。</span>
+    <span data-code="INVALID_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="MISSING_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="RATE_LIMITED">本日はすでにお使いのネットワークから試行されています。明日もう一度お試しください。</span>
+    <span data-code="GENERIC">こちら側で問題が発生しました。もう一度お試しいただくか、Discord でお尋ねください。</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

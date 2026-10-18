@@ -111,7 +111,7 @@
         <a href="/pt-br/install-latest-lowfi-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/pt-br/#pricing" class="nav-cta">Assinar</a>
+    <a href="/pt-br/#pricing" class="nav-cta" data-trial>Teste grátis</a>
     <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/pt-br/#pricing" class="btn-primary">Assinar</a>
+      <a href="/pt-br/#pricing" class="btn-primary" data-trial>Teste grátis</a>
       <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
     </p>
     <p class="announce-notice">
-      📅 Desde <strong><time datetime="2026-10-01T12:00:00+01:00">1º de outubro de 2026, 12:00 (horário do Reino Unido)</time></strong>, o mirror apt exige uma assinatura.
+      🎁 O mirror apt exige assinatura. <strong>Teste todas as ferramentas grátis por 14 dias</strong>, sem cartão.
       <a href="/pt-br/#pricing">Ver preços</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -273,10 +273,10 @@
             <h3 class="block-title">Passo 1: Adicionar repositório</h3>
             <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
 sudo extrepo enable griffo
 sudo apt update</code></pre></div>
@@ -424,6 +424,51 @@ lowfi --buffer-size 10</code></pre></div>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="pt-br">
+  <button type="button" class="trial-close" data-trial-close aria-label="Fechar">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Comece seu teste grátis de 14 dias</h2>
+    <p class="trial-lead">Informe seu email e enviaremos suas credenciais do apt em poucos minutos. Sem cartão.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Endereço de email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Ele será seu login do apt. Se ficar, pague com o mesmo endereço e nada muda nas suas máquinas.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Carregando a verificação…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Enviar minhas credenciais"
+              data-sending="Enviando…" disabled>Enviar minhas credenciais</button>
+    </form>
+    <p class="trial-fineprint">Um teste por endereço de email. Dois dias antes do fim enviamos um link para manter o acesso. Se você não fizer nada, o acesso termina e nada é cobrado.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Confira sua caixa de entrada</h2>
+    <p class="trial-lead" data-trial-success data-template="Suas credenciais estão a caminho de {email}. Costumam chegar em poucos minutos; se não, confira o spam."></p>
+    <p class="trial-lead">Depois execute o script de configuração do email e pronto.</p>
+    <p class="trial-help">Nenhum email depois de 15 minutos? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Abra uma issue no GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">fale comigo no Discord</a> e eu resolvo.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Fechar</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Este endereço já tem uma conta ou já teve um teste. Escolha um plano para continuar, ou responda ao seu email de boas-vindas se algo parecer errado. <a href="/pt-br/#pricing" data-trial-close>Ver planos &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Não conseguimos confirmar que você é humano. Tente novamente.</span>
+    <span data-code="INVALID_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="MISSING_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="RATE_LIMITED">Já houve uma tentativa hoje a partir da sua rede. Tente novamente amanhã.</span>
+    <span data-code="GENERIC">Algo deu errado do nosso lado. Tente novamente ou pergunte no Discord.</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

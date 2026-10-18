@@ -111,7 +111,7 @@
         <a href="/pt-br/install-latest-lazygit-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/cn/#pricing" class="nav-cta">获取订阅</a>
+    <a href="/cn/#pricing" class="nav-cta" data-trial>免费试用</a>
     <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/cn/#pricing" class="btn-primary">获取订阅</a>
+      <a href="/cn/#pricing" class="btn-primary" data-trial>免费试用</a>
       <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
     </p>
     <p class="announce-notice">
-      📅 自 <strong><time datetime="2026-10-01T12:00:00+01:00">2026 年 10 月 1 日 12:00（英国时间）</time></strong> 起，使用本 apt 镜像需要订阅。
+      🎁 apt 镜像需要订阅。<strong>免费试用全部工具 14 天</strong>，无需银行卡。
       <a href="/cn/#pricing">查看价格</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -252,10 +252,10 @@
             <h3 class="block-title">步骤 1：添加仓库</h3>
             <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(lsb_release -sc 2&gt;/dev/null) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
 sudo extrepo enable griffo
 sudo apt update</code></pre></div>
@@ -418,6 +418,51 @@ w             - Create worktree from branch
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="zh-cn">
+  <button type="button" class="trial-close" data-trial-close aria-label="关闭">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">开始 14 天免费试用</h2>
+    <p class="trial-lead">输入邮箱，我们会在几分钟内发送你的 apt 凭据。无需银行卡。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">邮箱地址</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">它将成为你的 apt 登录名。如果继续使用，请用同一邮箱付款，你的机器上无需任何改动。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="正在加载人机验证…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="发送我的凭据"
+              data-sending="发送中…" disabled>发送我的凭据</button>
+    </form>
+    <p class="trial-fineprint">每个邮箱仅限一次试用。结束前两天我们会发送保留访问的链接。如果你不操作，访问将停止，不会产生任何费用。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">请查收邮件</h2>
+    <p class="trial-lead" data-trial-success data-template="你的凭据正在发送至 {email}。通常几分钟内送达，如未收到请检查垃圾邮件。"></p>
+    <p class="trial-lead">然后运行邮件中的配置脚本即可。</p>
+    <p class="trial-help">15 分钟后仍未收到邮件？请<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">在 GitHub 上提交 issue</a>或<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">在 Discord 上联系我</a>，我会尽快处理。</p>
+    <button type="button" class="btn-secondary" data-trial-close>关闭</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">该邮箱已有账户或已试用过。请选择一个方案继续，如有问题请回复欢迎邮件。 <a href="/cn/#pricing" data-trial-close>查看方案 &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">无法确认你是真人，请重试。</span>
+    <span data-code="INVALID_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="MISSING_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="RATE_LIMITED">今天已从你的网络尝试过，请明天再试。</span>
+    <span data-code="GENERIC">我们这边出了问题，请重试或在 Discord 提问。</span>
+  </template>
+</dialog>
 
 <script type="application/ld+json">{
  "@context": "https://schema.org",

@@ -20,7 +20,11 @@ PASSWORD=${2:-}
 [ -n "$LOGIN" ] && [ -n "$PASSWORD" ] || {
   echo "Usage: sudo $0 <login-email> <password>" >&2; exit 1; }
 
-SUITE=$(. /etc/os-release && echo "${VERSION_CODENAME:-}")
+# Derivatives name their own release (LMDE 7 is "gigi", Linux Mint 22 is
+# "wilma") but say which Debian or Ubuntu release they are built on, and
+# that is the suite this repository publishes.
+SUITE=$(. /etc/os-release &&
+  echo "${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME:-}}}")
 [ -n "$SUITE" ] || { echo "Could not detect your Debian version." >&2; exit 1; }
 
 # 1. remove every griffo.io file, old or new

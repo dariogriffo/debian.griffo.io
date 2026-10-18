@@ -1035,6 +1035,187 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
 /* the two trademark disclaimers are the quiet ones */
 .footer-legal + p, .footer-legal + p + p { font-size: 11px; }
 
+/* ── Free trial: hero note, steps, CTA strips, feature cards ──
+   The landing page leads with one action, the trial, and repeats it wherever a
+   reader is likely to have just been convinced: after the steps, after the
+   version table, in the pricing grid and at the very end. Every piece here is
+   built from the existing tokens, so the page reads as the same site. */
+.hero-note {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px;
+  margin-top: 18px; font-size: 12px; letter-spacing: 0.06em; color: var(--slate-light);
+}
+.hero-note span { display: inline-flex; align-items: center; gap: 7px; }
+.hero-note span::before { content: '✓'; color: var(--win); font-size: 11px; }
+
+.section-tight { padding: 40px 0; }
+.section-ctas {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 40px;
+}
+
+/* Three numbered cards joined by a rule behind the numbers. An <ol>, so the
+   order is real for a screen reader and not only drawn. */
+.lp-steps {
+  list-style: none; display: grid; gap: 22px; margin: 46px 0 0; position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); text-align: left;
+}
+.lp-steps::before {
+  content: ''; position: absolute; top: 47px; left: 12%; right: 12%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(215,10,83,0.45), transparent);
+}
+.lp-step {
+  position: relative; padding: 30px 26px 28px;
+  background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 20px;
+  transition: transform 0.5s var(--silk-ease), border-color 0.5s var(--silk-ease);
+}
+.lp-step:hover { transform: translateY(-4px); border-color: rgba(215,10,83,0.35); }
+.lp-step-num {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%; margin-bottom: 18px;
+  font-size: 15px; font-weight: 600; color: #fff;
+  background: linear-gradient(135deg, var(--debian) 0%, var(--debian-deep) 100%);
+  box-shadow: 0 0 0 6px var(--base-deep), 0 6px 24px var(--debian-glow);
+}
+.lp-step-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; }
+.lp-step-body { font-size: 13.5px; color: var(--ivory-muted); line-height: 1.75; }
+.lp-step-body a, .cta-strip a:not(.btn-primary):not(.btn-secondary), .install-block .prose a[data-trial] {
+  color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-rule);
+}
+
+.cta-strip {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px 28px;
+  flex-wrap: wrap; margin-top: 34px; padding: 22px 26px; border-radius: 20px;
+  background: linear-gradient(120deg, rgba(215,10,83,0.12) 0%, var(--panel-bg) 60%);
+  border: 1px solid rgba(215,10,83,0.28);
+}
+.cta-strip-text { font-size: 14px; color: var(--ivory-muted); line-height: 1.7; flex: 1 1 320px; }
+.cta-strip-text strong { color: var(--ivory); font-weight: 600; }
+.cta-strip .btn-primary { flex: none; }
+
+/* Six cards: three across or one, never four and an orphaned two. */
+.lp-features {
+  display: grid; gap: 18px; margin-top: 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) { .lp-features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .lp-features { grid-template-columns: 1fr; } }
+.lp-feature {
+  padding: 26px 24px; border-radius: 18px;
+  background: var(--panel-bg); border: 1px solid var(--panel-border);
+  transition: transform 0.5s var(--silk-ease), border-color 0.5s var(--silk-ease);
+}
+.lp-feature:hover { transform: translateY(-3px); border-color: rgba(215,10,83,0.3); }
+.lp-feature-icon { font-size: 22px; line-height: 1; margin-bottom: 14px; }
+.lp-feature-title { font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+.lp-feature-body { font-size: 13.5px; color: var(--ivory-muted); line-height: 1.75; }
+
+/* Folded lists: rows past the preview are hidden only once script has added
+   the button that brings them back. */
+.is-folded [data-folded] { display: none; }
+.is-folded { position: relative; }
+.package-grid.is-folded::after, .table-wrap.is-folded::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 90px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--base-deep));
+}
+.fold-toggle { display: flex; margin: 22px auto 0; }
+
+/* ── "Under the hood", collapsed ──
+   Reference material kept in the document but folded away, so it no longer
+   stands between most readers and the pricing. */
+.deep-dive {
+  border: 1px solid var(--panel-border); border-radius: 20px; background: var(--panel-bg);
+}
+.deep-dive-summary {
+  list-style: none; cursor: pointer; padding: 26px 64px 26px 28px; position: relative;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.deep-dive-summary::-webkit-details-marker { display: none; }
+.deep-dive-summary .section-tag { margin-bottom: 4px; }
+.deep-dive-title { font-size: clamp(20px, 2.6vw, 26px); font-weight: 200; letter-spacing: -0.015em; }
+.deep-dive-title strong { font-weight: 600; }
+.deep-dive-hint { font-size: 13px; color: var(--slate-warm); }
+.deep-dive-summary::after {
+  content: '+'; position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+  font-size: 26px; font-weight: 200; color: var(--debian);
+  transition: transform 0.4s var(--silk-ease);
+}
+.deep-dive[open] .deep-dive-summary::after { transform: translateY(-50%) rotate(45deg); }
+.deep-dive-summary:hover .deep-dive-title { color: #fff; }
+.deep-dive-body { padding: 0 28px 28px; border-top: 1px solid var(--panel-border); }
+
+/* ── Pricing with the trial as a third card ── */
+.pricing-grid-three { max-width: 1080px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pricing-card-trial { border-color: rgba(74,222,128,0.28); }
+.pricing-card-trial .pricing-tier { color: var(--win); }
+.btn-trial { border-color: rgba(74,222,128,0.45); }
+.btn-trial:hover { border-color: var(--win); }
+
+/* ── The trial dialog ──
+   A native <dialog>: focus trapping, Esc and the top layer come from the
+   browser, not from script. */
+.trial-dialog {
+  width: min(460px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto;
+  margin: auto; padding: 38px 32px 30px; border-radius: 22px; color: var(--ivory);
+  background: linear-gradient(180deg, rgba(215,10,83,0.10) 0%, var(--base-mid) 45%);
+  border: 1px solid rgba(215,10,83,0.4); box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+}
+.trial-dialog::backdrop { background: rgba(8, 9, 12, 0.72); backdrop-filter: blur(6px); }
+.trial-dialog[open] { animation: trial-in 0.45s var(--silk-ease); }
+@keyframes trial-in { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .trial-dialog[open] { animation: none; } }
+.trial-close {
+  position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 24px; line-height: 1; color: var(--slate-light);
+  background: transparent; border: 1px solid transparent; cursor: pointer;
+}
+.trial-close:hover { color: #fff; border-color: var(--graphite-soft); }
+.trial-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 16px; margin-bottom: 18px;
+  font-size: 20px; font-weight: 600; color: #fff;
+  background: linear-gradient(135deg, var(--debian) 0%, var(--debian-deep) 100%);
+  box-shadow: 0 8px 30px var(--debian-glow);
+}
+.trial-mark-done { background: linear-gradient(135deg, #34c46a 0%, #1f8f4b 100%); box-shadow: 0 8px 30px rgba(74,222,128,0.3); }
+.trial-title { padding-right: 36px; font-size: 24px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 10px; }
+.trial-lead { font-size: 14px; color: var(--ivory-muted); line-height: 1.7; margin-bottom: 14px; }
+.trial-lead strong { color: var(--ivory); }
+.trial-help {
+  font-size: 13px; color: var(--slate-light); line-height: 1.6; margin: 4px 0 18px;
+  padding: 12px 14px; border-radius: 10px; border: 1px solid var(--graphite-soft);
+}
+.trial-help a { color: var(--ivory); text-decoration: underline; text-underline-offset: 3px; }
+.trial-help a:hover { color: #fff; }
+.trial-form { display: flex; flex-direction: column; margin-top: 8px; }
+.trial-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--slate-light); margin-bottom: 8px; }
+.trial-input {
+  font: inherit; font-size: 15px; color: var(--ivory); padding: 13px 16px; border-radius: 12px;
+  background: rgba(0,0,0,0.35); border: 1px solid var(--graphite-soft);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.trial-input:focus { outline: none; border-color: var(--debian); box-shadow: 0 0 0 3px var(--debian-glow); }
+.trial-input[aria-invalid="true"]:not(:focus) { border-color: #e5484d; }
+.trial-hint { font-size: 12px; color: var(--slate-warm); line-height: 1.6; margin: 8px 0 16px; }
+/* Turnstile's widget is 65px tall; reserving it stops the button jumping. */
+.trial-captcha { min-height: 65px; margin-bottom: 14px; display: flex; align-items: center; }
+.trial-captcha:empty::before { content: attr(data-loading); font-size: 12px; color: var(--slate-warm); }
+.trial-error {
+  font-size: 13px; line-height: 1.6; color: #fecaca; margin-bottom: 14px;
+  padding: 10px 14px; border-radius: 10px;
+  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.35);
+}
+.trial-error a { color: var(--link); }
+.trial-submit { justify-content: center; }
+.trial-submit[disabled] { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+.trial-fineprint { font-size: 11.5px; color: var(--slate-warm); line-height: 1.65; margin-top: 18px; }
+.trial-step[hidden] { display: none; }
+
+@media (max-width: 720px) {
+  .lp-steps::before { display: none; }
+  .cta-strip { padding: 20px; }
+  .cta-strip .btn-primary { width: 100%; justify-content: center; }
+  .trial-dialog { padding: 34px 22px 24px; }
+}
+
 /* ── Reveal ── */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--silk-ease), transform 0.9s var(--silk-ease); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
