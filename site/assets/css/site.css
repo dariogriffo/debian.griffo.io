@@ -508,6 +508,11 @@ h4.block-subtitle {
 .hero-logos { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 26px; }
 .hero-logos img { height: 52px; width: auto; opacity: 0.92; border-radius: 10px; transition: opacity 0.3s, transform 0.3s; }
 .hero-logos a:hover img { opacity: 1; transform: translateY(-2px); }
+/* The cube fills only ~62% of its app-icon tile, and the tile's dark ground disappears
+   into the page, so at the shared height it reads smaller than the Debian swirl and the
+   Ubuntu tile. `scale` enlarges it without touching the row's layout box, and composes
+   with the hover transform. Exact src: "ubuntu-logo.webp" also ends in "logo.webp". */
+.hero-logos img[src="/assets/img/logo.webp"] { scale: 1.45; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px;
   padding: 7px 14px; border-radius: 40px; text-decoration: none;
