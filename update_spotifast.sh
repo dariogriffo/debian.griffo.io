@@ -3,14 +3,14 @@ PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
 PACKAGE_NAME=spotifast
 # Upstream publishes x86_64 and aarch64 Linux builds only. They need
-# GLIBC_2.39, so there is nothing for bookworm or jammy; the generic
-# downloaders just find no asset for those suites.
+# GLIBC_2.39, so it goes to trixie and later and noble and later only: the one
+# ~griffo build would otherwise be linked into bookworm and jammy too.
 ARCHITECTURES="amd64,arm64"
 
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
-./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
-./download_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+./download_stable_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
+./download_stable_ubuntu_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}
 

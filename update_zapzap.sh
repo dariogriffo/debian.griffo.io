@@ -7,6 +7,8 @@ find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
 # ZapZap is pure Python and ships as a single Architecture: all package.
 ARCHITECTURES="all"
+# jammy has no python3-pyqt6, so the package cannot install there.
+export EXCLUDE="jammy:all"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}
