@@ -6,6 +6,8 @@ PWD=$(pwd)
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
 ARCHITECTURES="amd64,arm64,armhf,riscv64"
+# riscv64 is an architecture of trixie and noble onwards only.
+export EXCLUDE="bookworm:riscv64 jammy:riscv64"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}
