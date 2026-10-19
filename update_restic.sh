@@ -10,6 +10,9 @@ find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 # linux/arm build is GOARM=6 and needs a hardware FPU, which Debian's
 # soft-float armel does not have; the same binary is fine on armhf.
 ARCHITECTURES="amd64,arm64,armhf,ppc64el,s390x,riscv64,i386"
+# Suite/architecture pairs the per-suite builds never covered; one shared
+# .deb per arch must not start appearing there.
+export EXCLUDE="jammy:i386 noble:i386 questing:i386 resolute:i386"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
 
 cd ${PWD}

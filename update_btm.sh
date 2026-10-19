@@ -3,6 +3,9 @@ PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
 PACKAGE_NAME=btm
 ARCHITECTURES="amd64,arm64,armhf,i386,riscv64"
+# Suite/architecture pairs the per-suite builds never covered; one shared
+# .deb per arch must not start appearing there.
+export EXCLUDE="jammy:i386 noble:i386 questing:i386 resolute:i386 bookworm:riscv64 jammy:riscv64"
 
 find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
 
