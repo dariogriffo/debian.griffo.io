@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Ferramentas de dev mais recentes no Kali Linux via apt</title>
+<meta name="description" content="63 ferramentas de desenvolvimento na última versão upstream no Kali Linux: Neovim, uv, Zig e mais. Um comando apt, assinado com GPG.">
+<meta name="keywords" content="repositório apt kali linux, instalar neovim kali linux, ferramentas de desenvolvimento atualizadas kali linux, kali linux instalar uv, kali linux instalar zig, kali linux lazygit">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-dev-tools-on-kali-linux.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-dev-tools-on-kali-linux.html">
+<meta property="og:title" content="Ferramentas de dev mais recentes no Kali Linux via apt">
+<meta property="og:description" content="63 ferramentas de desenvolvimento na última versão upstream no Kali Linux: Neovim, uv, Zig e mais. Um comando apt, assinado com GPG.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-dev-tools-on-kali-linux.html">
+<meta property="twitter:title" content="Ferramentas de dev mais recentes no Kali Linux via apt">
+<meta property="twitter:description" content="63 ferramentas de desenvolvimento na última versão upstream no Kali Linux: Neovim, uv, Zig e mais. Um comando apt, assinado com GPG.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-dev-tools-on-kali-linux.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-dev-tools-on-kali-linux.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#reviews">Avaliações</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-dev-tools-on-kali-linux.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta" data-trial>Teste grátis</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#reviews" class="mobile-menu-link" data-index="05">Avaliações</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="06">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="07">Perguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/pt-br/#pricing" class="btn-primary" data-trial>Teste grátis</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 O mirror apt exige assinatura. <strong>Teste todas as ferramentas grátis por 14 dias</strong>, sem cartão.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt retornando 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <img class="tool-logo" src="/assets/img/distros/kali-linux-logo.webp" alt="Logotipo do Kali Linux" width="67" height="56" decoding="async">
+        <h1>Ferramentas de desenvolvimento atualizadas no Kali Linux</h1>
+        <p class="subtitle">63 ferramentas de desenvolvimento na última versão upstream, um comando apt, assinadas com GPG</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ A resposta curta.</strong> Sim, o deb.griffo.io funciona no Kali Linux. 63 ferramentas de desenvolvimento se instalam com o <code>apt</code> puro no Kali Linux, com o mesmo comando de configuração do Debian e do Ubuntu: ele lê <code>VERSION_CODENAME</code> de <code>/etc/os-release</code> e pede a suíte correspondente, <code>kali-rolling</code> no Kali Linux.
+        </div>
+
+        <p>O Kali Linux é uma distribuição rolling construída a partir do Debian testing. O arquivo próprio dele é focado em ferramentas de segurança; as ferramentas de desenvolvimento em geral vêm do Debian, na versão que estiver no testing. O deb.griffo.io serve ao Kali a sua própria suíte <code>kali-rolling</code>, com os mesmos pacotes da suíte Debian testing, para que as ferramentas abaixo se instalem com o apt puro.</p>
+
+        <h2>🔍 Qual suíte a sua versão recebe</h2>
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th scope="col">Versão</th><th scope="col">Baseada em</th><th scope="col">Suíte</th><th scope="col">Ferramentas disponíveis</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Kali Linux (kali-rolling)</td><td>Debian testing (forky)</td><td><code>kali-rolling</code></td><td>63</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p>O Kali define <code>VERSION_CODENAME=kali-rolling</code>, e este repositório tem uma suíte <code>kali-rolling</code>, então o comando de configuração funciona como está. Ela é montada a partir dos pacotes do Debian testing (forky) e publicada junto com eles, então o Kali nunca espera por uma compilação separada.</p>
+        <p>O Kali é atendido apenas pelo repositório por assinatura: o espelho grátis não tem a suíte <code>kali-rolling</code>.</p>
+
+        <h2>📦 Adicionar o repositório</h2>
+
+        <div class="install-steps">
+            <h3>Passo 1: Adicionar o repositório e a chave</h3>
+
+            <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 2: Instalar qualquer ferramenta</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install -y neovim ripgrep fzf</code></pre><pre class="variant variant-root"><code>apt install -y neovim ripgrep fzf</code></pre></div>
+        </div>
+
+        <p>Para conferir o que o comando vai escolher na sua máquina antes de rodá-lo:
+        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}</code>.
+        Ele deve imprimir uma das suítes da tabela acima.</p>
+
+        <h2>📋 Todas as ferramentas disponíveis no Kali Linux</h2>
+        <p>As versões são as que o repositório oferece agora para <strong>kali-rolling</strong>
+        (atualizado em 2026-10-19). </p>
+        <div class="lane-table-wrap">
+        <table class="lane-table distro-tools">
+            <thead>
+                <tr><th scope="col">Ferramenta</th><th scope="col">Pacote apt</th><th scope="col">Versão</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><a href="/pt-br/install-latest-atuin-in-debian.html">Atuin</a></td><td><code>atuin</code></td><td><span class="version-badge">18.24.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-blesh-in-debian.html">ble.sh</a></td><td><code>ble.sh</code></td><td><span class="version-badge">0.4.0-git20260908.d81fd54-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-btm-in-debian.html">bottom</a></td><td><code>btm</code></td><td><span class="version-badge">0.14.9-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-bun-in-debian.html">Bun</a></td><td><code>bun</code></td><td><span class="version-badge">1.4.3-3~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-cliamp-in-debian.html">cliamp</a></td><td><code>cliamp</code></td><td><span class="version-badge">2.3.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-deno-in-debian.html">Deno</a></td><td><code>deno</code></td><td><span class="version-badge">2.9.7-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-difftastic-in-debian.html">difftastic</a></td><td><code>difftastic</code></td><td><span class="version-badge">0.70.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-duckdb-in-debian.html">DuckDB</a></td><td><code>duckdb</code></td><td><span class="version-badge">1.5.6-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-eza-in-debian.html">eza</a></td><td><code>eza</code></td><td><span class="version-badge">0.23.5-3~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-fastfetch-in-debian.html">Fastfetch</a></td><td><code>fastfetch</code></td><td><span class="version-badge">2.66.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-fish-in-debian.html">fish</a></td><td><code>fish</code></td><td><span class="version-badge">4.9.3-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-forgejo-in-debian.html">Forgejo</a></td><td><code>forgejo</code></td><td><span class="version-badge">15.0.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-forgejo-runner-in-debian.html">Forgejo Runner</a></td><td><code>forgejo-runner</code></td><td><span class="version-badge">13.2.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-fresh-editor-in-debian.html">fresh-editor</a></td><td><code>fresh-editor</code></td><td><span class="version-badge">0.5.3-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-fzf-in-debian.html">fzf</a></td><td><code>fzf</code></td><td><span class="version-badge">0.74.5-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-garage-in-debian.html">Garage</a></td><td><code>garage</code></td><td><span class="version-badge">2.4.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-ghostty-in-debian.html">Ghostty</a></td><td><code>ghostty</code></td><td><span class="version-badge">1.3.1-6~forky</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-gitui-in-debian.html">GitUI</a></td><td><code>gitui</code></td><td><span class="version-badge">0.28.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-gpu-screen-recorder-cli-in-debian.html">GPU Screen Recorder</a></td><td><code>gpu-screen-recorder-cli</code></td><td><span class="version-badge">6.1.4-1~forky</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-headscale-in-debian.html">Headscale</a></td><td><code>headscale</code></td><td><span class="version-badge">0.29.5-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-helix-in-debian.html">Helix</a></td><td><code>helix</code></td><td><span class="version-badge">25.07.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-herdr-in-debian.html">herdr</a></td><td><code>herdr</code></td><td><span class="version-badge">0.9.5-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-jujutsu-in-debian.html">Jujutsu</a></td><td><code>jujutsu</code></td><td><span class="version-badge">0.46.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-just-in-debian.html">just</a></td><td><code>just</code></td><td><span class="version-badge">1.59.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-k9s-in-debian.html">k9s</a></td><td><code>k9s</code></td><td><span class="version-badge">0.51.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-kitty-in-debian.html">kitty</a></td><td><code>kitty</code></td><td><span class="version-badge">0.49.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-lazydocker-in-debian.html">lazydocker</a></td><td><code>lazydocker</code></td><td><span class="version-badge">0.25.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-lazygit-in-debian.html">lazygit</a></td><td><code>lazygit</code></td><td><span class="version-badge">0.66.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-lazyjira-in-debian.html">lazyjira</a></td><td><code>lazyjira</code></td><td><span class="version-badge">2.19.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-lowfi-in-debian.html">lowfi</a></td><td><code>lowfi</code></td><td><span class="version-badge">2.0.7-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-mitmproxy-in-debian.html">mitmproxy</a></td><td><code>mitmproxy</code></td><td><span class="version-badge">12.2.3-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-neovim-in-debian.html">Neovim</a></td><td><code>neovim</code></td><td><span class="version-badge">0.12.6-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-nushell-in-debian.html">Nushell</a></td><td><code>nushell</code></td><td><span class="version-badge">0.116.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-oh-my-posh-in-debian.html">Oh My Posh</a></td><td><code>oh-my-posh</code></td><td><span class="version-badge">31.8.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-rclone-in-debian.html">rclone</a></td><td><code>rclone</code></td><td><span class="version-badge">1.75.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-restic-in-debian.html">restic</a></td><td><code>restic</code></td><td><span class="version-badge">0.19.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-rgrc-in-debian.html">rgrc</a></td><td><code>rgrc</code></td><td><span class="version-badge">0.6.35-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-ripgrep-in-debian.html">ripgrep</a></td><td><code>ripgrep</code></td><td><span class="version-badge">15.2.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-ruff-in-debian.html">Ruff</a></td><td><code>ruff</code></td><td><span class="version-badge">0.17.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-rumdl-in-debian.html">rumdl</a></td><td><code>rumdl</code></td><td><span class="version-badge">0.3.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-serie-in-debian.html">Serie</a></td><td><code>serie</code></td><td><span class="version-badge">0.10.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-spotifast-in-debian.html">Spotifast</a></td><td><code>spotifast</code></td><td><span class="version-badge">0.13.3-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-starship-in-debian.html">Starship</a></td><td><code>starship</code></td><td><span class="version-badge">1.27.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-superfile-in-debian.html">superfile</a></td><td><code>superfile</code></td><td><span class="version-badge">1.6.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-television-in-debian.html">Television</a></td><td><code>television</code></td><td><span class="version-badge">0.15.9-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-termusic-in-debian.html">Termusic</a></td><td><code>termusic</code></td><td><span class="version-badge">0.13.2-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-tigerbeetle-in-debian.html">TigerBeetle</a></td><td><code>tigerbeetle</code></td><td><span class="version-badge">0.17.9-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-tldr-in-debian.html">tldr</a></td><td><code>tldr</code></td><td><span class="version-badge">1.13.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-tree-sitter-cli-in-debian.html">tree-sitter-cli</a></td><td><code>tree-sitter-cli</code></td><td><span class="version-badge">0.27.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-uncloud-in-debian.html">Uncloud</a></td><td><code>uncloud</code></td><td><span class="version-badge">0.21.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-unregistry-in-debian.html">Unregistry</a></td><td><code>unregistry</code></td><td><span class="version-badge">0.4.3-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-uv-in-debian.html">uv</a></td><td><code>uv</code></td><td><span class="version-badge">0.13.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-viu-in-debian.html">viu</a></td><td><code>viu</code></td><td><span class="version-badge">1.6.1-3~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-workmux-in-debian.html">workmux</a></td><td><code>workmux</code></td><td><span class="version-badge">0.1.276-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-yazi-in-debian.html">Yazi</a></td><td><code>yazi</code></td><td><span class="version-badge">26.9.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-yq-in-debian.html">yq</a></td><td><code>yq</code></td><td><span class="version-badge">4.54.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-yt-dlp-in-debian.html">yt-dlp</a></td><td><code>yt-dlp</code></td><td><span class="version-badge">2026.08.19-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zapzap-in-debian.html">ZapZap</a></td><td><code>zapzap</code></td><td><span class="version-badge">7.5.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zed-in-debian.html">Zed</a></td><td><code>zed</code></td><td><span class="version-badge">1.24.2-1~forky</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zellij-in-debian.html">Zellij</a></td><td><code>zellij</code></td><td><span class="version-badge">0.45.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zig-in-debian.html">Zig</a></td><td><code>zig-stable</code></td><td><span class="version-badge">0.17.0-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zls-in-debian.html">ZLS</a></td><td><code>zls</code></td><td><span class="version-badge">0.16.1-2~griffo</span></td></tr>
+                <tr><td><a href="/pt-br/install-latest-zoxide-in-debian.html">zoxide</a></td><td><code>zoxide</code></td><td><span class="version-badge">0.10.0-2~griffo</span></td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2>❓ Perguntas frequentes</h2>
+        <h3>Por que não há espelho grátis para o Kali?</h3>
+        <p>O espelho grátis traz apenas as suítes das versões do Debian e do Ubuntu. A suíte kali-rolling faz parte do repositório por assinatura, que também inclui o teste grátis.</p>
+        <h3>Adicionar o repositório interfere nas ferramentas do próprio Kali?</h3>
+        <p>Não. Os pacotes daqui são ferramentas de desenvolvimento gerais, com nomes próprios e versionadas com o sufixo ~griffo, para que um pacote oficial da mesma versão sempre tenha prioridade, e as ferramentas de segurança do Kali continuam vindo do arquivo dele, como antes.</p>
+        <h3>O deb.griffo.io é um repositório oficial do Kali Linux?</h3>
+        <p>Não. É um repositório não oficial mantido por Dario Griffo, sem vínculo com o Kali Linux. Cada pacote é compilado automaticamente a partir da versão upstream oficial, o empacotamento é de código aberto no GitHub e o arquivo é assinado com GPG.</p>
+        <h3>Tem algum custo?</h3>
+        <p>O repositório funciona por assinatura (€15 por ano ou €150 uma única vez), com teste grátis.</p>
+        <h3>Como removo o repositório?</h3>
+        <p>Apague /etc/apt/sources.list.d/deb.griffo.io.list e /etc/apt/keyrings/deb.griffo.io.gpg e rode sudo apt update. As ferramentas que você instalou continuam lá até você removê-las com apt remove.</p>
+
+        <h2>🔗 Veja também</h2>
+        <ul>
+            <li><a href="/pt-br/install-dev-tools-on-linux-mint.html">Ferramentas de desenvolvimento atualizadas no Linux Mint</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-lmde.html">Ferramentas de desenvolvimento atualizadas no Linux Mint Debian Edition (LMDE)</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-pop-os.html">Ferramentas de desenvolvimento atualizadas no Pop!_OS</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-zorin-os.html">Ferramentas de desenvolvimento atualizadas no Zorin OS</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-elementary-os.html">Ferramentas de desenvolvimento atualizadas no elementary OS</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-kde-neon.html">Ferramentas de desenvolvimento atualizadas no KDE neon</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-raspberry-pi-os.html">Ferramentas de desenvolvimento atualizadas no Raspberry Pi OS</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-proxmox-ve.html">Ferramentas de desenvolvimento atualizadas no Proxmox VE</a></li>
+            <li><a href="/pt-br/install-dev-tools-on-wsl.html">Ferramentas de desenvolvimento atualizadas no WSL (Subsistema do Windows para Linux)</a></li>
+            <li><a href="/pt-br/">Todos os pacotes do deb.griffo.io</a></li>
+        </ul>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espelho gratuito</a>
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a>
+    <a href="/supported-architectures.html">Arquiteturas</a>
+    <a href="/pt-br/how-subscriptions-work.html">Como funciona o acesso</a>
+    <a href="/terms.html">Termos e Condições</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos os direitos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="pt-br">
+  <button type="button" class="trial-close" data-trial-close aria-label="Fechar">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Comece seu teste grátis de 14 dias</h2>
+    <p class="trial-lead">Informe seu email e enviaremos suas credenciais do apt em poucos minutos. Sem cartão.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Endereço de email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Ele será seu login do apt. Se ficar, pague com o mesmo endereço e nada muda nas suas máquinas.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Carregando a verificação…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Enviar minhas credenciais"
+              data-sending="Enviando…" disabled>Enviar minhas credenciais</button>
+    </form>
+    <p class="trial-fineprint">Um teste por endereço de email. Dois dias antes do fim enviamos um link para manter o acesso. Se você não fizer nada, o acesso termina e nada é cobrado.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Confira sua caixa de entrada</h2>
+    <p class="trial-lead" data-trial-success data-template="Suas credenciais estão a caminho de {email}. Costumam chegar em poucos minutos; se não, confira o spam."></p>
+    <p class="trial-lead">Depois execute o script de configuração do email e pronto.</p>
+    <p class="trial-help">Nenhum email depois de 15 minutos? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Abra uma issue no GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">fale comigo no Discord</a> e eu resolvo.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Fechar</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Este endereço já tem uma conta ou já teve um teste. Escolha um plano para continuar, ou responda ao seu email de boas-vindas se algo parecer errado. <a href="/pt-br/#pricing" data-trial-close>Ver planos &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Não conseguimos confirmar que você é humano. Tente novamente.</span>
+    <span data-code="INVALID_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="MISSING_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="RATE_LIMITED">Já houve uma tentativa hoje a partir da sua rede. Tente novamente amanhã.</span>
+    <span data-code="GENERIC">Algo deu errado do nosso lado. Tente novamente ou pergunte no Discord.</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io/pt-br/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Ferramentas de dev no Kali Linux",
+     "item": "https://deb.griffo.io/pt-br/install-dev-tools-on-kali-linux.html"
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "name": "Instalar as ferramentas de desenvolvimento mais recentes no Kali Linux",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "name": "Adicionar o repositório deb.griffo.io",
+     "text": "Importe a chave de assinatura e adicione o repositório; a suíte é lida de /etc/os-release (kali-rolling no Kali Linux (kali-rolling))."
+    },
+    {
+     "@type": "HowToStep",
+     "name": "Instalar as ferramentas",
+     "text": "Rode: sudo apt install -y neovim ripgrep fzf"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Por que não há espelho grátis para o Kali?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "O espelho grátis traz apenas as suítes das versões do Debian e do Ubuntu. A suíte kali-rolling faz parte do repositório por assinatura, que também inclui o teste grátis."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Adicionar o repositório interfere nas ferramentas do próprio Kali?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Não. Os pacotes daqui são ferramentas de desenvolvimento gerais, com nomes próprios e versionadas com o sufixo ~griffo, para que um pacote oficial da mesma versão sempre tenha prioridade, e as ferramentas de segurança do Kali continuam vindo do arquivo dele, como antes."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "O deb.griffo.io é um repositório oficial do Kali Linux?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Não. É um repositório não oficial mantido por Dario Griffo, sem vínculo com o Kali Linux. Cada pacote é compilado automaticamente a partir da versão upstream oficial, o empacotamento é de código aberto no GitHub e o arquivo é assinado com GPG."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Tem algum custo?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "O repositório funciona por assinatura (€15 por ano ou €150 uma única vez), com teste grátis."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Como removo o repositório?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Apague /etc/apt/sources.list.d/deb.griffo.io.list e /etc/apt/keyrings/deb.griffo.io.gpg e rode sudo apt update. As ferramentas que você instalou continuam lá até você removê-las com apt remove."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+</body>
+</html>
