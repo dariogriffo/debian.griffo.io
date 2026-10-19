@@ -6,6 +6,10 @@ reprepro_dir="$current/reprepro"
 GPG_KEY="EA0F721D231FDD3A0A17B9AC7808B4DD62C41256"
 
 DISTS=("bookworm" "trixie" "forky" "sid" "jammy" "noble" "questing" "resolute")
+# Alias suites, filled by `reprepro pull` from a suite above (conf/pulls), not
+# from staged files: a derivative's own codename (Kali's kali-rolling) mirrors
+# the Debian suite it follows, sharing its pool files. Paid lane only.
+ALIASES=("kali-rolling")
 
 # One rejected include must not stall the whole mirror.
 #
@@ -67,6 +71,19 @@ for dist in "${DISTS[@]}"; do
     fi
 
     cd "dists/$dist"
+    cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
+    cd - > /dev/null
+done
+
+for alias in "${ALIASES[@]}"; do
+    echo "Pulling alias distribution: $alias"
+    # pull adds and upgrades but never drops what left the source suite, so
+    # empty the alias first (unexported) to make it an exact copy. The pool
+    # files stay, as the source suite still references them.
+    reprepro --dbdir "$reprepro_dir/db" --confdir "$reprepro_dir/conf" \
+             --export=never removematched "$alias" '*' > /dev/null
+    try_include pull "$alias"
+    cd "dists/$alias"
     cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
     cd - > /dev/null
 done
