@@ -363,15 +363,6 @@ find . -name &quot;*.png&quot; | fzf --preview &quot;viu -w 60 {}&quot;</code></
     </div>
 </div>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-FKYKE1SD5C');
-</script>
-
 <div class="tool-extras">
 <section>
 <h2>📦 Últimas versiones publicadas por este repositorio</h2>
@@ -400,6 +391,10 @@ find . -name &quot;*.png&quot; | fzf --preview &quot;viu -w 60 {}&quot;</code></
     <a href="/supported-architectures.html">Arquitecturas</a>
     <a href="/es/how-subscriptions-work.html">Cómo funciona el acceso</a>
     <a href="/terms.html">Términos y Condiciones</a>
+    <a href="/es/privacy.html">Privacidad</a>
+    <!-- reopens the cookie banner; revealed by the consent script, since
+         without JavaScript there is no choice to change -->
+    <button type="button" class="footer-consent" data-consent-open hidden>Configuración de cookies</button>
   </p>
   <p class="footer-legal">&copy; 2026 Dario Griffo. Todos los derechos reservados.</p>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
@@ -512,44 +507,195 @@ find . -name &quot;*.png&quot; | fzf --preview &quot;viu -w 60 {}&quot;</code></
   "inLanguage": "es"
  }
 }</script>
+<!-- Cookie consent. Hidden until the script below decides it is needed, so a
+     reader without JavaScript never sees a question nothing can act on (and
+     without JavaScript Google Analytics cannot load anyway). Accept and Reject
+     are the same element with the same class on purpose: refusing has to be
+     exactly as easy and as prominent as agreeing. Not a modal and no focus
+     trap: the page stays usable while it is open. -->
+<section class="consent" id="consent" role="region" aria-label="Consentimiento de cookies" hidden>
+  <p class="consent-text">Utilizamos cookies de Google Analytics para saber qué páginas ayudan a encontrar las herramientas que se buscan. No se instala ninguna salvo que usted las acepte. <a href="/es/privacy.html">Privacidad</a></p>
+  <div class="consent-actions">
+    <button type="button" class="btn-secondary consent-btn" data-consent-choice="granted">Aceptar</button>
+    <button type="button" class="btn-secondary consent-btn" data-consent-choice="denied">Rechazar</button>
+  </div>
+</section>
 <script src="/assets/js/site.js" defer></script>
 <script>
-  // gtag.js is async, but async only means "do not block the parser": it still
-  // competes for one of a limited number of HTTP/1.1 connections and it still
-  // ran ~95ms of forced reflow on the main thread while the page was painting.
-  // PageSpeed Insights attributed the last of this page's forced reflow to it,
-  // at gtag/js:909 and :912.
+  // Google Analytics, only with consent (UK PECR / EU ePrivacy; Google Consent
+  // Mode v2 "basic": nothing from Google loads until the visitor says yes).
   //
-  // The measurement calls below queue on dataLayer immediately, the way they
-  // always did. Only the library's arrival is moved: to the first idle moment,
-  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
-  // first. Six runs each way: 100/100/100/100/100/100 against
-  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  // Before a choice, and after a refusal, no Google script is requested, no
+  // _ga cookie exists and window.gtag is a function that does nothing. It is a
+  // no-op rather than the usual dataLayer queue on purpose: site.js fires its
+  // conversion events (trial_dialog_open, trial_started, generate_lead,
+  // begin_checkout) through window.gtag, and a queue would hold those and hand
+  // them to Google the moment someone accepted, i.e. send data recorded before
+  // consent existed. Dropped is the honest outcome.
   //
-  // The cost is honest and worth stating: a visitor who leaves before the
-  // library loads is not counted. The deadline bounds that to the first three
-  // seconds, and anyone who scrolls or taps is counted at once.
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-FKYKE1SD5C');
+  // The choice lives in localStorage under dgi-consent as
+  // {"v":1,"choice":"granted"|"denied"}. Raising CONSENT_VERSION asks everyone
+  // again. When storage is unavailable (private mode, blocked site data) the
+  // banner shows on every visit and the default is "not consented".
+  //
+  // This runs inline, after the banner and footer markup and before the
+  // deferred site.js, so the decision is made before anything could call gtag.
   (function () {
-    var done = false;
-    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
-    function load() {
-      if (done) { return; }
-      done = true;
-      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+    var GA_ID = 'G-FKYKE1SD5C';
+    var KEY = 'dgi-consent';
+    var CONSENT_VERSION = 1;
+    var banner = document.getElementById('consent');
+    var openers = document.querySelectorAll('[data-consent-open]');
+    var granted = false;
+    var requested = false;
+    var lastOpener = null;
+
+    window.dataLayer = window.dataLayer || [];
+    function queue() { window.dataLayer.push(arguments); }
+    queue('consent', 'default', {
+      ad_storage: 'denied', ad_user_data: 'denied',
+      ad_personalization: 'denied', analytics_storage: 'denied'
+    });
+    window.gtag = function () {};
+
+    function stored() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) { return null; }
+        var v = JSON.parse(raw);
+        if (v && v.v === CONSENT_VERSION && (v.choice === 'granted' || v.choice === 'denied')) {
+          return v.choice;
+        }
+      } catch (e) {}
+      return null;
+    }
+    function store(choice) {
+      try { localStorage.setItem(KEY, JSON.stringify({ v: CONSENT_VERSION, choice: choice })); } catch (e) {}
+    }
+
+    // _ga and _ga_<container> (and the older _gid/_gat), wherever GA may have
+    // put them: host-only, or on any parent domain (GA's "auto" cookie domain
+    // is griffo.io, shared with deb-free.griffo.io).
+    function clearCookies() {
+      var names = document.cookie.split(';').map(function (c) {
+        return c.split('=')[0].trim();
+      }).filter(function (n) {
+        // no regex anchors here: this file is a string.Template
+        return n === '_ga' || n.indexOf('_ga_') === 0 || n === '_gid' || n.indexOf('_gat') === 0;
+      });
+      if (!names.length) { return; }
+      var parts = location.hostname.split('.');
+      var domains = [''];
+      for (var i = 0; i < parts.length - 1; i++) {
+        var d = parts.slice(i).join('.');
+        domains.push('; domain=' + d, '; domain=.' + d);
+      }
+      names.forEach(function (n) {
+        domains.forEach(function (d) {
+          document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
+        });
+      });
+    }
+
+    function loadLibrary() {
+      if (requested) { return; }
+      requested = true;
       var s = document.createElement('script');
       s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
       document.head.appendChild(s);
     }
-    EVENTS.forEach(function (e) {
-      window.addEventListener(e, load, { once: true, passive: true });
+
+    // A returning visitor who accepted gets the library at the first idle
+    // moment, the first sign of a real visitor, or a 3s deadline, whichever
+    // comes first, so it does not compete with the page's first paint (see the
+    // PageSpeed notes in git history). Someone who has just clicked Accept is
+    // already interacting, so they get it at once.
+    function scheduleLibrary() {
+      var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+      function go() {
+        EVENTS.forEach(function (e) { window.removeEventListener(e, go); });
+        loadLibrary();
+      }
+      EVENTS.forEach(function (e) {
+        window.addEventListener(e, go, { once: true, passive: true });
+      });
+      if ('requestIdleCallback' in window) { requestIdleCallback(go, { timeout: 3000 }); }
+      else { setTimeout(go, 3000); }
+    }
+
+    function grant(now) {
+      if (granted) { return; }
+      granted = true;
+      window.gtag = queue;
+      queue('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'denied', analytics_storage: 'granted'
+      });
+      queue('js', new Date());
+      queue('config', GA_ID);
+      if (now) { loadLibrary(); } else { scheduleLibrary(); }
+    }
+
+    function showBanner(focus) {
+      if (!banner) { return; }
+      banner.hidden = false;
+      if (focus) {
+        var first = banner.querySelector('[data-consent-choice]');
+        if (first) { first.focus(); }
+      }
+    }
+    function hideBanner() {
+      if (!banner) { return; }
+      var hadFocus = banner.contains(document.activeElement);
+      banner.hidden = true;
+      if (hadFocus && lastOpener) { lastOpener.focus(); }
+      lastOpener = null;
+    }
+
+    function choose(choice) {
+      store(choice);
+      hideBanner();
+      if (choice === 'granted') { grant(true); return; }
+      var wasGranted = granted;
+      window.gtag = function () {};
+      if (wasGranted) {
+        // GA is already running in this page: tell it to stop writing, clear
+        // what it wrote, and reload so the library itself is gone.
+        queue('consent', 'update', {
+          ad_storage: 'denied', ad_user_data: 'denied',
+          ad_personalization: 'denied', analytics_storage: 'denied'
+        });
+        clearCookies();
+        location.reload();
+        return;
+      }
+      clearCookies();
+    }
+
+    var choice = stored();
+    if (choice === 'granted') {
+      grant(false);
+    } else {
+      // No choice, or a refusal: any _ga cookie here was not set with this
+      // visitor's consent (it predates the banner, or came from another
+      // griffo.io host), so it goes, and site.js has no client id to forward.
+      clearCookies();
+      if (choice !== 'denied') { showBanner(false); }
+    }
+
+    if (banner) {
+      banner.querySelectorAll('[data-consent-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { choose(b.getAttribute('data-consent-choice')); });
+      });
+    }
+    Array.prototype.forEach.call(openers, function (o) {
+      o.hidden = false;
+      o.addEventListener('click', function () {
+        lastOpener = o;
+        showBanner(true);
+      });
     });
-    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
-    else { setTimeout(load, 3000); }
   })();
 </script>
 </body>

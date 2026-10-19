@@ -1058,6 +1058,45 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   gap: 2px 28px; margin-bottom: 14px; font-size: 12.5px;
 }
 .footer-links a { display: block; padding: 5px 0; }
+/* "Cookie settings" is a button (it opens the consent banner, it goes nowhere)
+   dressed as one more footer link */
+.footer-consent {
+  display: block; padding: 5px 0; background: none; border: 0; cursor: pointer;
+  font: inherit; color: var(--slate-light);
+}
+.footer-consent:hover { color: var(--link); }
+.footer-consent[hidden] { display: none; }
+
+/* ── Cookie consent ──
+   A strip at the bottom, not a wall: the page behind it stays readable and
+   usable. Accept and Reject share one style so neither is the "easy" answer. */
+.consent {
+  position: fixed; left: 16px; right: 16px; bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 580; margin: 0 auto; max-width: 760px;
+  display: flex; align-items: center; gap: 14px 22px; flex-wrap: wrap;
+  padding: 16px 20px; border-radius: 16px;
+  background: var(--base-mid); border: 1px solid var(--graphite-soft);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.55);
+}
+.consent[hidden] { display: none; }
+/* room under the footer, so the open banner never sits on its last lines */
+body:has(.consent:not([hidden])) { padding-bottom: 130px; }
+.consent-text {
+  flex: 1 1 320px; margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ivory-muted);
+}
+.consent-text a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+.consent-text a:hover { color: var(--link-hover); }
+.consent-actions { display: flex; gap: 10px; flex: 0 0 auto; }
+.consent .consent-btn { padding: 10px 24px; min-width: 112px; justify-content: center; font-family: inherit; }
+.consent-btn:focus-visible, .footer-consent:focus-visible {
+  outline: 2px solid var(--link); outline-offset: 3px;
+}
+@media (max-width: 520px) {
+  .consent { left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); padding: 14px 16px; }
+  .consent-actions { flex: 1 1 100%; }
+  .consent .consent-btn { flex: 1 1 0; min-width: 0; padding: 10px 12px; }
+  body:has(.consent:not([hidden])) { padding-bottom: 230px; }
+}
 .footer-legal { font-size: 12.5px; }
 /* the two trademark disclaimers are the quiet ones */
 .footer-legal + p, .footer-legal + p + p { font-size: 11px; }

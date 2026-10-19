@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Confidentialité et cookies | deb.griffo.io</title>
+<meta name="description" content="Ce que deb.griffo.io collecte et pourquoi : Google Analytics seulement avec votre accord, statistiques Ahrefs sans cookie, données d’essai et de paiement.">
+<meta name="keywords" content="deb.griffo.io confidentialité, deb.griffo.io cookies, consentement google analytics, dépôt apt confidentialité, paramètres des cookies">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/privacy.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/privacy.html">
+<meta property="og:title" content="Confidentialité et cookies sur deb.griffo.io">
+<meta property="og:description" content="Ce que le site et le dépôt apt collectent, pourquoi, et comment modifier votre choix de cookies ou demander la suppression de vos données.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/privacy.html">
+<meta property="twitter:title" content="Confidentialité et cookies sur deb.griffo.io">
+<meta property="twitter:description" content="Ce que le site et le dépôt apt collectent, pourquoi, et comment modifier votre choix de cookies ou demander la suppression de vos données.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/privacy.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/privacy.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/privacy.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/privacy.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/privacy.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/privacy.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/privacy.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#reviews">Avis</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/fr/#pricing" class="nav-cta" data-trial>Essai gratuit</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#reviews" class="mobile-menu-link" data-index="05">Avis</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="06">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/fr/#pricing" class="btn-primary" data-trial>Essai gratuit</a>
+      <p class="mobile-menu-note"><a href="/free.html">Miroir gratuit</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 Le miroir apt nécessite un abonnement. <strong>Essayez tous les outils gratuitement pendant 14 jours</strong>, sans carte.
+      <a href="/fr/#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt renvoie 401 ?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Confidentialité et cookies</h1>
+        <p class="subtitle">Ce que deb.griffo.io et son dépôt apt collectent, pourquoi, et ce que vous pouvez y faire</p>
+    </div>
+
+    <div class="content">
+        <p><em>Dernière mise à jour : 19 octobre 2026</em></p>
+
+        <div class="highlight-box">
+            <strong>En bref.</strong> Aucun cookie n’est déposé sur ce site tant que vous n’avez pas
+            accepté Google Analytics, et vous pouvez changer d’avis à tout moment. Si vous démarrez
+            un essai ou vous abonnez, le dépôt conserve ce dont il a besoin pour vous donner accès
+            avec <code>apt</code> : votre adresse email, l’état de votre abonnement et un hash de
+            votre mot de passe. Les données de carte vont à Stripe et n’atteignent jamais ce site.
+        </div>
+
+        <h2>1. Qui gère ce site</h2>
+        <p>
+            deb.griffo.io, la page d’accueil de deb-free.griffo.io et les dépôts apt qui les
+            alimentent sont gérés par <strong>Dario Griffo</strong> (« je »). Vos questions et
+            demandes concernant vos données peuvent passer par
+            <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> ou par la
+            <a href="https://discord.gg/E2yHQNkuZy">communauté Discord</a> du projet.
+        </p>
+
+        <h2>2. Mesure d’audience</h2>
+        <p>
+            <strong>Google Analytics, seulement si vous acceptez.</strong> Tant que vous n’avez pas
+            cliqué sur <em>Accepter</em> dans le bandeau cookies, aucun script Google n’est chargé,
+            aucun cookie Google n’est déposé et votre navigateur n’envoie rien à Google. Si vous
+            acceptez, Google Analytics enregistre les pages que vous visitez et quelques actions :
+            l’ouverture du formulaire d’essai gratuit, le démarrage d’un essai et le passage au
+            paiement. Ces mêmes mesures servent à juger si la publicité pour ce site fonctionne :
+            accepter permet donc aussi à Google de relier un essai ou un achat à une annonce sur
+            laquelle vous avez cliqué. La personnalisation des annonces reste désactivée.
+        </p>
+        <p>
+            <strong>Achats réalisés.</strong> Quand un paiement aboutit, le serveur du dépôt
+            signale la vente à Google Analytics : la formule, le montant, la devise et la référence
+            Stripe du paiement. Ce signalement ne contient ni nom ni adresse email. Il n’est relié à
+            votre visite que si vous aviez accepté les cookies de mesure d’audience.
+        </p>
+        <p>
+            <strong>Ahrefs Web Analytics.</strong> Les pages de deb.griffo.io chargent aussi Ahrefs
+            Web Analytics, qui fonctionne sans cookie et ne fournit que des statistiques de pages
+            agrégées.
+        </p>
+
+        <h2>3. Essai gratuit</h2>
+        <p>
+            Pour démarrer un essai, vous saisissez une adresse email. Le formulaire est protégé par
+            <strong>Cloudflare Turnstile</strong>, chargé uniquement à l’ouverture du formulaire ;
+            le serveur vérifie sa réponse auprès de Cloudflare en lui transmettant votre adresse IP.
+            Le dépôt conserve votre adresse email et, seulement si vous avez accepté les cookies de
+            mesure d’audience, l’identifiant client Google Analytics issu du cookie
+            <code>_ga</code>, afin qu’un achat ultérieur puisse être attribué à la visite qui a
+            lancé l’essai. L’adresse email sert à vous envoyer vos identifiants, un rappel avant la
+            fin de l’essai et d’autres messages concernant votre accès.
+        </p>
+
+        <h2>4. Paiements</h2>
+        <p>
+            Les paiements sont traités par <strong>Stripe</strong>. Les données de carte vont à
+            Stripe et n’atteignent jamais ce site ni ses serveurs ; votre utilisation de Stripe
+            relève de ses propres conditions et de sa politique de confidentialité. Le dépôt
+            conserve votre adresse email, les références Stripe vous concernant et concernant votre
+            abonnement, la formule, son état et ses dates. Cette adresse reçoit vos identifiants et
+            les messages liés à votre abonnement, dont une seule demande d’avis, quelques jours
+            après son début.
+        </p>
+
+        <h2>5. Accès au dépôt</h2>
+        <p>
+            <code>apt</code> s’authentifie avec votre identifiant (votre adresse email) et un mot de
+            passe généré pour vous, conservé uniquement sous forme de hash bcrypt. Comme tout
+            serveur web, les serveurs du dépôt journalisent les requêtes, notamment l’adresse IP,
+            l’user agent et le fichier demandé, pour faire fonctionner le service et prévenir les
+            abus.
+        </p>
+
+        <h2>6. Cookies et stockage du navigateur</h2>
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Nom</th><th>Type</th><th>Rôle</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>_ga</code></td><td>Cookie, Google Analytics</td><td>Distingue les visites d’un même navigateur. Déposé seulement si vous acceptez.</td></tr>
+                <tr><td><code>_ga_&lt;id&gt;</code></td><td>Cookie, Google Analytics</td><td>Suit la visite en cours. Déposé seulement si vous acceptez.</td></tr>
+                <tr><td><code>dgi-consent</code></td><td>Stockage local, ce site</td><td>Mémorise si vous avez accepté ou refusé les cookies de mesure d’audience.</td></tr>
+                <tr><td><code>deb-griffo-install-variant</code></td><td>Stockage local, ce site</td><td>Mémorise si vous préférez les commandes avec <code>sudo</code>, en root ou avec extrepo.</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p>Ce site ne dépose aucun autre cookie. Les deux entrées du stockage local ne quittent jamais votre navigateur.</p>
+
+        <h2>7. Vos choix</h2>
+        <ul>
+            <li>
+                <strong>Modifiez votre choix de cookies</strong> à tout moment via
+                <em>Paramètres des cookies</em>, en bas de chaque page. Un refus supprime les cookies
+                de Google Analytics.
+            </li>
+            <li>
+                <strong>Demandez ce qui est conservé à votre sujet</strong>, ou sa rectification ou
+                sa suppression, via <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a>
+                ou la <a href="https://discord.gg/E2yHQNkuZy">communauté Discord</a>. Les issues
+                GitHub sont publiques : n’y publiez pas votre adresse email, indiquez simplement que
+                vous avez une demande liée à la confidentialité et la suite se fera en privé.
+                Supprimer votre compte met fin à votre accès au dépôt.
+            </li>
+        </ul>
+
+        <h2>8. Modifications</h2>
+        <p>
+            Si cette page change, la nouvelle version est publiée ici avec une date mise à jour.
+        </p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Miroir gratuit</a>
+    <a href="/how-packages-are-built.html">Comment les paquets sont construits</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/fr/how-subscriptions-work.html">Comment fonctionne l'accès</a>
+    <a href="/terms.html">Conditions Générales</a>
+    <a href="/fr/privacy.html">Confidentialité</a>
+    <!-- reopens the cookie banner; revealed by the consent script, since
+         without JavaScript there is no choice to change -->
+    <button type="button" class="footer-consent" data-consent-open hidden>Paramètres des cookies</button>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Tous droits réservés.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="fr">
+  <button type="button" class="trial-close" data-trial-close aria-label="Fermer">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Commencez votre essai gratuit de 14 jours</h2>
+    <p class="trial-lead">Saisissez votre email et nous vous enverrons vos identifiants apt en quelques minutes. Sans carte.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Adresse email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Elle deviendra votre identifiant apt. Si vous restez, payez avec la même adresse et rien ne change sur vos machines.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Chargement de la vérification…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Envoyer mes identifiants"
+              data-sending="Envoi…" disabled>Envoyer mes identifiants</button>
+    </form>
+    <p class="trial-fineprint">Un essai par adresse email. Deux jours avant la fin, nous vous envoyons un lien pour garder l’accès. Si vous ne faites rien, l’accès s’arrête et rien n’est facturé.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Consultez votre boîte de réception</h2>
+    <p class="trial-lead" data-trial-success data-template="Vos identifiants sont en route vers {email}. Ils arrivent en général en quelques minutes ; sinon, vérifiez les spams."></p>
+    <p class="trial-lead">Lancez ensuite le script d’installation de l’email, c’est tout.</p>
+    <p class="trial-help">Pas d’email après 15 minutes ? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Ouvrez une issue sur GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">écrivez-moi sur Discord</a>, je m’en occupe.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Fermer</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Cette adresse a déjà un compte ou a déjà eu un essai. Choisissez une offre pour continuer, ou répondez à votre email de bienvenue en cas de problème. <a href="/fr/#pricing" data-trial-close>Voir les offres &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Nous n’avons pas pu confirmer que vous êtes humain. Veuillez réessayer.</span>
+    <span data-code="INVALID_EMAIL">Cette adresse email ne semble pas valide.</span>
+    <span data-code="MISSING_EMAIL">Cette adresse email ne semble pas valide.</span>
+    <span data-code="RATE_LIMITED">Une tentative a déjà été faite aujourd'hui depuis votre réseau. Réessayez demain.</span>
+    <span data-code="GENERIC">Un problème est survenu de notre côté. Réessayez, ou demandez sur Discord.</span>
+  </template>
+</dialog>
+
+
+<!-- Cookie consent. Hidden until the script below decides it is needed, so a
+     reader without JavaScript never sees a question nothing can act on (and
+     without JavaScript Google Analytics cannot load anyway). Accept and Reject
+     are the same element with the same class on purpose: refusing has to be
+     exactly as easy and as prominent as agreeing. Not a modal and no focus
+     trap: the page stays usable while it is open. -->
+<section class="consent" id="consent" role="region" aria-label="Consentement aux cookies" hidden>
+  <p class="consent-text">Nous utilisons les cookies de Google Analytics pour savoir quelles pages aident à trouver les outils recherchés. Aucun cookie n’est déposé sans votre accord. <a href="/fr/privacy.html">Confidentialité</a></p>
+  <div class="consent-actions">
+    <button type="button" class="btn-secondary consent-btn" data-consent-choice="granted">Accepter</button>
+    <button type="button" class="btn-secondary consent-btn" data-consent-choice="denied">Refuser</button>
+  </div>
+</section>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // Google Analytics, only with consent (UK PECR / EU ePrivacy; Google Consent
+  // Mode v2 "basic": nothing from Google loads until the visitor says yes).
+  //
+  // Before a choice, and after a refusal, no Google script is requested, no
+  // _ga cookie exists and window.gtag is a function that does nothing. It is a
+  // no-op rather than the usual dataLayer queue on purpose: site.js fires its
+  // conversion events (trial_dialog_open, trial_started, generate_lead,
+  // begin_checkout) through window.gtag, and a queue would hold those and hand
+  // them to Google the moment someone accepted, i.e. send data recorded before
+  // consent existed. Dropped is the honest outcome.
+  //
+  // The choice lives in localStorage under dgi-consent as
+  // {"v":1,"choice":"granted"|"denied"}. Raising CONSENT_VERSION asks everyone
+  // again. When storage is unavailable (private mode, blocked site data) the
+  // banner shows on every visit and the default is "not consented".
+  //
+  // This runs inline, after the banner and footer markup and before the
+  // deferred site.js, so the decision is made before anything could call gtag.
+  (function () {
+    var GA_ID = 'G-FKYKE1SD5C';
+    var KEY = 'dgi-consent';
+    var CONSENT_VERSION = 1;
+    var banner = document.getElementById('consent');
+    var openers = document.querySelectorAll('[data-consent-open]');
+    var granted = false;
+    var requested = false;
+    var lastOpener = null;
+
+    window.dataLayer = window.dataLayer || [];
+    function queue() { window.dataLayer.push(arguments); }
+    queue('consent', 'default', {
+      ad_storage: 'denied', ad_user_data: 'denied',
+      ad_personalization: 'denied', analytics_storage: 'denied'
+    });
+    window.gtag = function () {};
+
+    function stored() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) { return null; }
+        var v = JSON.parse(raw);
+        if (v && v.v === CONSENT_VERSION && (v.choice === 'granted' || v.choice === 'denied')) {
+          return v.choice;
+        }
+      } catch (e) {}
+      return null;
+    }
+    function store(choice) {
+      try { localStorage.setItem(KEY, JSON.stringify({ v: CONSENT_VERSION, choice: choice })); } catch (e) {}
+    }
+
+    // _ga and _ga_<container> (and the older _gid/_gat), wherever GA may have
+    // put them: host-only, or on any parent domain (GA's "auto" cookie domain
+    // is griffo.io, shared with deb-free.griffo.io).
+    function clearCookies() {
+      var names = document.cookie.split(';').map(function (c) {
+        return c.split('=')[0].trim();
+      }).filter(function (n) {
+        // no regex anchors here: this file is a string.Template
+        return n === '_ga' || n.indexOf('_ga_') === 0 || n === '_gid' || n.indexOf('_gat') === 0;
+      });
+      if (!names.length) { return; }
+      var parts = location.hostname.split('.');
+      var domains = [''];
+      for (var i = 0; i < parts.length - 1; i++) {
+        var d = parts.slice(i).join('.');
+        domains.push('; domain=' + d, '; domain=.' + d);
+      }
+      names.forEach(function (n) {
+        domains.forEach(function (d) {
+          document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
+        });
+      });
+    }
+
+    function loadLibrary() {
+      if (requested) { return; }
+      requested = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+    }
+
+    // A returning visitor who accepted gets the library at the first idle
+    // moment, the first sign of a real visitor, or a 3s deadline, whichever
+    // comes first, so it does not compete with the page's first paint (see the
+    // PageSpeed notes in git history). Someone who has just clicked Accept is
+    // already interacting, so they get it at once.
+    function scheduleLibrary() {
+      var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+      function go() {
+        EVENTS.forEach(function (e) { window.removeEventListener(e, go); });
+        loadLibrary();
+      }
+      EVENTS.forEach(function (e) {
+        window.addEventListener(e, go, { once: true, passive: true });
+      });
+      if ('requestIdleCallback' in window) { requestIdleCallback(go, { timeout: 3000 }); }
+      else { setTimeout(go, 3000); }
+    }
+
+    function grant(now) {
+      if (granted) { return; }
+      granted = true;
+      window.gtag = queue;
+      queue('consent', 'update', {
+        ad_storage: 'granted', ad_user_data: 'granted',
+        ad_personalization: 'denied', analytics_storage: 'granted'
+      });
+      queue('js', new Date());
+      queue('config', GA_ID);
+      if (now) { loadLibrary(); } else { scheduleLibrary(); }
+    }
+
+    function showBanner(focus) {
+      if (!banner) { return; }
+      banner.hidden = false;
+      if (focus) {
+        var first = banner.querySelector('[data-consent-choice]');
+        if (first) { first.focus(); }
+      }
+    }
+    function hideBanner() {
+      if (!banner) { return; }
+      var hadFocus = banner.contains(document.activeElement);
+      banner.hidden = true;
+      if (hadFocus && lastOpener) { lastOpener.focus(); }
+      lastOpener = null;
+    }
+
+    function choose(choice) {
+      store(choice);
+      hideBanner();
+      if (choice === 'granted') { grant(true); return; }
+      var wasGranted = granted;
+      window.gtag = function () {};
+      if (wasGranted) {
+        // GA is already running in this page: tell it to stop writing, clear
+        // what it wrote, and reload so the library itself is gone.
+        queue('consent', 'update', {
+          ad_storage: 'denied', ad_user_data: 'denied',
+          ad_personalization: 'denied', analytics_storage: 'denied'
+        });
+        clearCookies();
+        location.reload();
+        return;
+      }
+      clearCookies();
+    }
+
+    var choice = stored();
+    if (choice === 'granted') {
+      grant(false);
+    } else {
+      // No choice, or a refusal: any _ga cookie here was not set with this
+      // visitor's consent (it predates the banner, or came from another
+      // griffo.io host), so it goes, and site.js has no client id to forward.
+      clearCookies();
+      if (choice !== 'denied') { showBanner(false); }
+    }
+
+    if (banner) {
+      banner.querySelectorAll('[data-consent-choice]').forEach(function (b) {
+        b.addEventListener('click', function () { choose(b.getAttribute('data-consent-choice')); });
+      });
+    }
+    Array.prototype.forEach.call(openers, function (o) {
+      o.hidden = false;
+      o.addEventListener('click', function () {
+        lastOpener = o;
+        showBanner(true);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
