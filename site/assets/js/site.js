@@ -377,6 +377,41 @@
   openDeepDive();
   window.addEventListener('hashchange', openDeepDive);
 
+  // ── Analytics: the visitor's GA client id ──
+  // Read from the _ga cookie ("GA1.1.<random>.<timestamp>") rather than asked of
+  // gtag, which loads late (see layout.html) and answers asynchronously. Null
+  // until gtag has run once, or when cookies are refused.
+  function analyticsClientId() {
+    var m = document.cookie.match(/(?:^|;\s*)_ga=GA\d\.\d\.(\d+\.\d+)/);
+    return m ? m[1] : null;
+  }
+
+  // ── Checkout links ──
+  // Stripe payment links leave the site, so GA never sees the purchase itself.
+  // begin_checkout is counted here, and the client id travels to Stripe as
+  // client_reference_id, which the gate's webhook hands back to GA with the
+  // purchase. Stripe allows only letters, digits, - and _ there, hence the
+  // dot becoming an underscore; the gate turns it back.
+  document.querySelectorAll('a[href^="https://buy.stripe.com/"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var card = link.closest('.pricing-card');
+      var price = card && card.querySelector('.price-value[data-amount]');
+      var tier = card && card.querySelector('.pricing-tier');
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'begin_checkout', {
+          currency: 'EUR',
+          value: price ? Number(price.dataset.amount) : undefined,
+          items: [{ item_name: tier ? tier.textContent.trim() : link.href }]
+        });
+      }
+      var id = analyticsClientId();
+      if (id && link.href.indexOf('client_reference_id=') === -1) {
+        link.href += (link.href.indexOf('?') === -1 ? '?' : '&')
+          + 'client_reference_id=' + id.replace('.', '_');
+      }
+    });
+  });
+
   // ── Free trial dialog ──
   // Every [data-trial] element is a real link to #pricing, where the trial card
   // makes the same offer; script upgrades it to this dialog. The captcha script
@@ -396,6 +431,14 @@
 
     var track = function (name) {
       if (typeof window.gtag === 'function') { window.gtag('event', name); }
+    };
+    // generate_lead is GA4's recommended name for a sign-up, the one Google Ads
+    // imports as a conversion; trial_started stays for the reports already built
+    // on it.
+    var trackLead = function () {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', { lead_source: 'trial' });
+      }
     };
 
     // Stricter than type="email", which accepts "d@d": a domain needs a dot and a
@@ -498,7 +541,13 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'omit',
-        body: JSON.stringify({ email: address, turnstile_token: token })
+        // The analytics id rides along so a purchase made later from the trial's
+        // emails can still be credited to the visit that started it.
+        body: JSON.stringify({
+          email: address,
+          turnstile_token: token,
+          analytics_client_id: analyticsClientId()
+        })
       }).then(function (r) {
         if (r.status === 202) {
           sending = false;
@@ -512,6 +561,7 @@
           trial.querySelector('[data-trial-step="form"]').hidden = true;
           trial.querySelector('[data-trial-step="done"]').hidden = false;
           track('trial_started');
+          trackLead();
           return;
         }
         if (r.status === 429) { finish('RATE_LIMITED'); return; }
