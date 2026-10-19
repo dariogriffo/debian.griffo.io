@@ -513,6 +513,19 @@ h4.block-subtitle {
    Ubuntu tile. `scale` enlarges it without touching the row's layout box, and composes
    with the hover transform. Exact src: "ubuntu-logo.webp" also ends in "logo.webp". */
 .hero-logos img[src="/assets/img/logo.webp"] { scale: 1.45; }
+/* With distro marks either side (the homepages), the row is three columns:
+   Debian and its derivatives right-aligned in the first, deb.griffo.io alone in
+   the middle one, Ubuntu and its derivatives left-aligned in the last. The
+   sides hold different numbers of marks, and a plain flex row centred the
+   whole run, which put Ubuntu in the middle; the grid keeps the cube on the
+   axis whatever each side holds. The cube is drawn larger here, with margin to
+   match, since scale does not move its neighbours. */
+.hero-logos:has(.hero-side) { display: grid; grid-template-columns: 1fr auto 1fr; column-gap: 34px; }
+.hero-side { display: flex; align-items: center; gap: 26px; }
+.hero-side-l { justify-content: flex-end; }
+.hero-side-r { justify-content: flex-start; }
+.hero-logos:has(.hero-side) img[src="/assets/img/logo.webp"] { scale: 1.8; }
+.hero-logos:has(.hero-side) > a { margin: 0 12px; }
 /* The derivatives either side of the row (data/distros.yaml): Debian-based ones
    outward from the Debian mark, Ubuntu-based ones outward from Ubuntu's. Smaller
    and dimmer than the three main marks so the row still reads Debian, us, Ubuntu,
@@ -520,7 +533,7 @@ h4.block-subtitle {
 .hero-logos img.hero-distro { height: 36px; opacity: 0.7; }
 .hero-logos a:hover img.hero-distro { opacity: 1; }
 @media (max-width: 900px) {
-  .hero-logos { gap: 18px; }
+  .hero-logos, .hero-side { gap: 18px; }
 }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px;
@@ -1291,12 +1304,18 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   .hero-logos { gap: 20px; }
   /* No room for eleven marks on a phone: the main three keep their row and
      the derivatives wrap onto one below it. The ::after is the line break. */
+  /* The sides dissolve into one flex row again: the main three on the first
+     line, the derivatives wrapped onto one below (the ::after is the break). */
+  .hero-logos:has(.hero-side) { display: flex; column-gap: 12px; }
+  .hero-side { display: contents; }
   .hero-logos { flex-wrap: wrap; row-gap: 18px; column-gap: 12px; }
   .hero-logos::after { content: ""; flex-basis: 100%; order: 1; }
   .hero-logos .hero-distro-link { order: 2; }
   .hero-logos img.hero-distro { height: 26px; }
   /* the main three keep their spacing; the tighter gap is for the eight */
-  .hero-logos > a:not(.hero-distro-link) { margin: 0 4px; }
+  .hero-logos a:not(.hero-distro-link) { margin: 0 4px; }
+  .hero-logos:has(.hero-side) img[src="/assets/img/logo.webp"] { scale: 1.6; }
+  .hero-logos:has(.hero-side) > a { margin: 0 10px; }
   .hero-metrics { gap: 26px; }
   .package-grid { grid-template-columns: 1fr; }
   /* the announcement is two sentences of small print; it needs the room the
@@ -1792,6 +1811,6 @@ a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple
 .suite-also a { color: inherit; }
 /* after every max-width: 560px block, which would otherwise win */
 @media (max-width: 360px) {
-  .hero-logos { column-gap: 6px; }
+  .hero-logos, .hero-logos:has(.hero-side) { column-gap: 6px; }
   .hero-logos img.hero-distro { height: 22px; }
 }
