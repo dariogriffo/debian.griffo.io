@@ -513,6 +513,15 @@ h4.block-subtitle {
    Ubuntu tile. `scale` enlarges it without touching the row's layout box, and composes
    with the hover transform. Exact src: "ubuntu-logo.webp" also ends in "logo.webp". */
 .hero-logos img[src="/assets/img/logo.webp"] { scale: 1.45; }
+/* The derivatives either side of the row (data/distros.yaml): Debian-based ones
+   outward from the Debian mark, Ubuntu-based ones outward from Ubuntu's. Smaller
+   and dimmer than the three main marks so the row still reads Debian, us, Ubuntu,
+   with "and these" around it rather than eleven equal logos. */
+.hero-logos img.hero-distro { height: 36px; opacity: 0.7; }
+.hero-logos a:hover img.hero-distro { opacity: 1; }
+@media (max-width: 900px) {
+  .hero-logos { gap: 18px; }
+}
 .hero-badge {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px;
   padding: 7px 14px; border-radius: 40px; text-decoration: none;
@@ -1280,6 +1289,14 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
   }
   .hero-logos img { height: 40px; }
   .hero-logos { gap: 20px; }
+  /* No room for eleven marks on a phone: the main three keep their row and
+     the derivatives wrap onto one below it. The ::after is the line break. */
+  .hero-logos { flex-wrap: wrap; row-gap: 18px; column-gap: 12px; }
+  .hero-logos::after { content: ""; flex-basis: 100%; order: 1; }
+  .hero-logos .hero-distro-link { order: 2; }
+  .hero-logos img.hero-distro { height: 26px; }
+  /* the main three keep their spacing; the tighter gap is for the eight */
+  .hero-logos > a:not(.hero-distro-link) { margin: 0 4px; }
   .hero-metrics { gap: 26px; }
   .package-grid { grid-template-columns: 1fr; }
   /* the announcement is two sentences of small print; it needs the room the
@@ -1769,3 +1786,12 @@ a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple
    colour of their own; give them one so a slow or failed image shows alt text
    in the page's own ink rather than default blue. */
 .hero-logos a { color: var(--ivory-muted); text-decoration: none; }
+/* Under a Debian/Ubuntu release in a version table: the derivatives that run it
+   (generate.suite_also), linked to their distro pages. */
+.suite-also { display: inline-block; margin-top: 4px; font-size: 0.82em; color: var(--ivory-muted); }
+.suite-also a { color: inherit; }
+/* after every max-width: 560px block, which would otherwise win */
+@media (max-width: 360px) {
+  .hero-logos { column-gap: 6px; }
+  .hero-logos img.hero-distro { height: 22px; }
+}
