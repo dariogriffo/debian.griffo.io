@@ -9,15 +9,19 @@
 #   SRC_SUITES       suites that get the dist-agnostic .dsc; default: the suites
 #                    that have a binary of this package staged under deb/, or
 #                    every suite when none has
+#   DIST_TAG         tag after the ~ in dist-agnostic names; default griffo
 #   RELEASE_BASE_URL override the release download URL (tests only)
 #
 # Two release layouts are understood, newest first (see download_bin.sh for
 # the binary side of the same story):
 #
-#  1. Dist-agnostic: <pkg>_<ver>-<build>.dsc — one source package for every
-#     suite. The .dsc, its .debian.tar.xz and the orig tarball are kept
-#     together in src/common/ (reprepro resolves a .dsc's Files next to the
-#     .dsc), and the .dsc is symlinked into src/<suite>/ for each suite.
+#  1. Dist-agnostic: <pkg>_<ver>-<build>~griffo.dsc — one source package for
+#     every suite (the ~ is explained in download_bin.sh; GitHub's ~ -> .
+#     mangling is undone here as well, since the .dsc names its
+#     .debian.tar.xz with the ~). The .dsc, its .debian.tar.xz and the orig
+#     tarball are kept together in src/common/ (reprepro resolves a .dsc's
+#     Files next to the .dsc), and the .dsc is symlinked into src/<suite>/ for
+#     each suite.
 #  2. Per-suite (legacy): <pkg>_<ver>-<build>~<suite>.dsc, saved flat in src/,
 #     with GitHub's ~ -> . mangling undone on the way. The orig tarball is
 #     shared and sits next to them.
@@ -103,16 +107,25 @@ declare -a ALL_DISTS=("${DEBIAN_DISTS[@]}" "${UBUNTU_DISTS[@]}")
 # script's business, as before. The orig tarball is named <pkg>_<ver>.orig...,
 # hence the [.-] after the version.
 CURRENT="${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}"
+DIST_TAG=${DIST_TAG:-griffo}
 find . -mindepth 2 -maxdepth 2 \( -type f -o -type l \) -name "${PACKAGE_NAME}_*" \
      ! -name "${PACKAGE_NAME}_${PACKAGE_VERSION}[.-]*" -delete 2>/dev/null
 find . -mindepth 2 -maxdepth 2 -xtype l -delete 2>/dev/null
 
-AGNOSTIC_DSC="${CURRENT}.dsc"
-if [ "$(http_status "${BASE_URL}/${AGNOSTIC_DSC}")" = "200" ]; then
+AGNOSTIC="${CURRENT}~${DIST_TAG}"
+AGNOSTIC_DSC="${AGNOSTIC}.dsc"
+AGNOSTIC_ASSET=""
+for candidate in "${AGNOSTIC}" "${CURRENT}.${DIST_TAG}"; do
+    if [ "$(http_status "${BASE_URL}/${candidate}.dsc")" = "200" ]; then
+        AGNOSTIC_ASSET="$candidate"
+        break
+    fi
+done
+if [ -n "$AGNOSTIC_ASSET" ]; then
     echo "Downloading dist-agnostic source package into src/common/..."
     mkdir -p common
-    download_file "${BASE_URL}/${AGNOSTIC_DSC}" "common/${AGNOSTIC_DSC}"
-    download_file "${BASE_URL}/${CURRENT}.debian.tar.xz" "common/${CURRENT}.debian.tar.xz"
+    download_file "${BASE_URL}/${AGNOSTIC_ASSET}.dsc" "common/${AGNOSTIC_DSC}"
+    download_file "${BASE_URL}/${AGNOSTIC_ASSET}.debian.tar.xz" "common/${AGNOSTIC}.debian.tar.xz"
     ORIG_FILE="$(find_orig)"
     if [ -n "$ORIG_FILE" ]; then
         download_file "${BASE_URL}/${ORIG_FILE}" "common/${ORIG_FILE}"
@@ -124,7 +137,7 @@ if [ "$(http_status "${BASE_URL}/${AGNOSTIC_DSC}")" = "200" ]; then
     # package kept out of bookworm (glibc floor) has no source there either.
     if [ -z "${SRC_SUITES:-}" ]; then
         for DIST in "${ALL_DISTS[@]}"; do
-            if ls "../deb/${DIST}/${CURRENT}_"*.deb >/dev/null 2>&1; then
+            if ls "../deb/${DIST}/${AGNOSTIC}_"*.deb >/dev/null 2>&1; then
                 SRC_SUITES="${SRC_SUITES:+$SRC_SUITES }${DIST}"
             fi
         done

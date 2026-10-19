@@ -10,17 +10,21 @@
 # Env:
 #   RELEASE_VERSION  version in the release tag when it differs from the
 #                    package version (zig-oldstable); default <package_version>
+#   DIST_TAG         tag after the ~ in dist-agnostic names; default griffo
 #   EXCLUDE          "suite:arch" pairs to skip, e.g. "bookworm:riscv64 jammy:riscv64"
 #                    for a build whose glibc floor only some suites meet
 #   RELEASE_BASE_URL override the release download URL (tests only)
 #
 # Two release layouts are understood, newest first:
 #
-#  1. Dist-agnostic: <pkg>_<ver>-<build>_<arch>.deb — one file for every suite.
-#     Downloaded once into deb/common/ and symlinked into deb/<suite>/ for each
-#     suite given. reprepro's pool is keyed by filename+checksum, so including
-#     the same file into eight suites stores it once; the links are the
-#     per-suite view generate_index.sh walks.
+#  1. Dist-agnostic: <pkg>_<ver>-<build>~griffo_<arch>.deb — one file for every
+#     suite. The ~ keeps it below the distro's own <ver>-<build> so an official
+#     package of the same version wins; the fixed tag replaces ~<suite>. GitHub
+#     mangles ~ to . here too, so the .griffo spelling is tried next and saved
+#     back under the ~ name. Downloaded once into deb/common/ and symlinked into
+#     deb/<suite>/ for each suite given. reprepro's pool is keyed by
+#     filename+checksum, so including the same file into eight suites stores it
+#     once; the links are the per-suite view generate_index.sh walks.
 #  2. Per-suite (legacy): <pkg>_<ver>-<build>~<suite>_<arch>[_ubu].deb saved
 #     into deb/<suite>/. GitHub mangles ~ to . in asset names, so the . spelling
 #     is tried next (and saved back under the ~ name); the oldest repos still
@@ -59,6 +63,7 @@ esac
 RELEASE_VERSION=${RELEASE_VERSION:-$PACKAGE_VERSION}
 BASE_URL=${RELEASE_BASE_URL:-https://github.com/dariogriffo/${REPO}/releases/download/${RELEASE_VERSION}%2B${BUILD_VERSION}}
 CURRENT="${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}"
+DIST_TAG=${DIST_TAG:-griffo}
 
 excluded() {
     case " ${EXCLUDE:-} " in
@@ -78,16 +83,18 @@ find deb -mindepth 2 -maxdepth 2 \( -type f -o -type l \) -name "${PACKAGE_NAME}
 find deb -mindepth 2 -maxdepth 2 -xtype l -delete
 
 for ARCH in "${ARCHS[@]}"; do
-    AGNOSTIC="${CURRENT}_${ARCH}.deb"
+    AGNOSTIC="${CURRENT}~${DIST_TAG}_${ARCH}.deb"
 
     # The debian and ubuntu wrappers run back to back for the same release, so
     # the second one finds the file already in common/ and only adds links.
     if [ ! -f "deb/common/${AGNOSTIC}" ]; then
-        if wget -nv -O "deb/common/${AGNOSTIC}.part" "${BASE_URL}/${AGNOSTIC}" 2>/dev/null; then
-            mv "deb/common/${AGNOSTIC}.part" "deb/common/${AGNOSTIC}"
-        else
+        for asset in "${AGNOSTIC}" "${CURRENT}.${DIST_TAG}_${ARCH}.deb"; do
+            if wget -nv -O "deb/common/${AGNOSTIC}.part" "${BASE_URL}/${asset}" 2>/dev/null; then
+                mv "deb/common/${AGNOSTIC}.part" "deb/common/${AGNOSTIC}"
+                break
+            fi
             rm -f "deb/common/${AGNOSTIC}.part"
-        fi
+        done
     fi
 
     if [ -f "deb/common/${AGNOSTIC}" ]; then
