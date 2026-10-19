@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Privacy: no cookies, cookieless analytics | deb.griffo.io</title>
+<meta name="description" content="What deb.griffo.io collects and why: no cookies, first-party analytics that stores nothing on your device, the free trial, Stripe payments and logs.">
+<meta name="keywords" content="deb.griffo.io privacy, deb.griffo.io cookies, cookieless analytics, apt repository privacy, no cookies, gdpr">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/privacy.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/privacy.html">
+<meta property="og:title" content="Privacy at deb.griffo.io">
+<meta property="og:description" content="No cookies and nothing stored on your device: what the site and the apt repository collect, why, and how to ask for your data to be deleted.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/privacy.html">
+<meta property="twitter:title" content="Privacy at deb.griffo.io">
+<meta property="twitter:description" content="No cookies and nothing stored on your device: what the site and the apt repository collect, why, and how to ask for your data to be deleted.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/privacy.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/privacy.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/privacy.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/privacy.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/privacy.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/privacy.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/privacy.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#packages">Packages</a></li>
+    <li><a href="/#install">Install</a></li>
+    <li><a href="/#versions">Versions</a></li>
+    <li><a href="/#source">Source</a></li>
+    <li><a href="/#reviews">Reviews</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Select language"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>English</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/#pricing" class="nav-cta" data-trial>Start free trial</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/#packages" class="mobile-menu-link" data-index="01">Packages</a>
+      <a href="/#install" class="mobile-menu-link" data-index="02">Install</a>
+      <a href="/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/#source" class="mobile-menu-link" data-index="04">Source</a>
+      <a href="/#reviews" class="mobile-menu-link" data-index="05">Reviews</a>
+      <a href="/#pricing" class="mobile-menu-link" data-index="06">Pricing</a>
+      <a href="/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/#pricing" class="btn-primary" data-trial>Start free trial</a>
+      <p class="mobile-menu-note"><a href="/free.html">Free mirror</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll progress">
+  <span class="side-label">Scroll</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 developer tools, always updated</strong>, new upstream releases land in <code>apt</code> within hours.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Join the Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 The apt mirror needs a subscription. <strong>Try every tool free for 14 days</strong>, no card needed.
+      <a href="/#pricing">See pricing</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">There is an always-free mirror</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt returning 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Privacy</h1>
+        <p class="subtitle">What deb.griffo.io and its apt repository collect, why, and what you can do about it</p>
+    </div>
+
+    <div class="content">
+        <p><em>Last updated: 19 October 2026</em></p>
+
+        <div class="highlight-box">
+            <strong>In short.</strong> This site sets no cookies, and its analytics store nothing
+            on your device, so there is no cookie banner to click through. Visits are counted by
+            a small first-party service on our own server that cannot recognise you from one day
+            to the next. If you start a trial or subscribe, the repository keeps what it needs to
+            give you <code>apt</code> access: your email address, your subscription status and a
+            hash of your password. Card details go to Stripe and never reach this site.
+        </div>
+
+        <h2>1. Who runs this site</h2>
+        <p>
+            deb.griffo.io, deb-free.griffo.io and the apt repositories behind them are run by
+            <strong>Dario Griffo</strong> ("I", "me"). Questions and requests about your data can
+            be raised via <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> or
+            the project <a href="https://discord.gg/E2yHQNkuZy">Discord community</a>.
+        </p>
+
+        <h2>2. Analytics</h2>
+        <p>
+            Page views are counted by <strong>ttics</strong>, a small analytics service I run
+            myself, on our own server. No third party receives the data. When a page loads, your
+            browser sends it the page's address and a few facts about the visit. From those it
+            records:
+        </p>
+        <ul>
+            <li>the page you visited (its path, without the query string);</li>
+            <li>the <strong>host</strong> of the site that linked you here, never the full address;</li>
+            <li>the <code>utm_</code> campaign tags in the address, when there are any (they mark a visit that came from an ad or a newsletter);</li>
+            <li>the page's language;</li>
+            <li>a device class (mobile, tablet or desktop), worked out from the width of the window;</li>
+            <li>the browser and operating system family, such as Firefox on Linux, without versions;</li>
+            <li>a few actions: opening the free-trial form, starting a trial and going to checkout;</li>
+            <li>a <strong>daily visitor hash</strong>, explained below.</li>
+        </ul>
+        <p>
+            The visitor hash is a SHA-256 of a random value that changes every day (the daily
+            salt), your IP address, your browser's User-Agent and the site's host name. It lets
+            the service count how many different people visited on a given day. Each salt is
+            deleted after two days, after which the hash cannot be recomputed from an address,
+            and a new day's hash never matches an old one, so <strong>you cannot be recognised
+            across days</strong>. Your <strong>IP address and full User-Agent are never
+            stored</strong>; they are only fed into that hash. Obvious bots and crawlers are
+            dropped before anything is recorded.
+        </p>
+        <p>
+            I use these numbers to see which pages help people find what they need and whether
+            advertising for the site works: a visit that arrives with campaign tags is credited
+            with the trials and checkouts started that same day.
+        </p>
+        <p>
+            <strong>Ahrefs Web Analytics.</strong> Pages on deb.griffo.io also load Ahrefs Web
+            Analytics, a cookieless service from Ahrefs that reports page statistics in aggregate.
+        </p>
+
+        <h2>3. Free trial</h2>
+        <p>
+            To start a trial you enter an email address. The form is protected by
+            <strong>Cloudflare Turnstile</strong>, whose script is fetched only when you open the
+            form, so a visit that never opens it never loads it. To check the answer, the
+            server passes it to Cloudflare along with your IP address. The repository stores
+            your email address, and uses it to send your credentials, a reminder before the trial
+            ends and other messages about your access. Your IP address is also used, in memory
+            only, to allow one trial request per address per day.
+        </p>
+
+        <h2>4. Payments</h2>
+        <p>
+            Payments are processed by <strong>Stripe</strong>. Card details go to Stripe and
+            never reach this site or its servers; your use of Stripe is subject to Stripe's own
+            terms and <a href="https://stripe.com/privacy">privacy policy</a>. The repository
+            keeps your email address, Stripe's references for you and your subscription, the
+            plan, its status and its dates. A purchase is linked to an earlier trial by that
+            email address, so I can tell how many trials turn into subscriptions. The address
+            receives your credentials and messages about your subscription, including one request
+            for a review a couple of days after it starts.
+        </p>
+
+        <h2>5. Repository access and server logs</h2>
+        <p>
+            <code>apt</code> authenticates with your login (your email address) and a password
+            generated for you, which is stored only as a bcrypt hash. Like any web server, the
+            servers behind the site and the repository log requests, including the IP address,
+            the user agent and the file requested, to keep the service running and to prevent
+            abuse. The analytics service is the exception: its log leaves out the address, the
+            user agent and the referrer.
+        </p>
+
+        <h2>6. Cookies and browser storage</h2>
+        <p>
+            This site sets <strong>no cookies</strong>, and the analytics write nothing to your
+            browser. The one thing the site itself may keep there is a preference: if you switch
+            the install commands between <code>sudo</code>, root and extrepo, your choice is
+            saved in your browser's local storage as <code>deb-griffo-install-variant</code> so
+            the next page shows the same form. It never leaves your browser, and clearing your
+            site data removes it. Cloudflare Turnstile (only when you open the trial form) and
+            Stripe (only when you go to checkout) are run by those companies under their own
+            policies.
+        </p>
+
+        <h2>7. Your rights</h2>
+        <ul>
+            <li>
+                <strong>Ask what is held about you</strong>, or have it corrected or deleted, via
+                <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> or the
+                <a href="https://discord.gg/E2yHQNkuZy">Discord community</a>. GitHub issues are
+                public, so do not post your email address there; say you have a privacy request
+                and it can continue privately. Deleting your account ends your repository access.
+            </li>
+            <li>
+                <strong>Analytics cannot be traced back to you.</strong> They hold no name, email,
+                IP address or cookie, and the daily hash cannot be linked to a person once its salt
+                is gone, so there is nothing in them to look up or delete for one visitor.
+            </li>
+            <li>
+                <strong>You can complain</strong> to your data protection authority if you think
+                your data has been mishandled.
+            </li>
+        </ul>
+
+        <h2>8. Changes</h2>
+        <p>
+            If this page changes, the new version is posted here with an updated date.
+        </p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Free mirror</a>
+    <a href="/how-packages-are-built.html">How packages are built</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/how-subscriptions-work.html">How access works</a>
+    <a href="/terms.html">Terms &amp; Conditions</a>
+    <a href="/privacy.html">Privacy</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. All rights reserved.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="en">
+  <button type="button" class="trial-close" data-trial-close aria-label="Close">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Start your 14-day free trial</h2>
+    <p class="trial-lead">Enter your email and we will send your apt credentials within minutes. No card needed.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Email address</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">This becomes your apt login. If you stay, pay with the same address and nothing on your machines changes.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Loading the human check…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Send my credentials"
+              data-sending="Sending…" disabled>Send my credentials</button>
+    </form>
+    <p class="trial-fineprint">One trial per email address. Two days before it ends we email you a link to keep access. If you do nothing, access stops and nothing is charged.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Check your inbox</h2>
+    <p class="trial-lead" data-trial-success data-template="Your credentials are on their way to {email}. They usually arrive within a couple of minutes, so check spam if they do not."></p>
+    <p class="trial-lead">Then run the setup script from the email and you are done.</p>
+    <p class="trial-help">No email after 15 minutes? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Open an issue on GitHub</a> or <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">message me on Discord</a>, and I will sort it out.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Close</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">This address already has an account or has had a trial. Pick a plan to keep going, or reply to your welcome email if something looks wrong. <a href="/#pricing" data-trial-close>See plans &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">We could not confirm you are human. Please try again.</span>
+    <span data-code="INVALID_EMAIL">That email address does not look right.</span>
+    <span data-code="MISSING_EMAIL">That email address does not look right.</span>
+    <span data-code="RATE_LIMITED">You have already tried today from this network. Please try again tomorrow.</span>
+    <span data-code="GENERIC">Something went wrong on our side. Please try again, or ask in Discord.</span>
+  </template>
+</dialog>
+
+
+<script src="/assets/js/site.js" defer></script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

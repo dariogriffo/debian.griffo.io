@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>隐私政策：不使用 Cookie，访问统计不存储任何数据 | deb.griffo.io</title>
+<meta name="description" content="deb.griffo.io 收集哪些数据、为什么收集：本站不设置任何 Cookie；第一方访问统计不会在你的设备上存储任何内容；另外还说明了免费试用所需的数据、Stripe 付款的处理方式、服务器日志的记录内容，以及你如何要求查询、更正或删除自己的数据。">
+<meta name="keywords" content="deb.griffo.io 隐私, deb.griffo.io cookie, 无 cookie 统计, apt 仓库 隐私, 不使用 cookie, gdpr">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/privacy.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/privacy.html">
+<meta property="og:title" content="deb.griffo.io 的隐私政策">
+<meta property="og:description" content="不使用 Cookie，也不在你的设备上存储任何内容：网站和 apt 仓库收集什么、为什么收集，以及如何要求删除你的数据。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/privacy.html">
+<meta property="twitter:title" content="deb.griffo.io 的隐私政策">
+<meta property="twitter:description" content="不使用 Cookie，也不在你的设备上存储任何内容：网站和 apt 仓库收集什么、为什么收集，以及如何要求删除你的数据。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/privacy.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/privacy.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/privacy.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/privacy.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/privacy.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/privacy.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/privacy.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta" data-trial>免费试用</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary" data-trial>免费试用</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt 镜像需要订阅。<strong>免费试用全部工具 14 天</strong>，无需银行卡。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>隐私政策</h1>
+        <p class="subtitle">deb.griffo.io 及其 apt 仓库收集什么、为什么收集，以及你可以怎么做</p>
+    </div>
+
+    <div class="content">
+        <p><em>最后更新：2026 年 10 月 19 日</em></p>
+
+        <div class="highlight-box">
+            <strong>简而言之。</strong>本站不设置任何 Cookie，访问统计也不会在你的设备上存储任何内容，
+            所以没有需要点击关闭的 Cookie 提示。访问量由运行在我们自己服务器上的一个小型第一方服务统计，
+            它无法在不同日期之间认出你。如果你开始试用或订阅，仓库会保存为你提供
+            <code>apt</code> 访问所需的信息：你的邮箱地址、订阅状态和密码的哈希值。银行卡信息直接交给
+            Stripe，从不经过本站。
+        </div>
+
+        <h2>1. 谁在运营本站</h2>
+        <p>
+            deb.griffo.io、deb-free.griffo.io 以及背后的 apt 仓库由
+            <strong>Dario Griffo</strong>（下文称“我”）运营。关于你的数据的问题和请求，可以通过
+            <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> 或项目的
+            <a href="https://discord.gg/E2yHQNkuZy">Discord 社区</a>提出。
+        </p>
+
+        <h2>2. 访问统计</h2>
+        <p>
+            页面浏览量由 <strong>ttics</strong> 统计，这是我自己在我们自己的服务器上运行的一个小型统计服务。
+            数据不会交给任何第三方。页面加载时，你的浏览器会向它发送该页面的地址以及关于这次访问的几项信息。
+            它从中记录：
+        </p>
+        <ul>
+            <li>你访问的页面（只记录路径，不含查询字符串）；</li>
+            <li>把你链接到这里的网站的<strong>主机名</strong>，从不记录完整地址；</li>
+            <li>地址中的 <code>utm_</code> 活动标记（如果有的话；它们标明这次访问来自广告或新闻邮件）；</li>
+            <li>页面的语言；</li>
+            <li>设备类别（手机、平板或桌面），根据窗口宽度判断；</li>
+            <li>浏览器和操作系统的类别，例如 Linux 上的 Firefox，不含版本号；</li>
+            <li>几个操作：打开免费试用表单、开始试用和前往付款；</li>
+            <li>一个<strong>每日访客哈希值</strong>，详见下文。</li>
+        </ul>
+        <p>
+            访客哈希值是对以下内容计算的 SHA-256：一个每天更换的随机值（每日盐值）、你的 IP 地址、浏览器的
+            User-Agent 以及网站的主机名。它让服务能够统计某一天有多少不同的人访问。每个盐值会在两天后删除，
+            此后就无法再根据某个地址重新算出该哈希值；而且新一天的哈希值永远不会与旧的相同，因此
+            <strong>你无法在不同日期之间被识别出来</strong>。你的 <strong>IP 地址和完整的 User-Agent
+            从不被存储</strong>，它们只用于计算这个哈希值。明显的机器人和爬虫会在记录任何内容之前被过滤掉。
+        </p>
+        <p>
+            我用这些数字来了解哪些页面能帮助大家找到所需内容，以及本站的广告是否有效：带有活动标记的访问，
+            会被计入同一天开始的试用和付款。
+        </p>
+        <p>
+            <strong>Ahrefs Web Analytics。</strong>deb.griffo.io 的页面还会加载 Ahrefs Web
+            Analytics，这是 Ahrefs 提供的不使用 Cookie 的服务，只汇总报告页面统计数据。
+        </p>
+
+        <h2>3. 免费试用</h2>
+        <p>
+            开始试用时，你需要填写一个邮箱地址。表单由 <strong>Cloudflare Turnstile</strong>
+            保护，它的脚本只在你打开表单时才会加载，所以从未打开表单的访问永远不会加载它。为了核验结果，
+            服务器会把它连同你的 IP 地址一起发送给 Cloudflare。仓库会保存你的邮箱地址，用于发送你的访问凭据、
+            试用结束前的提醒以及其他与访问有关的消息。你的 IP 地址还会（仅在内存中）用于限制每个地址每天只能申请一次试用。
+        </p>
+
+        <h2>4. 付款</h2>
+        <p>
+            付款由 <strong>Stripe</strong> 处理。银行卡信息直接交给 Stripe，从不经过本站或其服务器；你使用
+            Stripe 时适用其自身的条款和<a href="https://stripe.com/privacy">隐私政策</a>。仓库会保存你的邮箱地址、
+            Stripe 为你和你的订阅分配的编号、套餐、订阅状态及相关日期。购买会通过这个邮箱地址与之前的试用关联起来，
+            以便我了解有多少试用转化成了订阅。这个邮箱会收到你的访问凭据和与订阅有关的消息，其中包括订阅开始几天后发送的一封、仅此一次的评价邀请。
+        </p>
+
+        <h2>5. 仓库访问与服务器日志</h2>
+        <p>
+            <code>apt</code> 使用你的登录名（即你的邮箱地址）和为你生成的密码进行认证，密码只以 bcrypt
+            哈希值的形式保存。与任何 Web 服务器一样，网站和仓库背后的服务器会记录请求日志，包括 IP 地址、User
+            Agent 和所请求的文件，用于维持服务运行和防止滥用。访问统计服务是个例外：它的日志不包含 IP 地址、User
+            Agent 和来源页面（referrer）。
+        </p>
+
+        <h2>6. Cookie 与浏览器存储</h2>
+        <p>
+            本站<strong>不设置任何 Cookie</strong>，访问统计也不会向你的浏览器写入任何内容。本站自身唯一可能保存在那里的是一项偏好：
+            如果你在 <code>sudo</code>、root 和 extrepo 之间切换安装命令的形式，你的选择会以
+            <code>deb-griffo-install-variant</code> 为名保存在浏览器的本地存储中，这样下一个页面会显示相同的形式。
+            它从不离开你的浏览器，清除网站数据即可将其删除。Cloudflare Turnstile（仅在你打开试用表单时）和
+            Stripe（仅在你前往付款时）由这两家公司按照各自的政策运营。
+        </p>
+
+        <h2>7. 你的权利</h2>
+        <ul>
+            <li>
+                <strong>查询关于你保存了哪些数据</strong>，或要求更正、删除，可以通过
+                <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> 或
+                <a href="https://discord.gg/E2yHQNkuZy">Discord 社区</a>联系。GitHub 的 issue
+                是公开的，请不要在那里贴出你的邮箱地址；只需说明你有隐私方面的请求，之后会转为私下沟通。删除账号后，你的仓库访问也会随之终止。
+            </li>
+            <li>
+                <strong>访问统计无法追溯到你本人。</strong>其中不包含姓名、邮箱、IP 地址或 Cookie，
+                而且每日哈希值在盐值删除后就无法再与具体某个人关联，因此其中没有任何可以针对单个访客查询或删除的内容。
+            </li>
+            <li>
+                <strong>你可以投诉</strong>：如果你认为自己的数据被不当处理，可以向你所在地的数据保护机构投诉。
+            </li>
+        </ul>
+
+        <h2>8. 变更</h2>
+        <p>
+            如果本页内容有变化，新版本会发布在这里，并更新日期。
+        </p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+    <a href="/cn/privacy.html">隐私政策</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="zh-cn">
+  <button type="button" class="trial-close" data-trial-close aria-label="关闭">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">开始 14 天免费试用</h2>
+    <p class="trial-lead">输入邮箱，我们会在几分钟内发送你的 apt 凭据。无需银行卡。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">邮箱地址</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">它将成为你的 apt 登录名。如果继续使用，请用同一邮箱付款，你的机器上无需任何改动。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="正在加载人机验证…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="发送我的凭据"
+              data-sending="发送中…" disabled>发送我的凭据</button>
+    </form>
+    <p class="trial-fineprint">每个邮箱仅限一次试用。结束前两天我们会发送保留访问的链接。如果你不操作，访问将停止，不会产生任何费用。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">请查收邮件</h2>
+    <p class="trial-lead" data-trial-success data-template="你的凭据正在发送至 {email}。通常几分钟内送达，如未收到请检查垃圾邮件。"></p>
+    <p class="trial-lead">然后运行邮件中的配置脚本即可。</p>
+    <p class="trial-help">15 分钟后仍未收到邮件？请<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">在 GitHub 上提交 issue</a>或<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">在 Discord 上联系我</a>，我会尽快处理。</p>
+    <button type="button" class="btn-secondary" data-trial-close>关闭</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">该邮箱已有账户或已试用过。请选择一个方案继续，如有问题请回复欢迎邮件。 <a href="/cn/#pricing" data-trial-close>查看方案 &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">无法确认你是真人，请重试。</span>
+    <span data-code="INVALID_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="MISSING_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="RATE_LIMITED">今天已从你的网络尝试过，请明天再试。</span>
+    <span data-code="GENERIC">我们这边出了问题，请重试或在 Discord 提问。</span>
+  </template>
+</dialog>
+
+
+<script src="/assets/js/site.js" defer></script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

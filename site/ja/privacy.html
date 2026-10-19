@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>プライバシーポリシー：Cookie なしのアクセス解析 | deb.griffo.io</title>
+<meta name="description" content="deb.griffo.io が何を、なぜ収集するのか。Cookie は一切使わず、端末に何も保存しない自前のアクセス解析、無料トライアル、Stripe による支払い、サーバーログについて、保存する内容と目的、データ削除の依頼方法までまとめています。">
+<meta name="keywords" content="deb.griffo.io プライバシー, deb.griffo.io cookie, cookie を使わないアクセス解析, apt リポジトリ プライバシー, cookie なし, gdpr">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/privacy.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/privacy.html">
+<meta property="og:title" content="deb.griffo.io のプライバシーポリシー">
+<meta property="og:description" content="Cookie なし、端末への保存もなし。サイトと apt リポジトリが何を、なぜ収集するのか、そしてデータの削除を依頼する方法。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/privacy.html">
+<meta property="twitter:title" content="deb.griffo.io のプライバシーポリシー">
+<meta property="twitter:description" content="Cookie なし、端末への保存もなし。サイトと apt リポジトリが何を、なぜ収集するのか、そしてデータの削除を依頼する方法。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/privacy.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/privacy.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/privacy.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/privacy.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/privacy.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/privacy.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/privacy.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#reviews">レビュー</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/privacy.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta" data-trial>無料で試す</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#reviews" class="mobile-menu-link" data-index="05">レビュー</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="06">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary" data-trial>無料で試す</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>全ツールを 14 日間無料でお試しいただけます</strong>。カード不要。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/apt-401-unauthorized.html">apt が 401 を返しますか？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>プライバシーポリシー</h1>
+        <p class="subtitle">deb.griffo.io と apt リポジトリが何を、なぜ収集するのか、そしてあなたにできること</p>
+    </div>
+
+    <div class="content">
+        <p><em>最終更新日：2026 年 10 月 19 日</em></p>
+
+        <div class="highlight-box">
+            <strong>要点。</strong>このサイトは Cookie を一切設定せず、アクセス解析もあなたの端末に何も保存しません。そのため、クリックして閉じる
+            Cookie バナーもありません。訪問数は、私たち自身のサーバー上で動く小さなファーストパーティのサービスが数えており、日をまたいであなたを識別することはできません。トライアルを始めたり購読したりした場合、リポジトリは
+            <code>apt</code> でのアクセスを提供するのに必要なものを保存します。メールアドレス、購読の状態、パスワードのハッシュです。カード情報は
+            Stripe に送られ、このサイトに届くことはありません。
+        </div>
+
+        <h2>1. 運営者</h2>
+        <p>
+            deb.griffo.io、deb-free.griffo.io、およびその背後にある apt リポジトリは
+            <strong>Dario Griffo</strong>（以下「私」）が運営しています。ご自身のデータに関する質問や依頼は
+            <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> またはプロジェクトの
+            <a href="https://discord.gg/E2yHQNkuZy">Discord コミュニティ</a>からお寄せください。
+        </p>
+
+        <h2>2. アクセス解析</h2>
+        <p>
+            ページビューは、私が自分で運用している小さなアクセス解析サービス <strong>ttics</strong>
+            が、私たち自身のサーバー上で数えています。データを受け取る第三者はいません。ページが読み込まれると、ブラウザはそのページのアドレスと訪問に関するいくつかの情報をこのサービスに送ります。そこから記録するのは次のものです。
+        </p>
+        <ul>
+            <li>訪問したページ（パスのみで、クエリ文字列は含みません）</li>
+            <li>このサイトにリンクしていたサイトの<strong>ホスト名</strong>（完全なアドレスは記録しません）</li>
+            <li>アドレスに <code>utm_</code> キャンペーンタグがある場合はそのタグ（広告やニュースレターから来た訪問であることを示します）</li>
+            <li>ページの言語</li>
+            <li>ウィンドウの幅から判定した端末の種類（モバイル、タブレット、デスクトップ）</li>
+            <li>ブラウザと OS の種類（例：Linux 上の Firefox）。バージョンは含みません</li>
+            <li>いくつかの操作：無料トライアルのフォームを開く、トライアルを始める、決済に進む</li>
+            <li><strong>日ごとの訪問者ハッシュ</strong>（下で説明します）</li>
+        </ul>
+        <p>
+            訪問者ハッシュは、毎日変わるランダムな値（日ごとのソルト）、IP アドレス、ブラウザの User-Agent、サイトのホスト名から計算した
+            SHA-256 です。これにより、ある日に何人の異なる人が訪問したかを数えられます。各ソルトは 2 日後に削除され、それ以降はアドレスからハッシュを再計算できなくなります。また、新しい日のハッシュが過去のハッシュと一致することはないため、<strong>日をまたいであなたが識別されることはありません</strong>。<strong>IP
+            アドレスと完全な User-Agent は保存されません</strong>。どちらもこのハッシュの計算に使われるだけです。明らかなボットやクローラーは、何かが記録される前に除外されます。
+        </p>
+        <p>
+            これらの数値は、どのページが必要な情報を見つける助けになっているか、そしてこのサイトの広告が効果を上げているかを確認するために使います。キャンペーンタグ付きで来た訪問には、同じ日に始まったトライアルと決済が成果として計上されます。
+        </p>
+        <p>
+            <strong>Ahrefs Web Analytics。</strong>deb.griffo.io のページでは Ahrefs Web Analytics
+            も読み込まれます。Ahrefs が提供する Cookie を使わないサービスで、ページの統計を集計した形で報告します。
+        </p>
+
+        <h2>3. 無料トライアル</h2>
+        <p>
+            トライアルを始めるにはメールアドレスを入力します。フォームは <strong>Cloudflare
+            Turnstile</strong> で保護されています。そのスクリプトはフォームを開いたときにだけ取得されるため、フォームを開かない訪問では読み込まれません。回答を確認するため、サーバーはそれを
+            IP アドレスとともに Cloudflare に渡します。リポジトリはメールアドレスを保存し、認証情報、トライアル終了前のリマインダー、その他アクセスに関するお知らせの送信に使います。IP
+            アドレスも、1 つのアドレスにつき 1 日 1 回までトライアルの申し込みを受け付けるために使いますが、メモリ上でのみ扱います。
+        </p>
+
+        <h2>4. 支払い</h2>
+        <p>
+            支払いは <strong>Stripe</strong> が処理します。カード情報は Stripe に送られ、このサイトにもそのサーバーにも届きません。Stripe
+            の利用には Stripe 自身の規約と<a href="https://stripe.com/privacy">プライバシーポリシー</a>が適用されます。リポジトリが保存するのは、メールアドレス、あなたと購読に対する
+            Stripe の参照番号、プラン、購読の状態と日付です。購入は、そのメールアドレスによって以前のトライアルと結び付けられます。これにより、トライアルのうちどれだけが購読につながったかを把握できます。このアドレスには認証情報と購読に関するお知らせが届き、購読開始の数日後には一度だけレビューのお願いが届きます。
+        </p>
+
+        <h2>5. リポジトリへのアクセスとサーバーログ</h2>
+        <p>
+            <code>apt</code> はログイン名（メールアドレス）と、あなたのために生成されたパスワードで認証します。パスワードは
+            bcrypt のハッシュとしてのみ保存されます。一般的なウェブサーバーと同様に、サイトとリポジトリを支えるサーバーは、サービスの運用と不正利用の防止のため、IP
+            アドレス、ユーザーエージェント、要求されたファイルを含むリクエストを記録します。例外はアクセス解析サービスで、そのログにはアドレス、ユーザーエージェント、リファラーが含まれません。
+        </p>
+
+        <h2>6. Cookie とブラウザのストレージ</h2>
+        <p>
+            このサイトは <strong>Cookie を一切設定しません</strong>。アクセス解析がブラウザに何かを書き込むこともありません。サイト自体がブラウザに保存する可能性があるのは、好みの設定ひとつだけです。インストールコマンドの表示を
+            <code>sudo</code> 付き、root、extrepo の間で切り替えると、次のページでも同じ形式で表示されるよう、その選択がブラウザのローカルストレージに
+            <code>deb-griffo-install-variant</code> として保存されます。これがブラウザの外に出ることはなく、サイトデータを消去すれば削除されます。Cloudflare
+            Turnstile（トライアルのフォームを開いたときのみ）と Stripe（決済に進んだときのみ）は、それぞれの企業が自社のポリシーに基づいて運用しています。
+        </p>
+
+        <h2>7. あなたの権利</h2>
+        <ul>
+            <li>
+                <strong>保存されている情報の確認</strong>、訂正、削除は
+                <a href="https://github.com/dariogriffo/debian.griffo.io">GitHub</a> または
+                <a href="https://discord.gg/E2yHQNkuZy">Discord コミュニティ</a>からご依頼ください。GitHub
+                の issue は公開されるため、メールアドレスは書き込まないでください。プライバシーに関する依頼があるとだけ書いていただければ、その後は非公開でやり取りできます。アカウントを削除すると、リポジトリへのアクセスも終了します。
+            </li>
+            <li>
+                <strong>アクセス解析のデータからあなたをたどることはできません。</strong>氏名、メールアドレス、IP
+                アドレス、Cookie はいずれも含まれず、日ごとのハッシュはソルトが削除されると個人と結び付けられなくなります。そのため、特定の訪問者について照会したり削除したりできるものは含まれていません。
+            </li>
+            <li>
+                データが不適切に扱われたと思われる場合は、お住まいの地域のデータ保護機関に<strong>苦情を申し立てることができます</strong>。
+            </li>
+        </ul>
+
+        <h2>8. 変更</h2>
+        <p>
+            このページを変更した場合は、更新日を改めたうえでここに新しい版を掲載します。
+        </p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/supported-architectures.html">アーキテクチャ</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+    <a href="/ja/privacy.html">プライバシーポリシー</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ja">
+  <button type="button" class="trial-close" data-trial-close aria-label="閉じる">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">14 日間の無料トライアルを始める</h2>
+    <p class="trial-lead">メールアドレスを入力すると、数分以内に apt の認証情報をお送りします。カード不要。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">メールアドレス</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">これが apt のログインになります。続ける場合は同じアドレスでお支払いいただければ、マシン側の変更は不要です。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="認証を読み込み中…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="認証情報を送信"
+              data-sending="送信中…" disabled>認証情報を送信</button>
+    </form>
+    <p class="trial-fineprint">トライアルはメールアドレスごとに 1 回です。終了の 2 日前にアクセスを続けるためのリンクをお送りします。何もしなければアクセスは終了し、料金は発生しません。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">受信トレイをご確認ください</h2>
+    <p class="trial-lead" data-trial-success data-template="認証情報を {email} に送信しました。通常は数分以内に届きます。届かない場合は迷惑メールフォルダをご確認ください。"></p>
+    <p class="trial-lead">あとはメールのセットアップスクリプトを実行するだけです。</p>
+    <p class="trial-help">15 分経ってもメールが届かない場合は、<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">GitHub で issue を作成する</a>か<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">Discord で連絡してください</a>。すぐに対応します。</p>
+    <button type="button" class="btn-secondary" data-trial-close>閉じる</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">このアドレスには既にアカウントがあるか、トライアル済みです。プランを選んで続けるか、問題があればウェルカムメールに返信してください。 <a href="/ja/#pricing" data-trial-close>プランを見る &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">人間であることを確認できませんでした。もう一度お試しください。</span>
+    <span data-code="INVALID_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="MISSING_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="RATE_LIMITED">本日はすでにお使いのネットワークから試行されています。明日もう一度お試しください。</span>
+    <span data-code="GENERIC">こちら側で問題が発生しました。もう一度お試しいただくか、Discord でお尋ねください。</span>
+  </template>
+</dialog>
+
+
+<script src="/assets/js/site.js" defer></script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
