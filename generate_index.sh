@@ -23,10 +23,15 @@ ALIASES=("kali-rolling")
 FAILURES_FILE="$current/.index-failures"
 : > "$FAILURES_FILE"
 
+# Includes never export: each one used to rewrite, compress and sign the whole
+# suite's indices for every architecture, hundreds of times per run. Each suite
+# is exported once after its includes instead (export_suite_in), from the
+# database, so the published index is exactly what the database holds: every
+# package at the one version reprepro keeps per suite, and nothing removed.
 try_include_in() {
     # try_include_in <reprepro-dir> <lane> <what> <dist> <file...>
     local rdir=$1 lane=$2 what=$3 dist=$4; shift 4
-    if reprepro --dbdir "$rdir/db" --confdir "$rdir/conf" \
+    if reprepro --dbdir "$rdir/db" --confdir "$rdir/conf" --export=never \
                 -C main "$what" "$dist" "$@"; then
         return 0
     fi
@@ -36,6 +41,16 @@ try_include_in() {
 
 try_include() { try_include_in "$reprepro_dir" main "$@"; }
 try_include_free() { try_include_in "$reprepro_free_dir" free "$@"; }
+
+export_suite_in() {
+    # export_suite_in <reprepro-dir> <lane> <dist>
+    local rdir=$1 lane=$2 dist=$3
+    if reprepro --dbdir "$rdir/db" --confdir "$rdir/conf" export "$dist"; then
+        return 0
+    fi
+    echo "  !! FAILED ${lane} export ${dist}" | tee -a "$FAILURES_FILE"
+    return 0
+}
 
 cd apt
 
@@ -70,6 +85,8 @@ for dist in "${DISTS[@]}"; do
         done
     fi
 
+    export_suite_in "$reprepro_dir" main "$dist"
+
     cd "dists/$dist"
     cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
     cd - > /dev/null
@@ -83,6 +100,7 @@ for alias in "${ALIASES[@]}"; do
     reprepro --dbdir "$reprepro_dir/db" --confdir "$reprepro_dir/conf" \
              --export=never removematched "$alias" '*' > /dev/null
     try_include pull "$alias"
+    export_suite_in "$reprepro_dir" main "$alias"
     cd "dists/$alias"
     cat Release | gpg -s --default-key "$GPG_KEY" -abs > Release.gpg
     cd - > /dev/null
@@ -120,6 +138,8 @@ if ls "$current/free/deb/"*/*deb >/dev/null 2>&1 || ls "$current/free/src/"*.dsc
                 try_include_free includedsc "$dist" "$(readlink -f "$dsc")"
             done
         fi
+
+        export_suite_in "$reprepro_free_dir" free "$dist"
 
         if [ -f "dists/$dist/Release" ]; then
             cd "dists/$dist"
