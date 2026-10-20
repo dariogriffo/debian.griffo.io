@@ -1805,6 +1805,28 @@ a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple
    colour of their own; give them one so a slow or failed image shows alt text
    in the page's own ink rather than default blue. */
 .hero-logos a { color: var(--ivory-muted); text-decoration: none; }
+/* The way back in, on the 401 page: a quiet panel like the short answer above
+   it, text across the top and the three choices in one row below. Only the
+   trial is cerise; the two plans are neutral outlines, not pink links.
+   `.container > .content a` would otherwise paint both kinds of button as
+   links, hence the matching specificity. */
+.access-cta {
+  margin: 22px 0 8px; padding: 22px 24px; border-radius: 14px;
+  background: var(--panel-bg); border: 1px solid var(--panel-border);
+}
+.container > .content .access-cta-text { margin: 0; font-size: 15px; }
+.access-cta-text strong { color: var(--ivory); }
+.access-cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.container > .content .access-cta-actions a { border-bottom: 1px solid transparent; }
+.container > .content .access-cta-actions a.btn-primary { color: #fff; border-color: transparent; }
+.container > .content .access-cta-actions a.btn-secondary {
+  color: var(--ivory); border: 1px solid var(--graphite-soft);
+}
+.container > .content .access-cta-actions a.btn-secondary:hover { color: #fff; border-color: var(--silver); }
+@media (max-width: 560px) {
+  .access-cta { padding: 20px; }
+  .access-cta-actions a { flex: 1 1 100%; justify-content: center; }
+}
 /* Under a Debian/Ubuntu release in a version table: the derivatives that run it
    (generate.suite_also), linked to their distro pages. */
 .suite-also { display: inline-block; margin-top: 4px; font-size: 0.82em; color: var(--ivory-muted); }
