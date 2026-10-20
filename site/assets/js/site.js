@@ -285,62 +285,6 @@
       .catch(function () { /* keep whatever the markup shipped with */ });
   }
 
-  // ── Review carousel ─────────────────────────────────────────────────────
-  // Moved only by the reader: the arrows, the dots, or a swipe. No timer — a
-  // quote sliding away mid-sentence is not browsing. Deliberately built on the
-  // container's own scroll position rather than a transform: the track is a
-  // plain overflow-x element, so with this script absent or failed it is still
-  // a swipeable row of readable cards. The reviews back the Review nodes in the
-  // page's JSON-LD and Google expects them visible, so they must never depend
-  // on JS to exist.
-  var carousels = document.querySelectorAll('[data-review-carousel].review-rotates');
-  var stillMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-  carousels.forEach(function (root) {
-    var track = root.querySelector('.review-track');
-    var cards = track ? track.querySelectorAll('.review-card') : [];
-    var dots = root.querySelectorAll('.review-dot');
-    if (!track || cards.length < 2) { return; }
-
-    var index = 0;
-
-    function show(i, smooth) {
-      index = (i + cards.length) % cards.length;
-      var card = cards[index];
-      // Someone who asked the OS for less motion gets a jump, not a glide.
-      var glide = smooth !== false && !(stillMotion && stillMotion.matches);
-      track.scrollTo({
-        left: card.offsetLeft - (track.clientWidth - card.clientWidth) / 2,
-        behavior: glide ? 'smooth' : 'auto'
-      });
-      dots.forEach(function (d, n) { d.classList.toggle('active', n === index); });
-    }
-
-    dots.forEach(function (d) {
-      d.addEventListener('click', function () { show(+d.dataset.index); });
-    });
-    // The arrows. show() wraps, so neither end is ever a dead button.
-    var prev = root.querySelector('[data-review-prev]');
-    var next = root.querySelector('[data-review-next]');
-    if (prev) { prev.addEventListener('click', function () { show(index - 1); }); }
-    if (next) { next.addEventListener('click', function () { show(index + 1); }); }
-    // Keep the dots honest when someone swipes the track by hand.
-    var settle;
-    track.addEventListener('scroll', function () {
-      clearTimeout(settle);
-      settle = setTimeout(function () {
-        var mid = track.scrollLeft + track.clientWidth / 2;
-        var nearest = 0, best = Infinity;
-        cards.forEach(function (c, n) {
-          var d = Math.abs(c.offsetLeft + c.clientWidth / 2 - mid);
-          if (d < best) { best = d; nearest = n; }
-        });
-        index = nearest;
-        dots.forEach(function (d, n) { d.classList.toggle('active', n === index); });
-      }, 120);
-    }, { passive: true });
-
-    show(0, false);
-  });
   // ── Long lists, folded ──
   // The version table and the package grid each list every tool, which is
   // most of the page's height. Script folds them to a preview with a button

@@ -1663,35 +1663,12 @@ div.controls-table::-webkit-scrollbar-track, .code-block pre::-webkit-scrollbar-
    Links use --link, the same rose every other link on the site uses. When this
    stylesheet was missing the cards rendered as bare text and the links fell
    back to browser-default blue, which is what "the links are blue" meant. */
-/* Narrower than the section on purpose: at 1120px two cards fit side by side,
-   the track never overflows and the carousel has nothing to advance. At 780px
-   a second review is already enough to make it move, which is the point. */
-.review-carousel { position: relative; margin: 34px auto 0; max-width: 780px; }
-.review-track {
-  display: flex; gap: 22px; overflow-x: auto; scroll-behavior: smooth;
-  scroll-snap-type: x mandatory; padding: 4px; scrollbar-width: none;
-}
-.review-track::-webkit-scrollbar { display: none; }
-/* Centre the cards without `justify-content: center`, which makes the leading
-   overflow unreachable, and without `safe center`, which Safari only learned
-   recently. Auto margins on the end cards do the same job everywhere: centred
-   while they fit, fully scrollable once they do not. */
-.review-track > :first-child { margin-inline-start: auto; }
-.review-track > :last-child { margin-inline-end: auto; }
-
 .review-card {
-  /* one card fills most of the track, so an advance slides a whole review
-     past rather than nudging two half-visible ones along */
-  flex: 0 0 min(600px, 84vw); scroll-snap-align: center;
   display: flex; flex-direction: column; gap: 14px; padding: 28px 26px; margin: 0;
   text-align: left; background: var(--panel-bg); border: 1px solid var(--panel-border);
   border-radius: 20px;
   transition: transform 0.5s var(--silk-ease), border-color 0.5s var(--silk-ease);
 }
-/* A single review is not a carousel: there is nothing to peek at, so it takes
-   the content width like every other block on the page instead of sitting in
-   a narrower column of its own. */
-.review-track:not(:has(> * + *)) > .review-card { flex-basis: min(600px, 100%); }
 .review-card:hover { transform: translateY(-3px); border-color: rgba(255, 123, 168, 0.28); }
 
 .review-rating { display: flex; align-items: baseline; gap: 10px; }
@@ -1725,32 +1702,6 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
 }
 .review-source:hover { border-bottom-color: var(--link); }
 
-/* ── Browsing the reviews ──
-   The dots say where you are; the arrows are how you move. Both live in one
-   row under the track instead of floating over the cards: at 780px the gutter
-   beside a card is thin and on a phone there is none at all, so a side arrow
-   would sit on top of the quote it is asking you to read. */
-.review-nav {
-  display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 22px;
-}
-.review-arrow {
-  display: grid; place-items: center; width: 38px; height: 38px; padding: 0; flex: none;
-  border: 1px solid var(--panel-border); border-radius: 50%; cursor: pointer;
-  background: var(--panel-bg); color: var(--slate-light);
-  transition: color 0.4s var(--silk-ease), border-color 0.4s var(--silk-ease),
-              transform 0.4s var(--silk-ease);
-}
-.review-arrow:hover { color: var(--ivory); border-color: rgba(255, 123, 168, 0.28); }
-.review-arrow:active { transform: scale(0.94); }
-
-.review-dots { display: flex; justify-content: center; gap: 9px; }
-.review-dot {
-  width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
-  background: var(--graphite-soft); transition: background 0.4s var(--silk-ease), width 0.4s var(--silk-ease);
-}
-.review-dot:hover { background: var(--slate-warm); }
-.review-dot.active { width: 22px; border-radius: 4px; background: var(--link); }
-
 .review-cta { margin-top: 24px; }
 .review-cta a {
   color: var(--link); text-decoration: none; font-size: 0.9rem;
@@ -1766,8 +1717,6 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
    the person who wrote it, and the source link on its own line, shrink-wrapped
    to its text rather than ruled across the whole card. */
 @media (max-width: 620px) {
-  .review-carousel { margin-top: 28px; }
-  .review-track { gap: 14px; padding: 3px; }
   .review-card { gap: 16px; padding: 24px 20px; border-radius: 18px; }
   .review-headline { font-size: 1.02rem; }
   .review-body p { font-size: 0.94rem; line-height: 1.7; }
@@ -1779,14 +1728,43 @@ a.review-name:hover { border-bottom: 1px solid rgba(255, 123, 168, 0.5); }
        one attribution rather than as a stray link under a card */
     margin-left: calc(var(--review-avatar) + 12px); margin-right: auto; width: auto;
   }
-  .review-nav { margin-top: 18px; gap: 12px; }
-  .review-arrow { width: 36px; height: 36px; }
   .review-cta { margin-top: 20px; }
 }
-/* Someone who has asked the OS for less motion gets a static, swipeable row;
-   site.js checks the same query before starting its timer. */
-@media (prefers-reduced-motion: reduce) {
-  .review-track { scroll-behavior: auto; }
+/* ── The review wall ──
+   Every review at once (layout.reviews_wall), in balanced columns: three on a
+   desktop, two on a tablet, one on a phone, each card as tall as its own text
+   rather than the tallest one's. Under the title, the average and the count,
+   which the carousel never said. Folded like the package grid (site.js
+   data-fold): the first six, fading out, then "Show all"; a phone folds to
+   the first three. */
+.review-summary {
+  margin: 14px 0 0; color: var(--slate-light); font-size: 0.95rem;
+}
+.review-summary .review-stars { letter-spacing: 0; margin-right: 2px; }
+.review-wall {
+  columns: 3 300px; column-gap: 20px; max-width: 1120px; margin: 34px auto 0;
+  text-align: left;
+}
+.review-wall > .review-card {
+  break-inside: avoid; margin: 0 0 20px; width: 100%; box-sizing: border-box;
+}
+.review-wall > .review-card:hover { transform: none; }
+/* A column is narrower than the carousel's card, and the flex row wrapped the
+   name under the avatar to make room for the source link. Avatar on the left,
+   everything else stacked beside it, the link last. */
+.review-wall .review-who {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; row-gap: 8px;
+  align-items: center;
+}
+.review-wall .review-source { grid-column: 2; justify-self: start; margin: 0; }
+.review-wall.is-folded::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 110px;
+  pointer-events: none; background: linear-gradient(180deg, transparent, var(--base-deep));
+}
+@media (max-width: 620px) {
+  .review-wall { margin-top: 26px; }
+  .review-wall > .review-card { margin-bottom: 14px; }
+  .review-wall.is-folded > .review-card:nth-child(n+4) { display: none; }
 }
 
 /* ── Mobile auto-linking ─────────────────────────────────────────────────
