@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>deb.griffo.io 返回 apt 401 Unauthorized 是什么意思</title>
+<meta name="description" content="apt 对 deb.griffo.io 报 401 Unauthorized？你的系统并没有坏。自 2026 年 10 月 1 日起，下载软件包需要订阅，apt update 仍对所有人开放。本页给出三种解决办法：配置订阅凭据、改用永久免费镜像，或直接从 GitHub 下载 .deb，并附上每一步的具体命令。">
+<meta name="keywords" content="apt 401 unauthorized, deb.griffo.io 401, E: Failed to fetch 401 Unauthorized, apt 401 错误, apt 未授权, apt auth.conf.d, apt 仓库认证, apt install 401, debian apt 401">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<meta property="og:title" content="apt：deb.griffo.io 返回 401 Unauthorized">
+<meta property="og:description" content="什么都没有坏。自 2026 年 10 月 1 日起下载软件包需要订阅，这里是三种解决办法，附具体命令。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<meta property="twitter:title" content="apt：deb.griffo.io 返回 401 Unauthorized">
+<meta property="twitter:description" content="什么都没有坏。自 2026 年 10 月 1 日起下载软件包需要订阅，这里是三种解决办法，附具体命令。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta" data-trial>免费试用</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary" data-trial>免费试用</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt 镜像需要订阅。<strong>免费试用全部工具 14 天</strong>，无需银行卡。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/cn/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔐 apt 提示 401 Unauthorized</h1>
+        <p class="subtitle">当它来自 deb.griffo.io 时意味着什么，以及三种解决办法</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 简短回答。</strong> 你的系统没有任何损坏，也没有任何软件包被移除。自<strong>2026 年 10 月 1 日英国时间 12:00</strong> 起，从 <code>deb.griffo.io</code> 下载软件包需要订阅。<code>apt update</code> 对所有人仍然可用；<code>apt install</code> 和 <code>apt upgrade</code> 则需要凭据。你有三种解决办法，下面都有说明：<a href="#subscribed">添加你的凭据</a>、<a href="#free">改用永久免费镜像</a>，或者<a href="#github">直接从 GitHub 获取 <code>.deb</code></a>——这条路免费，而且永远免费。
+        </div>
+
+        <div class="cta-strip">
+            <p class="cta-strip-text"><strong>还没订阅，或者试用期已经结束？</strong>
+            一分钟即可开通：14 天免费试用只需邮箱，无需银行卡。试用结束后为每年 <span data-amount="15">€15</span>，或一次性 <span data-amount="150">€150</span> 终身使用。凭据会通过邮件发送给你；按照<a href="#subscribed">第 1 步</a>的方式保存即可。</p>
+            <a href="/cn/#pricing" class="btn-primary" data-trial>开始免费试用</a>
+            <a href="https://buy.stripe.com/fZubJ0fJT7Ojepq8qienS08" class="btn-secondary">订阅</a>
+            <a href="https://buy.stripe.com/eVqfZg41b9WrepqfSKenS0b" class="btn-secondary">获取终身版</a>
+        </div>
+
+        <h2>🧾 你看到的错误</h2>
+
+        <div class="code-block"><pre><code>E: Failed to fetch https://deb.griffo.io/apt/pool/main/g/ghostty/ghostty_1.3.1-5~trixie_amd64.deb  401  Unauthorized [IP: 2a01:… 443]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?</code></pre></div>
+
+        <p>运行 <code>apt-get update --fix-missing</code> 没有用，因为什么都没有缺失：服务器做出了回应，回应的内容是「你没有通过认证」。某些 apt 版本只有在密钥出问题时才会显示 <code>The repository … is not signed</code>；单纯的 <code>401</code> 一定是认证问题。</p>
+
+        <h2>🚦 没有订阅时仍然可用的功能</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>命令</th><th>需要订阅吗？</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>不需要——索引对所有人开放</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>不需要</td></tr>
+                <tr><td>浏览 <a href="/apt/dists/">/apt/dists/</a></td><td>不需要</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>需要</strong>，自 2026 年 10 月 1 日起</td></tr>
+                <tr><td>已经安装的软件包</td><td>不需要。它们照常运行，不会过期</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>不需要——永久免费，无需账户</td></tr>
+                <tr><td>GitHub 上的 <code>.deb</code> 文件</td><td>不需要——永久免费</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="subscribed">1. 你已经订阅：保存凭据</h2>
+
+        <p>凭据应放在 <code>/etc/apt/auth.conf.d/</code>，绝不要写进 <code>sources.list</code> 那一行：那样机器上任何用户都能读到，apt 还会在错误信息里把它泄露出来：</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo apt update</code></pre><pre class="variant variant-root"><code>tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+apt update</code></pre></div>
+        </div>
+
+        <p>之后 <code>sudo apt install &lt;package&gt;</code> 就会和以前完全一样地工作。如果仍然返回 401，请按顺序检查以下几项：</p>
+
+        <p>还没订阅，想先了解自己会买到什么？<a href="/cn/how-subscriptions-work.html">订阅如何运作</a>介绍了完整流程：通过邮件发放凭据、机器数量不限、续订、取消和退款。</p>
+
+        <ul>
+            <li><code>machine</code> 行写的是 <code>deb.griffo.io</code>：<strong>不带 <code>https://</code></strong>、不带结尾斜杠、不带 <code>/apt</code> 路径。</li>
+            <li>文件位于 <code>/etc/apt/auth.conf.d/</code>，且文件名以 <code>.conf</code> 结尾。其他扩展名会被 apt 静默忽略。</li>
+            <li>文件属于 root，权限为 <code>600</code>。apt 拒绝读取其他用户可读的凭据。</li>
+            <li>密码两侧没有多余的引号，结尾也没有空白字符。</li>
+            <li>还是解决不了？<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">到 Discord 提问</a>。这是最快的解决途径。</li>
+        </ul>
+
+        <h2 id="free">2. 改用永久免费镜像</h2>
+
+        <p><a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> 永远无需账户、无需付款。它提供<strong>发布至少满两个月</strong>的最新版本，并会立即发布该版本的安全修复和补丁修复。目前收录的工具有 <strong>cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed</strong>；其他任何工具都可以按需加入，如有需要，请<a href="https://discord.gg/E2yHQNkuZy" rel="noopener">到 Discord 提出</a>。</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
+</div>
+        </div>
+
+        <p>不要同时启用两个仓库。apt 会安装版本更高的那一个（也就是订阅仓库里的），你又会遇到 401。
+        <a href="/free.html">免费镜像的完整说明 →</a></p>
+
+        <h2 id="github">3. 从 GitHub 获取 .deb</h2>
+
+        <p>这里的每个软件包都是公开构建的，构建产物附在 GitHub 的公开 release 上。这些下载免费且无需认证，现在如此，10 月 1 日之后也一样：</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+sudo apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre><pre class="variant variant-root"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
+
+        <p>你会失去自动升级（这正是订阅所付费的部分），但永远不会失去对软件本身的访问。每个工具的打包仓库都列在<a href="/how-packages-are-built.html">软件包如何构建</a>页面上。</p>
+
+        <h2>❓ 为什么会这样</h2>
+
+        <p>为 8 个 Debian 和 Ubuntu 版本构建 40 多个工具，并在每次上游发布后数小时内完成，每一天都要花费金钱和时间。订阅支付的就是这些；免费镜像的存在，则是为了不让任何人被挡在他们完全有权运行的软件之外。软件包本身是开源的，而且永远都是，你付费购买的是让它们保持最新的自动化。
+        <a href="/cn/#pricing">价格 →</a></p>
+
+        <p class="back-link"><a href="/cn/">← deb.griffo.io 提供的全部软件包</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+    <a href="/cn/privacy.html">隐私政策</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="zh-cn">
+  <button type="button" class="trial-close" data-trial-close aria-label="关闭">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">开始 14 天免费试用</h2>
+    <p class="trial-lead">输入邮箱，我们会在几分钟内发送你的 apt 凭据。无需银行卡。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">邮箱地址</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">它将成为你的 apt 登录名。如果继续使用，请用同一邮箱付款，你的机器上无需任何改动。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="正在加载人机验证…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="发送我的凭据"
+              data-sending="发送中…" disabled>发送我的凭据</button>
+    </form>
+    <p class="trial-fineprint">每个邮箱仅限一次试用。结束前两天我们会发送保留访问的链接。如果你不操作，访问将停止，不会产生任何费用。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">请查收邮件</h2>
+    <p class="trial-lead" data-trial-success data-template="你的凭据正在发送至 {email}。通常几分钟内送达，如未收到请检查垃圾邮件。"></p>
+    <p class="trial-lead">然后运行邮件中的配置脚本即可。</p>
+    <p class="trial-help">15 分钟后仍未收到邮件？请<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">在 GitHub 上提交 issue</a>或<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">在 Discord 上联系我</a>，我会尽快处理。</p>
+    <button type="button" class="btn-secondary" data-trial-close>关闭</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">该邮箱已有账户或已试用过。请选择一个方案继续，如有问题请回复欢迎邮件。 <a href="/cn/#pricing" data-trial-close>查看方案 &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">无法确认你是真人，请重试。</span>
+    <span data-code="INVALID_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="MISSING_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="RATE_LIMITED">今天已从你的网络尝试过，请明天再试。</span>
+    <span data-code="GENERIC">我们这边出了问题，请重试或在 Discord 提问。</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "zh-CN",
+  "mainEntity": [
+    {"@type": "Question", "name": "为什么 apt 对 deb.griffo.io 提示 401 Unauthorized？",
+     "acceptedAnswer": {"@type": "Answer", "text": "自 2026 年 10 月 1 日英国时间 12:00 起，从 deb.griffo.io 下载软件包需要订阅。apt update、apt policy 以及浏览仓库对所有人仍然免费；apt install 和 apt upgrade 需要凭据。401 表示服务器做出了回应，但请求没有通过认证：你的系统没有任何损坏，已安装的软件包也不受影响。"}},
+    {"@type": "Question", "name": "deb.griffo.io 的 apt 凭据应该放在哪里？",
+     "acceptedAnswer": {"@type": "Answer", "text": "放在 /etc/apt/auth.conf.d/ 下一个以 .conf 结尾的文件里，例如 /etc/apt/auth.conf.d/deb.griffo.io.conf，内容为三行：machine deb.griffo.io、login 加你的邮箱、password 加你的订阅密码。machine 行不能包含 https:// 或路径。文件需属于 root、权限设为 600，否则 apt 会拒绝读取。绝不要把凭据写进 sources.list 那一行。"}},
+    {"@type": "Question", "name": "我还能免费继续使用这个仓库吗？",
+     "acceptedAnswer": {"@type": "Answer", "text": "可以，有两种方式。deb-free.griffo.io 是一个永久免费的 apt 镜像，无需账户、无需订阅，为每个已收录的工具提供发布至少满两个月的最新版本，安全修复和补丁修复会立即发布。另外，每个 .deb 都附在其打包仓库的 GitHub 公开 release 上，可以直接下载安装，免费且无需认证。"}},
+    {"@type": "Question", "name": "我已经安装的软件包会停止工作吗？",
+     "acceptedAnswer": {"@type": "Answer", "text": "不会。已安装的 .deb 软件包不会过期，不会联网回传，也不检查许可证。仓库只决定今后的升级从哪里来，所以未经认证的系统只是不再从 deb.griffo.io 收到新版本而已。"}},
+    {"@type": "Question", "name": "添加凭据后 apt 仍然返回 401，怎么办？",
+     "acceptedAnswer": {"@type": "Answer", "text": "检查 machine 行是否恰好为 deb.griffo.io，不带协议、路径或结尾斜杠；文件名是否以 .conf 结尾；文件是否属于 root 且权限为 600，因为 apt 会忽略其他用户可读的凭据文件；以及密码两侧是否没有引号或多余空格。如果仍然失败，请到项目的 Discord 提问。"}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

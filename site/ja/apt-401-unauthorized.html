@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>deb.griffo.io で apt が 401 Unauthorized を返す理由と対処法</title>
+<meta name="description" content="apt が deb.griffo.io で 401 Unauthorized を返しますか？ 何も壊れてはいません。2026 年 10 月 1 日から、パッケージのダウンロードにはサブスクリプションが必要になりました。この先へ進む 3 つの方法を、そのまま使えるコマンドとあわせて紹介します。">
+<meta name="keywords" content="apt 401 unauthorized, deb.griffo.io 401, E: Failed to fetch 401 Unauthorized, apt auth.conf.d, apt 401 エラー, apt 認証エラー, apt リポジトリ 認証, apt install 401, deb.griffo.io サブスクリプション">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<meta property="og:title" content="apt: deb.griffo.io から 401 Unauthorized が返るとき">
+<meta property="og:description" content="何も壊れてはいません。2026 年 10 月 1 日から、ダウンロードにはサブスクリプションが必要です。この先へ進む 3 つの方法を、正確なコマンドとあわせて。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<meta property="twitter:title" content="apt: deb.griffo.io から 401 Unauthorized が返るとき">
+<meta property="twitter:description" content="何も壊れてはいません。2026 年 10 月 1 日から、ダウンロードにはサブスクリプションが必要です。この先へ進む 3 つの方法を、正確なコマンドとあわせて。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#reviews">レビュー</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta" data-trial>無料で試す</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#reviews" class="mobile-menu-link" data-index="05">レビュー</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="06">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary" data-trial>無料で試す</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>全ツールを 14 日間無料でお試しいただけます</strong>。カード不要。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/ja/apt-401-unauthorized.html">apt が 401 を返しますか？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔐 apt が 401 Unauthorized を返す</h1>
+        <p class="subtitle">deb.griffo.io から返ってきたときの意味と、この先へ進む 3 つの方法</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 短い答え。</strong> あなたのシステムは何も壊れておらず、削除されたパッケージもありません。<strong>2026 年 10 月 1 日 12:00（英国時間）</strong>から、<code>deb.griffo.io</code> からパッケージをダウンロードするにはサブスクリプションが必要になりました。<code>apt update</code> は引き続き誰でも使えますが、<code>apt install</code> と <code>apt upgrade</code> には認証情報が要ります。この先へ進む方法は 3 つあり、すべて下で説明しています。<a href="#subscribed">認証情報を追加する</a>、<a href="#free">ずっと無料のミラーに切り替える</a>、または <a href="#github">GitHub から <code>.deb</code> を直接入手する</a>です。最後の方法は無料で、これからもずっと無料です。
+        </div>
+
+        <div class="cta-strip">
+            <p class="cta-strip-text"><strong>まだ購読していない、またはトライアルが終わりましたか？</strong>
+            アクセスは 1 分で手に入ります。14 日間の無料トライアルに必要なのはメールアドレスだけで、カードは要りません。その後は年額 <span data-amount="15">€15</span>、または買い切りで一度だけ <span data-amount="150">€150</span> です。認証情報はメールで届くので、<a href="#subscribed">手順 1</a> のとおりに保存してください。</p>
+            <a href="/ja/#pricing" class="btn-primary" data-trial>無料トライアルを始める</a>
+            <a href="https://buy.stripe.com/fZubJ0fJT7Ojepq8qienS08" class="btn-secondary">購読する</a>
+            <a href="https://buy.stripe.com/eVqfZg41b9WrepqfSKenS0b" class="btn-secondary">買い切りで購入</a>
+        </div>
+
+        <h2>🧾 表示されているエラー</h2>
+
+        <div class="code-block"><pre><code>E: Failed to fetch https://deb.griffo.io/apt/pool/main/g/ghostty/ghostty_1.3.1-5~trixie_amd64.deb  401  Unauthorized [IP: 2a01:… 443]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?</code></pre></div>
+
+        <p><code>apt-get update --fix-missing</code> を実行しても解決しません。欠けているものは何もなく、サーバーはきちんと応答していて、その答えが「認証されていません」だったからです。apt のバージョンによっては <code>The repository … is not signed</code> と表示されることがありますが、それは鍵に問題があるときだけです。<code>401</code> だけが出ているなら、原因は必ず認証です。</p>
+
+        <h2>🚦 サブスクリプションなしでも使えるもの</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>コマンド</th><th>サブスクリプションは必要？</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>不要 — インデックスは誰にでも開かれたままです</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>不要</td></tr>
+                <tr><td><a href="/apt/dists/">/apt/dists/</a> を見る</td><td>不要</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>必要</strong>（2026 年 10 月 1 日から）</td></tr>
+                <tr><td>インストール済みのパッケージ</td><td>不要 — そのまま動き続け、失効するものはありません</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>不要 — ずっと無料、アカウントも不要</td></tr>
+                <tr><td>GitHub の <code>.deb</code> ファイル</td><td>不要 — ずっと無料</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="subscribed">1. サブスクリプションをお持ちなら、認証情報を保存する</h2>
+
+        <p>認証情報は <code>/etc/apt/auth.conf.d/</code> に置きます。<code>sources.list</code> の行に書いてはいけません。そこに書くとマシンの誰もが読めてしまい、apt がエラーメッセージの中で漏らしてしまいます。</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">extrepo で実行</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo apt update</code></pre><pre class="variant variant-root"><code>tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+apt update</code></pre></div>
+        </div>
+
+        <p>これで <code>sudo apt install &lt;package&gt;</code> が以前とまったく同じように動きます。それでも 401 が返る場合は、次の点を順に確認してください。</p>
+
+        <p>まだ購読しておらず、何に申し込むことになるのか気になりますか？ <a href="/ja/how-subscriptions-work.html">サブスクリプションの仕組み</a>で、メールで届く認証情報、無制限のマシン台数、更新、解約、返金まで、全体の流れを説明しています。</p>
+
+        <ul>
+            <li><code>machine</code> の行は <code>deb.griffo.io</code> です。<strong><code>https://</code> は付けず</strong>、末尾のスラッシュも <code>/apt</code> というパスも付けません。</li>
+            <li>ファイルは <code>/etc/apt/auth.conf.d/</code> にあり、名前が <code>.conf</code> で終わっていること。それ以外の拡張子を apt は黙って無視します。</li>
+            <li>ファイルが root 所有でパーミッション <code>600</code> になっていること。ほかのユーザーが読める認証情報を apt は読み込もうとしません。</li>
+            <li>パスワードの前後に余計な引用符や末尾の空白がないこと。</li>
+            <li>それでも解決しない場合は <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord で聞いてください</a>。それがいちばん早く片づく方法です。</li>
+        </ul>
+
+        <h2 id="free">2. ずっと無料のミラーに切り替える</h2>
+
+        <p><a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> は、アカウントも支払いも一切不要です。配信するのは<strong>公開から 2 か月以上経った</strong>最新のリリースで、そのリリースに対するセキュリティ修正とパッチ修正はすぐに公開されます。現在扱っているのは <strong>cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud と Zed</strong> です。ほかのツールも要望があれば追加できるので、必要なものがあれば <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Discord で聞いてください</a>。</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">extrepo で実行</button></div></div>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 extrepo オプションについて。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> は外部リポジトリを扱う Debian 標準のツールです。署名済みメタデータと照合して鍵を検証したうえで、sources ファイルの作成と署名鍵のインストールを代わりに行います。このリポジトリは <code>griffo</code>、ずっと無料のミラーは <code>griffo-free</code> という名前で登録されているので、Debian（bookworm、trixie、forky、sid）では上のコマンドだけで設定は完了です。</p>
+  <p>extrepo は Debian のスイート向けメタデータしか公開していないため、Ubuntu は対象外です。Ubuntu では sudo または root のコマンドを使ってください。</p>
+</div>
+        </div>
+
+        <p>2 つのリポジトリを同時に有効にしないでください。apt はバージョンの高いほう（サブスクリプション側）をインストールしようとするので、また 401 に戻ってしまいます。
+        <a href="/free.html">無料ミラーの詳しい説明はこちら →</a></p>
+
+        <h2 id="github">3. GitHub から .deb を入手する</h2>
+
+        <p>ここにあるパッケージはすべて公開の場でビルドされ、ビルド成果物は GitHub の公開リリースに添付されています。そのダウンロードは無料で認証も不要です。今も、10 月 1 日以降も変わりません。</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+sudo apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre><pre class="variant variant-root"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
+
+        <p>自動アップグレードはなくなります（サブスクリプションの対価はまさにそこです）が、ソフトウェアそのものへのアクセスを失うことはありません。各ツールのパッケージングリポジトリは<a href="/how-packages-are-built.html">パッケージのビルド方法</a>に一覧があります。</p>
+
+        <h2>❓ なぜこうなったのか</h2>
+
+        <p>40 以上のツールを、アップストリームのリリースから数時間以内に Debian と Ubuntu の 8 スイート向けにビルドするには、毎日お金と時間がかかります。それを賄うのがサブスクリプションで、無料ミラーは、誰もが当然使ってよいソフトウェアから締め出されることがないように存在しています。パッケージ自体はオープンソースで、これからもずっとそうです。あなたが支払っているのは、それを最新に保ち続ける自動化の部分です。
+        <a href="/ja/#pricing">料金 →</a></p>
+
+        <p class="back-link"><a href="/ja/">← deb.griffo.io が配信しているすべてのパッケージ</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/supported-architectures.html">アーキテクチャ</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+    <a href="/ja/privacy.html">プライバシーポリシー</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ja">
+  <button type="button" class="trial-close" data-trial-close aria-label="閉じる">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">14 日間の無料トライアルを始める</h2>
+    <p class="trial-lead">メールアドレスを入力すると、数分以内に apt の認証情報をお送りします。カード不要。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">メールアドレス</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">これが apt のログインになります。続ける場合は同じアドレスでお支払いいただければ、マシン側の変更は不要です。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="認証を読み込み中…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="認証情報を送信"
+              data-sending="送信中…" disabled>認証情報を送信</button>
+    </form>
+    <p class="trial-fineprint">トライアルはメールアドレスごとに 1 回です。終了の 2 日前にアクセスを続けるためのリンクをお送りします。何もしなければアクセスは終了し、料金は発生しません。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">受信トレイをご確認ください</h2>
+    <p class="trial-lead" data-trial-success data-template="認証情報を {email} に送信しました。通常は数分以内に届きます。届かない場合は迷惑メールフォルダをご確認ください。"></p>
+    <p class="trial-lead">あとはメールのセットアップスクリプトを実行するだけです。</p>
+    <p class="trial-help">15 分経ってもメールが届かない場合は、<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">GitHub で issue を作成する</a>か<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">Discord で連絡してください</a>。すぐに対応します。</p>
+    <button type="button" class="btn-secondary" data-trial-close>閉じる</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">このアドレスには既にアカウントがあるか、トライアル済みです。プランを選んで続けるか、問題があればウェルカムメールに返信してください。 <a href="/ja/#pricing" data-trial-close>プランを見る &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">人間であることを確認できませんでした。もう一度お試しください。</span>
+    <span data-code="INVALID_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="MISSING_EMAIL">メールアドレスの形式が正しくないようです。</span>
+    <span data-code="RATE_LIMITED">本日はすでにお使いのネットワークから試行されています。明日もう一度お試しください。</span>
+    <span data-code="GENERIC">こちら側で問題が発生しました。もう一度お試しいただくか、Discord でお尋ねください。</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "ja",
+  "mainEntity": [
+    {"@type": "Question", "name": "deb.griffo.io に対して apt が 401 Unauthorized を返すのはなぜですか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "2026 年 10 月 1 日 12:00（英国時間）から、deb.griffo.io からパッケージをダウンロードするにはサブスクリプションが必要になりました。apt update、apt policy、リポジトリの閲覧は引き続き誰でも無料で使えますが、apt install と apt upgrade には認証情報が要ります。401 は、サーバーが応答したうえでリクエストが認証されていなかったことを意味します。システムは何も壊れておらず、インストール済みのパッケージにも影響はありません。"}},
+    {"@type": "Question", "name": "deb.griffo.io 用の apt の認証情報はどこに置けばよいですか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "/etc/apt/auth.conf.d/ の下の、名前が .conf で終わるファイルに置きます。たとえば /etc/apt/auth.conf.d/deb.griffo.io.conf に、machine deb.griffo.io、login にメールアドレス、password にサブスクリプションのパスワードの 3 行を書きます。machine の行に https:// やパスを含めてはいけません。ファイルは root 所有でパーミッション 600 にしてください。そうしないと apt は読み込みません。認証情報を sources.list の行に書くことは決してしないでください。"}},
+    {"@type": "Question", "name": "リポジトリを無料で使い続けることはできますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "はい、2 つの方法があります。deb-free.griffo.io はアカウントもサブスクリプションも不要な、ずっと無料の apt ミラーです。登録済みの各ツールについて、公開から 2 か月以上経った最新のリリースを配信し、セキュリティ修正とパッチ修正はすぐに公開します。もうひとつは、すべての .deb が各パッケージングリポジトリの GitHub 公開リリースに添付されているので、それを直接ダウンロードしてインストールする方法です。無料で、認証も要りません。"}},
+    {"@type": "Question", "name": "すでにインストールしたパッケージは動かなくなりますか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "いいえ。インストール済みの .deb パッケージは失効せず、外部と通信することも、ライセンスを確認することもありません。リポジトリが決めるのは今後のアップグレードをどこから取得するかだけなので、認証されていないシステムは deb.griffo.io から新しいバージョンを受け取らなくなるだけです。"}},
+    {"@type": "Question", "name": "認証情報を追加したのに、apt がまだ 401 を返します。どうすればよいですか？",
+     "acceptedAnswer": {"@type": "Answer", "text": "machine の行がスキームもパスも末尾のスラッシュもなく、正確に deb.griffo.io になっているか、ファイル名が .conf で終わっているか、ファイルが root 所有でパーミッション 600 になっているか（apt は誰でも読める認証情報ファイルを無視します）、そしてパスワードの前後に引用符や末尾の空白がないかを確認してください。それでも解決しない場合は、プロジェクトの Discord で聞いてください。"}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

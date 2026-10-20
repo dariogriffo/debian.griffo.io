@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>apt 401 Unauthorized bei deb.griffo.io: was es bedeutet</title>
+<meta name="description" content="apt meldet 401 Unauthorized bei deb.griffo.io? Nichts ist kaputt: Downloads brauchen ab 1. Oktober 2026 ein Abo. Drei Auswege, mit allen Befehlen.">
+<meta name="keywords" content="apt 401 unauthorized, deb.griffo.io 401, E: Failed to fetch 401 Unauthorized, apt auth.conf.d, apt 401 fehler, apt repository authentifizierung, apt zugangsdaten, apt install 401, apt nicht autorisiert debian">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<meta property="og:title" content="apt: 401 Unauthorized bei deb.griffo.io">
+<meta property="og:description" content="Nichts ist kaputt. Ab dem 1. Oktober 2026 brauchen Downloads ein Abonnement – hier sind die drei Auswege, mit den genauen Befehlen.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<meta property="twitter:title" content="apt: 401 Unauthorized bei deb.griffo.io">
+<meta property="twitter:description" content="Nichts ist kaputt. Ab dem 1. Oktober 2026 brauchen Downloads ein Abonnement – hier sind die drei Auswege, mit den genauen Befehlen.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/apt-401-unauthorized.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/apt-401-unauthorized.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#reviews">Bewertungen</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/apt-401-unauthorized.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta" data-trial>Kostenlos testen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#reviews" class="mobile-menu-link" data-index="05">Bewertungen</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="06">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/de/#pricing" class="btn-primary" data-trial>Kostenlos testen</a>
+      <p class="mobile-menu-note"><a href="/free.html">Kostenloser Spiegel</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>64 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      🎁 Der apt-Mirror erfordert ein Abo. <strong>Teste alle Tools 14 Tage kostenlos</strong>, ohne Kreditkarte.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/de/apt-401-unauthorized.html">apt meldet 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔐 apt meldet 401 Unauthorized</h1>
+        <p class="subtitle">Was es bedeutet, wenn die Meldung von deb.griffo.io kommt, und die drei Auswege</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ Die kurze Antwort.</strong> An Ihrem System ist nichts kaputt, und kein
+            Paket wurde entfernt. Seit dem <strong>1. Oktober 2026, 12:00 Uhr britischer Zeit</strong>,
+            erfordert das Herunterladen von Paketen von <code>deb.griffo.io</code> ein Abonnement.
+            <code>apt update</code> funktioniert weiterhin für alle; <code>apt install</code> und
+            <code>apt upgrade</code> brauchen Zugangsdaten. Sie haben drei Auswege, alle
+            unten beschrieben: <a href="#subscribed">Zugangsdaten hinterlegen</a>,
+            <a href="#free">auf den immer kostenlosen Spiegel wechseln</a> oder
+            <a href="#github">das <code>.deb</code> direkt von GitHub holen</a>, was
+            kostenlos ist und es immer bleiben wird.
+        </div>
+
+        <div class="cta-strip">
+            <p class="cta-strip-text"><strong>Noch kein Abo, oder ist Ihre Testphase abgelaufen?</strong>
+            In einer Minute haben Sie Zugang: Die 14-tägige kostenlose Testphase braucht nur eine E-Mail-Adresse, keine Karte.
+            Danach kostet es <span data-amount="15">€15</span> im Jahr oder einmalig
+            <span data-amount="150">€150</span> für immer. Ihre Zugangsdaten kommen per
+            E-Mail; hinterlegen Sie sie wie in <a href="#subscribed">Schritt 1</a> gezeigt.</p>
+            <a href="/de/#pricing" class="btn-primary" data-trial>Kostenlos testen</a>
+            <a href="https://buy.stripe.com/fZubJ0fJT7Ojepq8qienS08" class="btn-secondary">Abonnieren</a>
+            <a href="https://buy.stripe.com/eVqfZg41b9WrepqfSKenS0b" class="btn-secondary">Lebenslang holen</a>
+        </div>
+
+        <h2>🧾 Der Fehler, den Sie sehen</h2>
+
+        <div class="code-block"><pre><code>E: Failed to fetch https://deb.griffo.io/apt/pool/main/g/ghostty/ghostty_1.3.1-5~trixie_amd64.deb  401  Unauthorized [IP: 2a01:… 443]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?</code></pre></div>
+
+        <p><code>apt-get update --fix-missing</code> hilft hier nicht, denn es fehlt nichts:
+        Der Server hat geantwortet, und die Antwort lautete „Sie sind nicht authentifiziert&#8220;.
+        Manche apt-Versionen melden <code>The repository … is not signed</code>, aber nur, wenn der
+        Schlüssel das Problem ist; ein bloßes <code>401</code> betrifft immer die Authentifizierung.</p>
+
+        <h2>🚦 Was ohne Abonnement weiterhin funktioniert</h2>
+
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th>Befehl</th><th>Abonnement nötig?</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>apt update</code></td><td>Nein, die Indexdateien bleiben für alle offen</td></tr>
+                <tr><td><code>apt policy</code> / <code>apt-cache</code></td><td>Nein</td></tr>
+                <tr><td>Stöbern in <a href="/apt/dists/">/apt/dists/</a></td><td>Nein</td></tr>
+                <tr><td><code>apt install</code> / <code>apt upgrade</code></td><td><strong>Ja</strong>, ab dem 1. Oktober 2026</td></tr>
+                <tr><td>Bereits installierte Pakete</td><td>Nein. Sie laufen weiter, nichts läuft ab</td></tr>
+                <tr><td><a href="https://deb-free.griffo.io">deb-free.griffo.io</a></td><td>Nein, für immer kostenlos, ohne Konto</td></tr>
+                <tr><td>Die <code>.deb</code>-Dateien auf GitHub</td><td>Nein, für immer kostenlos</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="subscribed">1. Sie haben ein Abonnement: Zugangsdaten hinterlegen</h2>
+
+        <p>Zugangsdaten gehören nach <code>/etc/apt/auth.conf.d/</code> und nie in die
+        <code>sources.list</code>-Zeile, wo jeder Benutzer des Rechners sie lesen könnte und
+        apt sie in Fehlermeldungen ausplaudern würde:</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">mit extrepo</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+sudo chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+sudo apt update</code></pre><pre class="variant variant-root"><code>tee /etc/apt/auth.conf.d/deb.griffo.io.conf &gt; /dev/null &lt;&lt;&#039;EOF&#039;
+machine deb.griffo.io
+login your-email@example.com
+password your-subscription-password
+EOF
+chmod 600 /etc/apt/auth.conf.d/deb.griffo.io.conf
+apt update</code></pre></div>
+        </div>
+
+        <p>Danach funktioniert <code>sudo apt install &lt;package&gt;</code> genau wie zuvor. Kommt
+        weiterhin 401, prüfen Sie der Reihe nach:</p>
+
+        <p>Noch kein Abo und Sie möchten wissen, worauf Sie sich einlassen?
+        <a href="/de/how-subscriptions-work.html">So funktioniert das Abonnement</a> beschreibt den gesamten
+        Ablauf: Zugangsdaten per E-Mail, unbegrenzt viele Rechner, Verlängerung, Kündigung und Erstattung.</p>
+
+        <ul>
+            <li>Die <code>machine</code>-Zeile lautet <code>deb.griffo.io</code>: <strong>kein
+                <code>https://</code></strong>, kein Schrägstrich am Ende, kein <code>/apt</code>-Pfad.</li>
+            <li>Die Datei liegt in <code>/etc/apt/auth.conf.d/</code> und ihr Name endet auf
+                <code>.conf</code>. apt ignoriert jede andere Endung stillschweigend.</li>
+            <li>Die Datei gehört root und hat den Modus <code>600</code>. apt verweigert
+                Zugangsdaten, die andere Benutzer lesen können.</li>
+            <li>Keine überflüssigen Anführungszeichen um das Passwort und keine Leerzeichen am Ende.</li>
+            <li>Kommen Sie nicht weiter? <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">Fragen Sie im
+                Discord</a>. Das ist der schnellste Weg zur Lösung.</li>
+        </ul>
+
+        <h2 id="free">2. Auf den immer kostenlosen Spiegel wechseln</h2>
+
+        <p><a href="https://deb-free.griffo.io" rel="noopener">deb-free.griffo.io</a> braucht kein
+        Konto und keine Zahlung, niemals. Er liefert die neueste Version, die <strong>mindestens
+        zwei Monate alt</strong> ist, und veröffentlicht Sicherheits- und Patch-Korrekturen für diese Version
+        sofort. Derzeit führt er <strong>cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud und Zed</strong>; jedes andere Werkzeug
+        kann auf Anfrage aufgenommen werden, also <a href="https://discord.gg/E2yHQNkuZy" rel="noopener">fragen
+        Sie im Discord</a>, wenn Sie eines brauchen.</p>
+
+        <div class="install-steps">
+            <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">mit extrepo</button></div></div>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>rm -f /etc/apt/sources.list.d/deb.griffo.io.list
+install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb-free.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb-free.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb-free.griffo.io.gpg] https://deb-free.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb-free.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo-free
+sudo apt update</code></pre></div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Zur extrepo-Option.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> ist Debians eigenes Werkzeug für externe Repositories: Es legt die Sources-Datei an und installiert den Signaturschlüssel für dich, nachdem es ihn gegen signierte Metadaten geprüft hat. Dieses Repository ist dort als <code>griffo</code> registriert, der für immer kostenlose Spiegel als <code>griffo-free</code>. Unter Debian (bookworm, trixie, forky und sid) sind die Befehle oben damit die gesamte Einrichtung.</p>
+  <p>Ubuntu wird nicht abgedeckt, denn extrepo veröffentlicht Metadaten nur für Debian-Suites: dort nimmst du die Befehle mit sudo oder als root.</p>
+</div>
+        </div>
+
+        <p>Aktivieren Sie nicht beide Repositorys gleichzeitig. apt würde die jeweils höhere
+        Version installieren (die aus dem Abo), und Sie stünden wieder vor einem 401.
+        <a href="/free.html">Alle Details zum kostenlosen Spiegel →</a></p>
+
+        <h2 id="github">3. Das .deb von GitHub holen</h2>
+
+        <p>Jedes Paket hier wird öffentlich gebaut, und die Build-Artefakte hängen an einem
+        öffentlichen GitHub-Release. Diese Downloads sind kostenlos und ohne Authentifizierung, heute wie nach
+        dem 1. Oktober:</p>
+
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+sudo apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre><pre class="variant variant-root"><code>wget https://github.com/dariogriffo/ghostty-debian/releases/latest/download/ghostty_1.3.1-5~trixie_amd64.deb
+apt install ./ghostty_1.3.1-5~trixie_amd64.deb</code></pre></div>
+
+        <p>Sie verlieren die automatischen Upgrades (genau dafür bezahlt das Abonnement), aber
+        nie den Zugang zur Software. Das Paketierungs-Repository jedes Werkzeugs ist unter
+        <a href="/how-packages-are-built.html">So werden die Pakete gebaut</a> aufgeführt.</p>
+
+        <h2>❓ Warum das passiert ist</h2>
+
+        <p>Mehr als 40 Werkzeuge für 8 Debian- und Ubuntu-Suites zu bauen, jeweils wenige Stunden nach
+        jeder Upstream-Version, kostet jeden einzelnen Tag Geld und Zeit. Das Abonnement bezahlt dafür; den
+        kostenlosen Spiegel gibt es, damit niemand von Software ausgesperrt wird, die er mit vollem Recht
+        nutzen darf. Die Pakete selbst sind Open Source und bleiben es; was Sie bezahlen, ist
+        die Automatisierung, die sie aktuell hält.
+        <a href="/de/#pricing">Preise →</a></p>
+
+        <p class="back-link"><a href="/de/">← Alle Pakete von deb.griffo.io</a></p>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Kostenloser Spiegel</a>
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a>
+    <a href="/supported-architectures.html">Architekturen</a>
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a>
+    <a href="/terms.html">Nutzungsbedingungen</a>
+    <a href="/de/privacy.html">Datenschutz</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Alle Rechte vorbehalten.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="de">
+  <button type="button" class="trial-close" data-trial-close aria-label="Schließen">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Starte deine 14-tägige Testphase</h2>
+    <p class="trial-lead">Gib deine E-Mail-Adresse ein und wir schicken dir deine apt-Zugangsdaten in wenigen Minuten. Ohne Kreditkarte.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">E-Mail-Adresse</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Das wird dein apt-Login. Wenn du bleibst, zahl mit derselben Adresse, dann ändert sich auf deinen Rechnern nichts.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Menschen-Check wird geladen…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Zugangsdaten senden"
+              data-sending="Wird gesendet…" disabled>Zugangsdaten senden</button>
+    </form>
+    <p class="trial-fineprint">Eine Testphase pro E-Mail-Adresse. Zwei Tage vor dem Ende schicken wir dir einen Link, um den Zugang zu behalten. Tust du nichts, endet der Zugang und nichts wird berechnet.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Schau in dein Postfach</h2>
+    <p class="trial-lead" data-trial-success data-template="Deine Zugangsdaten sind unterwegs an {email}. Sie kommen meist innerhalb von ein paar Minuten an, sieh sonst im Spam-Ordner nach."></p>
+    <p class="trial-lead">Dann führe das Setup-Skript aus der E-Mail aus, fertig.</p>
+    <p class="trial-help">Nach 15 Minuten keine E-Mail? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Eröffne ein Issue auf GitHub</a> oder <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">schreib mir auf Discord</a>, ich kümmere mich darum.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Schließen</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Diese Adresse hat bereits ein Konto oder hatte schon eine Testphase. Wähle einen Plan, oder antworte auf deine Willkommens-E-Mail, falls etwas nicht stimmt. <a href="/de/#pricing" data-trial-close>Pläne ansehen &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Wir konnten nicht bestätigen, dass du ein Mensch bist. Bitte versuch es erneut.</span>
+    <span data-code="INVALID_EMAIL">Diese E-Mail-Adresse sieht nicht richtig aus.</span>
+    <span data-code="MISSING_EMAIL">Diese E-Mail-Adresse sieht nicht richtig aus.</span>
+    <span data-code="RATE_LIMITED">Aus deinem Netzwerk wurde es heute schon versucht. Bitte versuch es morgen erneut.</span>
+    <span data-code="GENERIC">Bei uns ist etwas schiefgelaufen. Bitte versuch es erneut oder frag im Discord.</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "de",
+  "mainEntity": [
+    {"@type": "Question", "name": "Warum meldet apt 401 Unauthorized für deb.griffo.io?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Seit dem 1. Oktober 2026, 12:00 Uhr britischer Zeit, erfordert das Herunterladen von Paketen von deb.griffo.io ein Abonnement. apt update, apt policy und das Durchsuchen des Repositorys bleiben für alle kostenlos; apt install und apt upgrade brauchen Zugangsdaten. Ein 401 bedeutet, dass der Server geantwortet hat und die Anfrage nicht authentifiziert war. An Ihrem System ist nichts kaputt, und kein installiertes Paket ist betroffen."}},
+    {"@type": "Question", "name": "Wohin gehören die apt-Zugangsdaten für deb.griffo.io?",
+     "acceptedAnswer": {"@type": "Answer", "text": "In eine Datei unter /etc/apt/auth.conf.d/, deren Name auf .conf endet, zum Beispiel /etc/apt/auth.conf.d/deb.griffo.io.conf, mit drei Zeilen: machine deb.griffo.io, login gefolgt von Ihrer E-Mail-Adresse und password gefolgt von Ihrem Abo-Passwort. Die machine-Zeile darf weder https:// noch einen Pfad enthalten. Die Datei muss root gehören und den Modus 600 haben, sonst verweigert apt das Lesen. Tragen Sie Zugangsdaten nie in die sources.list-Zeile ein."}},
+    {"@type": "Question", "name": "Kann ich das Repository weiterhin kostenlos nutzen?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Ja, auf zwei Wegen. deb-free.griffo.io ist ein immer kostenloser apt-Spiegel ohne Konto und ohne Abonnement. Er liefert von jedem aufgenommenen Werkzeug die neueste Version, sobald sie mindestens zwei Monate alt ist, und veröffentlicht Sicherheits- und Patch-Korrekturen sofort. Alternativ hängt jedes .deb an einem öffentlichen GitHub-Release in seinem Paketierungs-Repository und lässt sich direkt herunterladen und installieren, kostenlos und ohne Authentifizierung."}},
+    {"@type": "Question", "name": "Funktionieren bereits installierte Pakete nicht mehr?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Doch, sie funktionieren weiter. Installierte .deb-Pakete laufen nicht ab, melden sich nicht nach Hause und prüfen keine Lizenz. Ein Repository bestimmt nur, woher künftige Upgrades kommen; ein System ohne Authentifizierung erhält von deb.griffo.io also einfach keine neuen Versionen mehr."}},
+    {"@type": "Question", "name": "apt liefert nach dem Hinterlegen der Zugangsdaten weiterhin 401. Was nun?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Prüfen Sie, dass die machine-Zeile genau deb.griffo.io lautet, ohne Schema, Pfad oder Schrägstrich am Ende; dass der Dateiname auf .conf endet; dass die Datei root gehört und den Modus 600 hat, da apt für alle lesbare Zugangsdateien ignoriert; und dass um das Passwort keine Anführungszeichen oder Leerzeichen am Ende stehen. Klappt es dann immer noch nicht, fragen Sie im Discord des Projekts."}}
+  ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
