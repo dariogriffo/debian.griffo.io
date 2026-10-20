@@ -32,9 +32,9 @@
   } catch (e) {}
 })();
 </script>
-<title>プライバシーポリシー：Cookie なしのアクセス解析 | deb.griffo.io</title>
-<meta name="description" content="deb.griffo.io が何を、なぜ収集するのか。Cookie は一切使わず、端末に何も保存しない自前のアクセス解析、無料トライアル、Stripe による支払い、サーバーログについて、保存する内容と目的、データ削除の依頼方法までまとめています。">
-<meta name="keywords" content="deb.griffo.io プライバシー, deb.griffo.io cookie, cookie を使わないアクセス解析, apt リポジトリ プライバシー, cookie なし, gdpr">
+<title>プライバシーポリシー：アクセス解析、Cookie、あなたのデータ | deb.griffo.io</title>
+<meta name="description" content="deb.griffo.io が何を、なぜ収集するのか。Google Analytics とその Cookie、Cookie を使わない自前のアクセス解析 ttics、無料トライアル、Stripe による支払い、サーバーログについて、保存する内容と目的、オプトアウトとデータ削除の依頼方法までまとめています。">
+<meta name="keywords" content="deb.griffo.io プライバシー, deb.griffo.io cookie, google analytics, cookie を使わないアクセス解析, apt リポジトリ プライバシー, gdpr">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://deb.griffo.io/ja/privacy.html">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/ja/privacy.html">
 <meta property="og:title" content="deb.griffo.io のプライバシーポリシー">
-<meta property="og:description" content="Cookie なし、端末への保存もなし。サイトと apt リポジトリが何を、なぜ収集するのか、そしてデータの削除を依頼する方法。">
+<meta property="og:description" content="サイトと apt リポジトリが何を、なぜ収集するのか。Google Analytics が設定する Cookie とオプトアウトの方法、そしてデータの削除を依頼する方法。">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/ja/privacy.html">
 <meta property="twitter:title" content="deb.griffo.io のプライバシーポリシー">
-<meta property="twitter:description" content="Cookie なし、端末への保存もなし。サイトと apt リポジトリが何を、なぜ収集するのか、そしてデータの削除を依頼する方法。">
+<meta property="twitter:description" content="サイトと apt リポジトリが何を、なぜ収集するのか。Google Analytics が設定する Cookie とオプトアウトの方法、そしてデータの削除を依頼する方法。">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
@@ -184,11 +184,12 @@
     </div>
 
     <div class="content">
-        <p><em>最終更新日：2026 年 10 月 19 日</em></p>
+        <p><em>最終更新日：2026 年 10 月 20 日</em></p>
 
         <div class="highlight-box">
-            <strong>要点。</strong>このサイトは Cookie を一切設定せず、アクセス解析もあなたの端末に何も保存しません。そのため、クリックして閉じる
-            Cookie バナーもありません。訪問数は、私たち自身のサーバー上で動く小さなファーストパーティのサービスが数えており、日をまたいであなたを識別することはできません。トライアルを始めたり購読したりした場合、リポジトリは
+            <strong>要点。</strong>訪問は 2 つの方法で計測しています。ブラウザに Cookie を設定する <strong>Google Analytics</strong>
+            と、私たち自身のサーバー上で動く小さなファーストパーティのサービス <strong>ttics</strong> です。ttics は Cookie を設定せず、日をまたいであなたを識別することもできません。Google
+            Analytics は、その Cookie をブロックするか、広告ブロッカーか、Google のオプトアウト アドオンを使えば無効にできます。トライアルを始めたり購読したりした場合、リポジトリは
             <code>apt</code> でのアクセスを提供するのに必要なものを保存します。メールアドレス、購読の状態、パスワードのハッシュです。カード情報は
             Stripe に送られ、このサイトに届くことはありません。
         </div>
@@ -203,8 +204,19 @@
 
         <h2>2. アクセス解析</h2>
         <p>
-            ページビューは、私が自分で運用している小さなアクセス解析サービス <strong>ttics</strong>
-            が、私たち自身のサーバー上で数えています。データを受け取る第三者はいません。ページが読み込まれると、ブラウザはそのページのアドレスと訪問に関するいくつかの情報をこのサービスに送ります。そこから記録するのは次のものです。
+            <strong>Google Analytics。</strong>deb.griffo.io と deb-free.griffo.io のページでは Google Analytics 4
+            を使っています。Google Ireland Limited（EEA、英国、スイス以外では Google LLC）のサービスです。これはファーストパーティの Cookie
+            <code>_ga</code> と <code>_ga_&lt;id&gt;</code> を設定し、Google はこれを最長 2 年間保持します。再訪したブラウザと新しいブラウザを見分けるためのものです。これらを使って、訪問数と閲覧されたページ、訪問者の流入元（<code>utm_</code>
+            キャンペーンタグを含む）、端末、ブラウザ、おおよその地域、そしていくつかの操作（無料トライアルのフォームを開く、トライアルを始める、決済に進む。決済ではプランとその価格も含む）を計測します。私はこれを、どのページが役に立っているかを確認し、広告経由のものも含めてトライアルの登録数と決済ボタンのクリック数を測るために使っています。Google
+            によれば、Google Analytics 4 は IP アドレスを記録も保存もしません。Google はこのデータを自社の<a href="https://policies.google.com/privacy">プライバシー ポリシー</a>に基づいて処理し、データはお住まいの国以外（米国を含む）のサーバーに転送されることがあります。
+        </p>
+        <p>
+            Google Analytics は、Google の<a href="https://tools.google.com/dlpage/gaoptout">オプトアウト アドオン</a>で無効にできます。このサイトの
+            Cookie をブロックしたり、広告ブロッカーやトラッカーブロッカーを使ったりしても無効になります。どちらの場合も、サイトはまったく同じように使えます。
+        </p>
+        <p>
+            <strong>ttics。</strong>ページビューは、私が自分で運用している小さなアクセス解析サービス <strong>ttics</strong>
+            も、私たち自身のサーバー上で数えています。Cookie を設定せず、端末に何も保存せず、データを受け取る第三者もいません。ページが読み込まれると、ブラウザはそのページのアドレスと訪問に関するいくつかの情報をこのサービスに送ります。そこから記録するのは次のものです。
         </p>
         <ul>
             <li>訪問したページ（パスのみで、クエリ文字列は含みません）</li>
@@ -248,12 +260,13 @@
         <p>
             <code>apt</code> はログイン名（メールアドレス）と、あなたのために生成されたパスワードで認証します。パスワードは
             bcrypt のハッシュとしてのみ保存されます。一般的なウェブサーバーと同様に、サイトとリポジトリを支えるサーバーは、サービスの運用と不正利用の防止のため、IP
-            アドレス、ユーザーエージェント、要求されたファイルを含むリクエストを記録します。例外はアクセス解析サービスで、そのログにはアドレス、ユーザーエージェント、リファラーが含まれません。
+            アドレス、ユーザーエージェント、要求されたファイルを含むリクエストを記録します。例外は ttics で、そのログにはアドレス、ユーザーエージェント、リファラーが含まれません。
         </p>
 
         <h2>6. Cookie とブラウザのストレージ</h2>
         <p>
-            このサイトは <strong>Cookie を一切設定しません</strong>。アクセス解析がブラウザに何かを書き込むこともありません。サイト自体がブラウザに保存する可能性があるのは、好みの設定ひとつだけです。インストールコマンドの表示を
+            このサイトの Cookie は、第 2 節で説明した Google Analytics の <code>_ga</code> と <code>_ga_&lt;id&gt;</code>
+            だけです。ブラウザでブロックしても、サイトの機能が失われることはありません。ttics と Ahrefs はブラウザに何も書き込みません。それ以外にサイト自体がブラウザに保存する可能性があるのは、好みの設定ひとつだけです。インストールコマンドの表示を
             <code>sudo</code> 付き、root、extrepo の間で切り替えると、次のページでも同じ形式で表示されるよう、その選択がブラウザのローカルストレージに
             <code>deb-griffo-install-variant</code> として保存されます。これがブラウザの外に出ることはなく、サイトデータを消去すれば削除されます。Cloudflare
             Turnstile（トライアルのフォームを開いたときのみ）と Stripe（決済に進んだときのみ）は、それぞれの企業が自社のポリシーに基づいて運用しています。
@@ -268,8 +281,13 @@
                 の issue は公開されるため、メールアドレスは書き込まないでください。プライバシーに関する依頼があるとだけ書いていただければ、その後は非公開でやり取りできます。アカウントを削除すると、リポジトリへのアクセスも終了します。
             </li>
             <li>
-                <strong>アクセス解析のデータからあなたをたどることはできません。</strong>氏名、メールアドレス、IP
+                <strong>ttics のデータからあなたをたどることはできません。</strong>氏名、メールアドレス、IP
                 アドレス、Cookie はいずれも含まれず、日ごとのハッシュはソルトが削除されると個人と結び付けられなくなります。そのため、特定の訪問者について照会したり削除したりできるものは含まれていません。
+            </li>
+            <li>
+                <strong>Google Analytics はいつでも無効にできます。</strong>Google の
+                <a href="https://tools.google.com/dlpage/gaoptout">オプトアウト アドオン</a>を使うか、その Cookie をブロックするか、広告ブロッカーを使ってください。ブラウザから
+                <code>_ga</code> Cookie を削除すると、新しい訪問者として扱われるようになります。
             </li>
             <li>
                 データが不適切に扱われたと思われる場合は、お住まいの地域のデータ保護機関に<strong>苦情を申し立てることができます</strong>。
@@ -348,6 +366,45 @@
 
 
 <script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
 <!-- ttics: first-party, cookieless analytics; stores nothing on the device.
      Deferred, so it never competes with the first paint. -->
 <script src="/assets/js/ttics.js" defer></script>

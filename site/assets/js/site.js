@@ -379,12 +379,23 @@
 
   // ── Checkout links ──
   // Stripe payment links leave the site, so the purchase itself is never seen
-  // here: begin_checkout is counted on the click, and the gate matches the
-  // purchase to the trial that preceded it by email. window.ttics comes from
-  // /assets/js/ttics.js, which is cookieless and stores nothing on the device;
-  // it is absent when that script is blocked, and the link works regardless.
+  // here: begin_checkout is counted on the click, in GA and in ttics, and the
+  // gate matches the purchase to the trial that preceded it by email.
+  // window.gtag comes from the loader in layout.html, window.ttics from
+  // /assets/js/ttics.js; either is absent when blocked, and the link works
+  // regardless.
   document.querySelectorAll('a[href^="https://buy.stripe.com/"]').forEach(function (link) {
     link.addEventListener('click', function () {
+      var card = link.closest('.pricing-card');
+      var price = card && card.querySelector('.price-value[data-amount]');
+      var tier = card && card.querySelector('.pricing-tier');
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'begin_checkout', {
+          currency: 'EUR',
+          value: price ? Number(price.dataset.amount) : undefined,
+          items: [{ item_name: tier ? tier.textContent.trim() : link.href }]
+        });
+      }
       if (typeof window.ttics === 'function') { window.ttics('begin_checkout'); }
     });
   });
@@ -406,12 +417,20 @@
     var widget = null;
     var sending = false;
 
-    // trial_dialog_open, trial_started and generate_lead, sent to ttics (see
-    // the checkout links above). generate_lead is the conventional name for a
-    // sign-up, kept beside trial_started so an ad platform's conversion can be
-    // wired to it later without renaming anything.
+    // trial_dialog_open, trial_started and generate_lead, sent to GA and to
+    // ttics (see the checkout links above).
     var track = function (name) {
+      if (typeof window.gtag === 'function') { window.gtag('event', name); }
       if (typeof window.ttics === 'function') { window.ttics(name); }
+    };
+    // generate_lead is GA4's recommended name for a sign-up, the one Google Ads
+    // imports as a conversion; trial_started stays for the reports already built
+    // on it.
+    var trackLead = function () {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', { lead_source: 'trial' });
+      }
+      if (typeof window.ttics === 'function') { window.ttics('generate_lead'); }
     };
 
     // Stricter than type="email", which accepts "d@d": a domain needs a dot and a
@@ -531,7 +550,7 @@
           trial.querySelector('[data-trial-step="form"]').hidden = true;
           trial.querySelector('[data-trial-step="done"]').hidden = false;
           track('trial_started');
-          track('generate_lead');
+          trackLead();
           return;
         }
         if (r.status === 429) { finish('RATE_LIMITED'); return; }

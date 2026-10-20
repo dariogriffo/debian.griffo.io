@@ -32,9 +32,9 @@
   } catch (e) {}
 })();
 </script>
-<title>隐私政策：不使用 Cookie，访问统计不存储任何数据 | deb.griffo.io</title>
-<meta name="description" content="deb.griffo.io 收集哪些数据、为什么收集：本站不设置任何 Cookie；第一方访问统计不会在你的设备上存储任何内容；另外还说明了免费试用所需的数据、Stripe 付款的处理方式、服务器日志的记录内容，以及你如何要求查询、更正或删除自己的数据。">
-<meta name="keywords" content="deb.griffo.io 隐私, deb.griffo.io cookie, 无 cookie 统计, apt 仓库 隐私, 不使用 cookie, gdpr">
+<title>隐私政策：访问统计、Cookie 与你的数据 | deb.griffo.io</title>
+<meta name="description" content="deb.griffo.io 收集哪些数据、为什么收集：Google Analytics 及其设置的 Cookie、不使用 Cookie 的第一方统计服务 ttics、免费试用所需的数据、Stripe 付款的处理方式、服务器日志的记录内容，以及你如何选择退出统计、要求查询或删除自己的数据。">
+<meta name="keywords" content="deb.griffo.io 隐私, deb.griffo.io cookie, google analytics, 无 cookie 统计, apt 仓库 隐私, gdpr">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://deb.griffo.io/cn/privacy.html">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/cn/privacy.html">
 <meta property="og:title" content="deb.griffo.io 的隐私政策">
-<meta property="og:description" content="不使用 Cookie，也不在你的设备上存储任何内容：网站和 apt 仓库收集什么、为什么收集，以及如何要求删除你的数据。">
+<meta property="og:description" content="网站和 apt 仓库收集什么、为什么收集，Google Analytics 会设置哪些 Cookie、如何选择退出，以及如何要求删除你的数据。">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/cn/privacy.html">
 <meta property="twitter:title" content="deb.griffo.io 的隐私政策">
-<meta property="twitter:description" content="不使用 Cookie，也不在你的设备上存储任何内容：网站和 apt 仓库收集什么、为什么收集，以及如何要求删除你的数据。">
+<meta property="twitter:description" content="网站和 apt 仓库收集什么、为什么收集，Google Analytics 会设置哪些 Cookie、如何选择退出，以及如何要求删除你的数据。">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
@@ -184,12 +184,13 @@
     </div>
 
     <div class="content">
-        <p><em>最后更新：2026 年 10 月 19 日</em></p>
+        <p><em>最后更新：2026 年 10 月 20 日</em></p>
 
         <div class="highlight-box">
-            <strong>简而言之。</strong>本站不设置任何 Cookie，访问统计也不会在你的设备上存储任何内容，
-            所以没有需要点击关闭的 Cookie 提示。访问量由运行在我们自己服务器上的一个小型第一方服务统计，
-            它无法在不同日期之间认出你。如果你开始试用或订阅，仓库会保存为你提供
+            <strong>简而言之。</strong>本站用两种方式统计访问：一是 <strong>Google Analytics</strong>，
+            它会在你的浏览器中设置 Cookie；二是 <strong>ttics</strong>，一个运行在我们自己服务器上的小型第一方服务，
+            它不设置 Cookie，也无法在不同日期之间认出你。你可以通过屏蔽其 Cookie、使用广告拦截器或 Google
+            的停用插件来退出 Google Analytics。如果你开始试用或订阅，仓库会保存为你提供
             <code>apt</code> 访问所需的信息：你的邮箱地址、订阅状态和密码的哈希值。银行卡信息直接交给
             Stripe，从不经过本站。
         </div>
@@ -204,8 +205,22 @@
 
         <h2>2. 访问统计</h2>
         <p>
-            页面浏览量由 <strong>ttics</strong> 统计，这是我自己在我们自己的服务器上运行的一个小型统计服务。
-            数据不会交给任何第三方。页面加载时，你的浏览器会向它发送该页面的地址以及关于这次访问的几项信息。
+            <strong>Google Analytics。</strong>deb.griffo.io 和 deb-free.griffo.io 的页面使用 Google Analytics 4，
+            这是 Google Ireland Limited 提供的服务（在欧洲经济区、英国和瑞士以外由 Google LLC 提供）。它会设置第一方 Cookie
+            <code>_ga</code> 和 <code>_ga_&lt;id&gt;</code>，Google 最长保留两年，用于区分回访的浏览器和新的浏览器。
+            借助它们，它统计访问次数和浏览的页面、访客的来源（包括 <code>utm_</code> 活动标记）、设备、浏览器和大致位置，
+            以及几个操作：打开免费试用表单、开始试用和前往付款（附带所选套餐及其价格）。我用它来了解哪些页面对大家有帮助，
+            并衡量试用注册和付款点击，包括来自广告的那些。据 Google 称，Google Analytics 4 不会记录或存储 IP 地址。
+            Google 按照其自身的<a href="https://policies.google.com/privacy">隐私权政策</a>处理这些数据，
+            数据可能会被传输到你所在国家以外的服务器，包括美国。
+        </p>
+        <p>
+            你可以使用 Google 的<a href="https://tools.google.com/dlpage/gaoptout">停用浏览器插件</a>退出
+            Google Analytics。为本站屏蔽 Cookie，或使用广告、跟踪拦截器，同样可以退出；无论哪种方式，网站的功能都完全一样。
+        </p>
+        <p>
+            <strong>ttics。</strong>页面浏览量还由 <strong>ttics</strong> 统计，这是我自己在我们自己的服务器上运行的一个小型统计服务。
+            它不设置 Cookie，也不在你的设备上存储任何内容，数据不会交给任何第三方。页面加载时，你的浏览器会向它发送该页面的地址以及关于这次访问的几项信息。
             它从中记录：
         </p>
         <ul>
@@ -254,13 +269,15 @@
         <p>
             <code>apt</code> 使用你的登录名（即你的邮箱地址）和为你生成的密码进行认证，密码只以 bcrypt
             哈希值的形式保存。与任何 Web 服务器一样，网站和仓库背后的服务器会记录请求日志，包括 IP 地址、User
-            Agent 和所请求的文件，用于维持服务运行和防止滥用。访问统计服务是个例外：它的日志不包含 IP 地址、User
+            Agent 和所请求的文件，用于维持服务运行和防止滥用。ttics 是个例外：它的日志不包含 IP 地址、User
             Agent 和来源页面（referrer）。
         </p>
 
         <h2>6. Cookie 与浏览器存储</h2>
         <p>
-            本站<strong>不设置任何 Cookie</strong>，访问统计也不会向你的浏览器写入任何内容。本站自身唯一可能保存在那里的是一项偏好：
+            本站仅有的 Cookie 是 Google Analytics 的 <code>_ga</code> 和 <code>_ga_&lt;id&gt;</code>（见第 2 节）；
+            你可以在浏览器中屏蔽它们，网站上的任何功能都不会受影响。ttics 和 Ahrefs 不会向你的浏览器写入任何内容。
+            本站自身另外唯一可能保存在那里的是一项偏好：
             如果你在 <code>sudo</code>、root 和 extrepo 之间切换安装命令的形式，你的选择会以
             <code>deb-griffo-install-variant</code> 为名保存在浏览器的本地存储中，这样下一个页面会显示相同的形式。
             它从不离开你的浏览器，清除网站数据即可将其删除。Cloudflare Turnstile（仅在你打开试用表单时）和
@@ -276,8 +293,13 @@
                 是公开的，请不要在那里贴出你的邮箱地址；只需说明你有隐私方面的请求，之后会转为私下沟通。删除账号后，你的仓库访问也会随之终止。
             </li>
             <li>
-                <strong>访问统计无法追溯到你本人。</strong>其中不包含姓名、邮箱、IP 地址或 Cookie，
+                <strong>ttics 无法追溯到你本人。</strong>其中不包含姓名、邮箱、IP 地址或 Cookie，
                 而且每日哈希值在盐值删除后就无法再与具体某个人关联，因此其中没有任何可以针对单个访客查询或删除的内容。
+            </li>
+            <li>
+                <strong>随时退出 Google Analytics</strong>：使用 Google 的
+                <a href="https://tools.google.com/dlpage/gaoptout">停用插件</a>、屏蔽其 Cookie，或使用广告拦截器。
+                从浏览器中删除 <code>_ga</code> Cookie 后，你会被重新当作一位新访客。
             </li>
             <li>
                 <strong>你可以投诉</strong>：如果你认为自己的数据被不当处理，可以向你所在地的数据保护机构投诉。
@@ -356,6 +378,45 @@
 
 
 <script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
 <!-- ttics: first-party, cookieless analytics; stores nothing on the device.
      Deferred, so it never competes with the first paint. -->
 <script src="/assets/js/ttics.js" defer></script>

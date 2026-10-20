@@ -32,9 +32,9 @@
   } catch (e) {}
 })();
 </script>
-<title>Конфиденциальность: без cookie | deb.griffo.io</title>
-<meta name="description" content="Что собирает deb.griffo.io и зачем: никаких cookie, собственная аналитика, которая ничего не хранит на устройстве, пробный период, оплата Stripe и логи.">
-<meta name="keywords" content="deb.griffo.io конфиденциальность, deb.griffo.io cookie, аналитика без cookie, apt репозиторий конфиденциальность, без cookie, gdpr">
+<title>Конфиденциальность: аналитика и cookie | deb.griffo.io</title>
+<meta name="description" content="Что собирает deb.griffo.io и зачем: Google Analytics и его cookie, собственная аналитика ttics, пробный период, оплата через Stripe и журналы сервера.">
+<meta name="keywords" content="deb.griffo.io конфиденциальность, deb.griffo.io cookie, google analytics, аналитика без cookie, apt репозиторий конфиденциальность, gdpr">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://deb.griffo.io/ru/privacy.html">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/ru/privacy.html">
 <meta property="og:title" content="Конфиденциальность на deb.griffo.io">
-<meta property="og:description" content="Никаких cookie и ничего не сохраняется на вашем устройстве: что собирают сайт и apt-репозиторий, зачем, и как попросить удалить ваши данные.">
+<meta property="og:description" content="Что собирают сайт и apt-репозиторий, зачем, какие cookie устанавливает Google Analytics, как от него отказаться и как попросить удалить ваши данные.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/ru/privacy.html">
 <meta property="twitter:title" content="Конфиденциальность на deb.griffo.io">
-<meta property="twitter:description" content="Никаких cookie и ничего не сохраняется на вашем устройстве: что собирают сайт и apt-репозиторий, зачем, и как попросить удалить ваши данные.">
+<meta property="twitter:description" content="Что собирают сайт и apt-репозиторий, зачем, какие cookie устанавливает Google Analytics, как от него отказаться и как попросить удалить ваши данные.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/privacy.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/privacy.html">
@@ -184,13 +184,15 @@
     </div>
 
     <div class="content">
-        <p><em>Последнее обновление: 19 октября 2026 г.</em></p>
+        <p><em>Последнее обновление: 20 октября 2026 г.</em></p>
 
         <div class="highlight-box">
-            <strong>Коротко.</strong> Сайт не устанавливает cookie, а его аналитика ничего не
-            сохраняет на вашем устройстве, поэтому никакого окна о cookie здесь нет. Посещения
-            считает небольшой собственный сервис на нашем сервере, который не может узнать вас на
-            следующий день. Если вы начинаете пробный период или оформляете подписку, репозиторий
+            <strong>Коротко.</strong> Посещения измеряются двумя способами: через
+            <strong>Google Analytics</strong>, который устанавливает cookie в вашем браузере, и
+            через <strong>ttics</strong> — небольшой собственный сервис на нашем сервере, который
+            не устанавливает cookie и не может узнать вас на следующий день. От Google Analytics
+            можно отказаться, заблокировав его cookie, с помощью блокировщика рекламы или
+            расширения Google для отключения. Если вы начинаете пробный период или оформляете подписку, репозиторий
             хранит то, что нужно для доступа через <code>apt</code>: ваш адрес электронной почты,
             статус подписки и хеш пароля. Данные карты уходят в Stripe и никогда не попадают на
             этот сайт.
@@ -206,9 +208,32 @@
 
         <h2>2. Аналитика</h2>
         <p>
-            Просмотры страниц считает <strong>ttics</strong> — небольшой сервис аналитики, который
-            я сам поддерживаю на нашем собственном сервере. Никакие третьи стороны эти данные не
-            получают. При загрузке страницы ваш браузер отправляет ему адрес страницы и несколько
+            <strong>Google Analytics.</strong> Страницы deb.griffo.io и deb-free.griffo.io
+            используют Google Analytics 4 — сервис Google Ireland Limited (за пределами ЕЭЗ,
+            Великобритании и Швейцарии — Google LLC). Он устанавливает собственные cookie сайта,
+            <code>_ga</code> и <code>_ga_&lt;id&gt;</code>, которые Google хранит до двух лет,
+            чтобы отличать вернувшийся браузер от нового. С их помощью он считает посещения и
+            просмотренные страницы, откуда приходят посетители (включая метки кампании
+            <code>utm_</code>), устройство, браузер и примерное местоположение, а также несколько
+            действий: открытие формы бесплатного периода, начало пробного периода и переход к
+            оплате (с тарифом и его ценой). Я использую его, чтобы понимать, какие страницы
+            помогают людям, и измерять регистрации на пробный период и переходы к оплате, в том
+            числе пришедшие из рекламы. По данным Google, Google Analytics 4 не записывает и не
+            хранит IP-адреса. Google обрабатывает данные в соответствии со своей
+            <a href="https://policies.google.com/privacy">политикой конфиденциальности</a>, и они
+            могут передаваться на серверы за пределами вашей страны, в том числе в США.
+        </p>
+        <p>
+            Отказаться от Google Analytics можно с помощью
+            <a href="https://tools.google.com/dlpage/gaoptout">браузерного расширения Google для
+            отключения</a>. Блокировка cookie этого сайта или блокировщик рекламы и трекеров тоже
+            отключают его; сайт в любом случае работает так же.
+        </p>
+        <p>
+            <strong>ttics.</strong> Просмотры страниц также считает <strong>ttics</strong> —
+            небольшой сервис аналитики, который я сам поддерживаю на нашем собственном сервере. Он
+            не устанавливает cookie и ничего не сохраняет на вашем устройстве, а его данные не
+            получают никакие третьи стороны. При загрузке страницы ваш браузер отправляет ему адрес страницы и несколько
             сведений о визите. Из них сервис записывает:
         </p>
         <ul>
@@ -272,14 +297,16 @@
             паролем, который хранится только в виде хеша bcrypt. Как и любой веб-сервер, серверы
             сайта и репозитория записывают запросы в журнал, включая IP-адрес, user agent и
             запрошенный файл, чтобы поддерживать работу сервиса и предотвращать злоупотребления.
-            Исключение — сервис аналитики: в его журнал не попадают ни адрес, ни user agent, ни
+            Исключение — ttics: в его журнал не попадают ни адрес, ни user agent, ни
             referrer.
         </p>
 
         <h2>6. Cookie и хранилище браузера</h2>
         <p>
-            Этот сайт <strong>не устанавливает cookie</strong>, а аналитика ничего не записывает в
-            ваш браузер. Единственное, что сам сайт может там сохранить, — это настройка: если вы
+            Единственные cookie на этом сайте — cookie Google Analytics, <code>_ga</code> и
+            <code>_ga_&lt;id&gt;</code>, описанные в разделе 2; их можно заблокировать в браузере,
+            ничего не потеряв на сайте. ttics и Ahrefs ничего не записывают в ваш браузер. Кроме
+            этого, сам сайт может сохранить там только настройку: если вы
             переключаете команды установки между <code>sudo</code>, root и extrepo, ваш выбор
             сохраняется в локальном хранилище браузера как <code>deb-griffo-install-variant</code>,
             чтобы на следующей странице был тот же вариант. Он никогда не покидает ваш браузер и
@@ -299,9 +326,16 @@
                 прекращает доступ к репозиторию.
             </li>
             <li>
-                <strong>Данные аналитики невозможно связать с вами.</strong> В них нет ни имени, ни
+                <strong>Данные ttics невозможно связать с вами.</strong> В них нет ни имени, ни
                 адреса почты, ни IP-адреса, ни cookie, а дневной хеш нельзя связать с человеком после
                 удаления его соли, поэтому искать или удалять в них для отдельного посетителя нечего.
+            </li>
+            <li>
+                <strong>Откажитесь от Google Analytics</strong> в любой момент с помощью
+                <a href="https://tools.google.com/dlpage/gaoptout">расширения Google для
+                отключения</a>, заблокировав его cookie или с помощью блокировщика рекламы. Если
+                удалить cookie <code>_ga</code> из браузера, вы снова будете считаться новым
+                посетителем.
             </li>
             <li>
                 <strong>Вы можете подать жалобу</strong> в свой орган по защите персональных данных,
@@ -381,6 +415,45 @@
 
 
 <script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
 <!-- ttics: first-party, cookieless analytics; stores nothing on the device.
      Deferred, so it never competes with the first paint. -->
 <script src="/assets/js/ttics.js" defer></script>
