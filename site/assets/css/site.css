@@ -1806,10 +1806,11 @@ a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple
    in the page's own ink rather than default blue. */
 .hero-logos a { color: var(--ivory-muted); text-decoration: none; }
 /* The way back in, on the 401 page: a quiet panel like the short answer above
-   it, text across the top and the three choices in one row below. Only the
-   trial is cerise; the two plans are neutral outlines, not pink links.
-   `.container > .content a` would otherwise paint both kinds of button as
-   links, hence the matching specificity. */
+   it, text across the top and the three choices in one row below. No cerise:
+   the trial is a solid ivory button, the two plans neutral outlines, all in
+   the page's own text size and weight rather than the small tracked caps of
+   the marketing buttons. `.container > .content a` would otherwise paint the
+   buttons as links, hence the matching specificity. */
 .access-cta {
   margin: 22px 0 8px; padding: 22px 24px; border-radius: 14px;
   background: var(--panel-bg); border: 1px solid var(--panel-border);
@@ -1817,12 +1818,20 @@ a[href^="x-apple-data-detectors:"], a[href^="maps:"], a[href^="http://maps.apple
 .container > .content .access-cta-text { margin: 0; font-size: 15px; }
 .access-cta-text strong { color: var(--ivory); }
 .access-cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-.container > .content .access-cta-actions a { border-bottom: 1px solid transparent; }
-.container > .content .access-cta-actions a.btn-primary { color: #fff; border-color: transparent; }
-.container > .content .access-cta-actions a.btn-secondary {
-  color: var(--ivory); border: 1px solid var(--graphite-soft);
+.container > .content .access-cta-actions a {
+  font-size: 14.5px; font-weight: 500; letter-spacing: 0; padding: 11px 22px;
+  border-radius: 10px; border: 1px solid var(--graphite-soft); color: var(--ivory);
+  background: transparent; box-shadow: none;
 }
-.container > .content .access-cta-actions a.btn-secondary:hover { color: #fff; border-color: var(--silver); }
+.container > .content .access-cta-actions a:hover {
+  transform: none; box-shadow: none; color: #fff; border-color: var(--silver);
+}
+.container > .content .access-cta-actions a.btn-primary {
+  background: var(--ivory); border-color: var(--ivory); color: var(--base-deep);
+}
+.container > .content .access-cta-actions a.btn-primary:hover {
+  background: #fff; border-color: #fff; color: var(--base-deep);
+}
 @media (max-width: 560px) {
   .access-cta { padding: 20px; }
   .access-cta-actions a { flex: 1 1 100%; justify-content: center; }
