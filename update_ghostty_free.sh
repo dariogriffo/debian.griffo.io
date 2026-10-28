@@ -28,6 +28,11 @@ find deb/ -mindepth 2 -type f \( \
     -o -name "libghostty-vt-dev_*.deb" \
   \) -delete 2>/dev/null || true
 
+# Noble is left out from 1.4.0 on, as in update_ghostty.sh.
+if dpkg --compare-versions "${FREE_VERSION}" ge 1.4.0; then
+  export EXCLUDE="noble:amd64 noble:arm64"
+fi
+
 for PKG in ghostty ghostty-dbgsym libghostty-vt0 libghostty-vt-dev; do
   ../download_stable_deb_file.sh ${REPO} ${FREE_VERSION} ${FREE_BUILD} ${PKG} amd64,arm64
   ../download_stable_ubuntu_file.sh ${REPO} ${FREE_VERSION} ${FREE_BUILD} ${PKG} amd64,arm64
