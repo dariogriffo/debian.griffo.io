@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar o Handy no Ubuntu via apt</title>
+<meta name="description" content="Handy 0.9.8 via apt no Jammy, Noble, Questing e Resolute — não está nos arquivos oficiais do Ubuntu. Assinado com GPG, recompilado em horas.">
+<meta name="keywords" content="handy ubuntu, instalar handy ubuntu, handy voz para texto, ditado offline linux, whisper ditado, parakeet, voz para texto, handy apt, pacotes ubuntu, jammy, noble, questing, apt handy">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html">
+<meta property="og:title" content="Instalar o Handy no Ubuntu via apt">
+<meta property="og:description" content="Handy 0.9.8 via apt no Jammy, Noble, Questing e Resolute — não está nos arquivos oficiais do Ubuntu. Assinado com GPG, recompilado em horas.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html">
+<meta property="twitter:title" content="Instalar o Handy no Ubuntu via apt">
+<meta property="twitter:description" content="Handy 0.9.8 via apt no Jammy, Noble, Questing e Resolute — não está nos arquivos oficiais do Ubuntu. Assinado com GPG, recompilado em horas.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-handy-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/pt-br/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/pt-br/#packages">Pacotes</a></li>
+    <li><a href="/pt-br/#install">Instalação</a></li>
+    <li><a href="/pt-br/#versions">Versões</a></li>
+    <li><a href="/pt-br/#source">Código-fonte</a></li>
+    <li><a href="/pt-br/#reviews">Avaliações</a></li>
+    <li><a href="/pt-br/#pricing">Preços</a></li>
+    <li><a href="/pt-br/#faq">Perguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Selecionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Português (Brasil)</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-handy-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/pt-br/#pricing" class="nav-cta" data-trial>Teste grátis</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/pt-br/#packages" class="mobile-menu-link" data-index="01">Pacotes</a>
+      <a href="/pt-br/#install" class="mobile-menu-link" data-index="02">Instalação</a>
+      <a href="/pt-br/#versions" class="mobile-menu-link" data-index="03">Versões</a>
+      <a href="/pt-br/#source" class="mobile-menu-link" data-index="04">Código-fonte</a>
+      <a href="/pt-br/#reviews" class="mobile-menu-link" data-index="05">Avaliações</a>
+      <a href="/pt-br/#pricing" class="mobile-menu-link" data-index="06">Preços</a>
+      <a href="/pt-br/#faq" class="mobile-menu-link" data-index="07">Perguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/pt-br/#pricing" class="btn-primary" data-trial>Teste grátis</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progresso da rolagem">
+  <span class="side-label">Rolar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>65 ferramentas de desenvolvimento, sempre atualizadas</strong> — cada nova versão upstream chega ao <code>apt</code> em poucas horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 O mirror apt exige assinatura. <strong>Teste todas as ferramentas grátis por 14 dias</strong>, sem cartão.
+      <a href="/pt-br/#pricing">Ver preços</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe um espelho grátis para sempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/pt-br/apt-401-unauthorized.html">apt retornando 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🎙️ Instalar o Handy mais recente no Ubuntu</h1>
+        <p class="subtitle">Ditado por voz gratuito e de código aberto que funciona totalmente offline</p>
+        <div class="version-badge">Última versão: 0.9.8 · atualizado em 2026-10-29</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fonte</th><th>Versão</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.9.8 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">🚫 não empacotado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Voltar ao início</a>
+
+        <div class="notice-box"><strong>📌 Instalando em uma versão específica?</strong> <a href="/install-handy-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-handy-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-handy-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-handy-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>O que é o Handy?</h2>
+        <p>Handy é um <strong>aplicativo de voz para texto gratuito e de código aberto que funciona totalmente offline</strong>. Ele espera em segundo plano com um ícone na bandeja; você aperta um atalho de teclado global, fala o que quer escrever, e o Handy transcreve na sua própria máquina e cola o texto na janela que estiver em foco: um editor, um terminal, um cliente de chat, um formulário no navegador. Nada é enviado para um serviço na nuvem. Os modelos de voz (o Whisper da OpenAI em vários tamanhos e o Parakeet da NVIDIA, rápido até numa CPU comum) são baixados uma vez de dentro do aplicativo e depois rodam localmente, com detecção de atividade de voz cortando o silêncio antes que o modelo o ouça. É um aplicativo Tauri escrito em Rust por CJ Pais, sob licença MIT, e funciona tanto em desktops X11 quanto Wayland.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por que a versão mais recente importa:</strong> O Handy é novo e evolui rápido: novos modelos, ajustes de precisão melhores e correções para microfones, compositores e layouts de teclado específicos chegam na maioria das versões. O Ubuntu não empacota o Handy, então sem este repositório o único jeito de ficar em dia é baixar cada nova versão na mão. Aqui um <code>apt upgrade</code> normal resolve, em toda máquina onde você dita.
+        </div>
+
+        <h3>⚡ Principais recursos do Handy</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⌨️ Um atalho, qualquer aplicativo</h4>
+                <p>Aperte o atalho global, fale e aperte de novo (ou segure no modo aperte para falar e solte) e a transcrição é colada na janela em foco. Não há caixa especial para ditar; tudo que aceita digitação aceita o Handy.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 Totalmente offline</h4>
+                <p>O áudio é gravado, transcrito e descartado no seu próprio computador. Sem conta, sem chave de API, sem assinatura e sem rede depois que o modelo está no disco.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Whisper e Parakeet</h4>
+                <p>Escolha o modelo conforme o hardware: Whisper Small, Medium, Turbo ou Large, acelerados por GPU quando houver uma, ou o Parakeet, ajustado para rodar rápido na CPU e capaz de detectar o idioma sozinho.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔇 Detecção de atividade de voz</h4>
+                <p>O Silero VAD filtra o silêncio e o ruído de fundo antes que o áudio chegue ao modelo, então as pausas para pensar não viram palavras soltas.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐧 X11 e Wayland</h4>
+                <p>Funciona nos dois servidores gráficos e digita o resultado no aplicativo em foco através de pequenos utilitários de entrada que o pacote instala: xdotool no X11, wtype e wl-clipboard no Wayland, e ydotool para o GNOME.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Aberto e extensível</h4>
+                <p>Licença MIT e feito para receber forks: o backend em Rust e a interface web são pequenos o bastante para ler, e as configurações cobrem o microfone, o atalho, o modelo e o idioma.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Sempre à frente dos arquivos oficiais:</strong> Debian e Ubuntu congelam as versões dos pacotes quando lançam uma release — este repositório publica novas versões upstream normalmente em poucas horas. Um simples <code>apt upgrade</code> mantém você na versão mais recente.
+        </div>
+
+        <h2>📦 Instalação a partir do deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Escolha como executar os comandos"><span class="variant-toggle-label">Executar os comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">com sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Passo 1: Adicionar o repositório</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe um espelho grátis para sempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribui pacotes grátis para sempre — sem conta, sem assinatura, no máximo 2 meses atrás do upstream, correções de segurança imediatas. Hoje ele traz cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud e Zed; Handy não está entre elas, então o repositório acima é a única forma de instalar hoje — peça e ela pode ser adicionada.</p>
+  <p class="free-lane-more"><a href="/free.html">Como funciona o espelho gratuito →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Passo 2: Instalar o Handy</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar a versão mais recente do Handy</span>
+sudo apt install handy
+
+<span class="comment"># Verificar a instalação</span>
+dpkg -s handy | grep Version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar a versão mais recente do Handy</span>
+apt install handy
+
+<span class="comment"># Verificar a instalação</span>
+dpkg -s handy | grep Version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Passo 3: Primeira execução</h3>
+            <div class="code-block"><pre><code><span class="comment"># Abra o Handy pelo menu de aplicativos ou por um terminal</span>
+handy
+
+<span class="comment"># A primeira execução guia você na escolha de um modelo; ele é baixado</span>
+<span class="comment"># uma vez, e daí em diante toda transcrição roda offline nesta máquina</span>
+
+<span class="comment"># Os utilitários que digitam o texto (xdotool, wtype, wl-clipboard) vieram</span>
+<span class="comment"># com o pacote. O GNOME no Wayland precisa do ydotool e do seu daemon;</span>
+<span class="comment"># confira se ele está instalado (é recomendado, onde a versão o tem)</span>
+apt policy ydotool</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemplos básicos de uso</h3>
+
+        <p><strong>Ditando:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 1. Coloque o cursor onde o texto deve ir: um editor, um terminal, um chat</span>
+<span class="comment"># 2. Aperte o atalho definido nas configurações do Handy e fale</span>
+<span class="comment"># 3. Aperte de novo (ou solte, no modo aperte para falar)</span>
+<span class="comment"># A transcrição é colada onde o cursor estava</span>
+
+<span class="comment"># O Handy continua na bandeja; abra de novo se você o fechou</span>
+handy</code></pre></div>
+
+        <p><strong>Escolhendo o microfone:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Listar os dispositivos de captura que o kernel enxerga</span>
+arecord -l
+
+<span class="comment"># Os nomes de entrada que o PipeWire ou o PulseAudio mostram nas configurações do Handy</span>
+pactl list short sources
+
+<span class="comment"># Conferir o nível da entrada padrão antes de culpar o modelo</span>
+arecord -d 5 /tmp/test.wav &amp;&amp; aplay /tmp/test.wav</code></pre></div>
+
+        <p><strong>Mantendo em dia:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># O Handy é atualizado junto com o resto do sistema</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># Qual versão está instalada e qual é a mais recente disponível</span>
+apt policy handy
+
+<span class="comment"># Remover</span>
+sudo apt remove handy</code></pre><pre class="variant variant-root"><code><span class="comment"># O Handy é atualizado junto com o resto do sistema</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># Qual versão está instalada e qual é a mais recente disponível</span>
+apt policy handy
+
+<span class="comment"># Remover</span>
+apt remove handy</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integrações</h4>
+            <p>O Handy não precisa de integração com nada: se um aplicativo aceita texto digitado, aceita ditado. O que importa é o desktop ao redor:</p>
+            <ul>
+                <li><strong>X11:</strong> o <code>xdotool</code> é uma dependência do pacote, então o texto chega à janela em foco sem instalar mais nada</li>
+                <li><strong>Wayland:</strong> o <code>wtype</code> e o <code>wl-clipboard</code> também vêm com o pacote. Alguns compositores não repassam atalhos globais aos aplicativos; se o atalho não faz nada no seu, veja as configurações de teclado do compositor</li>
+                <li><strong>GNOME no Wayland:</strong> o GNOME, padrão no Ubuntu 26.04, não aceita o <code>wtype</code>, então ali o Handy precisa do <code>ydotool</code> com o daemon rodando. O pacote recomenda o <code>ydotool</code> nas versões que o trazem (o Debian trixie não traz); as notas de Linux no README do Handy explicam como iniciar o daemon</li>
+                <li><strong>dotool:</strong> o Handy também pode usá-lo, mas ele não está em nenhum arquivo do Debian ou do Ubuntu: instale você mesmo e adicione seu usuário ao grupo <code>input</code></li>
+                <li><strong>Áudio:</strong> o Handy grava pelo PipeWire ou PulseAudio como qualquer aplicativo de desktop; escolha o dispositivo de entrada nas configurações, e um microfone de headset ganha do embutido do notebook em precisão</li>
+                <li><strong>Hardware:</strong> os modelos Whisper usam a GPU quando há uma e ficam lentos na CPU nos tamanhos maiores; num notebook sem uma GPU capaz, o Parakeet é a escolha rápida</li>
+                <li><strong>Suas ferramentas:</strong> dite mensagens de commit num terminal como kitty ou Ghostty, texto no Zed, respostas no ZapZap ou no navegador e prompts para um assistente de IA, tudo com o mesmo atalho</li>
+            </ul>
+        </div>
+
+        <h2>🚀 Por que escolher o deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativo de repositórios:</strong>
+            <ul>
+                <li><strong>Ubuntu oficial:</strong> não empacota o Handy, <code>apt install handy</code> falha num sistema padrão</li>
+                <li><strong>Downloads do upstream:</strong> um <code>.deb</code> ou AppImage da página de releases do GitHub, atual no dia em que você baixa, e a ser baixado de novo na mão a cada versão</li>
+                <li><strong>Compilar do código-fonte:</strong> uma toolchain Rust, uma toolchain JavaScript para a interface, os pacotes de desenvolvimento do WebKitGTK e de áudio de que o Tauri precisa, e uma compilação longa</li>
+                <li><strong>deb.griffo.io:</strong> versão mais recente com atualizações automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>A única fonte apt:</strong> o Handy não está nos arquivos do Debian nem nos do Ubuntu; este repositório empacota a versão oficial do upstream</li>
+            <li>✅ <strong>Um nome só:</strong> o pacote se chama <code>handy</code> e o comando também: <code>sudo apt install handy</code> e depois <code>handy</code> ou o atalho no menu</li>
+            <li>✅ <strong>Privado por construção:</strong> o pacote traz o aplicativo, não um modelo nem um serviço; sua voz nunca sai da máquina, e a rede só é usada para baixar o modelo escolhido</li>
+            <li>✅ <strong>Pacote completo:</strong> o build oficial do upstream para Linux (binário, bibliotecas embutidas, entrada de desktop, ícones) com as dependências declaradas para instalar em todas as versões suportadas, os utilitários de entrada de texto puxados junto, e só a categoria de menu vazia do lançador preenchida</li>
+            <li>✅ <strong>Atualizações automáticas:</strong> os pacotes são atualizados poucas horas após cada lançamento upstream</li>
+            <li>✅ <strong>Duas arquiteturas:</strong> amd64 no Ubuntu 22.04, 24.04, 25.10 e 26.04; arm64 só no 24.04, 25.10 e 26.04, porque o upstream compila arm64 contra a glibc 2.39 e o 22.04 tem a 2.35; não há build para i386, armhf ou riscv64</li>
+            <li>✅ <strong>Multi-distribuição:</strong> funciona no Ubuntu 22.04, 24.04, 25.10 e 26.04</li>
+            <li>✅ <strong>Manutenção simples:</strong> atualizações com os comandos apt de sempre</li>
+        </ul>
+
+        <h3>📦 Repositório de build do pacote</h3>
+        <p>Os pacotes Ubuntu são construídos e mantidos automaticamente neste repositório do GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/handy-debian" target="_blank" rel="noopener">🎙️ handy-debian</a> - Builds dos últimos lançamentos</li>
+        </ul>
+
+        <h3>🔗 Pacotes relacionados</h3>
+        <p>Também disponíveis no deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-zed-in-ubuntu.html">Zed</a> - Um editor de código gráfico e rápido para ditar</li>
+            <li><a href="/install-latest-zapzap-in-ubuntu.html">ZapZap</a> - Um cliente de WhatsApp para desktop, para respostas que você prefere falar a digitar</li>
+            <li><a href="/install-latest-gpu-screen-recorder-cli-in-ubuntu.html">GPU Screen Recorder</a> - Outra ferramenta de desktop para X11 e Wayland, para gravar a tela</li>
+            <li><a href="/install-latest-kitty-in-ubuntu.html">kitty</a> - Um terminal com GPU onde mensagens de commit ditadas chegam do mesmo jeito</li>
+            <li><a href="/install-latest-ghostty-in-ubuntu.html">Ghostty</a> - Um terminal GTK nativo, a mesma história</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> escritores e desenvolvedores que preferem falar a digitar, quem tem LER ou outro motivo para poupar as mãos, quem quer ditar sem mandar a voz para um serviço na nuvem, e todo mundo cansado de digitar respostas longas no chat, mensagens de commit e prompts de IA.
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimos lançamentos deste repositório</h2>
+<ul class="release-list">
+<li><code>0.9.8</code>: 2026-10-29</li>
+</ul>
+<h2>❓ Perguntas frequentes</h2>
+<details><summary>O Handy está nos repositórios oficiais do Ubuntu?</summary><p>Não, Handy não está empacotado nos arquivos oficiais do Ubuntu. Este repositório é atualmente a única fonte apt, oferecendo Handy 0.9.8.</p></details>
+<details><summary>Como instalo o Handy mais recente no Ubuntu?</summary><p>Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install handy. Novos lançamentos chegam pelo sudo apt upgrade normal.</p></details>
+<details><summary>Os pacotes são assinados e como são construídos?</summary><p>Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar.</p></details>
+<details><summary>Quais versões do Ubuntu são suportadas?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O Handy está nos repositórios oficiais do Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Não, Handy não está empacotado nos arquivos oficiais do Ubuntu. Este repositório é atualmente a única fonte apt, oferecendo Handy 0.9.8."}}, {"@type": "Question", "name": "Como instalo o Handy mais recente no Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Adicione o repositório deb.griffo.io uma única vez com as instruções acima e execute: sudo apt install handy. Novos lançamentos chegam pelo sudo apt upgrade normal."}}, {"@type": "Question", "name": "Os pacotes são assinados e como são construídos?", "acceptedAnswer": {"@type": "Answer", "text": "Cada pacote é assinado com a chave GPG do repositório (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) e construído a partir de lançamentos upstream em repositórios públicos do GitHub que qualquer pessoa pode inspecionar."}}, {"@type": "Question", "name": "Quais versões do Ubuntu são suportadas?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing e 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espelho gratuito</a>
+    <a href="/how-packages-are-built.html">Como os pacotes são construídos</a>
+    <a href="/supported-architectures.html">Arquiteturas</a>
+    <a href="/pt-br/how-subscriptions-work.html">Como funciona o acesso</a>
+    <a href="/terms.html">Termos e Condições</a>
+    <a href="/pt-br/privacy.html">Privacidade</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos os direitos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="pt-br">
+  <button type="button" class="trial-close" data-trial-close aria-label="Fechar">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Comece seu teste grátis de 14 dias</h2>
+    <p class="trial-lead">Informe seu email e enviaremos suas credenciais do apt em poucos minutos. Sem cartão.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Endereço de email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Ele será seu login do apt. Se ficar, pague com o mesmo endereço e nada muda nas suas máquinas.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Carregando a verificação…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Enviar minhas credenciais"
+              data-sending="Enviando…" disabled>Enviar minhas credenciais</button>
+    </form>
+    <p class="trial-fineprint">Um teste por endereço de email. Dois dias antes do fim enviamos um link para manter o acesso. Se você não fizer nada, o acesso termina e nada é cobrado.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Confira sua caixa de entrada</h2>
+    <p class="trial-lead" data-trial-success data-template="Suas credenciais estão a caminho de {email}. Costumam chegar em poucos minutos; se não, confira o spam."></p>
+    <p class="trial-lead">Depois execute o script de configuração do email e pronto.</p>
+    <p class="trial-help">Nenhum email depois de 15 minutos? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Abra uma issue no GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">fale comigo no Discord</a> e eu resolvo.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Fechar</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Este endereço já tem uma conta ou já teve um teste. Escolha um plano para continuar, ou responda ao seu email de boas-vindas se algo parecer errado. <a href="/pt-br/#pricing" data-trial-close>Ver planos &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Não conseguimos confirmar que você é humano. Tente novamente.</span>
+    <span data-code="INVALID_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="MISSING_EMAIL">Esse endereço de email não parece correto.</span>
+    <span data-code="RATE_LIMITED">Já houve uma tentativa hoje a partir da sua rede. Tente novamente amanhã.</span>
+    <span data-code="GENERIC">Algo deu errado do nosso lado. Tente novamente ou pergunte no Discord.</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Handy on Ubuntu",
+ "description": "Complete guide to installing the latest Handy offline speech-to-text app on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-29",
+ "dateModified": "2026-10-29",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Handy",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "A free, open source and extensible speech-to-text desktop application that works completely offline: press a global shortcut, speak, and the transcription from a local Whisper or Parakeet model is pasted into the focused application, on X11 and Wayland",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html",
+  "url": "https://deb.griffo.io/pt-br/install-latest-handy-in-ubuntu.html",
+  "inLanguage": "pt-BR"
+ },
+ "inLanguage": "pt-BR"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

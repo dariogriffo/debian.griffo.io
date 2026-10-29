@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Debian 上用 apt 安装 Handy</title>
+<meta name="description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Handy 0.9.8，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。完全离线运行的语音转文字应用，支持 Whisper 与 Parakeet。">
+<meta name="keywords" content="handy debian, 安装 handy, handy 语音转文字, 离线语音识别 linux, whisper 听写, parakeet, 语音输入, handy apt, debian 软件包, bookworm, trixie, sid, apt handy">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-handy-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-handy-in-debian.html">
+<meta property="og:title" content="在 Debian 上用 apt 安装 Handy">
+<meta property="og:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Handy 0.9.8，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。完全离线运行的语音转文字应用，支持 Whisper 与 Parakeet。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-handy-in-debian.html">
+<meta property="twitter:title" content="在 Debian 上用 apt 安装 Handy">
+<meta property="twitter:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Handy 0.9.8，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。完全离线运行的语音转文字应用，支持 Whisper 与 Parakeet。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-handy-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-handy-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-handy-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta" data-trial>免费试用</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary" data-trial>免费试用</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>65 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt 镜像需要订阅。<strong>免费试用全部工具 14 天</strong>，无需银行卡。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/cn/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🎙️ 在 Debian 上安装最新版 Handy</h1>
+        <p class="subtitle">免费开源、完全离线运行的语音转文字应用</p>
+        <div class="version-badge">最新版本：0.9.8 · 更新于 2026-10-29</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.9.8 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-handy-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-handy-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-handy-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-handy-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>什么是 Handy？</h2>
+        <p>Handy 是一款<strong>免费开源、完全离线运行的语音转文字应用</strong>。它带着托盘图标在后台待命：按下全局快捷键，说出想写的内容，Handy 就在你自己的电脑上完成转写，并把文字粘贴到当前获得焦点的窗口里，无论是编辑器、终端、聊天客户端还是浏览器里的表单。任何内容都不会发送到云服务。语音模型（多种尺寸的 OpenAI Whisper，以及在普通 CPU 上也很快的 NVIDIA Parakeet）只需在应用内下载一次，之后都在本地运行，语音活动检测会在模型处理之前剪掉静音部分。它是 CJ Pais 用 Rust 编写的 Tauri 应用，采用 MIT 许可证，在 X11 和 Wayland 桌面上都能使用。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> Handy 很年轻，迭代很快：新模型、更好的准确度设置，以及针对特定麦克风、Wayland 合成器和键盘布局的修复，几乎每个版本都会带来。Debian 完全没有打包 Handy，所以没有这个仓库的话，想保持最新只能每次发布都手动下载。在这里，一条普通的 <code>apt upgrade</code> 就能搞定，在你用来语音输入的每台机器上都是如此。
+        </div>
+
+        <h3>⚡ Handy 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>⌨️ 一个快捷键，任何应用</h4>
+                <p>按下全局快捷键，说话，再按一次（或在按住说话模式下按住后松开），转写结果就会粘贴到当前焦点窗口。没有专门的听写输入框；凡是能接受键盘输入的地方，都能接受 Handy。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔒 完全离线</h4>
+                <p>音频在你自己的电脑上录制、转写，然后丢弃。不需要账号、API 密钥或订阅，模型下载到磁盘之后也不再需要网络。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧠 Whisper 与 Parakeet</h4>
+                <p>按硬件选择模型：有 GPU 时可用 GPU 加速的 Whisper Small、Medium、Turbo 或 Large，或者选择针对 CPU 优化、能自动识别语言的 Parakeet。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔇 语音活动检测</h4>
+                <p>Silero VAD 会在音频送入模型之前过滤掉静音和背景噪声，思考时的停顿不会变成多余的字词。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🐧 X11 与 Wayland</h4>
+                <p>两种显示服务器都支持，通过随软件包一起安装的小巧输入辅助工具把结果输入到焦点应用：X11 下是 xdotool，Wayland 下是 wtype 和 wl-clipboard，GNOME 则用 ydotool。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 开放且可扩展</h4>
+                <p>MIT 许可，方便 fork：Rust 后端和 Web 界面都小到可以通读，设置中可以选择麦克风、快捷键、模型和语言。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed；Handy 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 Handy</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 Handy</span>
+sudo apt install handy
+
+<span class="comment"># 验证安装</span>
+dpkg -s handy | grep Version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 Handy</span>
+apt install handy
+
+<span class="comment"># 验证安装</span>
+dpkg -s handy | grep Version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一次运行</h3>
+            <div class="code-block"><pre><code><span class="comment"># 从应用菜单或终端启动 Handy</span>
+handy
+
+<span class="comment"># 首次运行会引导你选择一个模型；模型只下载一次，</span>
+<span class="comment"># 之后的每次转写都在这台机器上离线完成</span>
+
+<span class="comment"># 负责输入文字的辅助工具（xdotool、wtype、wl-clipboard）已随软件包安装。</span>
+<span class="comment"># Wayland 下的 GNOME 需要改用 ydotool 及其守护进程；</span>
+<span class="comment"># 检查它是否已安装（在收录它的版本上会作为推荐包安装）</span>
+apt policy ydotool</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>语音输入：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 1. 把光标放到文字要去的地方：编辑器、终端、聊天框</span>
+<span class="comment"># 2. 按下在 Handy 设置中配置的快捷键，开始说话</span>
+<span class="comment"># 3. 再按一次（按住说话模式下则松开）</span>
+<span class="comment"># 转写结果会粘贴到光标所在位置</span>
+
+<span class="comment"># Handy 会继续在托盘中运行；如果关掉了，再启动一次即可</span>
+handy</code></pre></div>
+
+        <p><strong>选择麦克风：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 列出内核识别到的录音设备</span>
+arecord -l
+
+<span class="comment"># PipeWire 或 PulseAudio 在 Handy 设置中显示的输入设备名称</span>
+pactl list short sources
+
+<span class="comment"># 在怪罪模型之前，先检查默认输入的音量</span>
+arecord -d 5 /tmp/test.wav &amp;&amp; aplay /tmp/test.wav</code></pre></div>
+
+        <p><strong>保持最新：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Handy 随系统其他软件一起更新</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># 查看已安装的版本以及可用的最新版本</span>
+apt policy handy
+
+<span class="comment"># 卸载</span>
+sudo apt remove handy</code></pre><pre class="variant variant-root"><code><span class="comment"># Handy 随系统其他软件一起更新</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># 查看已安装的版本以及可用的最新版本</span>
+apt policy handy
+
+<span class="comment"># 卸载</span>
+apt remove handy</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>Handy 不需要与任何东西集成：只要一个应用能接受键盘输入，它就能接受语音输入。关键在于它所处的桌面环境：</p>
+            <ul>
+                <li><strong>X11：</strong><code>xdotool</code> 是软件包的依赖，无需额外安装任何东西，文字就能送到焦点窗口</li>
+                <li><strong>Wayland：</strong><code>wtype</code> 和 <code>wl-clipboard</code> 也随软件包一起安装。有些合成器不会把全局快捷键交给应用；如果快捷键在你的环境里没有反应，请查看合成器的键盘设置</li>
+                <li><strong>Wayland 下的 GNOME：</strong>GNOME 是 Ubuntu 26.04 的默认桌面，它不接受 <code>wtype</code>，因此在那里 Handy 需要运行着守护进程的 <code>ydotool</code>。在收录 <code>ydotool</code> 的版本上，软件包会推荐安装它（Debian trixie 没有收录）；如何启动守护进程，见 Handy README 中的 Linux 说明</li>
+                <li><strong>dotool：</strong>Handy 也能使用它，但它不在任何 Debian 或 Ubuntu 仓库中：需要自行安装，并把你的用户加入 <code>input</code> 组</li>
+                <li><strong>音频：</strong>Handy 和其他桌面应用一样通过 PipeWire 或 PulseAudio 录音；在设置中选择输入设备，耳机麦克风的准确度通常胜过笔记本内置麦克风</li>
+                <li><strong>硬件：</strong>Whisper 模型在有 GPU 时使用 GPU，大尺寸模型在 CPU 上会变慢；在没有合适 GPU 的笔记本上，Parakeet 是更快的选择</li>
+                <li><strong>你的工具：</strong>在 kitty 或 Ghostty 这样的终端里口述提交信息，在 Zed 里写文字，在 ZapZap 或浏览器里回复消息，给 AI 助手口述提示词，全都用同一个快捷键</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Debian：</strong> 没有打包 Handy，在全新系统上 <code>apt install handy</code> 会失败</li>
+                <li><strong>上游下载：</strong>从 GitHub 发布页下载 <code>.deb</code> 或 AppImage，下载当天是最新的，之后每次发布都得再手动下载一次</li>
+                <li><strong>从源码构建：</strong>需要 Rust 工具链、用于界面的 JavaScript 工具链、Tauri 所需的 WebKitGTK 和音频开发包，以及漫长的编译</li>
+                <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong>Debian 和 Ubuntu 的官方仓库都没有 Handy；本仓库打包的是上游官方发布版本</li>
+            <li>✅ <strong>处处同名：</strong>软件包叫 <code>handy</code>，命令也叫 <code>handy</code>：先 <code>sudo apt install handy</code>，再运行 <code>handy</code> 或从启动器打开</li>
+            <li>✅ <strong>天生私密：</strong>软件包只包含应用本身，不含模型或服务；你的声音从不离开本机，网络只用于下载你选择的模型</li>
+            <li>✅ <strong>完整的软件包：</strong>上游官方的 Linux 构建（二进制文件、捆绑的库、桌面条目、图标），声明了依赖以便在每个受支持的版本上安装，并自动带上文字输入辅助工具，唯一的改动是补上了启动器里空着的菜单分类</li>
+            <li>✅ <strong>自动更新：</strong> 上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>两种架构：</strong> amd64 支持 Bookworm、Trixie、Forky 和 Sid；arm64 仅支持 Trixie、Forky 和 Sid，因为上游针对 glibc 2.39 构建 arm64，而 Bookworm 只有 2.36；没有 i386、armhf 或 riscv64 构建</li>
+            <li>✅ <strong>多发行版：</strong> 支持 Bookworm、Trixie、Forky 和 Sid</li>
+            <li>✅ <strong>易于维护：</strong> 使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/handy-debian" target="_blank" rel="noopener">🎙️ handy-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-zed-in-debian.html">Zed</a> - 一款快速的图形化代码编辑器，可以直接口述输入</li>
+            <li><a href="/install-latest-zapzap-in-debian.html">ZapZap</a> - WhatsApp 桌面客户端，适合那些说比打更方便的回复</li>
+            <li><a href="/install-latest-gpu-screen-recorder-cli-in-debian.html">GPU Screen Recorder</a> - 另一款适用于 X11 和 Wayland 的桌面工具，用来录屏</li>
+            <li><a href="/install-latest-kitty-in-debian.html">kitty</a> - 一款 GPU 终端，口述的提交信息同样能准确送达</li>
+            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty</a> - 原生 GTK 终端，同样适用</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 宁愿说也不想打字的写作者和开发者、患有腱鞘炎或其他原因需要让双手休息的人、想要语音输入却不愿把声音发到云服务的人，以及所有厌倦了敲长篇聊天回复、提交信息和 AI 提示词的人。
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.9.8</code>: 2026-10-29</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Handy 在官方 Debian 软件源中吗？</summary><p>不在, 官方 Debian 源没有打包 Handy。本仓库目前是唯一的 apt 来源，提供 Handy 0.9.8。</p></details>
+<details><summary>如何在 Debian 上安装最新版 Handy？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install handy。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Handy 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Debian 源没有打包 Handy。本仓库目前是唯一的 apt 来源，提供 Handy 0.9.8。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 Handy？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install handy。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+    <a href="/cn/privacy.html">隐私政策</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="zh-cn">
+  <button type="button" class="trial-close" data-trial-close aria-label="关闭">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">开始 14 天免费试用</h2>
+    <p class="trial-lead">输入邮箱，我们会在几分钟内发送你的 apt 凭据。无需银行卡。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">邮箱地址</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">它将成为你的 apt 登录名。如果继续使用，请用同一邮箱付款，你的机器上无需任何改动。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="正在加载人机验证…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="发送我的凭据"
+              data-sending="发送中…" disabled>发送我的凭据</button>
+    </form>
+    <p class="trial-fineprint">每个邮箱仅限一次试用。结束前两天我们会发送保留访问的链接。如果你不操作，访问将停止，不会产生任何费用。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">请查收邮件</h2>
+    <p class="trial-lead" data-trial-success data-template="你的凭据正在发送至 {email}。通常几分钟内送达，如未收到请检查垃圾邮件。"></p>
+    <p class="trial-lead">然后运行邮件中的配置脚本即可。</p>
+    <p class="trial-help">15 分钟后仍未收到邮件？请<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">在 GitHub 上提交 issue</a>或<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">在 Discord 上联系我</a>，我会尽快处理。</p>
+    <button type="button" class="btn-secondary" data-trial-close>关闭</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">该邮箱已有账户或已试用过。请选择一个方案继续，如有问题请回复欢迎邮件。 <a href="/cn/#pricing" data-trial-close>查看方案 &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">无法确认你是真人，请重试。</span>
+    <span data-code="INVALID_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="MISSING_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="RATE_LIMITED">今天已从你的网络尝试过，请明天再试。</span>
+    <span data-code="GENERIC">我们这边出了问题，请重试或在 Discord 提问。</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Handy on Debian",
+ "description": "Complete guide to installing the latest Handy offline speech-to-text app on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-29",
+ "dateModified": "2026-10-29",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Handy",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "A free, open source and extensible speech-to-text desktop application that works completely offline: press a global shortcut, speak, and the transcription from a local Whisper or Parakeet model is pasted into the focused application, on X11 and Wayland",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-handy-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-handy-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-handy-in-debian.html",
+  "url": "https://deb.griffo.io/cn/install-latest-handy-in-debian.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
