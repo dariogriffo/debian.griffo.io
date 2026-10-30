@@ -33,7 +33,7 @@
 })();
 </script>
 <title>用 apt 在 WSL 上安装最新开发工具 | deb.griffo.io</title>
-<meta name="description" content="在 WSL 上用 apt 获取 62 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta name="description" content="在 WSL 上用 apt 获取 63 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
 <meta name="keywords" content="wsl apt 仓库, wsl 安装 neovim, wsl 最新开发工具, wsl 安装 uv, wsl 安装 zig, wsl lazygit">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/cn/install-dev-tools-on-wsl.html">
 <meta property="og:title" content="用 apt 在 WSL 上安装最新开发工具 | deb.griffo.io">
-<meta property="og:description" content="在 WSL 上用 apt 获取 62 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta property="og:description" content="在 WSL 上用 apt 获取 63 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/cn/install-dev-tools-on-wsl.html">
 <meta property="twitter:title" content="用 apt 在 WSL 上安装最新开发工具 | deb.griffo.io">
-<meta property="twitter:description" content="在 WSL 上用 apt 获取 62 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta property="twitter:description" content="在 WSL 上用 apt 获取 63 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-dev-tools-on-wsl.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-dev-tools-on-wsl.html">
@@ -160,7 +160,7 @@
       <!-- The clause that follows the bold count carries its own leading
            space: English opens it with a comma, every other language
            opens it with a spaced dash. Do not add one here. -->
-      ⚡ <strong>65 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      ⚡ <strong>66 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
       <!-- general channel; the package-request prompt uses a different
            invite on purpose, see DISCORD_* in sitegen/layout.py -->
       <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
@@ -180,12 +180,12 @@
 <div class="container">
     <div class="header">
         <h1>WSL（适用于 Linux 的 Windows 子系统） 上的最新开发工具</h1>
-        <p class="subtitle">62 款开发工具，保持上游最新版本，一条 apt 命令即可安装，经 GPG 签名</p>
+        <p class="subtitle">63 款开发工具，保持上游最新版本，一条 apt 命令即可安装，经 GPG 签名</p>
     </div>
 
     <div class="content">
         <div class="highlight-box">
-            <strong>⚡ 简短回答。</strong> 可以，deb.griffo.io 支持 WSL（适用于 Linux 的 Windows 子系统）。在 WSL 上的 Ubuntu 24.04、WSL 上的 Ubuntu 22.04、WSL 上的 Debian 上，62 款开发工具可以直接用 <code>apt</code> 安装，配置命令与 Debian 和 Ubuntu 完全相同：它从 <code>/etc/os-release</code> 读取 <code>UBUNTU_CODENAME</code> / <code>VERSION_CODENAME</code>，并请求对应的套件，在 WSL 上的 Ubuntu 24.04 上即为 <code>noble</code>。
+            <strong>⚡ 简短回答。</strong> 可以，deb.griffo.io 支持 WSL（适用于 Linux 的 Windows 子系统）。在 WSL 上的 Ubuntu 24.04、WSL 上的 Ubuntu 22.04、WSL 上的 Debian 上，63 款开发工具可以直接用 <code>apt</code> 安装，配置命令与 Debian 和 Ubuntu 完全相同：它从 <code>/etc/os-release</code> 读取 <code>UBUNTU_CODENAME</code> / <code>VERSION_CODENAME</code>，并请求对应的套件，在 WSL 上的 Ubuntu 24.04 上即为 <code>noble</code>。
         </div>
 
         <p>WSL 在 Windows 上运行真正的 Ubuntu 或 Debian，这也意味着它继承了它们的软件源，其中大多数开发工具都冻结在各版本发布时的版本。deb.griffo.io 以 apt 软件包形式为下列每个工具提供上游最新版本，让 WSL 终端拥有和 Linux 工作站一样新的工具链。</p>
@@ -197,9 +197,9 @@
                 <tr><th scope="col">版本</th><th scope="col">基于</th><th scope="col">套件</th><th scope="col">可用工具</th></tr>
             </thead>
             <tbody>
-                <tr><td>WSL 上的 Ubuntu 24.04</td><td>Ubuntu 24.04 LTS “Noble Numbat”</td><td><code>noble</code></td><td>62</td></tr>
-                <tr><td>WSL 上的 Ubuntu 22.04</td><td>Ubuntu 22.04 LTS “Jammy Jellyfish”</td><td><code>jammy</code></td><td>60</td></tr>
-                <tr><td>WSL 上的 Debian</td><td>Debian 13 “Trixie”</td><td><code>trixie</code></td><td>64</td></tr>
+                <tr><td>WSL 上的 Ubuntu 24.04</td><td>Ubuntu 24.04 LTS “Noble Numbat”</td><td><code>noble</code></td><td>63</td></tr>
+                <tr><td>WSL 上的 Ubuntu 22.04</td><td>Ubuntu 22.04 LTS “Jammy Jellyfish”</td><td><code>jammy</code></td><td>61</td></tr>
+                <tr><td>WSL 上的 Debian</td><td>Debian 13 “Trixie”</td><td><code>trixie</code></td><td>65</td></tr>
             </tbody>
         </table>
         </div>
@@ -273,6 +273,7 @@ apt update</code></pre></div>
                 <tr><td><a href="/cn/install-latest-headscale-in-ubuntu.html">Headscale</a></td><td><code>headscale</code></td><td><span class="version-badge">0.29.6-1~griffo</span></td><td>✓</td><td>✓</td></tr>
                 <tr><td><a href="/cn/install-latest-helix-in-ubuntu.html">Helix</a></td><td><code>helix</code></td><td><span class="version-badge">25.07.1-3~griffo</span></td><td>✓</td><td>✓</td></tr>
                 <tr><td><a href="/cn/install-latest-herdr-in-ubuntu.html">herdr</a></td><td><code>herdr</code></td><td><span class="version-badge">0.9.5-2~griffo</span></td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-herdr-app-in-ubuntu.html">Herdr Desktop</a></td><td><code>herdr-app</code></td><td><span class="version-badge">0.1.9-1~griffo</span></td><td>✓</td><td>✓</td></tr>
                 <tr><td><a href="/cn/install-latest-jujutsu-in-ubuntu.html">Jujutsu</a></td><td><code>jujutsu</code></td><td><span class="version-badge">0.46.0-2~griffo</span></td><td>✓</td><td>✓</td></tr>
                 <tr><td><a href="/cn/install-latest-just-in-ubuntu.html">just</a></td><td><code>just</code></td><td><span class="version-badge">1.59.0-2~griffo</span></td><td>✓</td><td>✓</td></tr>
                 <tr><td><a href="/cn/install-latest-k9s-in-ubuntu.html">k9s</a></td><td><code>k9s</code></td><td><span class="version-badge">0.51.0-2~griffo</span></td><td>✓</td><td>✓</td></tr>
@@ -319,7 +320,7 @@ apt update</code></pre></div>
         </div>
 
         <div class="access-cta">
-            <p class="access-cta-text"><strong>WSL 上的全部 62 款工具，免费试用 14 天。</strong>
+            <p class="access-cta-text"><strong>WSL 上的全部 63 款工具，免费试用 14 天。</strong>
             只需邮箱，无需银行卡。试用结束后为每年 <span data-amount="15">€15</span>，或一次性 <span data-amount="150">€150</span> 终身使用。</p>
             <div class="access-cta-actions">
                 <a href="/cn/#pricing" class="btn-primary" data-trial>开始免费试用</a>

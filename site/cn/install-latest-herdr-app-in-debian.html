@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>在 Debian 上用 apt 安装 Herdr 桌面应用</title>
+<meta name="description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Herdr 0.1.9，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。面向终端与编程代理的桌面应用，带分屏窗格和代理侧栏。">
+<meta name="keywords" content="herdr-app debian, 安装 herdr, herdr 桌面应用, 编程代理终端, ai 代理 终端, 分屏窗格, herdr-core, herdr apt, debian 软件包, bookworm, trixie, sid, apt herdr-app">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html">
+<meta property="og:title" content="在 Debian 上用 apt 安装 Herdr 桌面应用">
+<meta property="og:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Herdr 0.1.9，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。面向终端与编程代理的桌面应用，带分屏窗格和代理侧栏。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html">
+<meta property="twitter:title" content="在 Debian 上用 apt 安装 Herdr 桌面应用">
+<meta property="twitter:description" content="用 apt 在 Bookworm、Trixie、Forky 和 Sid 上安装 Herdr 0.1.9，官方 Debian 软件源中并没有收录。GPG 签名，上游发布后数小时内重新构建。面向终端与编程代理的桌面应用，带分屏窗格和代理侧栏。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-herdr-app-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-herdr-app-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-herdr-app-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta" data-trial>免费试用</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary" data-trial>免费试用</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>66 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt 镜像需要订阅。<strong>免费试用全部工具 14 天</strong>，无需银行卡。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/cn/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🐏 在 Debian 上安装最新版 Herdr 桌面应用</h1>
+        <p class="subtitle">面向终端与编程代理的桌面应用，提供空间、分屏窗格和代理侧栏</p>
+        <div class="version-badge">最新版本：0.1.9 · 更新于 2026-10-30</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>来源</th><th>版本</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.1.9 ✅</td></tr>
+<tr><td>官方 Debian</td><td class="vc-lose">🚫 未收录</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="notice-box"><strong>📌 要在特定版本上安装？</strong> <a href="/install-herdr-app-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-herdr-app-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-herdr-app-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-herdr-app-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>什么是 Herdr？</h2>
+        <p>Herdr 是一款<strong>面向终端与编程代理的桌面应用</strong>。工作按空间组织，通常一个代码仓库对应一个空间；每个空间有若干标签页，标签页又可以拆分成窗格，于是一个 shell、一个编辑器和两个编程代理可以在同一个窗口里并排运行。代理侧栏列出所有空间中的每个代理及其状态（Working 正在工作、Blocked 等待你回应、Done 已完成、Idle 空闲），一眼就能看出哪个需要你的回答。关闭窗口不会停止任何东西：终端运行在 herdr-core（<code>hc</code>）这个小型后台进程中，再次打开 Herdr 时它们都还在。它用 Rust 编写，采用 Apache-2.0 许可证，主页是 <a href="https://herdr.dev" target="_blank" rel="noopener">herdr.dev</a>。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 为什么最新版本很重要：</strong> Herdr 很年轻，迭代很快：新布局、mod API、远程机器相关的修复以及代理状态的改进，几乎每个版本都会带来。Debian 完全没有打包 Herdr，而且此构建关闭了应用内置的自动更新，所以更新与系统其他软件走同一条路。一条普通的 <code>apt upgrade</code> 就能让你工作的每台机器保持最新。
+        </div>
+
+        <h3>⚡ Herdr 的主要功能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🗂️ 空间、标签页与窗格</h4>
+                <p>给每个代码仓库一个独立的空间，在里面打开标签页并拆分成窗格。切换项目就是切换空间，每个终端都停留在你离开时的样子。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤖 代理侧栏</h4>
+                <p>任何空间中运行的每个编程代理都会出现在同一个列表里，并显示状态：Working、Blocked（等待你）、Done 或 Idle。处于 Blocked 的那些最该先看。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>♾️ 关掉窗口，终端照常运行</h4>
+                <p>终端运行在 herdr-core（<code>hc</code>）里，而不是窗口里。关闭 Herdr 后，你的 shell、构建和代理仍在继续；再次打开，它们全都回来了。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 通过 SSH 使用远程机器</h4>
+                <p>添加一台可以通过 SSH 访问的机器，空间里的终端就改在那里运行，笔记本休眠或切换网络时，长时间的代理会话也不会中断。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎨 命令面板、主题与布局</h4>
+                <p>Ctrl+Shift+P 打开可以完成一切操作的命令面板；主题和内置布局（Herdr、Terminals 以及复古风格的 Herdr 98）改变窗口的外观和显示内容。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 JavaScript Mod</h4>
+                <p>用 JavaScript 编写的 mod 可以绘制自己的面板和菜单，应用尚未覆盖的工作流无需等待新版本就能加上。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 始终领先于官方软件源：</strong> Debian 和 Ubuntu 在发布时冻结软件包版本，而本仓库通常在上游发布后数小时内就发布新版本。一条简单的 <code>apt upgrade</code> 就能让你保持最新。
+        </div>
+
+        <h2>📦 从 deb.griffo.io 安装</h2>
+
+        <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">使用 extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">第 1 步：添加仓库</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed；Herdr Desktop 不在其中，因此今天只能通过上面的仓库安装 — 提出请求即可将其加入。</p>
+  <p class="free-lane-more"><a href="/free.html">免费镜像的工作方式 →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 关于 extrepo 选项。</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> 是 Debian 官方用于管理第三方仓库的工具：它会替你写好 sources 文件并安装签名密钥，并在使用前先对照签名元数据校验该密钥。本仓库以 <code>griffo</code> 之名登记其中，永久免费镜像则为 <code>griffo-free</code>，因此在 Debian（bookworm、trixie、forky、sid）上，上面的命令就是全部配置。</p>
+  <p>extrepo 只负责 sources 文件和密钥，订阅凭据仍然要写入 <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>。Ubuntu 不在覆盖范围内，因为 extrepo 只发布 Debian 各套件的元数据：在 Ubuntu 上请使用 sudo 或 root 的命令。</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">第 2 步：安装 Herdr</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 安装最新版 Herdr（软件包和命令都叫 herdr-app）</span>
+sudo apt install herdr-app
+
+<span class="comment"># 验证安装</span>
+dpkg -s herdr-app | grep Version</code></pre><pre class="variant variant-root"><code><span class="comment"># 安装最新版 Herdr（软件包和命令都叫 herdr-app）</span>
+apt install herdr-app
+
+<span class="comment"># 验证安装</span>
+dpkg -s herdr-app | grep Version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>第 3 步：第一次运行</h3>
+            <div class="code-block"><pre><code><span class="comment"># 从应用菜单或终端启动 Herdr</span>
+herdr-app
+
+<span class="comment"># 首次打开时，Herdr 会提议把 herdr-core（hc）安装到 ~/.local/bin。</span>
+<span class="comment"># 请接受：软件包不包含 hc，而正是它让终端在窗口关闭后继续运行</span>
+ls -l ~/.local/bin/hc
+
+<span class="comment"># Herdr 使用 Vulkan 绘制界面，并且需要 X11 或 Wayland 桌面会话；</span>
+<span class="comment"># 检查软件包推荐的驱动是否已安装</span>
+apt policy mesa-vulkan-drivers</code></pre></div>
+        </div>
+
+        <h3>🎯 基本用法示例</h3>
+
+        <p><strong>使用空间和代理：</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 1. 为一个代码仓库创建空间，并在其中打开一个标签页</span>
+<span class="comment"># 2. 把标签页拆分成窗格：一个 shell、一个编辑器、一两个编程代理</span>
+<span class="comment"># 3. 留意代理侧栏：Working、Blocked、Done 或 Idle</span>
+<span class="comment"># 其他操作都可以用 Ctrl+Shift+P 打开命令面板完成</span>
+
+<span class="comment"># 关掉了窗口？终端一直在运行；再次打开即可</span>
+herdr-app</code></pre></div>
+
+        <p><strong>检查图形栈：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 查看当前会话类型：x11 或 wayland（需要桌面会话）</span>
+echo $XDG_SESSION_TYPE
+
+<span class="comment"># 安装 Vulkan 工具，确认有驱动识别到你的 GPU</span>
+sudo apt install vulkan-tools
+vulkaninfo --summary
+
+<span class="comment"># 没有列出 GPU？安装 mesa-vulkan-drivers，然后重新登录</span></code></pre><pre class="variant variant-root"><code><span class="comment"># 查看当前会话类型：x11 或 wayland（需要桌面会话）</span>
+echo $XDG_SESSION_TYPE
+
+<span class="comment"># 安装 Vulkan 工具，确认有驱动识别到你的 GPU</span>
+apt install vulkan-tools
+vulkaninfo --summary
+
+<span class="comment"># 没有列出 GPU？安装 mesa-vulkan-drivers，然后重新登录</span></code></pre></div>
+
+        <p><strong>保持最新：</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Herdr 随系统其他软件一起更新（此构建关闭了自动更新）</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># 查看已安装的版本以及可用的最新版本</span>
+apt policy herdr-app
+
+<span class="comment"># 卸载</span>
+sudo apt remove herdr-app</code></pre><pre class="variant variant-root"><code><span class="comment"># Herdr 随系统其他软件一起更新（此构建关闭了自动更新）</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># 查看已安装的版本以及可用的最新版本</span>
+apt policy herdr-app
+
+<span class="comment"># 卸载</span>
+apt remove herdr-app</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 工具集成</h4>
+            <p>Herdr 是你已经在用的命令行工具的家，所以关键在于它所处的机器环境：</p>
+            <ul>
+                <li><strong>桌面会话：</strong>Herdr 是图形应用，需要 X11 或 Wayland 会话；在无头服务器上，请改为通过远程机器在那里运行终端</li>
+                <li><strong>Vulkan：</strong>窗口用 Vulkan 绘制，因此需要可用的 Vulkan 驱动。软件包推荐 <code>mesa-vulkan-drivers</code>，它覆盖 Intel 和 AMD 显卡；NVIDIA 专有驱动自带 Vulkan 支持</li>
+                <li><strong>herdr-core：</strong><code>hc</code> 位于你主目录下的 <code>~/.local/bin</code>，由应用在首次运行时安装，而不是由 apt 安装；窗口关闭期间，正是它让终端保持运行</li>
+                <li><strong>远程机器：</strong>添加一台可以通过 SSH 访问的机器，空间里的终端就在它上面运行，笔记本休眠或断网时，长时间的代理会话也能保留下来</li>
+                <li><strong>编程代理：</strong>像运行其他命令一样在窗格中运行你的代理 CLI；代理侧栏会把所有空间中的代理汇总起来，并显示哪个正处于 Blocked 状态等待你</li>
+                <li><strong>终端里的 herdr：</strong>本站的 <a href="/install-latest-herdr-in-debian.html">herdr</a> 软件包是另一个程序，一款终端代理多路复用器；Herdr 是桌面应用，两者可以同时安装</li>
+                <li><strong>你的工具：</strong>一个窗格里是 Neovim 或 Helix，另一个是 lazygit，第三个是代理，全都在同一个空间中</li>
+            </ul>
+        </div>
+
+        <h2>🚀 为什么选择 deb.griffo.io？</h2>
+
+        <div class="integration-box">
+            <strong>📊 仓库对比：</strong>
+            <ul>
+                <li><strong>官方 Debian：</strong> 没有打包 Herdr，在全新系统上 <code>apt install herdr-app</code> 会失败</li>
+                <li><strong>上游下载：</strong>来自 releases.herdr.dev 的发布构建会绕过 apt 自行更新，而且每台机器都得单独处理</li>
+                <li><strong>从源码构建：</strong>需要 Rust 工具链、图形与窗口系统的开发包，以及漫长的编译</li>
+                <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>唯一的 apt 来源：</strong>Debian 和 Ubuntu 的官方仓库都没有 Herdr；本仓库打包的是上游官方发布版本</li>
+            <li>✅ <strong>处处同名：</strong>软件包叫 <code>herdr-app</code>，命令也叫 <code>herdr-app</code>：先 <code>sudo apt install herdr-app</code>，再运行 <code>herdr-app</code> 或从启动器打开</li>
+            <li>✅ <strong>通过 apt 更新：</strong>此构建关闭了应用内的自动更新，所以磁盘上的版本永远是 apt 安装的那个，不会有东西绕过包管理器去改写它</li>
+            <li>✅ <strong>完整的软件包：</strong>Herdr 桌面应用，声明了依赖以便在每个受支持的版本上安装，并推荐安装 Vulkan 驱动；herdr-core 则由应用在首次运行时自行设置</li>
+            <li>✅ <strong>自动更新：</strong> 上游发布后数小时内更新软件包</li>
+            <li>✅ <strong>两种架构：</strong> amd64 和 arm64 在 Bookworm、Trixie、Forky 和 Sid 上都受支持；没有 i386、armhf 或 riscv64 构建</li>
+            <li>✅ <strong>多发行版：</strong> 支持 Bookworm、Trixie、Forky 和 Sid</li>
+            <li>✅ <strong>易于维护：</strong> 使用标准 apt 命令即可更新</li>
+        </ul>
+
+        <h3>📦 软件包构建仓库</h3>
+        <p>Debian 软件包在这个 GitHub 仓库中自动构建和维护：</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/herdr-app-debian" target="_blank" rel="noopener">🐏 herdr-app-debian</a> - 最新版本构建</li>
+        </ul>
+
+        <h3>🔗 相关软件包</h3>
+        <p>deb.griffo.io 同样提供：</p>
+        <ul>
+            <li><a href="/install-latest-herdr-in-debian.html">herdr</a> - 终端代理多路复用器，适合习惯待在终端而不是窗口里的人</li>
+            <li><a href="/install-latest-neovim-in-debian.html">Neovim</a> - 放在代理旁边窗格里的编辑器</li>
+            <li><a href="/install-latest-lazygit-in-debian.html">lazygit</a> - 一款终端界面，用来审查并提交代理所做的修改</li>
+            <li><a href="/install-latest-kitty-in-debian.html">kitty</a> - 一款 GPU 终端，处理 Herdr 之外的工作</li>
+            <li><a href="/install-latest-ghostty-in-debian.html">Ghostty</a> - 原生 GTK 终端，同样适用</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 特别适合：</strong> 同时运行多个编程代理、想知道哪个正在等待自己的开发者，在远程机器上保持长时间运行的 shell 和构建的人，以及希望在桌面窗口而不是终端多路复用器里为每个项目使用空间、标签页和分屏窗格的人。
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 本仓库最近发布</h2>
+<ul class="release-list">
+<li><code>0.1.9</code>: 2026-10-30</li>
+</ul>
+<h2>❓ 常见问题</h2>
+<details><summary>Herdr Desktop 在官方 Debian 软件源中吗？</summary><p>不在, 官方 Debian 源没有打包 Herdr Desktop。本仓库目前是唯一的 apt 来源，提供 Herdr Desktop 0.1.9。</p></details>
+<details><summary>如何在 Debian 上安装最新版 Herdr Desktop？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install herdr-app。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
+<details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
+<details><summary>支持哪些 Debian 版本？</summary><p>Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Herdr Desktop 在官方 Debian 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "不在, 官方 Debian 源没有打包 Herdr Desktop。本仓库目前是唯一的 apt 来源，提供 Herdr Desktop 0.1.9。"}}, {"@type": "Question", "name": "如何在 Debian 上安装最新版 Herdr Desktop？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install herdr-app。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Debian 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm、Debian 13 Trixie、Forky 和 Sid。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+    <a href="/cn/privacy.html">隐私政策</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="zh-cn">
+  <button type="button" class="trial-close" data-trial-close aria-label="关闭">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">开始 14 天免费试用</h2>
+    <p class="trial-lead">输入邮箱，我们会在几分钟内发送你的 apt 凭据。无需银行卡。</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">邮箱地址</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">它将成为你的 apt 登录名。如果继续使用，请用同一邮箱付款，你的机器上无需任何改动。</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="正在加载人机验证…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="发送我的凭据"
+              data-sending="发送中…" disabled>发送我的凭据</button>
+    </form>
+    <p class="trial-fineprint">每个邮箱仅限一次试用。结束前两天我们会发送保留访问的链接。如果你不操作，访问将停止，不会产生任何费用。</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">请查收邮件</h2>
+    <p class="trial-lead" data-trial-success data-template="你的凭据正在发送至 {email}。通常几分钟内送达，如未收到请检查垃圾邮件。"></p>
+    <p class="trial-lead">然后运行邮件中的配置脚本即可。</p>
+    <p class="trial-help">15 分钟后仍未收到邮件？请<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">在 GitHub 上提交 issue</a>或<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">在 Discord 上联系我</a>，我会尽快处理。</p>
+    <button type="button" class="btn-secondary" data-trial-close>关闭</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">该邮箱已有账户或已试用过。请选择一个方案继续，如有问题请回复欢迎邮件。 <a href="/cn/#pricing" data-trial-close>查看方案 &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">无法确认你是真人，请重试。</span>
+    <span data-code="INVALID_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="MISSING_EMAIL">该邮箱地址格式不正确。</span>
+    <span data-code="RATE_LIMITED">今天已从你的网络尝试过，请明天再试。</span>
+    <span data-code="GENERIC">我们这边出了问题，请重试或在 Discord 提问。</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Herdr Desktop App on Debian",
+ "description": "Complete guide to installing the latest Herdr desktop app for terminals and coding agents on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-10-30",
+ "dateModified": "2026-10-30",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Herdr",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "A desktop app for terminals and coding agents: spaces with tabs split into panes, an agents sidebar showing which agent is working, blocked, done or idle, terminals that keep running in herdr-core after the window closes, and remote machines over SSH",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html",
+  "url": "https://deb.griffo.io/cn/install-latest-herdr-app-in-debian.html",
+  "inLanguage": "zh-CN"
+ },
+ "inLanguage": "zh-CN"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
