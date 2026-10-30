@@ -3,7 +3,7 @@ PACKAGE_VERSION=$1
 BUILD_VERSION=${2:-1}
 PACKAGE_NAME=herdr
 PWD=$(pwd)
-find deb/ -mindepth 2 -type f -name "*${PACKAGE_NAME}*" -delete
+find deb/ -mindepth 2 -type f -name "${PACKAGE_NAME}_*" -delete
 
 ARCHITECTURES="amd64,arm64"
 ./download_deb_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME} ${ARCHITECTURES}
@@ -15,6 +15,6 @@ ARCHITECTURES="amd64,arm64"
 
 cd ${PWD}
 
-find src/ -type f -name "*${PACKAGE_NAME}*" -delete 2>/dev/null || true
+find src/ -type f -name "${PACKAGE_NAME}_*" -delete 2>/dev/null || true
 ./download_src_file.sh ${REPO} ${PACKAGE_VERSION} ${BUILD_VERSION} ${PACKAGE_NAME}
 
