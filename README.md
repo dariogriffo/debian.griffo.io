@@ -62,6 +62,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [handy](https://github.com/cjpais/Handy) - A free, open source, and extensible speech-to-text application that works completely offline (desktop app, command: handy)
 - [herdr-app](https://github.com/herdrdev/herdr-app) - Herdr, a GPU desktop app for terminals and coding agents: spaces, tabs and panes, an agents sidebar showing which agents are working, blocked or done, and terminals that keep running after the window closes (desktop app, command: herdr-app)
 - [herdr-core](https://github.com/herdrdev/herdr-core) - Terminals for coding agents that stay alive after the window, SSH session or login that started them goes away; the core Herdr runs its terminals in, pulled in by herdr-app (command: herdr-core, no hc alias: httpcode owns /usr/bin/hc)
+- [zapfast](https://github.com/crmne/zapfast) - Fast, native WhatsApp desktop client written in Rust: links to your phone's WhatsApp account by QR code, like WhatsApp Web; unofficial, not affiliated with WhatsApp or Meta (desktop app, command: zapfast)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -123,6 +124,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [handy-debian](https://github.com/dariogriffo/handy-debian) - Offline speech-to-text desktop app
 - [herdr-app-debian](https://github.com/dariogriffo/herdr-app-debian) - Herdr desktop app for terminals and coding agents
 - [herdr-core-debian](https://github.com/dariogriffo/herdr-core-debian) - herdr-core, the terminal core behind Herdr
+- [zapfast-debian](https://github.com/dariogriffo/zapfast-debian) - Native WhatsApp desktop client (unofficial)
 
 ## 🐧 Supported Debian Distributions
 
@@ -210,6 +212,7 @@ sudo apt install -y spotifast          # Native Spotify client
 sudo apt install -y yt-dlp              # Audio/video downloader
 sudo apt install -y gpu-screen-recorder-cli # GPU screen recorder with instant replay (amd64)
 sudo apt install -y handy               # Offline speech-to-text desktop app
+sudo apt install -y zapfast             # Native WhatsApp desktop client (unofficial)
 
 # Container & Cloud Tools
 sudo apt install -y unregistry   # Container registry
@@ -242,7 +245,7 @@ sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast
 ```
 
 ## ⚠️ Important Information
