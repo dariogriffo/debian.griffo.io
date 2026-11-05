@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Installer lnav sur Ubuntu avec apt</title>
+<meta name="description" content="lnav 0.14.1 via apt sur Jammy, Noble, Questing et Resolute, Ubuntu officiel n'a que 0.13.2. Signé GPG, reconstruit en quelques heures.">
+<meta name="keywords" content="lnav ubuntu, installer lnav ubuntu, lnav visualiseur de logs, logfile navigator, logs terminal, requêtes sql logs, journalctl, lnav apt, paquets ubuntu, jammy, noble, questing, apt lnav">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html">
+<meta property="og:title" content="Installer lnav sur Ubuntu avec apt">
+<meta property="og:description" content="lnav 0.14.1 via apt sur Jammy, Noble, Questing et Resolute, Ubuntu officiel n'a que 0.13.2. Signé GPG, reconstruit en quelques heures.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html">
+<meta property="twitter:title" content="Installer lnav sur Ubuntu avec apt">
+<meta property="twitter:description" content="lnav 0.14.1 via apt sur Jammy, Noble, Questing et Resolute, Ubuntu officiel n'a que 0.13.2. Signé GPG, reconstruit en quelques heures.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-lnav-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-lnav-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#reviews">Avis</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-lnav-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/fr/#pricing" class="nav-cta" data-trial>Essai gratuit</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#reviews" class="mobile-menu-link" data-index="05">Avis</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="06">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/fr/#pricing" class="btn-primary" data-trial>Essai gratuit</a>
+      <p class="mobile-menu-note"><a href="/free.html">Miroir gratuit</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>68 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 Le miroir apt nécessite un abonnement. <strong>Essayez tous les outils gratuitement pendant 14 jours</strong>, sans carte.
+      <a href="/fr/#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/fr/apt-401-unauthorized.html">apt renvoie 401 ?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🪵 Installer le dernier lnav sur Ubuntu</h1>
+        <p class="subtitle">Le Logfile Navigator, un visualiseur de logs pour le terminal avec requêtes SQL</p>
+        <div class="version-badge">Dernière version : 0.14.1 · mis à jour le 2026-11-05</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.14.1 ✅</td></tr>
+<tr><td>Ubuntu officiel</td><td class="vc-lose">0.13.2 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-lnav-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-lnav-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-lnav-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-lnav-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Qu'est-ce que lnav ?</h2>
+        <p>lnav, <strong>le Logfile Navigator, est un visualiseur de logs pour le terminal qui fusionne des fichiers de logs de nombreuses sources en une seule vue ordonnée par horodatage</strong>. Donnez-lui quelques fichiers, un répertoire ou une archive compressée et il reconnaît seul les formats (syslog, le journal systemd, les logs d'accès Apache et nginx, JSON Lines et bien d'autres), entrelace les messages dans l'ordre chronologique, colore les erreurs et les avertissements pour qu'ils sautent aux yeux, et continue de suivre les fichiers à mesure qu'ils grossissent. À partir de là, vous filtrez, cherchez, sautez d'une erreur à l'autre, et quand une question demande plus qu'une recherche, vous interrogez les messages de log en SQL. Il ouvre les logs distants via ssh aussi facilement que les logs locaux. lnav est écrit en C++ par Tim Stack et distribué sous licence BSD-2-Clause.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi la dernière version compte :</strong> lnav gagne sans cesse de nouveaux formats, de nouvelles fonctions SQL et de nouvelles fonctionnalités de visualisation, et chaque version corrige l'analyse de certains logs. Ubuntu 26.04 est figé sur lnav 0.13.2, Noble sur la 0.11.2 et Jammy sur la 0.9.0 : un système de base passe donc à côté de la version actuelle et des formats et corrections qu'elle apporte. Ce dépôt fournit lnav 0.14.1 sous le même nom de paquet, il remplace donc le lnav de la distribution sur place au prochain <code>apt upgrade</code>.
+        </div>
+
+        <h3>⚡ Fonctionnalités clés de lnav</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔀 Une seule chronologie fusionnée</h4>
+                <p>Ouvrez ensemble le syslog, un log applicatif et un log de serveur web : lnav entrelace leurs lignes par horodatage, et vous lisez ce qui s'est passé dans tout le système dans l'ordre où c'est arrivé.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Détection automatique des formats</h4>
+                <p>syslog, JSON de journald, logs d'accès Apache et nginx, JSON Lines, logfmt et des dizaines d'autres sont reconnus sans configuration ; niveaux, horodatages et champs sont analysés, erreurs et avertissements mis en évidence.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🗄️ Du SQL sur vos logs</h4>
+                <p>Chaque format reconnu est une table. Appuyez sur <code>;</code> et lancez des requêtes <code>SELECT</code> sur les messages : compter les erreurs par hôte, trouver les requêtes les plus lentes, regrouper les codes de statut, avec le résultat affiché dans la même fenêtre.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🌐 Logs distants via ssh</h4>
+                <p><code>lnav user@host:/var/log/syslog</code> ouvre un log sur une autre machine à travers votre configuration ssh et vos clés habituelles, sans agent à installer sur le serveur.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📦 Fichiers compressés et archives</h4>
+                <p>Les logs rotés en <code>.gz</code> et <code>.bz2</code> s'ouvrent directement, tout comme les archives <code>.zip</code> et <code>.tar</code> : un bundle de support se lit sans le décompresser d'abord.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👀 Suivre, filtrer et chercher</h4>
+                <p>Les fichiers sont suivis à mesure qu'ils grossissent, les filtres masquent ou gardent des lignes selon un motif, les recherches surlignent chaque occurrence, et une seule touche saute à l'erreur ou à l'avertissement suivant, pour que rien d'important ne défile sans être vu.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les dépôts officiels :</strong> Debian et Ubuntu gèlent les versions des paquets à la sortie d'une release. Ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous maintient sur la dernière version.
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Étape 1 : ajouter le dépôt</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Ghostty, lazydocker, Oh My Posh, Uncloud et Zed ; lnav n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
+  <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Étape 2 : installer lnav</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Installer la dernière version de lnav (remplace sur place le lnav plus ancien de la distribution)</span>
+sudo apt install lnav
+
+<span class="comment"># Vérifier l&#039;installation</span>
+dpkg -s lnav | grep Version</code></pre><pre class="variant variant-root"><code><span class="comment"># Installer la dernière version de lnav (remplace sur place le lnav plus ancien de la distribution)</span>
+apt install lnav
+
+<span class="comment"># Vérifier l&#039;installation</span>
+dpkg -s lnav | grep Version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Étape 3 : premier lancement</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Les logs de /var/log sont lisibles par root et le groupe adm</span>
+sudo lnav /var/log
+
+<span class="comment"># Ou lire le journal systemd en JSON, avec chaque champ analysé</span>
+journalctl -o json | lnav
+
+<span class="comment"># Vos propres logs n&#039;ont pas besoin de sudo ; les formats sont détectés</span>
+lnav ~/app/logs/
+
+<span class="comment"># Dans lnav, ? affiche l&#039;aide intégrée et q quitte</span></code></pre><pre class="variant variant-root"><code><span class="comment"># Les logs de /var/log sont lisibles par root et le groupe adm</span>
+lnav /var/log
+
+<span class="comment"># Ou lire le journal systemd en JSON, avec chaque champ analysé</span>
+journalctl -o json | lnav
+
+<span class="comment"># Vos propres logs n&#039;ont pas besoin de ; les formats sont détectés</span>
+lnav ~/app/logs/
+
+<span class="comment"># Dans lnav, ? affiche l&#039;aide intégrée et q quitte</span></code></pre></div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+
+        <p><strong>Lire et suivre des logs :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Les logs rotés et compressés s&#039;ouvrent directement, les archives aussi</span>
+lnav /var/log/nginx/access.log.2.gz support-bundle.tar.gz
+
+<span class="comment"># Plusieurs sources, fusionnées en une seule chronologie par horodatage</span>
+lnav /var/log/nginx/ ~/app/logs/app.log
+
+<span class="comment"># Un log sur une autre machine, via votre configuration ssh habituelle</span>
+lnav user@host:/var/log/syslog</code></pre></div>
+
+        <p><strong>Filtres et SQL :</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Dans lnav : e / E saute à l&#039;erreur suivante / précédente, w / W aux avertissements</span>
+<span class="comment"># :filter-in error         garder seulement les lignes qui correspondent</span>
+<span class="comment"># :filter-out healthcheck  masquer les lignes qui correspondent</span>
+<span class="comment"># ;SELECT c_ip, count(*) AS hits FROM access_log GROUP BY c_ip ORDER BY hits DESC</span>
+
+<span class="comment"># La même requête sans interface, pour les scripts</span>
+lnav -n -c &#039;;SELECT sc_status, count(*) FROM access_log GROUP BY sc_status&#039; /var/log/nginx/access.log</code></pre></div>
+
+        <p><strong>Rester à jour :</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># lnav se met à jour avec le reste du système</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># Quelle version est installée, et quelle est la plus récente disponible</span>
+apt policy lnav
+
+<span class="comment"># Le désinstaller</span>
+sudo apt remove lnav</code></pre><pre class="variant variant-root"><code><span class="comment"># lnav se met à jour avec le reste du système</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># Quelle version est installée, et quelle est la plus récente disponible</span>
+apt policy lnav
+
+<span class="comment"># Le désinstaller</span>
+apt remove lnav</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Intégrations</h4>
+            <p>lnav lit tout ce qui produit du texte, depuis des fichiers, des pipes et d'autres machines :</p>
+            <ul>
+                <li><strong>ssh :</strong> les chemins distants comme <code>user@host:/var/log/syslog</code> passent par votre configuration ssh et vos clés existantes ; le paquet recommande <code>openssh-client</code> pour cela</li>
+                <li><strong>Journal systemd :</strong> envoyez <code>journalctl -o json</code> (ajoutez <code>-f</code> pour suivre) dans lnav et chaque champ du journal devient consultable et interrogeable</li>
+                <li><strong>Conteneurs :</strong> <code>docker logs -f app 2&gt;&amp;1 | lnav</code> ou <code>kubectl logs -f pod | lnav</code> donne à la sortie des conteneurs la même coloration et le même SQL</li>
+                <li><strong>Presse-papiers :</strong> marquez des lignes et appuyez sur <code>c</code> pour les copier ; le paquet suggère <code>wl-clipboard</code> ou <code>xclip</code> pour Wayland et X11</li>
+                <li><strong>Formats personnalisés :</strong> décrivez un format de log maison dans un fichier JSON et installez-le avec <code>lnav -i myformat.json</code> ; il obtient alors la détection, la coloration et sa propre table SQL</li>
+                <li><strong>Scripts et CI :</strong> <code>lnav -n -c</code> exécute commandes et requêtes sans interface, si bien que le SQL qui répond à une question en interactif peut tourner dans une tâche cron ou un pipeline</li>
+                <li><strong>Documentation :</strong> la page de manuel est fournie avec le paquet (<code>man lnav</code>), et le manuel complet se trouve sur <a href="https://docs.lnav.org" target="_blank" rel="noopener">docs.lnav.org</a></li>
+            </ul>
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparaison des dépôts :</strong>
+            <ul>
+                <li><strong>Ubuntu officiel :</strong> fournit lnav 0.13.2 dans 26.04, la 0.11.2 dans Noble et la 0.9.0 dans Jammy, chacune figée pour toute la durée de vie de sa release</li>
+                <li><strong>Téléchargements upstream :</strong> un zip contenant un binaire statique sur la page des releases GitHub, copié à la main dans votre PATH, sans la page de manuel, et à récupérer de nouveau à chaque version</li>
+                <li><strong>Compiler depuis les sources :</strong> une toolchain C++ plus les paquets de développement de SQLite, PCRE2, ncurses, libarchive et libcurl, et une longue compilation</li>
+                <li><strong>deb.griffo.io:</strong> dernière version avec mises à jour automatiques</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Le même nom de paquet qu'Ubuntu :</strong> le paquet s'appelle <code>lnav</code>, exactement comme dans l'archive Ubuntu, ce dépôt met donc à jour le lnav d'origine sur place lors d'un <code>apt upgrade</code>, et un <code>apt remove</code> ultérieur ne laisse rien derrière lui</li>
+            <li>✅ <strong>Le build statique officiel :</strong> le binaire statique musl d'upstream, sans aucune dépendance à l'exécution et au comportement identique sur chaque version</li>
+            <li>✅ <strong>Paquet complet :</strong> le binaire <code>lnav</code> et sa page de manuel, avec <code>openssh-client</code> recommandé pour les logs distants et <code>wl-clipboard</code> ou <code>xclip</code> suggérés pour copier des lignes</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> les paquets sont mis à jour quelques heures après chaque version upstream</li>
+            <li>✅ <strong>Deux architectures :</strong> amd64 et arm64 sur chaque version, le même lnav tourne donc sur les serveurs, les portables et les cartes ARM comme le Raspberry Pi</li>
+            <li>✅ <strong>Multi-distribution :</strong> fonctionne sur Ubuntu 22.04, 24.04, 25.10 et 26.04</li>
+            <li>✅ <strong>Maintenance simple :</strong> des mises à jour avec les commandes apt habituelles</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction du paquet</h3>
+        <p>Les paquets Ubuntu sont construits et maintenus automatiquement dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/lnav-debian" target="_blank" rel="noopener">🪵 lnav-debian</a> - Constructions des dernières versions</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles sur deb.griffo.io :</p>
+        <ul>
+            <li><a href="/install-latest-lazydocker-in-ubuntu.html">lazydocker</a> - Une interface terminal pour Docker, pour trouver le conteneur dont vous voulez les logs</li>
+            <li><a href="/install-latest-k9s-in-ubuntu.html">k9s</a> - Une interface terminal pour les clusters Kubernetes et leurs pods</li>
+            <li><a href="/install-latest-ripgrep-in-ubuntu.html">ripgrep</a> - Une recherche récursive rapide, pour fouiller toute une arborescence de logs d'un coup</li>
+            <li><a href="/install-latest-btm-in-ubuntu.html">bottom</a> - Un moniteur système pour le terminal, pour ce que les logs ne disent pas</li>
+            <li><a href="/install-latest-fzf-in-ubuntu.html">fzf</a> - Un fuzzy finder pour choisir le fichier de log à ouvrir</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> les administrateurs système et SRE qui traquent un incident à travers plusieurs services, les développeurs qui lisent les logs applicatifs à côté de ceux du serveur web, tous ceux qui répondent aux questions sur les logs avec grep, sort et uniq et préféreraient écrire une seule requête SQL, et ceux qui doivent lire des logs sur des serveurs qu'ils n'atteignent que par ssh.
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>0.14.1</code>: 2026-11-05</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>lnav est-il dans les dépôts officiels de Ubuntu ?</summary><p>Oui, mais l&#x27;archive officielle de Ubuntu fournit lnav 0.13.2, alors que ce dépôt propose lnav 0.14.1, reconstruit quelques heures après chaque version upstream.</p></details>
+<details><summary>Comment installer le dernier lnav sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install lnav. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "lnav est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Ubuntu fournit lnav 0.13.2, alors que ce dépôt propose lnav 0.14.1, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier lnav sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install lnav. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing et 26.04 Resolute."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Miroir gratuit</a>
+    <a href="/how-packages-are-built.html">Comment les paquets sont construits</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/fr/how-subscriptions-work.html">Comment fonctionne l'accès</a>
+    <a href="/terms.html">Conditions Générales</a>
+    <a href="/fr/privacy.html">Confidentialité</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Tous droits réservés.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
+     button on any page opens it; without script those buttons are plain links
+     to the pricing section, which carries the same offer. The API and the
+     Turnstile site key ride on data attributes because site.js is a static
+     file shared by every page and must not hard-code either. -->
+<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
+        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="fr">
+  <button type="button" class="trial-close" data-trial-close aria-label="Fermer">&times;</button>
+
+  <div class="trial-step" data-trial-step="form">
+    <h2 class="trial-title" id="trialTitle">Commencez votre essai gratuit de 14 jours</h2>
+    <p class="trial-lead">Saisissez votre email et nous vous enverrons vos identifiants apt en quelques minutes. Sans carte.</p>
+    <form class="trial-form" novalidate>
+      <label class="trial-label" for="trialEmail">Adresse email</label>
+      <input class="trial-input" id="trialEmail" name="email" type="email"
+             autocomplete="email" inputmode="email" required maxlength="256"
+             placeholder="you@example.com">
+      <p class="trial-hint">Elle deviendra votre identifiant apt. Si vous restez, payez avec la même adresse et rien ne change sur vos machines.</p>
+      <div class="trial-captcha" data-trial-captcha data-loading="Chargement de la vérification…"></div>
+      <p class="trial-error" data-trial-error role="alert" hidden></p>
+      <button type="submit" class="btn-primary trial-submit" data-label="Envoyer mes identifiants"
+              data-sending="Envoi…" disabled>Envoyer mes identifiants</button>
+    </form>
+    <p class="trial-fineprint">Un essai par adresse email. Deux jours avant la fin, nous vous envoyons un lien pour garder l’accès. Si vous ne faites rien, l’accès s’arrête et rien n’est facturé.</p>
+  </div>
+
+  <div class="trial-step" data-trial-step="done" hidden>
+    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
+    <h2 class="trial-title">Consultez votre boîte de réception</h2>
+    <p class="trial-lead" data-trial-success data-template="Vos identifiants sont en route vers {email}. Ils arrivent en général en quelques minutes ; sinon, vérifiez les spams."></p>
+    <p class="trial-lead">Lancez ensuite le script d’installation de l’email, c’est tout.</p>
+    <p class="trial-help">Pas d’email après 15 minutes ? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Ouvrez une issue sur GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">écrivez-moi sur Discord</a>, je m’en occupe.</p>
+    <button type="button" class="btn-secondary" data-trial-close>Fermer</button>
+  </div>
+
+  <template data-trial-messages>
+    <span data-code="TRIAL_NOT_AVAILABLE">Cette adresse a déjà un compte ou a déjà eu un essai. Choisissez une offre pour continuer, ou répondez à votre email de bienvenue en cas de problème. <a href="/fr/#pricing" data-trial-close>Voir les offres &rarr;</a></span>
+    <span data-code="CAPTCHA_FAILED">Nous n’avons pas pu confirmer que vous êtes humain. Veuillez réessayer.</span>
+    <span data-code="INVALID_EMAIL">Cette adresse email ne semble pas valide.</span>
+    <span data-code="MISSING_EMAIL">Cette adresse email ne semble pas valide.</span>
+    <span data-code="RATE_LIMITED">Une tentative a déjà été faite aujourd'hui depuis votre réseau. Réessayez demain.</span>
+    <span data-code="GENERIC">Un problème est survenu de notre côté. Réessayez, ou demandez sur Discord.</span>
+  </template>
+</dialog>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest lnav on Ubuntu",
+ "description": "Complete guide to installing the latest lnav log file navigator on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-05",
+ "dateModified": "2026-11-05",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "lnav",
+  "applicationCategory": "DevOps Tool",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "The Logfile Navigator: a terminal log viewer that merges log files from many sources into one timestamp-ordered view, detects formats automatically, follows files as they grow, opens compressed files and archives and remote logs over ssh, and lets you filter, search and query log messages with SQL",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html",
+  "url": "https://deb.griffo.io/fr/install-latest-lnav-in-ubuntu.html",
+  "inLanguage": "fr"
+ },
+ "inLanguage": "fr"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
