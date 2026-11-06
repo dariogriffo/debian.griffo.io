@@ -64,6 +64,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [herdr-core](https://github.com/herdrdev/herdr-core) - Terminals for coding agents that stay alive after the window, SSH session or login that started them goes away; the core Herdr runs its terminals in, pulled in by herdr-app (command: herdr-core, no hc alias: httpcode owns /usr/bin/hc)
 - [zapfast](https://github.com/crmne/zapfast) - Fast, native WhatsApp desktop client written in Rust: links to your phone's WhatsApp account by QR code, like WhatsApp Web; unofficial, not affiliated with WhatsApp or Meta (desktop app, command: zapfast)
 - [lnav](https://github.com/tstack/lnav) - The Logfile Navigator: a log file viewer for the terminal that merges logs into one timestamp-ordered view, auto-detects formats, follows files, and supports SQL queries and remote logs over ssh (command: lnav)
+- [jjui](https://github.com/idursun/jjui) - A terminal UI for the Jujutsu (jj) version control system: browse the revision graph, write revsets with auto-complete, rebase, squash, split, manage bookmarks, view diffs and the op log (command: jjui, needs jujutsu, installed with it)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -127,6 +128,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [herdr-core-debian](https://github.com/dariogriffo/herdr-core-debian) - herdr-core, the terminal core behind Herdr
 - [zapfast-debian](https://github.com/dariogriffo/zapfast-debian) - Native WhatsApp desktop client (unofficial)
 - [lnav-debian](https://github.com/dariogriffo/lnav-debian) - The Logfile Navigator, terminal log file viewer
+- [jjui-debian](https://github.com/dariogriffo/jjui-debian) - Terminal UI for the Jujutsu (jj) version control system
 
 ## 🐧 Supported Debian Distributions
 
@@ -239,6 +241,7 @@ sudo apt install -y forgejo-runner  # CI/CD runner for Forgejo Actions
 sudo apt install -y headscale       # Self-hosted Tailscale control server
 sudo apt install -y garage          # S3-compatible object storage
 sudo apt install -y jujutsu         # Git-compatible version control system
+sudo apt install -y jjui            # Terminal UI for Jujutsu (jj)
 sudo apt install -y k9s             # Kubernetes terminal UI
 sudo apt install -y lnav            # Terminal log file viewer with SQL queries
 sudo apt install -y zellij          # Terminal workspace and multiplexer
@@ -248,7 +251,7 @@ sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui
 ```
 
 ## ⚠️ Important Information
