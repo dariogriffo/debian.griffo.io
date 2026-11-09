@@ -111,7 +111,7 @@
         <a href="/pt-br/install-dev-tools-on-wsl.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/pt-br/#pricing" class="nav-cta" data-trial>Teste grátis</a>
+    <a href="/pt-br/#pricing" class="nav-cta">Ver planos</a>
     <button class="nav-toggle" id="navToggle" aria-label="Alternar menu" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/pt-br/#pricing" class="btn-primary" data-trial>Teste grátis</a>
+      <a href="/pt-br/#pricing" class="btn-primary">Ver planos</a>
       <p class="mobile-menu-note"><a href="/free.html">Espelho gratuito</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Entre no Discord</a>
     </p>
     <p class="announce-notice">
-      🎁 O mirror apt exige assinatura. <strong>Teste todas as ferramentas grátis por 14 dias</strong>, sem cartão.
+      🎁 O mirror apt exige assinatura. <strong>Planos a partir de €15 por ano</strong>.
       <a href="/pt-br/#pricing">Ver preços</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -226,9 +226,8 @@ apt update</code></pre></div>
 
         <div class="access-cta">
             <p class="access-cta-text"><strong>O passo 2 precisa de uma assinatura.</strong>
-            Comece o teste grátis de 14 dias: só um e-mail, sem cartão. Suas credenciais chegam por e-mail; <a href="/pt-br/apt-401-unauthorized.html#subscribed">guarde-as assim</a> e qualquer ferramenta se instala com o apt puro.</p>
+            Escolha o plano anual ou o vitalício. Suas credenciais chegam por e-mail; <a href="/pt-br/apt-401-unauthorized.html#subscribed">guarde-as assim</a> e qualquer ferramenta se instala com o apt puro.</p>
             <div class="access-cta-actions">
-                <a href="/pt-br/#pricing" class="btn-primary" data-trial>Comece seu teste grátis</a>
                 <a href="/pt-br/#pricing" class="btn-secondary">Ver planos</a>
             </div>
         </div>
@@ -324,10 +323,9 @@ apt update</code></pre></div>
         </div>
 
         <div class="access-cta">
-            <p class="access-cta-text"><strong>Todas as 66 ferramentas no WSL, grátis por 14 dias.</strong>
-            Só um e-mail, sem cartão. Depois disso são <span data-amount="15">€15</span> por ano, ou <span data-amount="150">€150</span> uma única vez, para sempre.</p>
+            <p class="access-cta-text"><strong>Todas as 66 ferramentas no WSL, uma só assinatura.</strong>
+            São <span data-amount="15">€15</span> por ano, ou <span data-amount="150">€150</span> uma única vez, para sempre.</p>
             <div class="access-cta-actions">
-                <a href="/pt-br/#pricing" class="btn-primary" data-trial>Comece seu teste grátis</a>
                 <a href="/pt-br/#pricing" class="btn-secondary">Ver planos</a>
             </div>
         </div>
@@ -338,7 +336,7 @@ apt update</code></pre></div>
         <h3>O deb.griffo.io é um repositório oficial do WSL?</h3>
         <p>Não. É um repositório não oficial mantido por Dario Griffo, sem vínculo com o WSL. Cada pacote é compilado automaticamente a partir da versão upstream oficial, o empacotamento é de código aberto no GitHub e o arquivo é assinado com GPG.</p>
         <h3>Tem algum custo?</h3>
-        <p>O repositório funciona por assinatura (€15 por ano ou €150 uma única vez), com teste grátis. Um espelho grátis, o deb-free.griffo.io, oferece um conjunto menor de ferramentas com algum atraso, com a mesma configuração nesta distribuição.</p>
+        <p>O repositório funciona por assinatura (€15 por ano ou €150 uma única vez). Um espelho grátis, o deb-free.griffo.io, oferece um conjunto menor de ferramentas com algum atraso, com a mesma configuração nesta distribuição.</p>
         <h3>Como removo o repositório?</h3>
         <p>Apague /etc/apt/sources.list.d/deb.griffo.io.list e /etc/apt/keyrings/deb.griffo.io.gpg e rode sudo apt update. As ferramentas que você instalou continuam lá até você removê-las com apt remove.</p>
 
@@ -375,51 +373,6 @@ apt update</code></pre></div>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
-
-<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
-     button on any page opens it; without script those buttons are plain links
-     to the pricing section, which carries the same offer. The API and the
-     Turnstile site key ride on data attributes because site.js is a static
-     file shared by every page and must not hard-code either. -->
-<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
-        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="pt-br">
-  <button type="button" class="trial-close" data-trial-close aria-label="Fechar">&times;</button>
-
-  <div class="trial-step" data-trial-step="form">
-    <h2 class="trial-title" id="trialTitle">Comece seu teste grátis de 14 dias</h2>
-    <p class="trial-lead">Informe seu email e enviaremos suas credenciais do apt em poucos minutos. Sem cartão.</p>
-    <form class="trial-form" novalidate>
-      <label class="trial-label" for="trialEmail">Endereço de email</label>
-      <input class="trial-input" id="trialEmail" name="email" type="email"
-             autocomplete="email" inputmode="email" required maxlength="256"
-             placeholder="you@example.com">
-      <p class="trial-hint">Ele será seu login do apt. Se ficar, pague com o mesmo endereço e nada muda nas suas máquinas.</p>
-      <div class="trial-captcha" data-trial-captcha data-loading="Carregando a verificação…"></div>
-      <p class="trial-error" data-trial-error role="alert" hidden></p>
-      <button type="submit" class="btn-primary trial-submit" data-label="Enviar minhas credenciais"
-              data-sending="Enviando…" disabled>Enviar minhas credenciais</button>
-    </form>
-    <p class="trial-fineprint">Um teste por endereço de email. Dois dias antes do fim enviamos um link para manter o acesso. Se você não fizer nada, o acesso termina e nada é cobrado.</p>
-  </div>
-
-  <div class="trial-step" data-trial-step="done" hidden>
-    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
-    <h2 class="trial-title">Confira sua caixa de entrada</h2>
-    <p class="trial-lead" data-trial-success data-template="Suas credenciais estão a caminho de {email}. Costumam chegar em poucos minutos; se não, confira o spam."></p>
-    <p class="trial-lead">Depois execute o script de configuração do email e pronto.</p>
-    <p class="trial-help">Nenhum email depois de 15 minutos? <a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">Abra uma issue no GitHub</a> ou <a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">fale comigo no Discord</a> e eu resolvo.</p>
-    <button type="button" class="btn-secondary" data-trial-close>Fechar</button>
-  </div>
-
-  <template data-trial-messages>
-    <span data-code="TRIAL_NOT_AVAILABLE">Este endereço já tem uma conta ou já teve um teste. Escolha um plano para continuar, ou responda ao seu email de boas-vindas se algo parecer errado. <a href="/pt-br/#pricing" data-trial-close>Ver planos &rarr;</a></span>
-    <span data-code="CAPTCHA_FAILED">Não conseguimos confirmar que você é humano. Tente novamente.</span>
-    <span data-code="INVALID_EMAIL">Esse endereço de email não parece correto.</span>
-    <span data-code="MISSING_EMAIL">Esse endereço de email não parece correto.</span>
-    <span data-code="RATE_LIMITED">Já houve uma tentativa hoje a partir da sua rede. Tente novamente amanhã.</span>
-    <span data-code="GENERIC">Algo deu errado do nosso lado. Tente novamente ou pergunte no Discord.</span>
-  </template>
-</dialog>
 
 <script type="application/ld+json">
 {
@@ -482,7 +435,7 @@ apt update</code></pre></div>
      "name": "Tem algum custo?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "O repositório funciona por assinatura (€15 por ano ou €150 uma única vez), com teste grátis. Um espelho grátis, o deb-free.griffo.io, oferece um conjunto menor de ferramentas com algum atraso, com a mesma configuração nesta distribuição."
+      "text": "O repositório funciona por assinatura (€15 por ano ou €150 uma única vez). Um espelho grátis, o deb-free.griffo.io, oferece um conjunto menor de ferramentas com algum atraso, com a mesma configuração nesta distribuição."
      }
     },
     {

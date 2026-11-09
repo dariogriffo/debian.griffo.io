@@ -111,7 +111,7 @@
         <a href="/pt-br/install-dev-tools-on-linux-mint.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
       </div>
     </div>
-    <a href="/ja/#pricing" class="nav-cta" data-trial>無料で試す</a>
+    <a href="/ja/#pricing" class="nav-cta">プランを見る</a>
     <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
       <span class="toggle-bar"></span><span class="toggle-bar"></span>
     </button>
@@ -132,7 +132,7 @@
     <!-- .nav-cta is hidden below 900px because it will not fit beside the
          brand; without this the phone had no route to pricing at all. -->
     <div class="mobile-menu-foot">
-      <a href="/ja/#pricing" class="btn-primary" data-trial>無料で試す</a>
+      <a href="/ja/#pricing" class="btn-primary">プランを見る</a>
       <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
     </div>
   </div>
@@ -166,7 +166,7 @@
       <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
     </p>
     <p class="announce-notice">
-      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>全ツールを 14 日間無料でお試しいただけます</strong>。カード不要。
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>プランは年額 €15 からです</strong>。
       <a href="/ja/#pricing">料金を見る</a>
       <!-- the free lane is named in the same breath as the paywall, on purpose -->
       <span class="announce-sep">·</span>
@@ -227,9 +227,8 @@ apt update</code></pre></div>
 
         <div class="access-cta">
             <p class="access-cta-text"><strong>ステップ 2 には購読が必要です。</strong>
-            14 日間の無料トライアルを始めましょう。必要なのはメールアドレスだけで、カードは要りません。認証情報はメールで届くので、<a href="/ja/apt-401-unauthorized.html#subscribed">このように保存</a>すれば、どのツールも普通の apt でインストールできます。</p>
+            年額プランか買い切りプランをお選びください。認証情報はメールで届くので、<a href="/ja/apt-401-unauthorized.html#subscribed">このように保存</a>すれば、どのツールも普通の apt でインストールできます。</p>
             <div class="access-cta-actions">
-                <a href="/ja/#pricing" class="btn-primary" data-trial>無料トライアルを始める</a>
                 <a href="/ja/#pricing" class="btn-secondary">料金プランを見る</a>
             </div>
         </div>
@@ -322,10 +321,9 @@ apt update</code></pre></div>
         </div>
 
         <div class="access-cta">
-            <p class="access-cta-text"><strong>Linux Mint で使える 66 個のツールすべてを 14 日間無料で。</strong>
-            必要なのはメールアドレスだけで、カードは要りません。その後は年額 <span data-amount="15">€15</span>、または買い切りで一度だけ <span data-amount="150">€150</span> です。</p>
+            <p class="access-cta-text"><strong>Linux Mint で使える 66 個のツールすべてを、ひとつの購読で。</strong>
+            年額 <span data-amount="15">€15</span>、または買い切りで一度だけ <span data-amount="150">€150</span> です。</p>
             <div class="access-cta-actions">
-                <a href="/ja/#pricing" class="btn-primary" data-trial>無料トライアルを始める</a>
                 <a href="/ja/#pricing" class="btn-secondary">料金プランを見る</a>
             </div>
         </div>
@@ -338,7 +336,7 @@ apt update</code></pre></div>
         <h3>deb.griffo.io は Linux Mint の公式リポジトリですか？</h3>
         <p>いいえ。Dario Griffo が運営する非公式のリポジトリで、Linux Mint とは関係ありません。すべてのパッケージは上流の公式リリースから自動でビルドされ、パッケージングは GitHub でオープンソースとして公開されており、アーカイブは GPG で署名されています。</p>
         <h3>料金はかかりますか？</h3>
-        <p>リポジトリはサブスクリプション制（年額 €15、または買い切り €150）で、無料トライアルがあります。無料ミラーの deb-free.griffo.io でも、より少ないツールを少し遅れて配布しており、このディストリビューションでのセットアップ方法は同じです。</p>
+        <p>リポジトリはサブスクリプション制（年額 €15、または買い切り €150）です。無料ミラーの deb-free.griffo.io でも、より少ないツールを少し遅れて配布しており、このディストリビューションでのセットアップ方法は同じです。</p>
         <h3>リポジトリを削除するには？</h3>
         <p>/etc/apt/sources.list.d/deb.griffo.io.list と /etc/apt/keyrings/deb.griffo.io.gpg を削除してから、sudo apt update を実行してください。インストール済みのツールは、apt remove で削除するまでそのまま残ります。</p>
 
@@ -375,51 +373,6 @@ apt update</code></pre></div>
   <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
   <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
 </footer>
-
-<!-- The free-trial dialog. One copy in the shared chrome, so every [data-trial]
-     button on any page opens it; without script those buttons are plain links
-     to the pricing section, which carries the same offer. The API and the
-     Turnstile site key ride on data attributes because site.js is a static
-     file shared by every page and must not hard-code either. -->
-<dialog class="trial-dialog" id="trialDialog" aria-labelledby="trialTitle"
-        data-api="https://debian-apt-gate.griffo.io/trials" data-sitekey="0x4AAAAAAFZM4yhwITwgFDWh" data-lang="ja">
-  <button type="button" class="trial-close" data-trial-close aria-label="閉じる">&times;</button>
-
-  <div class="trial-step" data-trial-step="form">
-    <h2 class="trial-title" id="trialTitle">14 日間の無料トライアルを始める</h2>
-    <p class="trial-lead">メールアドレスを入力すると、数分以内に apt の認証情報をお送りします。カード不要。</p>
-    <form class="trial-form" novalidate>
-      <label class="trial-label" for="trialEmail">メールアドレス</label>
-      <input class="trial-input" id="trialEmail" name="email" type="email"
-             autocomplete="email" inputmode="email" required maxlength="256"
-             placeholder="you@example.com">
-      <p class="trial-hint">これが apt のログインになります。続ける場合は同じアドレスでお支払いいただければ、マシン側の変更は不要です。</p>
-      <div class="trial-captcha" data-trial-captcha data-loading="認証を読み込み中…"></div>
-      <p class="trial-error" data-trial-error role="alert" hidden></p>
-      <button type="submit" class="btn-primary trial-submit" data-label="認証情報を送信"
-              data-sending="送信中…" disabled>認証情報を送信</button>
-    </form>
-    <p class="trial-fineprint">トライアルはメールアドレスごとに 1 回です。終了の 2 日前にアクセスを続けるためのリンクをお送りします。何もしなければアクセスは終了し、料金は発生しません。</p>
-  </div>
-
-  <div class="trial-step" data-trial-step="done" hidden>
-    <div class="trial-mark trial-mark-done" aria-hidden="true">&#10003;</div>
-    <h2 class="trial-title">受信トレイをご確認ください</h2>
-    <p class="trial-lead" data-trial-success data-template="認証情報を {email} に送信しました。通常は数分以内に届きます。届かない場合は迷惑メールフォルダをご確認ください。"></p>
-    <p class="trial-lead">あとはメールのセットアップスクリプトを実行するだけです。</p>
-    <p class="trial-help">15 分経ってもメールが届かない場合は、<a href="https://github.com/dariogriffo/debian.griffo.io/issues/new" target="_blank" rel="noopener">GitHub で issue を作成する</a>か<a href="https://discord.gg/E2yHQNkuZy" target="_blank" rel="noopener">Discord で連絡してください</a>。すぐに対応します。</p>
-    <button type="button" class="btn-secondary" data-trial-close>閉じる</button>
-  </div>
-
-  <template data-trial-messages>
-    <span data-code="TRIAL_NOT_AVAILABLE">このアドレスには既にアカウントがあるか、トライアル済みです。プランを選んで続けるか、問題があればウェルカムメールに返信してください。 <a href="/ja/#pricing" data-trial-close>プランを見る &rarr;</a></span>
-    <span data-code="CAPTCHA_FAILED">人間であることを確認できませんでした。もう一度お試しください。</span>
-    <span data-code="INVALID_EMAIL">メールアドレスの形式が正しくないようです。</span>
-    <span data-code="MISSING_EMAIL">メールアドレスの形式が正しくないようです。</span>
-    <span data-code="RATE_LIMITED">本日はすでにお使いのネットワークから試行されています。明日もう一度お試しください。</span>
-    <span data-code="GENERIC">こちら側で問題が発生しました。もう一度お試しいただくか、Discord でお尋ねください。</span>
-  </template>
-</dialog>
 
 <script type="application/ld+json">
 {
@@ -490,7 +443,7 @@ apt update</code></pre></div>
      "name": "料金はかかりますか？",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "リポジトリはサブスクリプション制（年額 €15、または買い切り €150）で、無料トライアルがあります。無料ミラーの deb-free.griffo.io でも、より少ないツールを少し遅れて配布しており、このディストリビューションでのセットアップ方法は同じです。"
+      "text": "リポジトリはサブスクリプション制（年額 €15、または買い切り €150）です。無料ミラーの deb-free.griffo.io でも、より少ないツールを少し遅れて配布しており、このディストリビューションでのセットアップ方法は同じです。"
      }
     },
     {
