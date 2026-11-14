@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Installer Rust sur Debian avec apt</title>
+<meta name="description" content="Rust 1.100.0 via apt sur Bookworm, Trixie, Forky et Sid, le rustc de Debian n'est qu'en 1.85.1. Toolchain officielle, signée GPG.">
+<meta name="keywords" content="rust debian, installer rust debian, rustc debian, cargo debian, dernier rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, paquets debian, bookworm, trixie, sid, apt rust-stable">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/fr/install-latest-rust-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/fr/install-latest-rust-in-debian.html">
+<meta property="og:title" content="Installer Rust sur Debian avec apt">
+<meta property="og:description" content="Rust 1.100.0 via apt sur Bookworm, Trixie, Forky et Sid, le rustc de Debian n'est qu'en 1.85.1. Toolchain officielle, signée GPG.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-rust-in-debian.html">
+<meta property="twitter:title" content="Installer Rust sur Debian avec apt">
+<meta property="twitter:description" content="Rust 1.100.0 via apt sur Bookworm, Trixie, Forky et Sid, le rustc de Debian n'est qu'en 1.85.1. Toolchain officielle, signée GPG.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-rust-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-rust-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/fr/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/fr/#packages">Paquets</a></li>
+    <li><a href="/fr/#install">Installation</a></li>
+    <li><a href="/fr/#versions">Versions</a></li>
+    <li><a href="/fr/#source">Sources</a></li>
+    <li><a href="/fr/#reviews">Avis</a></li>
+    <li><a href="/fr/#pricing">Tarifs</a></li>
+    <li><a href="/fr/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Choisir la langue"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Français</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-rust-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/fr/#pricing" class="nav-cta">Voir les offres</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Afficher le menu" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/fr/#packages" class="mobile-menu-link" data-index="01">Paquets</a>
+      <a href="/fr/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/fr/#versions" class="mobile-menu-link" data-index="03">Versions</a>
+      <a href="/fr/#source" class="mobile-menu-link" data-index="04">Sources</a>
+      <a href="/fr/#reviews" class="mobile-menu-link" data-index="05">Avis</a>
+      <a href="/fr/#pricing" class="mobile-menu-link" data-index="06">Tarifs</a>
+      <a href="/fr/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/fr/#pricing" class="btn-primary">Voir les offres</a>
+      <p class="mobile-menu-note"><a href="/free.html">Miroir gratuit</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progression du défilement">
+  <span class="side-label">Défiler</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Statut">
+  <span class="side-label">Statut</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>70 outils de développement, toujours à jour</strong> — chaque nouvelle version upstream arrive dans <code>apt</code> en quelques heures.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Rejoindre le Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 Le miroir apt nécessite un abonnement. <strong>Formules à partir de €15 par an</strong>.
+      <a href="/fr/#pricing">Voir les tarifs</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Il existe un miroir gratuit pour toujours</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/fr/apt-401-unauthorized.html">apt renvoie 401 ?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/rust-logo.webp" alt="Logo Rust" width="56" height="56" decoding="async"></div>
+        <h1>Installer le dernier Rust sur Debian</h1>
+        <p class="subtitle">La toolchain Rust stable officielle, avec rustc, cargo, clippy, rustfmt et rust-analyzer</p>
+        <div class="version-badge">Dernière version : 1.100.0 · mis à jour le 2026-11-14</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Source</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
+<tr><td>Debian officiel</td><td class="vc-lose">1.85.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Retour à l'accueil</a>
+
+        <div class="notice-box"><strong>📌 Installation sur une version précise ?</strong> <a href="/install-rust-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-rust-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-rust-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-rust-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>Qu'est-ce que Rust ?</h2>
+        <p>Rust est <strong>un langage de programmation système axé sur la vitesse, la sûreté mémoire et une concurrence fiable</strong>, et ce paquet est <strong>la toolchain Rust stable officielle</strong> : les binaires de static.rust-lang.org, exactement ce qu'installe rustup, réempaquetés sans modification. Chaque build est vérifié avant d'être empaqueté : la signature GPG du manifeste de la version avec la clé de signature des versions de Rust (empreinte <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>), et le SHA-256 de chaque archive avec ce manifeste. Un seul paquet, <code>rust-stable</code>, vous donne <code>rustc</code>, <code>cargo</code>, <code>rustdoc</code>, <code>rustfmt</code>, clippy, rust-analyzer et la bibliothèque standard, et il est mis à jour à chaque version stable, toutes les six semaines plus les versions correctives. Debian et Ubuntu empaquettent le même compilateur sous le nom <code>rustc</code> ; le nom différent ici est voulu, comme expliqué plus bas.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Pourquoi les dernières versions comptent :</strong> Rust publie une nouvelle version stable toutes les six semaines, et les crates suivent : les nouvelles fonctionnalités du langage et API de la bibliothèque sont utilisées dès leur stabilisation, et une crate qui déclare une <code>rust-version</code> plus récente ne compile pas avec un compilateur plus ancien. Debian empaquette Rust sous les noms <code>rustc</code> et <code>cargo</code>, et trixie est figé sur rustc 1.85.1, un système fraîchement installé prend donc du retard à chaque version. Ce dépôt propose Rust 1.100.0 sous le nom <code>rust-stable</code>, une toolchain complète qui prend la place de rustc et cargo de la distribution et avance à chaque <code>apt upgrade</code>.
+        </div>
+
+        <h3>⚡ Fonctionnalités clés de Rust</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🦀 Toute la toolchain</h4>
+                <p><code>rustc</code>, <code>cargo</code>, <code>rustdoc</code>, <code>rustfmt</code>, clippy (<code>cargo clippy</code>), rust-analyzer, les wrappers <code>rust-gdb</code> et <code>rust-lldb</code> et la bibliothèque standard pour votre machine, le tout issu de la même version.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔏 Binaires officiels vérifiés</h4>
+                <p>Exactement les binaires que rustup téléchargerait depuis static.rust-lang.org, réempaquetés sans modification. Le build vérifie la signature GPG du manifeste et le SHA-256 de chaque archive avant d'empaqueter quoi que ce soit.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👥 Une installation pour tous les utilisateurs</h4>
+                <p>Une seule toolchain pour tout le système, partagée par tous les utilisateurs de la machine, au lieu d'un <code>~/.rustup</code> dans chaque répertoire personnel, et mise à jour par apt avec le reste du système.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Toujours ensemble, jamais mélangés</h4>
+                <p>rustc, cargo, la bibliothèque standard, clippy et rustfmt forment une famille aux versions liées. Remplacer seulement rustc associerait un compilateur récent à une std ancienne, c'est pourquoi <code>rust-stable</code> fait toujours avancer toute la toolchain d'un coup.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎯 Des cibles supplémentaires en paquets</h4>
+                <p>Des binaires Linux statiques avec <code>rust-stable-std-musl</code>, qui apporte son propre musl, et WebAssembly avec <code>wasm32-unknown-unknown</code>, <code>wasm32-wasip1</code> et <code>wasm32-wasip2</code>, chacune à un <code>apt install</code> près.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📚 Sources et documentation hors ligne</h4>
+                <p><code>rust-stable-src</code> ajoute les sources de la bibliothèque standard que lit rust-analyzer, et <code>rust-stable-doc</code> installe The Book, la documentation de l'API std et le livre de Cargo pour une lecture hors ligne.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Toujours en avance sur les dépôts officiels :</strong> Debian et Ubuntu gèlent les versions des paquets à la sortie d'une release. Ce dépôt publie les nouvelles versions upstream généralement en quelques heures. Un simple <code>apt upgrade</code> vous maintient sur la dernière version.
+        </div>
+
+        <h2>📦 Installation depuis deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">avec extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Étape 1 : ajouter le dépôt</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Forgejo Runner, Ghostty, lazydocker, Oh My Posh, Uncloud et Zed ; Rust n'en fait pas partie, le dépôt ci-dessus reste donc le seul moyen de l'installer — demandez-le et il pourra y être ajouté.</p>
+  <p class="free-lane-more"><a href="/free.html">Comment fonctionne le miroir gratuit →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 À propos de l'option extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> est l'outil de Debian pour les dépôts externes : il écrit le fichier de sources et installe la clé de signature à votre place, après l'avoir vérifiée face à des métadonnées signées. Ce dépôt y est enregistré sous le nom <code>griffo</code>, et le miroir gratuit à vie sous <code>griffo-free</code> ; sur Debian (bookworm, trixie, forky et sid), les commandes ci-dessus constituent donc toute l'installation.</p>
+  <p>extrepo ne met en place que le fichier de sources et la clé : les identifiants d'un abonnement vont toujours dans <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu n'est pas couvert, car extrepo ne publie de métadonnées que pour les suites Debian : utilisez-y les commandes avec sudo ou en root.</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Étape 2 : installer Rust</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Installer la dernière toolchain Rust stable</span>
+sudo apt install rust-stable
+
+<span class="comment"># Vérifier l&#039;installation</span>
+rustc --version
+cargo --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Installer la dernière toolchain Rust stable</span>
+apt install rust-stable
+
+<span class="comment"># Vérifier l&#039;installation</span>
+rustc --version
+cargo --version</code></pre></div>
+        </div>
+
+        <div class="notice-box"><strong>📌 Ce que apt remplace :</strong> <code>rust-stable</code> remplace les paquets <code>rustc</code>, <code>cargo</code>, <code>rustfmt</code>, <code>rust-clippy</code>, <code>rust-gdb</code>, <code>rust-lldb</code>, <code>rust-analyzer</code> et <code>rustup</code> de Debian, ainsi que leurs variantes <code>*-web</code>. apt affiche ce qu'il va supprimer et demande d'abord. Les paquets qui dépendent de rustc ou cargo de la distribution, comme <code>python3-setuptools-rust</code> ou <code>dh-cargo</code>, sont supprimés avec eux. Le LLVM et le clang du système ne sont pas touchés, et rien sur un système en marche ne dépend du compilateur.</div>
+
+        <div class="install-steps">
+            <h3>Étape 3 : votre premier projet</h3>
+            <div class="code-block"><pre><code><span class="comment"># Créer, compiler et lancer un nouveau projet</span>
+cargo new hello &amp;&amp; cd hello &amp;&amp; cargo run
+
+<span class="comment"># L&#039;analyser avec clippy et le formater avec rustfmt</span>
+cargo clippy
+rustfmt src/main.rs</code></pre></div>
+        </div>
+
+        <h3>🎯 Exemples d'utilisation de base</h3>
+
+        <p><strong>Binaires statiques avec musl :</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Ajouter la cible musl (elle apporte son propre musl, pas besoin de musl-tools)</span>
+sudo apt install rust-stable-std-musl
+
+<span class="comment"># Compiler un binaire Linux entièrement statique (aarch64-unknown-linux-musl sur arm64)</span>
+cargo build --target x86_64-unknown-linux-musl
+
+<span class="comment"># ldd confirme qu&#039;il n&#039;a besoin d&#039;aucune bibliothèque partagée</span>
+ldd target/x86_64-unknown-linux-musl/debug/hello</code></pre><pre class="variant variant-root"><code><span class="comment"># Ajouter la cible musl (elle apporte son propre musl, pas besoin de musl-tools)</span>
+apt install rust-stable-std-musl
+
+<span class="comment"># Compiler un binaire Linux entièrement statique (aarch64-unknown-linux-musl sur arm64)</span>
+cargo build --target x86_64-unknown-linux-musl
+
+<span class="comment"># ldd confirme qu&#039;il n&#039;a besoin d&#039;aucune bibliothèque partagée</span>
+ldd target/x86_64-unknown-linux-musl/debug/hello</code></pre></div>
+
+        <p><strong>WebAssembly, sources et documentation :</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Les cibles WebAssembly, un paquet chacune</span>
+sudo apt install rust-stable-std-wasm32-unknown-unknown
+sudo apt install rust-stable-std-wasm32-wasip1 rust-stable-std-wasm32-wasip2
+
+<span class="comment"># Sources de la bibliothèque standard pour rust-analyzer (recommandé, apt l&#039;ajoute donc par défaut)</span>
+sudo apt install rust-stable-src
+
+<span class="comment"># The Book, l&#039;API std et le livre de Cargo, hors ligne dans /usr/share/doc/rust-stable-doc/html</span>
+sudo apt install rust-stable-doc</code></pre><pre class="variant variant-root"><code><span class="comment"># Les cibles WebAssembly, un paquet chacune</span>
+apt install rust-stable-std-wasm32-unknown-unknown
+apt install rust-stable-std-wasm32-wasip1 rust-stable-std-wasm32-wasip2
+
+<span class="comment"># Sources de la bibliothèque standard pour rust-analyzer (recommandé, apt l&#039;ajoute donc par défaut)</span>
+apt install rust-stable-src
+
+<span class="comment"># The Book, l&#039;API std et le livre de Cargo, hors ligne dans /usr/share/doc/rust-stable-doc/html</span>
+apt install rust-stable-doc</code></pre></div>
+
+        <p><strong>Rester à jour :</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Rust se met à jour avec le reste du système, à chaque version stable</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># Quelle version est installée, et quelle est la plus récente disponible</span>
+apt policy rust-stable
+
+<span class="comment"># Le désinstaller</span>
+sudo apt remove rust-stable</code></pre><pre class="variant variant-root"><code><span class="comment"># Rust se met à jour avec le reste du système, à chaque version stable</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># Quelle version est installée, et quelle est la plus récente disponible</span>
+apt policy rust-stable
+
+<span class="comment"># Le désinstaller</span>
+apt remove rust-stable</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Intégrations</h4>
+            <p>La toolchain est installée comme n'importe quel autre paquet système, le reste de votre environnement la trouve donc sans configuration :</p>
+            <ul>
+                <li><strong>Organisation :</strong> tout se trouve dans <code>/usr/lib/rust-stable</code> avec son propre LLVM embarqué, et les commandes sont liées dans <code>/usr/bin</code>, elles sont donc dans le PATH de chaque utilisateur sans modifier le profil du shell</li>
+                <li><strong>Édition de liens :</strong> le paquet dépend d'un compilateur C (<code>gcc</code> ou <code>clang</code>) et de <code>libc6-dev</code>, que rustc utilise pour l'édition de liens, <code>cargo build</code> fonctionne donc dès l'installation</li>
+                <li><strong>Éditeurs :</strong> rust-analyzer fait partie du paquet, tout éditeur doté d'un client language server peut donc l'utiliser ; <code>rust-stable-src</code> lui permet de naviguer dans la bibliothèque standard</li>
+                <li><strong>Débogueurs :</strong> <code>rust-gdb</code> et <code>rust-lldb</code> lancent gdb ou lldb avec les pretty-printers de Rust chargés, pour que les types Rust s'affichent lisiblement</li>
+                <li><strong>Shell :</strong> les pages de manuel de cargo et ses complétions bash et zsh sont installées avec le paquet</li>
+                <li><strong>Cibles croisées :</strong> les bibliothèques standard musl et WebAssembly sont des paquets à part, ajoutés avec <code>apt install</code> au lieu de <code>rustup target add</code></li>
+                <li><strong>Documentation :</strong> <code>rust-stable-doc</code> installe la documentation HTML dans <code>/usr/share/doc/rust-stable-doc/html</code>, et tout est aussi en ligne sur <a href="https://doc.rust-lang.org" target="_blank" rel="noopener">doc.rust-lang.org</a></li>
+            </ul>
+        </div>
+
+        <h2>🚀 Pourquoi choisir deb.griffo.io ?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparaison des dépôts :</strong>
+            <ul>
+                <li><strong>Debian officiel :</strong> empaquette Rust sous les noms <code>rustc</code> et <code>cargo</code>, en version 1.85.1 dans trixie, figée pour toute la durée de vie de la version</li>
+                <li><strong>rustup :</strong> les mêmes binaires officiels, installés séparément pour chaque utilisateur dans <code>~/.rustup</code> et mis à jour avec <code>rustup update</code> plutôt qu'avec apt</li>
+                <li><strong>Compiler depuis les sources :</strong> amorcer rustc avec un compilateur précédent et compiler son LLVM, une compilation longue et lourde</li>
+                <li><strong>deb.griffo.io:</strong> dernière version avec mises à jour automatiques</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Une toolchain cohérente :</strong> le paquet s'appelle <code>rust-stable</code> et non <code>rustc</code> parce que le compilateur, cargo, std, clippy et rustfmt doivent venir de la même version, ils sont donc publiés et mis à jour ensemble</li>
+            <li>✅ <strong>Les binaires officiels :</strong> exactement ce que rustup installe depuis static.rust-lang.org, sans modification, vérifié au build avec la clé de signature des versions de Rust et les sommes SHA-256 du manifeste</li>
+            <li>✅ <strong>Paquet complet :</strong> la toolchain dans <code>/usr/lib/rust-stable</code> avec son propre LLVM, les commandes dans <code>/usr/bin</code>, les pages de manuel et les complétions de cargo, avec <code>rust-stable-src</code> recommandé et la documentation et les cibles musl et WebAssembly en paquets optionnels</li>
+            <li>✅ <strong>Mises à jour automatiques :</strong> les paquets sont mis à jour quelques heures après chaque version upstream</li>
+            <li>✅ <strong>Deux architectures :</strong> amd64 et arm64 sur chaque version, y compris le Raspberry Pi 4 et 5 avec un système 64 bits</li>
+            <li>✅ <strong>Multi-distribution :</strong> fonctionne sur Bookworm, Trixie, Forky et Sid</li>
+            <li>✅ <strong>Maintenance simple :</strong> des mises à jour avec les commandes apt habituelles</li>
+        </ul>
+
+        <h3>📦 Dépôt de construction du paquet</h3>
+        <p>Les paquets Debian sont construits et maintenus automatiquement dans ce dépôt GitHub :</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/rust-stable-debian" target="_blank" rel="noopener">🦀 rust-stable-debian</a> - Constructions des dernières versions</li>
+        </ul>
+
+        <h3>🔗 Paquets associés</h3>
+        <p>Également disponibles sur deb.griffo.io :</p>
+        <ul>
+            <li><a href="/install-latest-zig-in-debian.html">Zig</a> - Un langage de programmation généraliste et sa toolchain, également empaqueté ici en version stable</li>
+            <li><a href="/install-latest-helix-in-debian.html">Helix</a> - Un éditeur modal pour le terminal avec support intégré des language servers, prêt pour rust-analyzer</li>
+            <li><a href="/install-latest-zed-in-debian.html">Zed</a> - Un éditeur de code rapide, lui-même écrit en Rust</li>
+            <li><a href="/install-latest-neovim-in-debian.html">Neovim</a> - L'éditeur extensible basé sur Vim, avec un client language server intégré</li>
+            <li><a href="/install-latest-ripgrep-in-debian.html">ripgrep</a> - Recherche récursive rapide, un outil bien connu écrit en Rust</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Parfait pour :</strong> les développeurs Rust qui veulent une toolchain à jour partagée par tous les utilisateurs d'une machine, les serveurs de build et runners CI qui installent leurs outils avec apt, tous ceux dont les crates exigent un compilateur plus récent que le rustc de la distribution, et les projets qui livrent des binaires statiques musl ou du WebAssembly.
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Dernières versions publiées par ce dépôt</h2>
+<ul class="release-list">
+<li><code>1.100.0</code>: 2026-11-14</li>
+</ul>
+<h2>❓ Questions fréquentes</h2>
+<details><summary>Rust est-il dans les dépôts officiels de Debian ?</summary><p>Oui, mais l&#x27;archive officielle de Debian fournit Rust 1.85.1, alors que ce dépôt propose Rust 1.100.0, reconstruit quelques heures après chaque version upstream.</p></details>
+<details><summary>Comment installer le dernier Rust sur Debian ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rust-stable. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
+<details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
+<details><summary>Quelles versions de Debian sont prises en charge ?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust est-il dans les dépôts officiels de Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Debian fournit Rust 1.85.1, alors que ce dépôt propose Rust 1.100.0, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Rust sur Debian ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rust-stable. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Debian sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky et Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Miroir gratuit</a>
+    <a href="/how-packages-are-built.html">Comment les paquets sont construits</a>
+    <a href="/supported-architectures.html">Architectures</a>
+    <a href="/fr/how-subscriptions-work.html">Comment fonctionne l'accès</a>
+    <a href="/terms.html">Conditions Générales</a>
+    <a href="/fr/privacy.html">Confidentialité</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Tous droits réservés.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Rust on Debian",
+ "description": "Complete guide to installing the latest stable Rust toolchain (rustc, cargo, clippy, rustfmt, rust-analyzer) on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-14",
+ "dateModified": "2026-11-14",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Rust",
+  "applicationCategory": "Programming Language",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "The official Rust stable toolchain from static.rust-lang.org, the same binaries rustup installs, verified against the signed release manifest: rustc, cargo, rustdoc, rustfmt, clippy, rust-analyzer and the standard library in one system-wide package, with optional source, offline documentation, musl and WebAssembly targets",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "image": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/assets/img/tools/rust-logo.webp",
+   "width": 96,
+   "height": 96
+  },
+  "url": "https://deb.griffo.io/fr/install-latest-rust-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/fr/install-latest-rust-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/fr/install-latest-rust-in-debian.html",
+  "url": "https://deb.griffo.io/fr/install-latest-rust-in-debian.html",
+  "inLanguage": "fr"
+ },
+ "inLanguage": "fr"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

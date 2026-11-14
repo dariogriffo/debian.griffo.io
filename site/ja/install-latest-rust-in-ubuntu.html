@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Rust を Ubuntu に apt でインストール</title>
+<meta name="description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta name="keywords" content="rust ubuntu, rust インストール ubuntu, rustc ubuntu, cargo ubuntu, 最新 rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, ubuntu パッケージ, jammy, noble, questing, apt rust-stable">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
+<meta property="og:title" content="Rust を Ubuntu に apt でインストール">
+<meta property="og:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
+<meta property="twitter:title" content="Rust を Ubuntu に apt でインストール">
+<meta property="twitter:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-rust-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-rust-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#reviews">レビュー</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-rust-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">プランを見る</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#reviews" class="mobile-menu-link" data-index="05">レビュー</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="06">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">プランを見る</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>70 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>プランは年額 €15 からです</strong>。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/ja/apt-401-unauthorized.html">apt が 401 を返しますか？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/rust-logo.webp" alt="Rust のロゴ" width="56" height="56" decoding="async"></div>
+        <h1>最新の Rust を Ubuntu にインストール</h1>
+        <p class="subtitle">公式の Rust 安定版ツールチェーン。rustc、cargo、clippy、rustfmt、rust-analyzer を収録</p>
+        <div class="version-badge">最新バージョン: 1.100.0 · 更新日 2026-11-14</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>提供元</th><th>バージョン</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
+<tr><td>公式 Ubuntu</td><td class="vc-lose">1.93.1 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← ホームに戻る</a>
+
+        <div class="notice-box"><strong>📌 特定のリリースに入れますか？</strong> <a href="/install-rust-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-rust-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-rust-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-rust-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a></div>
+
+        <h2>Rust とは</h2>
+        <p>Rust は<strong>速度、メモリ安全性、信頼できる並行性を重視したシステムプログラミング言語</strong>で、このパッケージは<strong>公式の Rust 安定版ツールチェーン</strong>です。static.rust-lang.org のバイナリ、つまり rustup がインストールするものとまったく同じものを、変更せずに再パッケージしています。各ビルドはパッケージ化の前に検証されます。リリースマニフェストの GPG 署名を Rust のリリース署名鍵（フィンガープリント <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>）で確認し、各 tarball の SHA-256 をそのマニフェストと照合します。<code>rust-stable</code> というひとつのパッケージで <code>rustc</code>、<code>cargo</code>、<code>rustdoc</code>、<code>rustfmt</code>、clippy、rust-analyzer、標準ライブラリがそろい、安定版のリリースごと、つまり 6 週間ごとと各ポイントリリースで更新されます。Debian と Ubuntu は同じコンパイラを <code>rustc</code> という名前でパッケージしていますが、ここで名前が違うのは意図的です。理由は後述します。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 最新バージョンが重要な理由:</strong> Rust は 6 週間ごとに新しい安定版をリリースし、crate もそれに合わせて進みます。新しい言語機能やライブラリ API は安定化されるとすぐに使われ、より新しい <code>rust-version</code> を宣言した crate は古いコンパイラではビルドできません。Ubuntu は Rust を <code>rustc</code> と <code>cargo</code> としてパッケージしており、26.04 は rustc 1.93.1 で固定されているため、標準のシステムはリリースのたびに遅れていきます。このリポジトリは Rust 1.100.0 を <code>rust-stable</code> として提供します。ディストリビューションの rustc と cargo に代わる完全なツールチェーンで、<code>apt upgrade</code> のたびに新しくなります。
+        </div>
+
+        <h3>⚡ Rust の主な機能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🦀 ツールチェーン一式</h4>
+                <p><code>rustc</code>、<code>cargo</code>、<code>rustdoc</code>、<code>rustfmt</code>、clippy（<code>cargo clippy</code>）、rust-analyzer、<code>rust-gdb</code> と <code>rust-lldb</code> のラッパー、そしてこのマシン用の標準ライブラリ。すべて同じリリースのものです。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔏 検証済みの公式バイナリ</h4>
+                <p>rustup が static.rust-lang.org からダウンロードするのとまったく同じバイナリを、変更せずに再パッケージしています。ビルドでは何かをパッケージ化する前に、マニフェストの GPG 署名と各 tarball の SHA-256 を確認します。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>👥 全ユーザーでひとつのインストール</h4>
+                <p>ホームディレクトリごとに <code>~/.rustup</code> を持つのではなく、マシンの全ユーザーが共有するシステム全体でひとつのツールチェーンです。更新は apt がシステムのほかの部分と一緒に行います。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 常にそろえて、混ぜない</h4>
+                <p>rustc、cargo、標準ライブラリ、clippy、rustfmt はバージョンが固定されたひとまとまりです。rustc だけを置き換えると新しいコンパイラと古い std が組み合わさるため、<code>rust-stable</code> は常にツールチェーン全体をまとめて更新します。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🎯 追加ターゲットもパッケージで</h4>
+                <p>独自の musl を同梱する <code>rust-stable-std-musl</code> で静的な Linux バイナリを、<code>wasm32-unknown-unknown</code>、<code>wasm32-wasip1</code>、<code>wasm32-wasip2</code> で WebAssembly をビルドできます。どれも <code>apt install</code> ひとつで追加できます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📚 ソースとオフラインドキュメント</h4>
+                <p><code>rust-stable-src</code> は rust-analyzer が読む標準ライブラリのソースを追加し、<code>rust-stable-doc</code> は The Book、std API ドキュメント、Cargo ブックをディスクに置いてオフラインで読めるようにします。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 公式アーカイブより、いつも先へ:</strong> Debian と Ubuntu は、リリース時点でパッケージのバージョンを固定します。このリポジトリは上流の新しいリリースを、たいてい数時間以内に公開します。<code>apt upgrade</code> を実行するだけで、常に最新版を使い続けられます。
+        </div>
+
+        <h2>📦 deb.griffo.io からインストールする</h2>
+
+        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">ステップ 1: リポジトリを追加する</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは cliamp、Forgejo Runner、Ghostty、lazydocker、Oh My Posh、Uncloud と Zed です。Rust は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
+  <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">ステップ 2: Rust をインストールする</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 最新の Rust 安定版ツールチェーンをインストール</span>
+sudo apt install rust-stable
+
+<span class="comment"># インストールを確認</span>
+rustc --version
+cargo --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 最新の Rust 安定版ツールチェーンをインストール</span>
+apt install rust-stable
+
+<span class="comment"># インストールを確認</span>
+rustc --version
+cargo --version</code></pre></div>
+        </div>
+
+        <div class="notice-box"><strong>📌 apt が置き換えるもの:</strong> <code>rust-stable</code> は Ubuntu の <code>rustc</code>、<code>cargo</code>、<code>rustfmt</code>、<code>rust-clippy</code>、<code>rust-gdb</code>、<code>rust-lldb</code>、<code>rust-analyzer</code>、<code>rustup</code> の各パッケージと、Noble では古い <code>rustc-1.74</code> と <code>cargo-1.74</code> を置き換えます。apt は削除するものを表示し、先に確認を求めます。<code>python3-setuptools-rust</code> や <code>dh-cargo</code> など、ディストリビューションの rustc や cargo に依存するパッケージも一緒に削除されます。システムの LLVM と clang には手を付けず、Ubuntu の新しいバージョン付きパッケージ <code>rustc-1.XX</code> と <code>cargo-1.XX</code> は引き続き並行してインストールでき、稼働中のシステムでコンパイラに依存しているものはありません。</div>
+
+        <div class="install-steps">
+            <h3>ステップ 3: 最初のプロジェクト</h3>
+            <div class="code-block"><pre><code><span class="comment"># 新しいプロジェクトを作成、ビルド、実行</span>
+cargo new hello &amp;&amp; cd hello &amp;&amp; cargo run
+
+<span class="comment"># clippy でチェックし、rustfmt で整形</span>
+cargo clippy
+rustfmt src/main.rs</code></pre></div>
+        </div>
+
+        <h3>🎯 基本的な使用例</h3>
+
+        <p><strong>musl で静的バイナリ:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># musl ターゲットを追加（独自の musl を同梱、musl-tools は不要）</span>
+sudo apt install rust-stable-std-musl
+
+<span class="comment"># 完全に静的な Linux バイナリをビルド（arm64 では aarch64-unknown-linux-musl）</span>
+cargo build --target x86_64-unknown-linux-musl
+
+<span class="comment"># ldd で共有ライブラリが不要なことを確認</span>
+ldd target/x86_64-unknown-linux-musl/debug/hello</code></pre><pre class="variant variant-root"><code><span class="comment"># musl ターゲットを追加（独自の musl を同梱、musl-tools は不要）</span>
+apt install rust-stable-std-musl
+
+<span class="comment"># 完全に静的な Linux バイナリをビルド（arm64 では aarch64-unknown-linux-musl）</span>
+cargo build --target x86_64-unknown-linux-musl
+
+<span class="comment"># ldd で共有ライブラリが不要なことを確認</span>
+ldd target/x86_64-unknown-linux-musl/debug/hello</code></pre></div>
+
+        <p><strong>WebAssembly、ソース、ドキュメント:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># WebAssembly ターゲット、それぞれ 1 パッケージ</span>
+sudo apt install rust-stable-std-wasm32-unknown-unknown
+sudo apt install rust-stable-std-wasm32-wasip1 rust-stable-std-wasm32-wasip2
+
+<span class="comment"># rust-analyzer 用の標準ライブラリのソース（推奨パッケージなので apt が既定で追加）</span>
+sudo apt install rust-stable-src
+
+<span class="comment"># The Book、std API、Cargo ブックを /usr/share/doc/rust-stable-doc/html にオフラインで</span>
+sudo apt install rust-stable-doc</code></pre><pre class="variant variant-root"><code><span class="comment"># WebAssembly ターゲット、それぞれ 1 パッケージ</span>
+apt install rust-stable-std-wasm32-unknown-unknown
+apt install rust-stable-std-wasm32-wasip1 rust-stable-std-wasm32-wasip2
+
+<span class="comment"># rust-analyzer 用の標準ライブラリのソース（推奨パッケージなので apt が既定で追加）</span>
+apt install rust-stable-src
+
+<span class="comment"># The Book、std API、Cargo ブックを /usr/share/doc/rust-stable-doc/html にオフラインで</span>
+apt install rust-stable-doc</code></pre></div>
+
+        <p><strong>最新の状態を保つ:</strong></p>
+        <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Rust はシステムのほかの部分と一緒に、安定版リリースごとに更新</span>
+sudo apt update &amp;&amp; sudo apt upgrade
+
+<span class="comment"># インストール済みのバージョンと、利用可能な最新バージョン</span>
+apt policy rust-stable
+
+<span class="comment"># アンインストール</span>
+sudo apt remove rust-stable</code></pre><pre class="variant variant-root"><code><span class="comment"># Rust はシステムのほかの部分と一緒に、安定版リリースごとに更新</span>
+apt update &amp;&amp; apt upgrade
+
+<span class="comment"># インストール済みのバージョンと、利用可能な最新バージョン</span>
+apt policy rust-stable
+
+<span class="comment"># アンインストール</span>
+apt remove rust-stable</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 ツール連携</h4>
+            <p>ツールチェーンはほかのシステムパッケージと同じように配置されるので、環境のほかの部分は設定なしでそれを見つけられます:</p>
+            <ul>
+                <li><strong>配置:</strong> すべては専用の LLVM を同梱した <code>/usr/lib/rust-stable</code> にあり、コマンドは <code>/usr/bin</code> にリンクされます。シェルのプロファイルを変更しなくても、すべてのユーザーの PATH に入ります</li>
+                <li><strong>リンク:</strong> パッケージは C コンパイラ（<code>gcc</code> または <code>clang</code>）と <code>libc6-dev</code> に依存しており、rustc はこれらでリンクします。インストール直後から <code>cargo build</code> が動きます</li>
+                <li><strong>エディタ:</strong> rust-analyzer がパッケージに含まれているので、language server クライアントを持つエディタならどれでも使えます。<code>rust-stable-src</code> があれば標準ライブラリの中まで移動できます</li>
+                <li><strong>デバッガ:</strong> <code>rust-gdb</code> と <code>rust-lldb</code> は Rust の pretty-printer を読み込んだ状態で gdb や lldb を起動し、Rust の型を読みやすく表示します</li>
+                <li><strong>シェル:</strong> cargo の man ページと bash、zsh 用の補完がパッケージと一緒にインストールされます</li>
+                <li><strong>クロスターゲット:</strong> musl と WebAssembly の標準ライブラリは別パッケージで、<code>rustup target add</code> の代わりに <code>apt install</code> で追加します</li>
+                <li><strong>ドキュメント:</strong> <code>rust-stable-doc</code> は HTML ドキュメントを <code>/usr/share/doc/rust-stable-doc/html</code> にインストールし、すべて <a href="https://doc.rust-lang.org" target="_blank" rel="noopener">doc.rust-lang.org</a> でもオンラインで読めます</li>
+            </ul>
+        </div>
+
+        <h2>🚀 deb.griffo.io を選ぶ理由</h2>
+
+        <div class="integration-box">
+            <strong>📊 リポジトリの比較:</strong>
+            <ul>
+                <li><strong>公式 Ubuntu:</strong> Rust を <code>rustc</code> と <code>cargo</code> としてパッケージし、26.04 では 1.93.1。リリースの存続期間中は固定されます</li>
+                <li><strong>rustup:</strong> 同じ公式バイナリですが、ユーザーごとに <code>~/.rustup</code> に別々にインストールされ、apt ではなく <code>rustup update</code> で更新します</li>
+                <li><strong>ソースからビルド:</strong> 前のバージョンのコンパイラで rustc をブートストラップし、その LLVM もビルドする、長く重いコンパイル</li>
+                <li><strong>deb.griffo.io:</strong> 最新版を自動更新でお届け</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>そろったツールチェーン:</strong> パッケージ名が <code>rustc</code> ではなく <code>rust-stable</code> なのは、コンパイラ、cargo、std、clippy、rustfmt が同じリリースのものでなければならないからです。そのため一緒に配布され、一緒に更新されます</li>
+            <li>✅ <strong>公式バイナリ:</strong> rustup が static.rust-lang.org からインストールするものとまったく同じで、変更なし。ビルド時に Rust のリリース署名鍵とマニフェストの SHA-256 で検証しています</li>
+            <li>✅ <strong>完全なパッケージ:</strong> 専用の LLVM を含む <code>/usr/lib/rust-stable</code> のツールチェーン、<code>/usr/bin</code> のコマンド、man ページ、cargo の補完。<code>rust-stable-src</code> を推奨し、ドキュメントと musl、WebAssembly ターゲットは任意のパッケージです</li>
+            <li>✅ <strong>自動更新:</strong> 上流のリリースから数時間以内にパッケージを更新</li>
+            <li>✅ <strong>2 つのアーキテクチャ:</strong> すべてのバージョンで amd64 と arm64。64 ビット OS の Raspberry Pi 4 と 5 も含みます</li>
+            <li>✅ <strong>マルチディストリビューション:</strong> Ubuntu 22.04、24.04、25.10、26.04 で動作</li>
+            <li>✅ <strong>手間のかからない運用:</strong> 更新は通常の apt コマンドだけ</li>
+        </ul>
+
+        <h3>📦 パッケージのビルドリポジトリ</h3>
+        <p>Ubuntu パッケージは、この GitHub リポジトリで自動的にビルド・管理されています:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/rust-stable-debian" target="_blank" rel="noopener">🦀 rust-stable-debian</a> - 最新リリースのビルド</li>
+        </ul>
+
+        <h3>🔗 関連パッケージ</h3>
+        <p>deb.griffo.io では、こちらも配布しています:</p>
+        <ul>
+            <li><a href="/install-latest-zig-in-ubuntu.html">Zig</a> - 汎用プログラミング言語とそのツールチェーン。ここでも安定版としてパッケージしています</li>
+            <li><a href="/install-latest-helix-in-ubuntu.html">Helix</a> - language server サポートを内蔵したモーダルなターミナルエディタ。rust-analyzer ですぐに使えます</li>
+            <li><a href="/install-latest-zed-in-ubuntu.html">Zed</a> - 高速なコードエディタ。それ自体が Rust で書かれています</li>
+            <li><a href="/install-latest-neovim-in-ubuntu.html">Neovim</a> - language server クライアントを内蔵した、拡張可能な Vim 系エディタ</li>
+            <li><a href="/install-latest-ripgrep-in-ubuntu.html">ripgrep</a> - 高速な再帰検索。Rust で書かれたよく知られたツールです</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 こんな方に:</strong> マシンの全ユーザーで最新のツールチェーンをひとつ共有したい Rust 開発者、ツールを apt でインストールするビルドサーバーや CI ランナー、ディストリビューションの rustc より新しいコンパイラを必要とする crate を使う人、そして musl の静的バイナリや WebAssembly を出荷するプロジェクト。
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 このリポジトリの最近のリリース</h2>
+<ul class="release-list">
+<li><code>1.100.0</code>: 2026-11-14</li>
+</ul>
+<h2>❓ よくある質問</h2>
+<details><summary>Rust は公式の Ubuntu リポジトリにありますか？</summary><p>あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。</p></details>
+<details><summary>Ubuntu に最新の Rust を入れるには？</summary><p>上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install rust-stable を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。</p></details>
+<details><summary>パッケージは署名されていますか？ どのようにビルドされていますか？</summary><p>すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。</p></details>
+<details><summary>Ubuntu のどのリリースに対応していますか？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の Rust を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install rust-stable を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/supported-architectures.html">アーキテクチャ</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+    <a href="/ja/privacy.html">プライバシーポリシー</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Rust on Ubuntu",
+ "description": "Complete guide to installing the latest stable Rust toolchain (rustc, cargo, clippy, rustfmt, rust-analyzer) on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-14",
+ "dateModified": "2026-11-14",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Rust",
+  "applicationCategory": "Programming Language",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "The official Rust stable toolchain from static.rust-lang.org, the same binaries rustup installs, verified against the signed release manifest: rustc, cargo, rustdoc, rustfmt, clippy, rust-analyzer and the standard library in one system-wide package, with optional source, offline documentation, musl and WebAssembly targets",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "image": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/assets/img/tools/rust-logo.webp",
+   "width": 96,
+   "height": 96
+  },
+  "url": "https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html",
+  "url": "https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html",
+  "inLanguage": "ja"
+ },
+ "inLanguage": "ja"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
