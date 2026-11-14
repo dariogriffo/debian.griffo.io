@@ -65,6 +65,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [zapfast](https://github.com/crmne/zapfast) - Fast, native WhatsApp desktop client written in Rust: links to your phone's WhatsApp account by QR code, like WhatsApp Web; unofficial, not affiliated with WhatsApp or Meta (desktop app, command: zapfast)
 - [lnav](https://github.com/tstack/lnav) - The Logfile Navigator: a log file viewer for the terminal that merges logs into one timestamp-ordered view, auto-detects formats, follows files, and supports SQL queries and remote logs over ssh (command: lnav)
 - [jjui](https://github.com/idursun/jjui) - A terminal UI for the Jujutsu (jj) version control system: browse the revision graph, write revsets with auto-complete, rebase, squash, split, manage bookmarks, view diffs and the op log (command: jjui, needs jujutsu, installed with it)
+- [Rust](https://www.rust-lang.org/) - The official stable Rust toolchain from static.rust-lang.org; extra packages for rust-src, docs, musl and wasm32 targets; replaces the distro rustc/cargo/rustup (command: rustc, cargo)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -129,6 +130,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [zapfast-debian](https://github.com/dariogriffo/zapfast-debian) - Native WhatsApp desktop client (unofficial)
 - [lnav-debian](https://github.com/dariogriffo/lnav-debian) - The Logfile Navigator, terminal log file viewer
 - [jjui-debian](https://github.com/dariogriffo/jjui-debian) - Terminal UI for the Jujutsu (jj) version control system
+- [rust-stable-debian](https://github.com/dariogriffo/rust-stable-debian) - Official stable Rust toolchain (rust-stable, rust-stable-src, rust-stable-doc, rust-stable-std-musl, rust-stable-std-wasm32-*)
 
 ## 🐧 Supported Debian Distributions
 
@@ -179,6 +181,7 @@ sudo apt install -y zig-oldstable   # Previous stable Zig (installable alongside
 sudo apt install -y zig-master      # Nightly Zig builds
 sudo apt install -y zls             # Zig Language Server (stable)
 sudo apt install -y zls-master      # Zig Language Server (nightly)
+sudo apt install -y rust-stable     # Official stable Rust toolchain (replaces distro rustc/cargo/rustup)
 
 # Terminal & File Management
 sudo apt install -y ghostty      # Modern terminal emulator
@@ -251,7 +254,7 @@ sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable
 ```
 
 ## ⚠️ Important Information
