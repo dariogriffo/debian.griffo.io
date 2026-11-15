@@ -33,7 +33,7 @@
 })();
 </script>
 <title>Rust を Ubuntu に apt でインストール</title>
-<meta name="description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta name="description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1ubuntu1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
 <meta name="keywords" content="rust ubuntu, rust インストール ubuntu, rustc ubuntu, cargo ubuntu, 最新 rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, ubuntu パッケージ, jammy, noble, questing, apt rust-stable">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
 <meta property="og:title" content="Rust を Ubuntu に apt でインストール">
-<meta property="og:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta property="og:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1ubuntu1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/ja/install-latest-rust-in-ubuntu.html">
 <meta property="twitter:title" content="Rust を Ubuntu に apt でインストール">
-<meta property="twitter:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
+<meta property="twitter:description" content="Rust 1.100.0 を apt で Jammy、Noble、Questing、Resolute に。Ubuntu の rustc は 1.93.1ubuntu1 止まりです。公式の安定版ツールチェーンを GPG 署名付きで、リリースごとに再パッケージ。rustc、cargo、clippy、rust-analyzer を収録。">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-ubuntu.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
@@ -188,7 +188,7 @@
 <thead><tr><th>提供元</th><th>バージョン</th></tr></thead>
 <tbody>
 <tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
-<tr><td>公式 Ubuntu</td><td class="vc-lose">1.93.1 🛑</td></tr>
+<tr><td>公式 Ubuntu</td><td class="vc-lose">1.93.1ubuntu1 🛑</td></tr>
 </tbody>
 </table>
 </div>
@@ -203,7 +203,7 @@
         <p>Rust は<strong>速度、メモリ安全性、信頼できる並行性を重視したシステムプログラミング言語</strong>で、このパッケージは<strong>公式の Rust 安定版ツールチェーン</strong>です。static.rust-lang.org のバイナリ、つまり rustup がインストールするものとまったく同じものを、変更せずに再パッケージしています。各ビルドはパッケージ化の前に検証されます。リリースマニフェストの GPG 署名を Rust のリリース署名鍵（フィンガープリント <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>）で確認し、各 tarball の SHA-256 をそのマニフェストと照合します。<code>rust-stable</code> というひとつのパッケージで <code>rustc</code>、<code>cargo</code>、<code>rustdoc</code>、<code>rustfmt</code>、clippy、rust-analyzer、標準ライブラリがそろい、安定版のリリースごと、つまり 6 週間ごとと各ポイントリリースで更新されます。Debian と Ubuntu は同じコンパイラを <code>rustc</code> という名前でパッケージしていますが、ここで名前が違うのは意図的です。理由は後述します。</p>
 
         <div class="highlight-box">
-            <strong>🚀 最新バージョンが重要な理由:</strong> Rust は 6 週間ごとに新しい安定版をリリースし、crate もそれに合わせて進みます。新しい言語機能やライブラリ API は安定化されるとすぐに使われ、より新しい <code>rust-version</code> を宣言した crate は古いコンパイラではビルドできません。Ubuntu は Rust を <code>rustc</code> と <code>cargo</code> としてパッケージしており、26.04 は rustc 1.93.1 で固定されているため、標準のシステムはリリースのたびに遅れていきます。このリポジトリは Rust 1.100.0 を <code>rust-stable</code> として提供します。ディストリビューションの rustc と cargo に代わる完全なツールチェーンで、<code>apt upgrade</code> のたびに新しくなります。
+            <strong>🚀 最新バージョンが重要な理由:</strong> Rust は 6 週間ごとに新しい安定版をリリースし、crate もそれに合わせて進みます。新しい言語機能やライブラリ API は安定化されるとすぐに使われ、より新しい <code>rust-version</code> を宣言した crate は古いコンパイラではビルドできません。Ubuntu は Rust を <code>rustc</code> と <code>cargo</code> としてパッケージしており、26.04 は rustc 1.93.1ubuntu1 で固定されているため、標準のシステムはリリースのたびに遅れていきます。このリポジトリは Rust 1.100.0 を <code>rust-stable</code> として提供します。ディストリビューションの rustc と cargo に代わる完全なツールチェーンで、<code>apt upgrade</code> のたびに新しくなります。
         </div>
 
         <h3>⚡ Rust の主な機能</h3>
@@ -362,7 +362,7 @@ apt remove rust-stable</code></pre></div>
         <div class="integration-box">
             <strong>📊 リポジトリの比較:</strong>
             <ul>
-                <li><strong>公式 Ubuntu:</strong> Rust を <code>rustc</code> と <code>cargo</code> としてパッケージし、26.04 では 1.93.1。リリースの存続期間中は固定されます</li>
+                <li><strong>公式 Ubuntu:</strong> Rust を <code>rustc</code> と <code>cargo</code> としてパッケージし、26.04 では 1.93.1ubuntu1。リリースの存続期間中は固定されます</li>
                 <li><strong>rustup:</strong> 同じ公式バイナリですが、ユーザーごとに <code>~/.rustup</code> に別々にインストールされ、apt ではなく <code>rustup update</code> で更新します</li>
                 <li><strong>ソースからビルド:</strong> 前のバージョンのコンパイラで rustc をブートストラップし、その LLVM もビルドする、長く重いコンパイル</li>
                 <li><strong>deb.griffo.io:</strong> 最新版を自動更新でお届け</li>
@@ -409,12 +409,12 @@ apt remove rust-stable</code></pre></div>
 <li><code>1.100.0</code>: 2026-11-14</li>
 </ul>
 <h2>❓ よくある質問</h2>
-<details><summary>Rust は公式の Ubuntu リポジトリにありますか？</summary><p>あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。</p></details>
+<details><summary>Rust は公式の Ubuntu リポジトリにありますか？</summary><p>あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1ubuntu1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。</p></details>
 <details><summary>Ubuntu に最新の Rust を入れるには？</summary><p>上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install rust-stable を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。</p></details>
 <details><summary>パッケージは署名されていますか？ どのようにビルドされていますか？</summary><p>すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。</p></details>
 <details><summary>Ubuntu のどのリリースに対応していますか？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の Rust を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install rust-stable を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "あります。ただし公式 Ubuntu アーカイブが配布しているのは Rust 1.93.1ubuntu1 で、このリポジトリは上流のリリースから数時間以内に再ビルドした Rust 1.100.0 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の Rust を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install rust-stable を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute。"}}]}</script>
 </div>
 
 <footer class="site-footer">

@@ -33,7 +33,7 @@
 })();
 </script>
 <title>在 Ubuntu 上用 apt 安装 Rust</title>
-<meta name="description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
+<meta name="description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1ubuntu1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
 <meta name="keywords" content="rust ubuntu, 安装 rust ubuntu, rustc ubuntu, cargo ubuntu, 最新 rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, ubuntu 软件包, jammy, noble, questing, apt rust-stable">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
 <meta property="og:title" content="在 Ubuntu 上用 apt 安装 Rust">
-<meta property="og:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
+<meta property="og:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1ubuntu1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
 <meta property="twitter:title" content="在 Ubuntu 上用 apt 安装 Rust">
-<meta property="twitter:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
+<meta property="twitter:description" content="用 apt 在 Jammy、Noble、Questing 和 Resolute 上安装 Rust 1.100.0，Ubuntu 的 rustc 只有 1.93.1ubuntu1。官方稳定版工具链，GPG 签名，每个版本发布后重新打包。包含 rustc、cargo、clippy、rustfmt 和 rust-analyzer。">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-ubuntu.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
@@ -188,7 +188,7 @@
 <thead><tr><th>来源</th><th>版本</th></tr></thead>
 <tbody>
 <tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
-<tr><td>官方 Ubuntu</td><td class="vc-lose">1.93.1 🛑</td></tr>
+<tr><td>官方 Ubuntu</td><td class="vc-lose">1.93.1ubuntu1 🛑</td></tr>
 </tbody>
 </table>
 </div>
@@ -203,7 +203,7 @@
         <p>Rust 是<strong>一门注重速度、内存安全和可靠并发的系统编程语言</strong>，而这个软件包就是<strong>官方的 Rust 稳定版工具链</strong>：来自 static.rust-lang.org 的二进制文件，与 rustup 安装的完全相同，未经任何修改重新打包。每次构建在打包前都会经过校验：用 Rust 发布签名密钥（指纹 <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>）验证发布清单的 GPG 签名，并按该清单核对每个 tarball 的 SHA-256。一个软件包 <code>rust-stable</code> 就提供 <code>rustc</code>、<code>cargo</code>、<code>rustdoc</code>、<code>rustfmt</code>、clippy、rust-analyzer 和标准库，并随每个稳定版更新：每六周一次，外加各个修订版本。Debian 和 Ubuntu 以 <code>rustc</code> 的名字打包同一个编译器；这里刻意使用不同的名字，原因见下文。</p>
 
         <div class="highlight-box">
-            <strong>🚀 为什么最新版本很重要：</strong>Rust 每六周发布一个新的稳定版，crate 也随之前进：新的语言特性和库 API 一稳定就会被使用，而声明了更新 <code>rust-version</code> 的 crate 无法用旧编译器构建。Ubuntu 以 <code>rustc</code> 和 <code>cargo</code> 打包 Rust，26.04 冻结在 rustc 1.93.1，所以全新安装的系统每发布一个版本就落后更多。本仓库以 <code>rust-stable</code> 的名字提供 Rust 1.100.0，这是一套完整的工具链，取代发行版的 rustc 和 cargo，并在每次 <code>apt upgrade</code> 时随之更新。
+            <strong>🚀 为什么最新版本很重要：</strong>Rust 每六周发布一个新的稳定版，crate 也随之前进：新的语言特性和库 API 一稳定就会被使用，而声明了更新 <code>rust-version</code> 的 crate 无法用旧编译器构建。Ubuntu 以 <code>rustc</code> 和 <code>cargo</code> 打包 Rust，26.04 冻结在 rustc 1.93.1ubuntu1，所以全新安装的系统每发布一个版本就落后更多。本仓库以 <code>rust-stable</code> 的名字提供 Rust 1.100.0，这是一套完整的工具链，取代发行版的 rustc 和 cargo，并在每次 <code>apt upgrade</code> 时随之更新。
         </div>
 
         <h3>⚡ Rust 的主要功能</h3>
@@ -362,7 +362,7 @@ apt remove rust-stable</code></pre></div>
         <div class="integration-box">
             <strong>📊 仓库对比：</strong>
             <ul>
-                <li><strong>官方 Ubuntu：</strong> 以 <code>rustc</code> 和 <code>cargo</code> 打包 Rust，26.04 中为 1.93.1，在整个发行版生命周期内冻结</li>
+                <li><strong>官方 Ubuntu：</strong> 以 <code>rustc</code> 和 <code>cargo</code> 打包 Rust，26.04 中为 1.93.1ubuntu1，在整个发行版生命周期内冻结</li>
                 <li><strong>rustup：</strong> 同样的官方二进制文件，但为每个用户分别安装在 <code>~/.rustup</code> 下，用 <code>rustup update</code> 而不是 apt 更新</li>
                 <li><strong>从源码构建：</strong> 要先用上一个版本的编译器自举 rustc，再构建它的 LLVM，编译耗时长且资源消耗大</li>
                 <li><strong>deb.griffo.io:</strong> 最新版本，并自动更新</li>
@@ -409,12 +409,12 @@ apt remove rust-stable</code></pre></div>
 <li><code>1.100.0</code>: 2026-11-14</li>
 </ul>
 <h2>❓ 常见问题</h2>
-<details><summary>Rust 在官方 Ubuntu 软件源中吗？</summary><p>在，但官方 Ubuntu 源只提供 Rust 1.93.1，而本仓库提供 Rust 1.100.0，每次上游发布后数小时内重新构建。</p></details>
+<details><summary>Rust 在官方 Ubuntu 软件源中吗？</summary><p>在，但官方 Ubuntu 源只提供 Rust 1.93.1ubuntu1，而本仓库提供 Rust 1.100.0，每次上游发布后数小时内重新构建。</p></details>
 <details><summary>如何在 Ubuntu 上安装最新版 Rust？</summary><p>按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install rust-stable。之后通过常规的 sudo apt upgrade 获取新版本。</p></details>
 <details><summary>软件包是否有签名？如何构建？</summary><p>每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。</p></details>
 <details><summary>支持哪些 Ubuntu 版本？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在，但官方 Ubuntu 源只提供 Rust 1.93.1，而本仓库提供 Rust 1.100.0，每次上游发布后数小时内重新构建。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Rust？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install rust-stable。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust 在官方 Ubuntu 软件源中吗？", "acceptedAnswer": {"@type": "Answer", "text": "在，但官方 Ubuntu 源只提供 Rust 1.93.1ubuntu1，而本仓库提供 Rust 1.100.0，每次上游发布后数小时内重新构建。"}}, {"@type": "Question", "name": "如何在 Ubuntu 上安装最新版 Rust？", "acceptedAnswer": {"@type": "Answer", "text": "按上方说明一次性添加 deb.griffo.io 仓库，然后运行：sudo apt install rust-stable。之后通过常规的 sudo apt upgrade 获取新版本。"}}, {"@type": "Question", "name": "软件包是否有签名？如何构建？", "acceptedAnswer": {"@type": "Answer", "text": "每个软件包都使用仓库的 GPG 密钥（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）签名，并基于上游发布在公开的 GitHub 仓库中构建，任何人都可以审查。"}}, {"@type": "Question", "name": "支持哪些 Ubuntu 版本？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing 和 26.04 Resolute。"}}]}</script>
 </div>
 
 <footer class="site-footer">
