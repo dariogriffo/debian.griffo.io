@@ -66,6 +66,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [lnav](https://github.com/tstack/lnav) - The Logfile Navigator: a log file viewer for the terminal that merges logs into one timestamp-ordered view, auto-detects formats, follows files, and supports SQL queries and remote logs over ssh (command: lnav)
 - [jjui](https://github.com/idursun/jjui) - A terminal UI for the Jujutsu (jj) version control system: browse the revision graph, write revsets with auto-complete, rebase, squash, split, manage bookmarks, view diffs and the op log (command: jjui, needs jujutsu, installed with it)
 - [Rust](https://www.rust-lang.org/) - The official stable Rust toolchain from static.rust-lang.org; extra packages for rust-src, docs, musl and wasm32 targets; replaces the distro rustc/cargo/rustup (command: rustc, cargo)
+- [tmux](https://github.com/tmux/tmux) - The terminal multiplexer: run many terminals in one, split them into panes, and detach and reattach sessions that keep running in the background; built from upstream's release with ncurses linked statically, upgrades the distro tmux in place (command: tmux)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -131,6 +132,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [lnav-debian](https://github.com/dariogriffo/lnav-debian) - The Logfile Navigator, terminal log file viewer
 - [jjui-debian](https://github.com/dariogriffo/jjui-debian) - Terminal UI for the Jujutsu (jj) version control system
 - [rust-stable-debian](https://github.com/dariogriffo/rust-stable-debian) - Official stable Rust toolchain (rust-stable, rust-stable-src, rust-stable-doc, rust-stable-std-musl, rust-stable-std-wasm32-*)
+- [tmux-debian](https://github.com/dariogriffo/tmux-debian) - tmux, the terminal multiplexer
 
 ## 🐧 Supported Debian Distributions
 
@@ -248,13 +250,14 @@ sudo apt install -y jjui            # Terminal UI for Jujutsu (jj)
 sudo apt install -y k9s             # Kubernetes terminal UI
 sudo apt install -y lnav            # Terminal log file viewer with SQL queries
 sudo apt install -y zellij          # Terminal workspace and multiplexer
+sudo apt install -y tmux            # Terminal multiplexer
 sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
 sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/ble.sh in ~/.bashrc)
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable tmux
 ```
 
 ## ⚠️ Important Information
