@@ -99,7 +99,7 @@ find_orig() {
 }
 
 declare -a DEBIAN_DISTS=("bookworm" "trixie" "forky" "sid")
-declare -a UBUNTU_DISTS=("jammy" "noble" "questing" "resolute")
+declare -a UBUNTU_DISTS=("jammy" "noble" "questing" "resolute" "stonking")
 declare -a ALL_DISTS=("${DEBIAN_DISTS[@]}" "${UBUNTU_DISTS[@]}")
 
 # Other versions of this source package in common/ and the suite dirs (files
