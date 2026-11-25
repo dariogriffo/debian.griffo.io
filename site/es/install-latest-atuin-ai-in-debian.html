@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar Atuin AI en Debian vía apt</title>
+<meta name="description" content="Atuin AI 0.1.0.20261125 vía apt en Bookworm, Trixie, Forky y Sid, no está en los archivos oficiales de Debian. El agente de shell ? de Atuin, cada semana.">
+<meta name="keywords" content="atuin-ai debian, instalar atuin ai debian, atuin ai, agente de shell atuin, servidor atuin ai, asistente ia shell, agente ia terminal, ollama shell, atuin-ai apt, paquetes debian, bookworm, trixie, sid, apt atuin-ai">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html">
+<meta property="og:title" content="Instalar Atuin AI en Debian vía apt">
+<meta property="og:description" content="Atuin AI 0.1.0.20261125 vía apt en Bookworm, Trixie, Forky y Sid, no está en los archivos oficiales de Debian. El agente de shell ? de Atuin, cada semana.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html">
+<meta property="twitter:title" content="Instalar Atuin AI en Debian vía apt">
+<meta property="twitter:description" content="Atuin AI 0.1.0.20261125 vía apt en Bookworm, Trixie, Forky y Sid, no está en los archivos oficiales de Debian. El agente de shell ? de Atuin, cada semana.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-atuin-ai-in-debian.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-atuin-ai-in-debian.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/es/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/es/#packages">Paquetes</a></li>
+    <li><a href="/es/#install">Instalación</a></li>
+    <li><a href="/es/#versions">Versiones</a></li>
+    <li><a href="/es/#source">Código fuente</a></li>
+    <li><a href="/es/#reviews">Opiniones</a></li>
+    <li><a href="/es/#pricing">Precios</a></li>
+    <li><a href="/es/#faq">Preguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Seleccionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Español</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-atuin-ai-in-debian.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/es/#pricing" class="nav-cta">Ver planes</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menú" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/es/#packages" class="mobile-menu-link" data-index="01">Paquetes</a>
+      <a href="/es/#install" class="mobile-menu-link" data-index="02">Instalación</a>
+      <a href="/es/#versions" class="mobile-menu-link" data-index="03">Versiones</a>
+      <a href="/es/#source" class="mobile-menu-link" data-index="04">Código fuente</a>
+      <a href="/es/#reviews" class="mobile-menu-link" data-index="05">Opiniones</a>
+      <a href="/es/#pricing" class="mobile-menu-link" data-index="06">Precios</a>
+      <a href="/es/#faq" class="mobile-menu-link" data-index="07">Preguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/es/#pricing" class="btn-primary">Ver planes</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espejo gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progreso de desplazamiento">
+  <span class="side-label">Desplazar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Estado">
+  <span class="side-label">Estado</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>73 herramientas de desarrollo, siempre actualizadas</strong> — cada nueva versión upstream llega a <code>apt</code> en cuestión de horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Únete al Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 El mirror apt requiere suscripción. <strong>Planes desde €15 al año</strong>.
+      <a href="/es/#pricing">Ver precios</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe un espejo gratis para siempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/es/apt-401-unauthorized.html">¿apt devuelve 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🧠 Instalar la última versión de Atuin AI en Debian</h1>
+        <p class="subtitle">El agente de shell de Atuin: pulsa ? en un prompt vacío para chatear con tu propio servidor Atuin AI</p>
+        <div class="version-badge">Última versión: 0.1.0.20261125 · actualizado 2026-11-25</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.1.0.20261125 ✅</td></tr>
+<tr><td>Debian oficial</td><td class="vc-lose">🚫 no empaquetado</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Volver al inicio</a>
+
+        <div class="notice-box"><strong>📌 ¿Instalas en una versión concreta?</strong> <a href="/install-atuin-ai-on-debian-12-bookworm.html">Debian 12 (bookworm)</a> · <a href="/install-atuin-ai-on-debian-13-trixie.html">Debian 13 (trixie)</a> · <a href="/install-atuin-ai-on-debian-14-forky.html">Debian 14 (forky)</a> · <a href="/install-atuin-ai-on-debian-sid.html">Debian Sid</a></div>
+
+        <h2>¿Qué es Atuin AI?</h2>
+        <p>Atuin AI es el <strong>agente de shell de Atuin</strong>. Atuin lo incluía integrado hasta la 18.24 y lo quitó en la 18.25; ahora sigue vivo como binario independiente, <code>atuin-ai</code>. Pulsa <code>?</code> en un prompt vacío y se abre un chat en tu propia terminal: describe lo que quieres hacer y te sugiere el comando, o hazle una pregunta y te la responde. Con tu permiso también puede buscar en tu historial de Atuin, leer y editar archivos y ejecutar comandos. Habla con un servidor Atuin AI que alojas tú mismo (upstream lo publica como imagen Docker), y ese servidor puede ponerse delante de cualquier endpoint compatible con OpenAI: Ollama, vLLM o una API alojada. El cliente está escrito en Rust por el equipo de Atuin y tiene licencia MIT.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importa la última versión:</strong> Atuin AI es joven y avanza rápido, y upstream no publica ninguna versión, solo commits en <code>main</code>. Este repositorio compila una instantánea cada viernes cuando <code>main</code> ha cambiado, con versión <code>&lt;versión del cliente&gt;.&lt;AAAAMMDD&gt;</code> (por ejemplo <code>0.1.0.20261127</code>), así que <code>apt upgrade</code> te trae los cambios de la semana sin toolchain de Rust. Debian no empaqueta atuin-ai en absoluto.
+        </div>
+
+        <h3>⚡ Funciones clave de Atuin AI</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>❓ A una tecla</h4>
+                <p>Pulsa <code>?</code> en un prompt vacío para abrir el agente. En cualquier otro sitio <code>?</code> escribe un signo de interrogación como siempre, así que nunca estorba al comando que estás escribiendo.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>💡 Sugerencias de comandos</h4>
+                <p>Describe la tarea con palabras normales ("busca archivos de más de 1 GB modificados esta semana") y recibe un comando que puedes leer, editar y ejecutar, en vez de rebuscar en las páginas man.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📜 Conoce tu historial</h4>
+                <p>Con permiso, el agente busca en tu historial de Atuin, así que puede encontrar el comando que ejecutaste el mes pasado o partir de cómo sueles hacer las cosas en esta máquina.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ Archivos y comandos</h4>
+                <p>Puede leer y editar archivos y ejecutar comandos por ti, y pregunta antes de hacerlo. Tú decides qué toca tu sistema.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🏠 Tu propio servidor</h4>
+                <p>El cliente habla con un servidor Atuin AI que ejecutas tú, así que tus prompts y tu historial van a donde tú decidas. Upstream distribuye el servidor como <code>ghcr.io/atuinsh/atuin-ai-server</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Cualquier modelo compatible con OpenAI</h4>
+                <p>El servidor funciona con cualquier endpoint compatible con OpenAI: un modelo local con Ollama o vLLM, o una API alojada. Cambia de modelo en el servidor sin tocar el cliente.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes cuando publican una release; este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene en la última versión.
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Elige cómo ejecutar los comandos"><span class="variant-toggle-label">Ejecutar los comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">con sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">con extrepo</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Paso 1: Añadir el repositorio</h3>
+            <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
+sudo extrepo enable griffo
+sudo apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe un espejo gratis para siempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> sirve paquetes gratis para siempre: sin cuenta, sin suscripción, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Ahora mismo incluye cliamp, Forgejo Runner, Ghostty, lazydocker, Oh My Posh, Uncloud y Zed; Atuin AI no está entre ellas, así que hoy el repositorio de arriba es la única forma de instalarlo — pídelo y puede añadirse.</p>
+  <p class="free-lane-more"><a href="/free.html">Cómo funciona el espejo gratuito →</a></p>
+</div>
+<div class="notice-box extrepo">
+  <p><strong>🧩 Sobre la opción extrepo.</strong> <a href="https://manpages.debian.org/extrepo/extrepo.1p.en.html"><code>extrepo</code></a> es la herramienta propia de Debian para repositorios externos: escribe el archivo de sources e instala la clave de firma por ti, comprobándola antes contra metadatos firmados. Este repositorio está registrado en ella como <code>griffo</code>, y el espejo gratuito para siempre como <code>griffo-free</code>, así que en Debian (bookworm, trixie, forky y sid) los comandos de arriba son toda la configuración.</p>
+  <p>extrepo solo configura el archivo de sources y la clave: las credenciales de una suscripción siguen yendo en <code>/etc/apt/auth.conf.d/deb.griffo.io.conf</code>. Ubuntu no está cubierto, porque extrepo publica metadatos solo para las suites de Debian: allí usa los comandos con sudo o como root.</p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Paso 2: Instalar Atuin AI</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar la última versión de Atuin AI; Atuin llega como dependencia</span>
+sudo apt install atuin-ai
+
+<span class="comment"># Verificar la instalación</span>
+atuin-ai --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar la última versión de Atuin AI; Atuin llega como dependencia</span>
+apt install atuin-ai
+
+<span class="comment"># Verificar la instalación</span>
+atuin-ai --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 3: Primer arranque</h3>
+            <div class="code-block"><pre><code><span class="comment"># Indicar al cliente dónde está tu servidor Atuin AI</span>
+<span class="comment"># (un ejemplo comentado: /usr/share/doc/atuin-ai/examples/ai.example.toml)</span>
+mkdir -p ~/.atuin
+cat &gt; ~/.atuin/ai.toml &lt;&lt;&#039;EOF&#039;
+endpoint = &quot;http://localhost:8080&quot;
+<span class="comment"># api_token = &quot;...&quot;   # solo si el servidor define AUTH_TOKEN</span>
+EOF
+
+<span class="comment"># Asignar ? en tu shell, después de la línea init de Atuin</span>
+echo &#039;eval &quot;$(atuin-ai init bash)&quot;&#039; &gt;&gt; ~/.bashrc
+
+<span class="comment"># Abrir una shell nueva y pulsar ? en un prompt vacío</span>
+exec bash</code></pre></div>
+        </div>
+
+        <h3>🎯 Ejemplos básicos de uso</h3>
+
+        <p><strong>Configurar la shell:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># bash, en ~/.bashrc</span>
+eval &quot;$(atuin init bash)&quot;
+eval &quot;$(atuin-ai init bash)&quot;
+
+<span class="comment"># zsh, en ~/.zshrc</span>
+eval &quot;$(atuin init zsh)&quot;
+eval &quot;$(atuin-ai init zsh)&quot;
+
+<span class="comment"># fish, en ~/.config/fish/config.fish</span>
+atuin init fish | source
+atuin-ai init fish | source</code></pre></div>
+
+        <p><strong>Ejecutar el servidor:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Solo se empaqueta el cliente; el servidor es la imagen Docker de upstream</span>
+docker pull ghcr.io/atuinsh/atuin-ai-server
+
+<span class="comment"># Configúralo con tu endpoint compatible con OpenAI (Ollama, vLLM, una API alojada)</span>
+<span class="comment"># como describe la guía Self-Hosting de upstream, y comprueba que responde</span>
+curl http://localhost:8080/api/cli/models</code></pre></div>
+
+        <p><strong>En el día a día:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># En un prompt vacío, pulsa ? y pregunta, por ejemplo:</span>
+<span class="comment">#   ¿qué proceso escucha en el puerto 5432?</span>
+<span class="comment">#   comprime todos los .log de este directorio con más de 7 días</span>
+<span class="comment">#   ¿cuál era el comando rsync que usé para las copias de seguridad?</span>
+
+<span class="comment"># Todo lo que puede hacer el cliente</span>
+atuin-ai --help
+
+<span class="comment"># El código de shell que instala</span>
+atuin-ai init bash</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integraciones</h4>
+            <p>Atuin AI se sitúa entre tu shell, tu historial de Atuin y el modelo que elijas:</p>
+            <ul>
+                <li><strong>Atuin:</strong> una dependencia obligatoria, que se instala con él desde deb.griffo.io; el agente busca en la misma base de datos de historial que usa <code>atuin search</code>, y solo si lo permites</li>
+                <li><strong>Atuin 18.25 y posteriores:</strong> la 18.25 quitó el agente integrado, así que este paquete es la forma de conservar el chat con <code>?</code> en un Atuin actual</li>
+                <li><strong>bash, zsh y fish:</strong> <code>atuin-ai init bash</code>, <code>zsh</code> o <code>fish</code> imprime el atajo de teclado; cárgalo después del init de Atuin para que ambos atajos convivan</li>
+                <li><strong>Servidor Atuin AI:</strong> <code>ghcr.io/atuinsh/atuin-ai-server</code>, con Docker o Podman en la misma máquina o en cualquier sitio al que llegue el cliente; define <code>AUTH_TOKEN</code> allí y <code>api_token</code> en <code>~/.atuin/ai.toml</code> para protegerlo</li>
+                <li><strong>Ollama y vLLM:</strong> todos los prompts se quedan en tu propio hardware si apuntas el servidor a un endpoint local compatible con OpenAI</li>
+                <li><strong>API alojadas:</strong> cualquier proveedor que hable la API de OpenAI funciona igual, configurado en el servidor, nunca en el cliente</li>
+            </ul>
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativa de repositorios:</strong>
+            <ul>
+                <li><strong>Debian oficial:</strong> no empaqueta Atuin AI, <code>apt install atuin-ai</code> falla en un sistema recién instalado</li>
+                <li><strong>Descargas de upstream:</strong> no hay: upstream no publica versiones, tags ni binarios del cliente</li>
+                <li><strong>cargo build desde el código:</strong> un clon, una toolchain de Rust y unos minutos de compilación, repetidos a mano cada vez que <code>main</code> cambia</li>
+                <li><strong>deb.griffo.io:</strong> última versión con actualizaciones automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>Compilado desde main de upstream:</strong> a partir del código de upstream con su propio <code>Cargo.lock</code>; las notas de versión y <code>/usr/share/doc/atuin-ai/changelog.Debian</code> indican el commit exacto de upstream de cada instantánea</li>
+            <li>✅ <strong>Trae Atuin consigo:</strong> depende de <code>atuin</code>, que deb.griffo.io también ofrece, así que un solo <code>apt install atuin-ai</code> te da los dos</li>
+            <li>✅ <strong>Solo el cliente:</strong> el paquete instala <code>/usr/bin/atuin-ai</code> y un <code>ai.toml</code> de ejemplo; el servidor se queda en Docker, donde upstream lo distribuye</li>
+            <li>✅ <strong>Actualizaciones automáticas:</strong> cada nueva instantánea llega con un simple <code>apt upgrade</code></li>
+            <li>✅ <strong>Dos arquitecturas:</strong> amd64 y arm64 en Bookworm, Trixie, Forky y Sid, las mismas dos que el paquete Atuin del que depende; no hay compilación para i386 ni armhf</li>
+            <li>✅ <strong>Multidistribución:</strong> funciona en Bookworm, Trixie, Forky y Sid</li>
+            <li>✅ <strong>Mantenimiento sencillo:</strong> actualizaciones con los comandos apt de siempre</li>
+        </ul>
+
+        <h3>📦 Repositorio de compilación del paquete</h3>
+        <p>Los paquetes de Debian se compilan y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/atuin-ai-debian" target="_blank" rel="noopener">🧠 atuin-ai-debian</a> - Compilaciones semanales de instantáneas</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponibles en deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-atuin-in-debian.html">Atuin</a> - La base de datos de historial de shell de la que depende Atuin AI y en la que busca</li>
+            <li><a href="/install-latest-blesh-in-debian.html">ble.sh</a> - Un sustituto de Readline para bash con el que Atuin se integra</li>
+            <li><a href="/install-latest-fish-in-debian.html">fish</a> - Una shell interactiva amigable compatible con Atuin y con Atuin AI</li>
+            <li><a href="/install-latest-starship-in-debian.html">Starship</a> - Un prompt rápido para cualquier shell que combina bien</li>
+            <li><a href="/install-latest-herdr-in-debian.html">herdr</a> - Un espacio de trabajo en la terminal para ejecutar agentes de programación en paralelo</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> usuarios de Atuin que dependían del agente con <code>?</code> y actualizaron más allá de la 18.24, quienes quieren un asistente de línea de comandos que funcione con su propio servidor y su propio modelo, y cualquiera que prefiera pedir un comando antes que buscarlo.
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimas versiones publicadas por este repositorio</h2>
+<ul class="release-list">
+<li><code>0.1.0.20261125</code>: 2026-11-25</li>
+</ul>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está Atuin AI en los repositorios oficiales de Debian?</summary><p>No, Atuin AI no está empaquetado en los archivos oficiales de Debian. Este repositorio es actualmente la única fuente apt y ofrece Atuin AI 0.1.0.20261125.</p></details>
+<details><summary>¿Cómo instalo el último Atuin AI en Debian?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install atuin-ai. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Debian son compatibles?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está Atuin AI en los repositorios oficiales de Debian?", "acceptedAnswer": {"@type": "Answer", "text": "No, Atuin AI no está empaquetado en los archivos oficiales de Debian. Este repositorio es actualmente la única fuente apt y ofrece Atuin AI 0.1.0.20261125."}}, {"@type": "Question", "name": "¿Cómo instalo el último Atuin AI en Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install atuin-ai. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Debian son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espejo gratuito</a>
+    <a href="/how-packages-are-built.html">Cómo se construyen los paquetes</a>
+    <a href="/supported-architectures.html">Arquitecturas</a>
+    <a href="/es/how-subscriptions-work.html">Cómo funciona el acceso</a>
+    <a href="/terms.html">Términos y Condiciones</a>
+    <a href="/es/privacy.html">Privacidad</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos los derechos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Atuin AI on Debian",
+ "description": "Complete guide to installing the latest Atuin AI shell agent for Atuin on Debian using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-25",
+ "dateModified": "2026-11-25",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Atuin AI",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Debian Linux",
+  "softwareVersion": "latest",
+  "description": "The Atuin shell agent as a standalone client: press ? at an empty prompt to chat, get command suggestions and answers, and, with permission, search Atuin history, edit files and run commands, against a self-hosted Atuin AI server",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html",
+  "url": "https://deb.griffo.io/es/install-latest-atuin-ai-in-debian.html",
+  "inLanguage": "es"
+ },
+ "inLanguage": "es"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

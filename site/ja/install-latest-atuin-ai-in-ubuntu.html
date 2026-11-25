@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Atuin AI を Ubuntu にインストール — 常に最新</title>
+<meta name="description" content="Atuin AI 0.1.0.20261125 を apt で Jammy、Noble、Questing、Resolute、Stonking に。公式 Ubuntu のアーカイブにはありません。Atuin のシェルエージェントで、? を押すと自分の Atuin AI サーバーに聞けます。GPG 署名付き、毎週ビルド。">
+<meta name="keywords" content="atuin-ai ubuntu, atuin ai インストール ubuntu, atuin ai, atuin シェルエージェント, atuin ai サーバー, ai シェルアシスタント, ターミナル ai エージェント, ollama shell, atuin-ai apt, ubuntu パッケージ, jammy, noble, questing, resolute, stonking, apt atuin-ai">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html">
+<meta property="og:title" content="Atuin AI を Ubuntu にインストール — 常に最新">
+<meta property="og:description" content="Atuin AI 0.1.0.20261125 を apt で Jammy、Noble、Questing、Resolute、Stonking に。公式 Ubuntu のアーカイブにはありません。Atuin のシェルエージェントで、? を押すと自分の Atuin AI サーバーに聞けます。GPG 署名付き、毎週ビルド。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html">
+<meta property="twitter:title" content="Atuin AI を Ubuntu にインストール — 常に最新">
+<meta property="twitter:description" content="Atuin AI 0.1.0.20261125 を apt で Jammy、Noble、Questing、Resolute、Stonking に。公式 Ubuntu のアーカイブにはありません。Atuin のシェルエージェントで、? を押すと自分の Atuin AI サーバーに聞けます。GPG 署名付き、毎週ビルド。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-atuin-ai-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-atuin-ai-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/ja/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/ja/#packages">パッケージ</a></li>
+    <li><a href="/ja/#install">インストール</a></li>
+    <li><a href="/ja/#versions">バージョン</a></li>
+    <li><a href="/ja/#source">ソース</a></li>
+    <li><a href="/ja/#reviews">レビュー</a></li>
+    <li><a href="/ja/#pricing">料金</a></li>
+    <li><a href="/ja/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="言語を選択"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>日本語</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-atuin-ai-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/ja/#pricing" class="nav-cta">プランを見る</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/ja/#packages" class="mobile-menu-link" data-index="01">パッケージ</a>
+      <a href="/ja/#install" class="mobile-menu-link" data-index="02">インストール</a>
+      <a href="/ja/#versions" class="mobile-menu-link" data-index="03">バージョン</a>
+      <a href="/ja/#source" class="mobile-menu-link" data-index="04">ソース</a>
+      <a href="/ja/#reviews" class="mobile-menu-link" data-index="05">レビュー</a>
+      <a href="/ja/#pricing" class="mobile-menu-link" data-index="06">料金</a>
+      <a href="/ja/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/ja/#pricing" class="btn-primary">プランを見る</a>
+      <p class="mobile-menu-note"><a href="/free.html">無料ミラー</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="スクロールの進捗">
+  <span class="side-label">スクロール</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="ステータス">
+  <span class="side-label">ステータス</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>73 個の開発ツールを、常に最新に</strong> — 上流の新しいリリースは数時間以内に <code>apt</code> に届きます。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord に参加</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt ミラーの利用にはサブスクリプションが必要です。<strong>プランは年額 €15 からです</strong>。
+      <a href="/ja/#pricing">料金を見る</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">ずっと無料のミラーがあります</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/ja/apt-401-unauthorized.html">apt が 401 を返しますか？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🧠 最新の Atuin AI を Ubuntu にインストール</h1>
+        <p class="subtitle">Atuin のシェルエージェント。空のプロンプトで ? を押して、自分の Atuin AI サーバーとチャット</p>
+        <div class="version-badge">最新バージョン: 0.1.0.20261125 · 更新日 2026-11-25</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>提供元</th><th>バージョン</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.1.0.20261125 ✅</td></tr>
+<tr><td>公式 Ubuntu</td><td class="vc-lose">🚫 パッケージなし</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← ホームに戻る</a>
+
+        <div class="notice-box"><strong>📌 特定のリリースに入れますか？</strong> <a href="/install-atuin-ai-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-atuin-ai-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-atuin-ai-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-atuin-ai-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a> · <a href="/install-atuin-ai-on-ubuntu-26-10-stonking.html">Ubuntu 26.10 (stonking)</a></div>
+
+        <h2>Atuin AI とは</h2>
+        <p>Atuin AI は <strong>Atuin のシェルエージェント</strong>です。Atuin は 18.24 までこれを内蔵していましたが 18.25 で削除し、現在は単体のバイナリ <code>atuin-ai</code> として提供されています。空のプロンプトで <code>?</code> を押すと、端末の中でそのままチャットが開きます。やりたいことを説明すればコマンドを提案し、質問すれば答えてくれます。許可すれば、Atuin の履歴の検索、ファイルの読み書き、コマンドの実行も行えます。接続先は自分でホストする Atuin AI サーバー（上流が Docker イメージとして公開）で、そのサーバーは OpenAI 互換のエンドポイントなら何でも使えます。Ollama、vLLM、ホスト型の API などです。クライアントは Atuin チームが Rust で書いたもので、MIT ライセンスです。</p>
+
+        <div class="highlight-box">
+            <strong>🚀 最新版が効いてくる理由:</strong> Atuin AI は新しく、変化も速いうえに、上流はリリースを一切出さず、<code>main</code> へのコミットだけです。このリポジトリは毎週金曜日、<code>main</code> が動いていればスナップショットをビルドし、<code>&lt;クライアントのバージョン&gt;.&lt;YYYYMMDD&gt;</code>（例: <code>0.1.0.20261127</code>）という形式でバージョンを付けます。Rust ツールチェーンなしで、<code>apt upgrade</code> がその週の変更を届けます。Ubuntu は atuin-ai をまったくパッケージしていません。
+        </div>
+
+        <h3>⚡ Atuin AI の主な機能</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>❓ キー 1 つで</h4>
+                <p>空のプロンプトで <code>?</code> を押すとエージェントが開きます。それ以外の場所では <code>?</code> はいつもどおり疑問符を入力するので、入力中のコマンドの邪魔になりません。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>💡 コマンドの提案</h4>
+                <p>やりたいことを普通の言葉で説明すれば（「今週変更された 1 GB 超のファイルを探して」）、読んで、直して、実行できるコマンドが返ってきます。man ページを掘り返す必要はありません。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📜 履歴を知っている</h4>
+                <p>許可すれば、エージェントは Atuin の履歴を検索します。先月実行したコマンドを見つけたり、このマシンでのいつものやり方を踏まえたりできます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🛠️ ファイルとコマンド</h4>
+                <p>ファイルの読み書きやコマンドの実行も代わりに行い、その前に必ず確認します。システムに何をさせるかは自分で決められます。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🏠 自分のサーバー</h4>
+                <p>クライアントは自分で動かす Atuin AI サーバーとやり取りするので、プロンプトや履歴の行き先は自分で決められます。上流はサーバーを <code>ghcr.io/atuinsh/atuin-ai-server</code> として配布しています。</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 OpenAI 互換ならどのモデルでも</h4>
+                <p>サーバーは OpenAI 互換のエンドポイントなら何でも使えます。Ollama や vLLM のローカルモデルでも、ホスト型の API でも構いません。モデルの切り替えはサーバー側で行い、クライアントには触れません。</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 公式アーカイブより、いつも先へ:</strong> Debian と Ubuntu は、リリース時点でパッケージのバージョンを固定します。このリポジトリは上流の新しいリリースを、たいてい数時間以内に公開します。<code>apt upgrade</code> を実行するだけで、常に最新版を使い続けられます。
+        </div>
+
+        <h2>📦 deb.griffo.io からインストールする</h2>
+
+        <div class="variant-toggle" role="group" aria-label="コマンドの実行方法を選択"><span class="variant-toggle-label">コマンドの実行方法</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">sudo で実行</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">root で実行</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">ステップ 1: リポジトリを追加する</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 ずっと無料のミラーがあります。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> は、アカウントもサブスクリプションもなしでパッケージをずっと無料で配布しています。上流より最大2か月遅れ、セキュリティ修正は即座に公開されます。現在収録しているのは cliamp、Forgejo Runner、Ghostty、lazydocker、Oh My Posh、Uncloud と Zed です。Atuin AI は含まれていないため、今日入手する方法は上のリポジトリだけですが、ご要望があれば追加できます。</p>
+  <p class="free-lane-more"><a href="/free.html">無料ミラーの仕組み →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">ステップ 2: Atuin AI をインストールする</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># 最新の Atuin AI をインストール。Atuin 本体は依存関係として一緒に入ります</span>
+sudo apt install atuin-ai
+
+<span class="comment"># インストールを確認</span>
+atuin-ai --version</code></pre><pre class="variant variant-root"><code><span class="comment"># 最新の Atuin AI をインストール。Atuin 本体は依存関係として一緒に入ります</span>
+apt install atuin-ai
+
+<span class="comment"># インストールを確認</span>
+atuin-ai --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>ステップ 3: 最初の起動</h3>
+            <div class="code-block"><pre><code><span class="comment"># クライアントの接続先を自分の Atuin AI サーバーにする</span>
+<span class="comment"># （コメント付きの例: /usr/share/doc/atuin-ai/examples/ai.example.toml）</span>
+mkdir -p ~/.atuin
+cat &gt; ~/.atuin/ai.toml &lt;&lt;&#039;EOF&#039;
+endpoint = &quot;http://localhost:8080&quot;
+<span class="comment"># api_token = &quot;...&quot;   # サーバーで AUTH_TOKEN を設定した場合のみ</span>
+EOF
+
+<span class="comment"># シェルで ? を割り当てる。Atuin 自身の init 行の後に</span>
+echo &#039;eval &quot;$(atuin-ai init bash)&quot;&#039; &gt;&gt; ~/.bashrc
+
+<span class="comment"># 新しいシェルを開き、空のプロンプトで ? を押す</span>
+exec bash</code></pre></div>
+        </div>
+
+        <h3>🎯 基本的な使用例</h3>
+
+        <p><strong>シェルの設定:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># bash は ~/.bashrc に</span>
+eval &quot;$(atuin init bash)&quot;
+eval &quot;$(atuin-ai init bash)&quot;
+
+<span class="comment"># zsh は ~/.zshrc に</span>
+eval &quot;$(atuin init zsh)&quot;
+eval &quot;$(atuin-ai init zsh)&quot;
+
+<span class="comment"># fish は ~/.config/fish/config.fish に</span>
+atuin init fish | source
+atuin-ai init fish | source</code></pre></div>
+
+        <p><strong>サーバーの起動:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># パッケージに含まれるのはクライアントだけ。サーバーは上流の Docker イメージ</span>
+docker pull ghcr.io/atuinsh/atuin-ai-server
+
+<span class="comment"># 上流の Self-Hosting ガイドに従い、OpenAI 互換のエンドポイント（Ollama、vLLM、ホスト型 API）を設定し、</span>
+<span class="comment"># 応答するか確認する</span>
+curl http://localhost:8080/api/cli/models</code></pre></div>
+
+        <p><strong>普段の使い方:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># 空のプロンプトで ? を押して、たとえばこう聞く:</span>
+<span class="comment">#   ポート 5432 で待ち受けているプロセスは?</span>
+<span class="comment">#   このディレクトリの 7 日より古い .log ファイルをすべて圧縮して</span>
+<span class="comment">#   バックアップに使った rsync コマンドは何だった?</span>
+
+<span class="comment"># クライアントでできることの一覧</span>
+atuin-ai --help
+
+<span class="comment"># インストールされるシェルコード</span>
+atuin-ai init bash</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 ツール連携</h4>
+            <p>Atuin AI は、シェル、Atuin の履歴、そして自分で選んだモデルの間に入ります:</p>
+            <ul>
+                <li><strong>Atuin:</strong> 必須の依存関係で、deb.griffo.io から一緒にインストールされます。エージェントは <code>atuin search</code> と同じ履歴データベースを、許可したときだけ検索します</li>
+                <li><strong>Atuin 18.25 以降:</strong> 18.25 で内蔵エージェントが削除されたため、最新の Atuin で <code>?</code> チャットを使い続けるにはこのパッケージが必要です</li>
+                <li><strong>bash、zsh、fish:</strong> <code>atuin-ai init bash</code>、<code>zsh</code>、<code>fish</code> がキーバインドを出力します。Atuin 自身の init の後に読み込めば、両方のバインドが共存します</li>
+                <li><strong>Atuin AI サーバー:</strong> <code>ghcr.io/atuinsh/atuin-ai-server</code> を Docker か Podman で、同じマシンでもクライアントから届く場所ならどこでも動かせます。保護するにはサーバー側で <code>AUTH_TOKEN</code>、<code>~/.atuin/ai.toml</code> で <code>api_token</code> を設定します</li>
+                <li><strong>Ollama と vLLM:</strong> サーバーをローカルの OpenAI 互換エンドポイントに向ければ、プロンプトはすべて自分のハードウェアの中に留まります</li>
+                <li><strong>ホスト型 API:</strong> OpenAI API を話すプロバイダーならどれも同じように使えます。設定はサーバー側で、クライアントには書きません</li>
+            </ul>
+        </div>
+
+        <h2>🚀 deb.griffo.io を選ぶ理由</h2>
+
+        <div class="integration-box">
+            <strong>📊 リポジトリの比較:</strong>
+            <ul>
+                <li><strong>公式 Ubuntu:</strong> Atuin AI をパッケージしておらず、素のシステムでは <code>apt install atuin-ai</code> が失敗します</li>
+                <li><strong>upstream のダウンロード:</strong> ありません。上流はクライアントのリリースもタグもバイナリも公開していません</li>
+                <li><strong>ソースから cargo build:</strong> クローン、Rust ツールチェーン、数分のコンパイルが必要で、<code>main</code> が動くたびに手作業でやり直しです</li>
+                <li><strong>deb.griffo.io:</strong> 最新版を自動更新でお届け</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>上流の main からビルド:</strong> 上流自身の <code>Cargo.lock</code> を使って上流のソースからコンパイル。リリースノートと <code>/usr/share/doc/atuin-ai/changelog.Debian</code> に、各スナップショットの上流コミットが正確に記載されています</li>
+            <li>✅ <strong>Atuin も一緒に:</strong> <code>atuin</code> に依存し、それも deb.griffo.io にあるので、<code>apt install atuin-ai</code> 1 回で両方が入ります</li>
+            <li>✅ <strong>クライアントのみ:</strong> パッケージがインストールするのは <code>/usr/bin/atuin-ai</code> とサンプルの <code>ai.toml</code>。サーバーは上流が配布しているとおり Docker のままです</li>
+            <li>✅ <strong>自動更新:</strong> 新しいスナップショットはいつもの <code>apt upgrade</code> で届きます</li>
+            <li>✅ <strong>2 つのアーキテクチャ:</strong> amd64 と arm64 を Ubuntu 22.04、24.04、25.10、26.04、26.10 で提供。依存先の Atuin パッケージと同じ 2 つで、i386 と armhf のビルドはありません</li>
+            <li>✅ <strong>マルチディストリビューション:</strong> Ubuntu 22.04、24.04、25.10、26.04、26.10 で動作</li>
+            <li>✅ <strong>手間のかからない運用:</strong> 更新は通常の apt コマンドだけ</li>
+        </ul>
+
+        <h3>📦 パッケージのビルドリポジトリ</h3>
+        <p>Ubuntu パッケージは、この GitHub リポジトリで自動的にビルド・管理されています:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/atuin-ai-debian" target="_blank" rel="noopener">🧠 atuin-ai-debian</a> - 毎週のスナップショットのビルド</li>
+        </ul>
+
+        <h3>🔗 関連パッケージ</h3>
+        <p>deb.griffo.io では、こちらも配布しています:</p>
+        <ul>
+            <li><a href="/install-latest-atuin-in-ubuntu.html">Atuin</a> - Atuin AI が依存し、検索するシェル履歴データベース</li>
+            <li><a href="/install-latest-blesh-in-ubuntu.html">ble.sh</a> - Atuin が連携する bash 向けの Readline 代替</li>
+            <li><a href="/install-latest-fish-in-ubuntu.html">fish</a> - Atuin と Atuin AI の両方が対応する親しみやすい対話シェル</li>
+            <li><a href="/install-latest-starship-in-ubuntu.html">Starship</a> - 組み合わせて使える、高速でシェルを選ばないプロンプト</li>
+            <li><a href="/install-latest-herdr-in-ubuntu.html">herdr</a> - コーディングエージェントを並べて動かすターミナルのワークスペース</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 こんな方に:</strong> <code>?</code> エージェントを頼りにしていて 18.24 より新しい Atuin に上げた人、自分のサーバーと自分のモデルで動くコマンドラインアシスタントがほしい人、そしてコマンドは探すより聞きたい人。
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 このリポジトリの最近のリリース</h2>
+<ul class="release-list">
+<li><code>0.1.0.20261125</code>: 2026-11-25</li>
+</ul>
+<h2>❓ よくある質問</h2>
+<details><summary>Atuin AI は公式の Ubuntu リポジトリにありますか？</summary><p>ありません。Atuin AI は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、Atuin AI 0.1.0.20261125 を配布しています。</p></details>
+<details><summary>Ubuntu に最新の Atuin AI を入れるには？</summary><p>上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install atuin-ai を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。</p></details>
+<details><summary>パッケージは署名されていますか？ どのようにビルドされていますか？</summary><p>すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。</p></details>
+<details><summary>Ubuntu のどのリリースに対応していますか？</summary><p>Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute、26.10 Stonking。</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Atuin AI は公式の Ubuntu リポジトリにありますか？", "acceptedAnswer": {"@type": "Answer", "text": "ありません。Atuin AI は公式 Ubuntu アーカイブにパッケージ化されていません。現在このリポジトリが唯一の apt ソースで、Atuin AI 0.1.0.20261125 を配布しています。"}}, {"@type": "Question", "name": "Ubuntu に最新の Atuin AI を入れるには？", "acceptedAnswer": {"@type": "Answer", "text": "上の手順で deb.griffo.io リポジトリを一度追加してから、sudo apt install atuin-ai を実行してください。新しいリリースは、いつもの sudo apt upgrade で届きます。"}}, {"@type": "Question", "name": "パッケージは署名されていますか？ どのようにビルドされていますか？", "acceptedAnswer": {"@type": "Answer", "text": "すべてのパッケージはリポジトリの GPG 鍵（EA0F721D231FDD3A0A17B9AC7808B4DD62C41256）で署名されており、誰でも中身を確認できる公開の GitHub パッケージングリポジトリで、上流のリリースからビルドされています。"}}, {"@type": "Question", "name": "Ubuntu のどのリリースに対応していますか？", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy、24.04 Noble、25.10 Questing、26.04 Resolute、26.10 Stonking。"}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">無料ミラー</a>
+    <a href="/how-packages-are-built.html">パッケージのビルド方法</a>
+    <a href="/supported-architectures.html">アーキテクチャ</a>
+    <a href="/ja/how-subscriptions-work.html">アクセスの仕組み</a>
+    <a href="/terms.html">利用規約</a>
+    <a href="/ja/privacy.html">プライバシーポリシー</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 無断転載を禁じます。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest Atuin AI on Ubuntu",
+ "description": "Complete guide to installing the latest Atuin AI shell agent for Atuin on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-25",
+ "dateModified": "2026-11-25",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "Atuin AI",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "The Atuin shell agent as a standalone client: press ? at an empty prompt to chat, get command suggestions and answers, and, with permission, search Atuin history, edit files and run commands, against a self-hosted Atuin AI server",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html",
+  "url": "https://deb.griffo.io/ja/install-latest-atuin-ai-in-ubuntu.html",
+  "inLanguage": "ja"
+ },
+ "inLanguage": "ja"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
