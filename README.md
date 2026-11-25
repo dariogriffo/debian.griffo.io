@@ -67,6 +67,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [jjui](https://github.com/idursun/jjui) - A terminal UI for the Jujutsu (jj) version control system: browse the revision graph, write revsets with auto-complete, rebase, squash, split, manage bookmarks, view diffs and the op log (command: jjui, needs jujutsu, installed with it)
 - [Rust](https://www.rust-lang.org/) - The official stable Rust toolchain from static.rust-lang.org; extra packages for rust-src, docs, musl and wasm32 targets; replaces the distro rustc/cargo/rustup (command: rustc, cargo)
 - [tmux](https://github.com/tmux/tmux) - The terminal multiplexer: run many terminals in one, split them into panes, and detach and reattach sessions that keep running in the background; built from upstream's release with ncurses linked statically, upgrades the distro tmux in place (command: tmux)
+- [delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git, diff, grep and blame output; package git-delta, upgrades the distro git-delta in place (command: delta)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -133,6 +134,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [jjui-debian](https://github.com/dariogriffo/jjui-debian) - Terminal UI for the Jujutsu (jj) version control system
 - [rust-stable-debian](https://github.com/dariogriffo/rust-stable-debian) - Official stable Rust toolchain (rust-stable, rust-stable-src, rust-stable-doc, rust-stable-std-musl, rust-stable-std-wasm32-*)
 - [tmux-debian](https://github.com/dariogriffo/tmux-debian) - tmux, the terminal multiplexer
+- [git-delta-debian](https://github.com/dariogriffo/git-delta-debian) - delta, syntax-highlighting pager for git (package git-delta)
 
 ## 🐧 Supported Debian Distributions
 
@@ -208,6 +210,7 @@ sudo apt install -y herdr-core      # Terminals for coding agents that stay aliv
 sudo apt install -y uv              # Fast Python package manager
 sudo apt install -y gitui           # Terminal UI for git
 sudo apt install -y difftastic      # Structural diff (command: difft)
+sudo apt install -y git-delta       # Syntax-highlighting pager for git (command: delta)
 sudo apt install -y serie           # Git commit graph viewer
 sudo apt install -y rumdl           # Markdown linter and formatter
 sudo apt install -y tree-sitter-cli # Tree-sitter parser tooling (command: tree-sitter)
@@ -257,7 +260,7 @@ sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable tmux
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable tmux git-delta
 ```
 
 ## ⚠️ Important Information
