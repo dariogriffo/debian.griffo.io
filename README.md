@@ -68,6 +68,7 @@ This repository contains _unofficial_ Debian packages (.deb) for the **most up-t
 - [Rust](https://www.rust-lang.org/) - The official stable Rust toolchain from static.rust-lang.org; extra packages for rust-src, docs, musl and wasm32 targets; replaces the distro rustc/cargo/rustup (command: rustc, cargo)
 - [tmux](https://github.com/tmux/tmux) - The terminal multiplexer: run many terminals in one, split them into panes, and detach and reattach sessions that keep running in the background; built from upstream's release with ncurses linked statically, upgrades the distro tmux in place (command: tmux)
 - [delta](https://github.com/dandavison/delta) - Syntax-highlighting pager for git, diff, grep and blame output; package git-delta, upgrades the distro git-delta in place (command: delta)
+- [Atuin AI](https://github.com/atuinsh/atuin-ai) - The Atuin shell agent: press ? at an empty prompt to chat with your own self-hosted Atuin AI server; weekly snapshots of upstream's main branch, needs atuin (command: atuin-ai)
 
 Since Debian has a freeze and slow release policy, this repository provides **the latest versions** of these tools, updated automatically when new releases are available upstream.
 
@@ -135,6 +136,7 @@ Each package is built through dedicated GitHub repositories with automated CI/CD
 - [rust-stable-debian](https://github.com/dariogriffo/rust-stable-debian) - Official stable Rust toolchain (rust-stable, rust-stable-src, rust-stable-doc, rust-stable-std-musl, rust-stable-std-wasm32-*)
 - [tmux-debian](https://github.com/dariogriffo/tmux-debian) - tmux, the terminal multiplexer
 - [git-delta-debian](https://github.com/dariogriffo/git-delta-debian) - delta, syntax-highlighting pager for git (package git-delta)
+- [atuin-ai-debian](https://github.com/dariogriffo/atuin-ai-debian) - Atuin AI, the Atuin shell agent (weekly snapshots)
 
 ## 🐧 Supported Debian Distributions
 
@@ -256,11 +258,12 @@ sudo apt install -y zellij          # Terminal workspace and multiplexer
 sudo apt install -y tmux            # Terminal multiplexer
 sudo apt install -y starship        # Minimal, fast shell prompt
 sudo apt install -y atuin           # Magical shell history
+sudo apt install -y atuin-ai        # Atuin shell agent (? at an empty prompt; needs your own server)
 sudo apt install -y ble.sh          # Bash line editor (source /usr/share/blesh/ble.sh in ~/.bashrc)
 sudo apt install -y ble.sh-airline-themes # vim-airline themes for ble.sh
 
 # Install everything at once
-sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable tmux git-delta
+sudo apt install -y zig zig-oldstable ghostty lazygit lazydocker eza yazi uv fzf zoxide lowfi termusic yt-dlp ulauncher bun tigerbeetle helix forgejo-runner headscale garage jujutsu k9s zellij starship atuin btm gitui difftastic serie television rclone workmux cliamp superfile rumdl spotifast restic tree-sitter-cli gpu-screen-recorder-cli mitmproxy fresh-editor lazyjira rgrc ble.sh tldr kitty handy herdr-app herdr-core zapfast lnav jjui rust-stable tmux git-delta atuin-ai
 ```
 
 ## ⚠️ Important Information
