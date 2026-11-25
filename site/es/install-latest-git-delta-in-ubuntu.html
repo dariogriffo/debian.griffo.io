@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Instalar delta (git-delta) en Ubuntu vía apt</title>
+<meta name="description" content="delta 0.22.0 vía apt en Jammy, Noble, Questing, Resolute y Stonking — el Ubuntu oficial solo trae 0.18.2. Firmado con GPG, recompilado en horas.">
+<meta name="keywords" content="git-delta ubuntu, instalar delta ubuntu, delta paginador git, git diff resaltado de sintaxis, git diff lado a lado, delta pager, git-delta apt, paquetes ubuntu, jammy, noble, questing, resolute, stonking, apt git-delta">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html">
+<meta property="og:title" content="Instalar delta (git-delta) en Ubuntu vía apt">
+<meta property="og:description" content="delta 0.22.0 vía apt en Jammy, Noble, Questing, Resolute y Stonking — el Ubuntu oficial solo trae 0.18.2. Firmado con GPG, recompilado en horas.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html">
+<meta property="twitter:title" content="Instalar delta (git-delta) en Ubuntu vía apt">
+<meta property="twitter:description" content="delta 0.22.0 vía apt en Jammy, Noble, Questing, Resolute y Stonking — el Ubuntu oficial solo trae 0.18.2. Firmado con GPG, recompilado en horas.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-latest-git-delta-in-ubuntu.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-latest-git-delta-in-ubuntu.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/es/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/es/#packages">Paquetes</a></li>
+    <li><a href="/es/#install">Instalación</a></li>
+    <li><a href="/es/#versions">Versiones</a></li>
+    <li><a href="/es/#source">Código fuente</a></li>
+    <li><a href="/es/#reviews">Opiniones</a></li>
+    <li><a href="/es/#pricing">Precios</a></li>
+    <li><a href="/es/#faq">Preguntas</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Seleccionar idioma"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Español</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-latest-git-delta-in-ubuntu.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/es/#pricing" class="nav-cta">Ver planes</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Alternar menú" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/es/#packages" class="mobile-menu-link" data-index="01">Paquetes</a>
+      <a href="/es/#install" class="mobile-menu-link" data-index="02">Instalación</a>
+      <a href="/es/#versions" class="mobile-menu-link" data-index="03">Versiones</a>
+      <a href="/es/#source" class="mobile-menu-link" data-index="04">Código fuente</a>
+      <a href="/es/#reviews" class="mobile-menu-link" data-index="05">Opiniones</a>
+      <a href="/es/#pricing" class="mobile-menu-link" data-index="06">Precios</a>
+      <a href="/es/#faq" class="mobile-menu-link" data-index="07">Preguntas</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/es/#pricing" class="btn-primary">Ver planes</a>
+      <p class="mobile-menu-note"><a href="/free.html">Espejo gratuito</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Progreso de desplazamiento">
+  <span class="side-label">Desplazar</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Estado">
+  <span class="side-label">Estado</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>72 herramientas de desarrollo, siempre actualizadas</strong> — cada nueva versión upstream llega a <code>apt</code> en cuestión de horas.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Únete al Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 El mirror apt requiere suscripción. <strong>Planes desde €15 al año</strong>.
+      <a href="/es/#pricing">Ver precios</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Existe un espejo gratis para siempre</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/es/apt-401-unauthorized.html">¿apt devuelve 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>🔺 Instalar la última versión de delta (git-delta) en Ubuntu</h1>
+        <p class="subtitle">Un paginador con resaltado de sintaxis para la salida de git, diff, grep y blame</p>
+        <div class="version-badge">Última versión: 0.22.0 · actualizado 2026-11-25</div>
+        <div class="version-compare">
+<table>
+<thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
+<tbody>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">0.22.0 ✅</td></tr>
+<tr><td>Ubuntu oficial</td><td class="vc-lose">0.18.2 🛑</td></tr>
+</tbody>
+</table>
+</div>
+    </div>
+
+    <div class="content">
+        <a href="/" class="back-link">← Volver al inicio</a>
+
+        <div class="notice-box"><strong>📌 ¿Instalas en una versión concreta?</strong> <a href="/install-git-delta-on-ubuntu-22-04-jammy.html">Ubuntu 22.04 (jammy)</a> · <a href="/install-git-delta-on-ubuntu-24-04-noble.html">Ubuntu 24.04 (noble)</a> · <a href="/install-git-delta-on-ubuntu-25-10-questing.html">Ubuntu 25.10 (questing)</a> · <a href="/install-git-delta-on-ubuntu-26-04-resolute.html">Ubuntu 26.04 (resolute)</a> · <a href="/install-git-delta-on-ubuntu-26-10-stonking.html">Ubuntu 26.10 (stonking)</a></div>
+
+        <h2>¿Qué es delta?</h2>
+        <p>delta es un <strong>paginador con resaltado de sintaxis para la salida de git, diff, grep y blame</strong>. Configúralo una vez como paginador de git y cada <code>git diff</code>, <code>git show</code>, <code>git log -p</code>, <code>git blame</code> y <code>git add -p</code> sale con el código coloreado como en tu editor, las palabras cambiadas marcadas dentro de cada línea modificada, columnas lado a lado y números de línea opcionales, y cabeceras de archivo entre las que saltas con <code>n</code> y <code>N</code>. También lee cualquier diff unificado, compara dos archivos directamente y resalta la salida JSON de ripgrep. Está escrito en Rust por Dan Davison, usa las mismas definiciones de sintaxis y temas de color que bat, se configura desde tu <code>~/.gitconfig</code> y tiene licencia MIT. El paquete se llama <code>git-delta</code>; el comando que instala es <code>delta</code>.</p>
+
+        <div class="highlight-box">
+            <strong>🚀 Por qué importa la última versión:</strong> delta publica varias versiones al año, con opciones nuevas, mejor ajuste de líneas en la vista lado a lado y correcciones para las muchas formas en que git, las terminales y los paginadores interactúan. Ubuntu 26.04 está congelado en 0.18.2, 24.04 LTS en 0.16.5, y 22.04 no tiene git-delta, así que opciones del manual actual pueden no existir en tu copia. Este repositorio usa el mismo nombre de paquete, <code>git-delta</code>, así que <code>apt install git-delta</code> y <code>apt upgrade</code> te dan la versión actual en lugar de la del archivo.
+        </div>
+
+        <h3>⚡ Funciones clave de delta</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🎨 Resaltado de sintaxis</h4>
+                <p>El código dentro de un diff se colorea como en tu editor, con las definiciones de sintaxis y los temas de color de bat. Elige uno con <code>syntax-theme</code> o deja que delta siga el fondo claro u oscuro de la terminal.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔍 Cambios a nivel de palabra</h4>
+                <p>Dentro de cada línea modificada delta marca exactamente las palabras que difieren, así una variable renombrada o una condición invertida salta a la vista en vez de esconderse en dos líneas roja y verde casi idénticas.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>↔️ Vista lado a lado</h4>
+                <p><code>side-by-side = true</code> pone la versión vieja y la nueva en dos columnas con números de línea, ajustando las líneas largas en vez de cortarlas. Pruébalo para un solo comando con <code>git -c delta.side-by-side=true diff</code>.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧭 Navegación y enlaces</h4>
+                <p>Con <code>navigate = true</code>, <code>n</code> y <code>N</code> saltan de archivo en archivo por un <code>git log -p</code> largo. Con <code>hyperlinks = true</code>, las rutas y los hashes de commit se vuelven clicables en las terminales que lo admiten.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🧩 Blame, grep y conflictos</h4>
+                <p><code>git blame</code> muestra el código coloreado con los datos del commit agrupados, los resultados de <code>git grep</code> y <code>rg --json</code> se resaltan y agrupan por archivo, y los archivos en conflicto durante un merge se ven como diffs legibles.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>⚙️ Vive en ~/.gitconfig</h4>
+                <p>Cada opción va en una sección <code>[delta]</code> de tu configuración de git, y los conjuntos de opciones con nombre cambian todo el aspecto de una vez. El paquete incluye el <code>themes.gitconfig</code> de upstream, una colección de temas listos.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>🚀 Siempre por delante de los archivos oficiales:</strong> Debian y Ubuntu congelan las versiones de los paquetes cuando publican una release; este repositorio publica las nuevas versiones upstream normalmente en cuestión de horas. Un simple <code>apt upgrade</code> te mantiene en la última versión.
+        </div>
+
+        <h2>📦 Instalación desde deb.griffo.io</h2>
+
+        <div class="variant-toggle" role="group" aria-label="Elige cómo ejecutar los comandos"><span class="variant-toggle-label">Ejecutar los comandos</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">con sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">como root</button></div></div>
+        <div class="install-block">
+            <h3 class="block-title">Paso 1: Añadir el repositorio</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+<div class="notice-box free-lane">
+  <p><strong>🆓 Existe un espejo gratis para siempre.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> sirve paquetes gratis para siempre: sin cuenta, sin suscripción, como máximo 2 meses por detrás del upstream, correcciones de seguridad inmediatas. Ahora mismo incluye cliamp, Forgejo Runner, Ghostty, lazydocker, Oh My Posh, Uncloud y Zed; delta no está entre ellas, así que hoy el repositorio de arriba es la única forma de instalarlo — pídelo y puede añadirse.</p>
+  <p class="free-lane-more"><a href="/free.html">Cómo funciona el espejo gratuito →</a></p>
+</div>
+        </div>
+
+        <div class="install-block">
+            <h3 class="block-title">Paso 2: Instalar delta</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code><span class="comment"># Instalar la última versión de delta: el paquete es git-delta, el comando delta</span>
+sudo apt install git-delta
+
+<span class="comment"># Verificar la instalación</span>
+delta --version</code></pre><pre class="variant variant-root"><code><span class="comment"># Instalar la última versión de delta: el paquete es git-delta, el comando delta</span>
+apt install git-delta
+
+<span class="comment"># Verificar la instalación</span>
+delta --version</code></pre></div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Paso 3: Primer arranque</h3>
+            <div class="code-block"><pre><code><span class="comment"># Hacer de delta el paginador de git: diff, show, log -p, blame y grep pasan por él</span>
+git config --global core.pager delta
+
+<span class="comment"># git add -p con el mismo resaltado</span>
+git config --global interactive.diffFilter &#039;delta --color-only&#039;
+
+<span class="comment"># n y N saltan entre archivos</span>
+git config --global delta.navigate true
+
+<span class="comment"># Los conflictos muestran también el ancestro común</span>
+git config --global merge.conflictStyle zdiff3
+
+<span class="comment"># Pruébalo</span>
+git diff</code></pre></div>
+        </div>
+
+        <h3>🎯 Ejemplos básicos de uso</h3>
+
+        <p><strong>Leer diffs:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Lado a lado, para un solo comando</span>
+git -c delta.side-by-side=true diff
+
+<span class="comment"># O siempre, con números de línea</span>
+git config --global delta.side-by-side true
+git config --global delta.line-numbers true
+
+<span class="comment"># Recorrer el historial; n y N saltan entre archivos</span>
+git log -p
+
+<span class="comment"># Preparar hunks con resaltado</span>
+git add -p</code></pre></div>
+
+        <p><strong>Más allá de git diff:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Comparar dos archivos directamente</span>
+delta old.conf new.conf
+
+<span class="comment"># Cualquier diff unificado</span>
+diff -u a.txt b.txt | delta
+
+<span class="comment"># Coincidencias de ripgrep, resaltadas y agrupadas por archivo</span>
+rg --json -C 2 &#039;TODO&#039; | delta
+
+<span class="comment"># git blame y git grep también pasan por delta</span>
+git blame src/main.rs
+git grep -n &#039;TODO&#039;</code></pre></div>
+
+        <p><strong>Temas y configuración:</strong></p>
+        <div class="code-block"><pre><code><span class="comment"># Ver cada tema de sintaxis sobre un diff real</span>
+git show | delta --show-syntax-themes
+
+<span class="comment"># Cargar los temas de delta que trae el paquete y verlos</span>
+git config --global --add include.path /etc/delta/themes.gitconfig
+git show | delta --show-themes
+
+<span class="comment"># Usar uno de ellos</span>
+git config --global delta.features mellow-barbet
+
+<span class="comment"># La configuración con la que delta acaba trabajando</span>
+delta --show-config</code></pre></div>
+
+        <div class="integration-box">
+            <h4>🔧 Integraciones</h4>
+            <p>delta es un filtro entre git y tu paginador, así que casi toda la integración ocurre en tu configuración de git y en tu terminal:</p>
+            <ul>
+                <li><strong>git:</strong> <code>core.pager delta</code> cubre <code>diff</code>, <code>show</code>, <code>log -p</code>, <code>stash show -p</code>, <code>blame</code> y <code>grep</code>; <code>interactive.diffFilter</code> necesita <code>--color-only</code>, porque git espera recibir una línea por cada línea del hunk</li>
+                <li><strong>less:</strong> delta pagina su salida con <code>less</code>, que el paquete recomienda; sin él, delta imprime directamente en la terminal. <code>DELTA_PAGER</code> o <code>delta.pager</code> eligen otro paginador, y <code>--paging=never</code> desactiva la paginación</li>
+                <li><strong>lazygit:</strong> lazygit puede mostrar sus diffs a través de delta; apunta su ajuste de paginador a <code>delta --dark --paging=never</code></li>
+                <li><strong>difftastic:</strong> se complementan: delta como paginador de git para el día a día, difftastic con <code>git difftool</code> cuando quieres un diff por árbol sintáctico</li>
+                <li><strong>ripgrep:</strong> <code>rg --json</code> enviado a delta da resultados de búsqueda resaltados y agrupados por archivo, con el mismo tema que tus diffs</li>
+                <li><strong>Tu terminal:</strong> delta averigua si el fondo es claro u oscuro, y <code>delta.dark</code> o <code>delta.light</code> corrigen una suposición equivocada; kitty y Ghostty abren los enlaces que produce <code>hyperlinks = true</code></li>
+                <li><strong>Tu shell:</strong> el paquete trae el autocompletado de <code>delta</code> para bash, zsh y fish</li>
+            </ul>
+        </div>
+
+        <h2>🚀 ¿Por qué elegir deb.griffo.io?</h2>
+
+        <div class="integration-box">
+            <strong>📊 Comparativa de repositorios:</strong>
+            <ul>
+                <li><strong>Ubuntu oficial:</strong> trae git-delta 0.18.2 en 26.04, 0.16.5 en 24.04 y ninguno en 22.04, cada uno congelado durante toda la vida de su versión</li>
+                <li><strong>cargo install git-delta:</strong> una toolchain de Rust y unos minutos de compilación para un binario en <code>~/.cargo/bin</code> de un solo usuario, sin autocompletado, recompilado a mano en cada versión</li>
+                <li><strong>Descargas de upstream:</strong> un <code>.deb</code> o tarball de la página de versiones de GitHub, actual el día que lo bajas y a bajar de nuevo a mano en cada versión posterior</li>
+                <li><strong>deb.griffo.io:</strong> última versión con actualizaciones automáticas</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>✅ <strong>El mismo nombre de paquete que en los archivos:</strong> <code>git-delta</code>, igual que lo llaman Debian y Ubuntu, así que un simple <code>sudo apt install git-delta</code> elige esta versión más nueva y <code>apt upgrade</code> reemplaza en su sitio una copia más vieja del archivo</li>
+            <li>✅ <strong>Paquete git-delta, comando delta:</strong> instalas <code>git-delta</code> y ejecutas <code>delta</code>. Dos nombres parecidos no tienen nada que ver: el paquete <code>delta</code> del archivo es un reductor de casos de prueba (multidelta, singledelta), y el comando <code>git delta</code> de git-extras lista los archivos que difieren de otra rama</li>
+            <li>✅ <strong>La compilación oficial:</strong> el binario de la versión de upstream en <code>/usr/bin/delta</code>, sin cambios, con autocompletado para bash, zsh y fish y <code>themes.gitconfig</code> en <code>/etc/delta/themes.gitconfig</code>, donde lo pone el propio paquete de Debian; upstream no publica página de manual, la referencia es <code>delta --help</code></li>
+            <li>✅ <strong>Dependencias ligeras:</strong> recomienda <code>git</code> y <code>less</code> y no necesita ninguno para funcionar: sin <code>less</code>, delta simplemente imprime su salida sin paginar</li>
+            <li>✅ <strong>Actualizaciones automáticas:</strong> los paquetes se actualizan pocas horas después de cada versión upstream</li>
+            <li>✅ <strong>Tres arquitecturas:</strong> amd64, arm64 y armhf en Ubuntu 22.04, 24.04, 25.10, 26.04 y 26.10; no hay compilación para i386, ppc64el, s390x ni riscv64</li>
+            <li>✅ <strong>Multidistribución:</strong> funciona en Ubuntu 22.04, 24.04, 25.10, 26.04 y 26.10</li>
+            <li>✅ <strong>Mantenimiento sencillo:</strong> actualizaciones con los comandos apt de siempre</li>
+        </ul>
+
+        <h3>📦 Repositorio de compilación del paquete</h3>
+        <p>Los paquetes de Ubuntu se compilan y mantienen automáticamente en este repositorio de GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/dariogriffo/git-delta-debian" target="_blank" rel="noopener">🔺 git-delta-debian</a> - Compilaciones de las últimas versiones</li>
+        </ul>
+
+        <h3>🔗 Paquetes relacionados</h3>
+        <p>También disponibles en deb.griffo.io:</p>
+        <ul>
+            <li><a href="/install-latest-difftastic-in-ubuntu.html">difftastic</a> - Un diff estructural que compara por árbol sintáctico, para <code>git difftool</code> junto a delta</li>
+            <li><a href="/install-latest-lazygit-in-ubuntu.html">lazygit</a> - Una interfaz de terminal para git que puede mostrar sus diffs a través de delta</li>
+            <li><a href="/install-latest-gitui-in-ubuntu.html">GitUI</a> - Otra interfaz de terminal para git manejada con el teclado</li>
+            <li><a href="/install-latest-ripgrep-in-ubuntu.html">ripgrep</a> - Búsqueda recursiva rápida cuya salida JSON resalta delta</li>
+            <li><a href="/install-latest-serie-in-ubuntu.html">Serie</a> - Un grafo de commits detallado para la terminal</li>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>🎯 Ideal para:</strong> desarrolladores que leen diffs en la terminal todo el día, revisores que quieren vista lado a lado y resaltado por palabra en <code>git log -p</code> y <code>git add -p</code>, cualquiera cuya distribución trae un git-delta viejo, y quien quiera también coloreada la salida de <code>git blame</code>, <code>git grep</code> y ripgrep.
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-extras">
+<section>
+<h2>📦 Últimas versiones publicadas por este repositorio</h2>
+<ul class="release-list">
+<li><code>0.22.0</code>: 2026-11-25</li>
+</ul>
+<h2>❓ Preguntas frecuentes</h2>
+<details><summary>¿Está delta en los repositorios oficiales de Ubuntu?</summary><p>Sí, pero el archivo oficial de Ubuntu trae delta 0.18.2, mientras que este repositorio ofrece delta 0.22.0, recompilado pocas horas después de cada versión upstream.</p></details>
+<details><summary>¿Cómo instalo el último delta en Ubuntu?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install git-delta. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
+<details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
+<details><summary>¿Qué versiones de Ubuntu son compatibles?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing, 26.04 Resolute y 26.10 Stonking.</p></details>
+</section>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está delta en los repositorios oficiales de Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, pero el archivo oficial de Ubuntu trae delta 0.18.2, mientras que este repositorio ofrece delta 0.22.0, recompilado pocas horas después de cada versión upstream."}}, {"@type": "Question", "name": "¿Cómo instalo el último delta en Ubuntu?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install git-delta. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Ubuntu son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing, 26.04 Resolute y 26.10 Stonking."}}]}</script>
+</div>
+
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Espejo gratuito</a>
+    <a href="/how-packages-are-built.html">Cómo se construyen los paquetes</a>
+    <a href="/supported-architectures.html">Arquitecturas</a>
+    <a href="/es/how-subscriptions-work.html">Cómo funciona el acceso</a>
+    <a href="/terms.html">Términos y Condiciones</a>
+    <a href="/es/privacy.html">Privacidad</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Todos los derechos reservados.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@type": "TechArticle",
+ "headline": "Install Latest delta (git-delta) on Ubuntu",
+ "description": "Complete guide to installing the latest delta (git-delta) syntax-highlighting git pager on Ubuntu using the deb.griffo.io repository for up-to-date packages.",
+ "author": {
+  "@type": "Person",
+  "name": "Dario Griffo",
+  "url": "https://github.com/dariogriffo"
+ },
+ "datePublished": "2026-11-25",
+ "dateModified": "2026-11-25",
+ "publisher": {
+  "@type": "Organization",
+  "name": "deb.griffo.io",
+  "url": "https://deb.griffo.io",
+  "logo": {
+   "@type": "ImageObject",
+   "url": "https://deb.griffo.io/logo.webp",
+   "width": 512,
+   "height": 512
+  }
+ },
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "delta",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Ubuntu Linux",
+  "softwareVersion": "latest",
+  "description": "A syntax-highlighting pager for git, diff, grep and blame output, with word-level change highlighting, a side-by-side view, line numbers and file navigation. The package is git-delta; the command is delta",
+  "offers": [
+   {
+    "@type": "Offer",
+    "name": "Yearly subscription",
+    "price": "15",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   },
+   {
+    "@type": "Offer",
+    "name": "Lifetime access",
+    "price": "150",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock",
+    "url": "https://deb.griffo.io/how-subscriptions-work.html"
+   }
+  ],
+  "downloadUrl": "https://deb.griffo.io/apt/",
+  "url": "https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html"
+ },
+ "image": "https://deb.griffo.io/logo.webp",
+ "url": "https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html",
+ "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": "https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html",
+  "url": "https://deb.griffo.io/es/install-latest-git-delta-in-ubuntu.html",
+  "inLanguage": "es"
+ },
+ "inLanguage": "es"
+}</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>
