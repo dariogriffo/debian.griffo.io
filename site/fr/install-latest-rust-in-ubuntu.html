@@ -33,7 +33,7 @@
 })();
 </script>
 <title>Installer Rust sur Ubuntu avec apt</title>
-<meta name="description" content="Rust 1.100.0 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
+<meta name="description" content="Rust 1.100.1 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
 <meta name="keywords" content="rust ubuntu, installer rust ubuntu, rustc ubuntu, cargo ubuntu, dernier rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, paquets ubuntu, jammy, noble, questing, apt rust-stable">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/fr/install-latest-rust-in-ubuntu.html">
 <meta property="og:title" content="Installer Rust sur Ubuntu avec apt">
-<meta property="og:description" content="Rust 1.100.0 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
+<meta property="og:description" content="Rust 1.100.1 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/fr/install-latest-rust-in-ubuntu.html">
 <meta property="twitter:title" content="Installer Rust sur Ubuntu avec apt">
-<meta property="twitter:description" content="Rust 1.100.0 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
+<meta property="twitter:description" content="Rust 1.100.1 via apt sur Jammy, Noble, Questing et Resolute, le rustc d'Ubuntu n'est qu'en 1.93.1ubuntu1. Toolchain officielle, signée GPG.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-ubuntu.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-ubuntu.html">
@@ -182,12 +182,12 @@
         <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/rust-logo.webp" alt="Logo Rust" width="56" height="56" decoding="async"></div>
         <h1>Installer le dernier Rust sur Ubuntu</h1>
         <p class="subtitle">La toolchain Rust stable officielle, avec rustc, cargo, clippy, rustfmt et rust-analyzer</p>
-        <div class="version-badge">Dernière version : 1.100.0 · mis à jour le 2026-11-14</div>
+        <div class="version-badge">Dernière version : 1.100.1 · mis à jour le 2026-11-28</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Source</th><th>Version</th></tr></thead>
 <tbody>
-<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.1 ✅</td></tr>
 <tr><td>Ubuntu officiel</td><td class="vc-lose">1.93.1ubuntu1 🛑</td></tr>
 </tbody>
 </table>
@@ -203,7 +203,7 @@
         <p>Rust est <strong>un langage de programmation système axé sur la vitesse, la sûreté mémoire et une concurrence fiable</strong>, et ce paquet est <strong>la toolchain Rust stable officielle</strong> : les binaires de static.rust-lang.org, exactement ce qu'installe rustup, réempaquetés sans modification. Chaque build est vérifié avant d'être empaqueté : la signature GPG du manifeste de la version avec la clé de signature des versions de Rust (empreinte <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>), et le SHA-256 de chaque archive avec ce manifeste. Un seul paquet, <code>rust-stable</code>, vous donne <code>rustc</code>, <code>cargo</code>, <code>rustdoc</code>, <code>rustfmt</code>, clippy, rust-analyzer et la bibliothèque standard, et il est mis à jour à chaque version stable, toutes les six semaines plus les versions correctives. Debian et Ubuntu empaquettent le même compilateur sous le nom <code>rustc</code> ; le nom différent ici est voulu, comme expliqué plus bas.</p>
 
         <div class="highlight-box">
-            <strong>🚀 Pourquoi les dernières versions comptent :</strong> Rust publie une nouvelle version stable toutes les six semaines, et les crates suivent : les nouvelles fonctionnalités du langage et API de la bibliothèque sont utilisées dès leur stabilisation, et une crate qui déclare une <code>rust-version</code> plus récente ne compile pas avec un compilateur plus ancien. Ubuntu empaquette Rust sous les noms <code>rustc</code> et <code>cargo</code>, et la 26.04 est figée sur rustc 1.93.1ubuntu1, un système fraîchement installé prend donc du retard à chaque version. Ce dépôt propose Rust 1.100.0 sous le nom <code>rust-stable</code>, une toolchain complète qui prend la place de rustc et cargo de la distribution et avance à chaque <code>apt upgrade</code>.
+            <strong>🚀 Pourquoi les dernières versions comptent :</strong> Rust publie une nouvelle version stable toutes les six semaines, et les crates suivent : les nouvelles fonctionnalités du langage et API de la bibliothèque sont utilisées dès leur stabilisation, et une crate qui déclare une <code>rust-version</code> plus récente ne compile pas avec un compilateur plus ancien. Ubuntu empaquette Rust sous les noms <code>rustc</code> et <code>cargo</code>, et la 26.04 est figée sur rustc 1.93.1ubuntu1, un système fraîchement installé prend donc du retard à chaque version. Ce dépôt propose Rust 1.100.1 sous le nom <code>rust-stable</code>, une toolchain complète qui prend la place de rustc et cargo de la distribution et avance à chaque <code>apt upgrade</code>.
         </div>
 
         <h3>⚡ Fonctionnalités clés de Rust</h3>
@@ -406,15 +406,16 @@ apt remove rust-stable</code></pre></div>
 <section>
 <h2>📦 Dernières versions publiées par ce dépôt</h2>
 <ul class="release-list">
+<li><code>1.100.1</code>: 2026-11-28</li>
 <li><code>1.100.0</code>: 2026-11-14</li>
 </ul>
 <h2>❓ Questions fréquentes</h2>
-<details><summary>Rust est-il dans les dépôts officiels de Ubuntu ?</summary><p>Oui, mais l&#x27;archive officielle de Ubuntu fournit Rust 1.93.1ubuntu1, alors que ce dépôt propose Rust 1.100.0, reconstruit quelques heures après chaque version upstream.</p></details>
+<details><summary>Rust est-il dans les dépôts officiels de Ubuntu ?</summary><p>Oui, mais l&#x27;archive officielle de Ubuntu fournit Rust 1.93.1ubuntu1, alors que ce dépôt propose Rust 1.100.1, reconstruit quelques heures après chaque version upstream.</p></details>
 <details><summary>Comment installer le dernier Rust sur Ubuntu ?</summary><p>Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rust-stable. Les nouvelles versions arrivent via le sudo apt upgrade habituel.</p></details>
 <details><summary>Les paquets sont-ils signés et comment sont-ils construits ?</summary><p>Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter.</p></details>
 <details><summary>Quelles versions de Ubuntu sont prises en charge ?</summary><p>Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing, 26.04 Resolute et 26.10 Stonking.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Ubuntu fournit Rust 1.93.1ubuntu1, alors que ce dépôt propose Rust 1.100.0, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Rust sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rust-stable. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing, 26.04 Resolute et 26.10 Stonking."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Rust est-il dans les dépôts officiels de Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, mais l'archive officielle de Ubuntu fournit Rust 1.93.1ubuntu1, alors que ce dépôt propose Rust 1.100.1, reconstruit quelques heures après chaque version upstream."}}, {"@type": "Question", "name": "Comment installer le dernier Rust sur Ubuntu ?", "acceptedAnswer": {"@type": "Answer", "text": "Ajoutez le dépôt deb.griffo.io une seule fois (instructions ci-dessus), puis exécutez : sudo apt install rust-stable. Les nouvelles versions arrivent via le sudo apt upgrade habituel."}}, {"@type": "Question", "name": "Les paquets sont-ils signés et comment sont-ils construits ?", "acceptedAnswer": {"@type": "Answer", "text": "Chaque paquet est signé avec la clé GPG du dépôt (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) et construit à partir des versions upstream dans des dépôts GitHub publics que chacun peut inspecter."}}, {"@type": "Question", "name": "Quelles versions de Ubuntu sont prises en charge ?", "acceptedAnswer": {"@type": "Answer", "text": "Ubuntu 22.04 Jammy, 24.04 Noble, 25.10 Questing, 26.04 Resolute et 26.10 Stonking."}}]}</script>
 </div>
 
 <footer class="site-footer">
@@ -447,7 +448,7 @@ apt remove rust-stable</code></pre></div>
   "url": "https://github.com/dariogriffo"
  },
  "datePublished": "2026-11-14",
- "dateModified": "2026-11-14",
+ "dateModified": "2026-11-28",
  "publisher": {
   "@type": "Organization",
   "name": "deb.griffo.io",

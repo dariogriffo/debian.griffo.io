@@ -33,7 +33,7 @@
 })();
 </script>
 <title>Instalar Rust en Debian vía apt, última versión</title>
-<meta name="description" content="Rust 1.100.0 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
+<meta name="description" content="Rust 1.100.1 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
 <meta name="keywords" content="rust debian, instalar rust debian, rustc debian, cargo debian, último rust, rust stable, rust-analyzer, clippy, rustfmt, rust apt, paquetes debian, bookworm, trixie, sid, apt rust-stable">
 <meta name="author" content="Dario Griffo">
 <meta name="robots" content="index, follow">
@@ -43,12 +43,12 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://deb.griffo.io/es/install-latest-rust-in-debian.html">
 <meta property="og:title" content="Instalar Rust en Debian vía apt, última versión">
-<meta property="og:description" content="Rust 1.100.0 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
+<meta property="og:description" content="Rust 1.100.1 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
 <meta property="og:image" content="https://deb.griffo.io/logo.webp">
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://deb.griffo.io/es/install-latest-rust-in-debian.html">
 <meta property="twitter:title" content="Instalar Rust en Debian vía apt, última versión">
-<meta property="twitter:description" content="Rust 1.100.0 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
+<meta property="twitter:description" content="Rust 1.100.1 vía apt en Bookworm, Trixie, Forky y Sid, el rustc de Debian solo es 1.85.1. Toolchain oficial, firmada con GPG.">
 <meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
 <link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-latest-rust-in-debian.html">
 <link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-latest-rust-in-debian.html">
@@ -182,12 +182,12 @@
         <div class="tool-logo-wrap"><img class="tool-logo" src="/assets/img/tools/rust-logo.webp" alt="Logotipo de Rust" width="56" height="56" decoding="async"></div>
         <h1>Instalar la última versión de Rust en Debian</h1>
         <p class="subtitle">La toolchain oficial estable de Rust, con rustc, cargo, clippy, rustfmt y rust-analyzer</p>
-        <div class="version-badge">Última versión: 1.100.0 · actualizado 2026-11-14</div>
+        <div class="version-badge">Última versión: 1.100.1 · actualizado 2026-11-28</div>
         <div class="version-compare">
 <table>
 <thead><tr><th>Fuente</th><th>Versión</th></tr></thead>
 <tbody>
-<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.0 ✅</td></tr>
+<tr><td><strong>deb.griffo.io</strong></td><td class="vc-win">1.100.1 ✅</td></tr>
 <tr><td>Debian oficial</td><td class="vc-lose">1.85.1 🛑</td></tr>
 </tbody>
 </table>
@@ -203,7 +203,7 @@
         <p>Rust es <strong>un lenguaje de programación de sistemas centrado en la velocidad, la seguridad de memoria y la concurrencia fiable</strong>, y este paquete es <strong>la toolchain oficial estable de Rust</strong>: los binarios de static.rust-lang.org, exactamente lo que instala rustup, reempaquetados sin modificar. Cada compilación se verifica antes de empaquetarse: la firma GPG del manifiesto de la versión contra la clave de firma de versiones de Rust (huella <code>108F 6620 5EAE B0AA A8DD 5E1C 85AB 96E6 FA1B E5FE</code>) y el SHA-256 de cada tarball contra ese manifiesto. Un solo paquete, <code>rust-stable</code>, te da <code>rustc</code>, <code>cargo</code>, <code>rustdoc</code>, <code>rustfmt</code>, clippy, rust-analyzer y la biblioteca estándar, y se actualiza con cada versión estable, cada seis semanas más las versiones de corrección. Debian y Ubuntu empaquetan el mismo compilador como <code>rustc</code>; el nombre distinto aquí es intencionado, como se explica más abajo.</p>
 
         <div class="highlight-box">
-            <strong>🚀 Por qué importan las últimas versiones:</strong> Rust publica una versión estable nueva cada seis semanas y los crates avanzan con ella: las nuevas funciones del lenguaje y APIs de la biblioteca se usan en cuanto se estabilizan, y un crate que declara un <code>rust-version</code> más reciente no compila con un compilador más antiguo. Debian empaqueta Rust como <code>rustc</code> y <code>cargo</code>, y trixie está congelado en rustc 1.85.1, así que un sistema recién instalado se queda más atrás con cada versión. Este repositorio ofrece Rust 1.100.0 como <code>rust-stable</code>, una toolchain completa que ocupa el lugar de rustc y cargo de la distribución y avanza con cada <code>apt upgrade</code>.
+            <strong>🚀 Por qué importan las últimas versiones:</strong> Rust publica una versión estable nueva cada seis semanas y los crates avanzan con ella: las nuevas funciones del lenguaje y APIs de la biblioteca se usan en cuanto se estabilizan, y un crate que declara un <code>rust-version</code> más reciente no compila con un compilador más antiguo. Debian empaqueta Rust como <code>rustc</code> y <code>cargo</code>, y trixie está congelado en rustc 1.85.1, así que un sistema recién instalado se queda más atrás con cada versión. Este repositorio ofrece Rust 1.100.1 como <code>rust-stable</code>, una toolchain completa que ocupa el lugar de rustc y cargo de la distribución y avanza con cada <code>apt upgrade</code>.
         </div>
 
         <h3>⚡ Funciones clave de Rust</h3>
@@ -412,15 +412,16 @@ apt remove rust-stable</code></pre></div>
 <section>
 <h2>📦 Últimas versiones publicadas por este repositorio</h2>
 <ul class="release-list">
+<li><code>1.100.1</code>: 2026-11-28</li>
 <li><code>1.100.0</code>: 2026-11-14</li>
 </ul>
 <h2>❓ Preguntas frecuentes</h2>
-<details><summary>¿Está Rust en los repositorios oficiales de Debian?</summary><p>Sí, pero el archivo oficial de Debian trae Rust 1.85.1, mientras que este repositorio ofrece Rust 1.100.0, recompilado pocas horas después de cada versión upstream.</p></details>
+<details><summary>¿Está Rust en los repositorios oficiales de Debian?</summary><p>Sí, pero el archivo oficial de Debian trae Rust 1.85.1, mientras que este repositorio ofrece Rust 1.100.1, recompilado pocas horas después de cada versión upstream.</p></details>
 <details><summary>¿Cómo instalo el último Rust en Debian?</summary><p>Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install rust-stable. Las nuevas versiones llegan con el sudo apt upgrade habitual.</p></details>
 <details><summary>¿Los paquetes están firmados y cómo se compilan?</summary><p>Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar.</p></details>
 <details><summary>¿Qué versiones de Debian son compatibles?</summary><p>Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid.</p></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está Rust en los repositorios oficiales de Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, pero el archivo oficial de Debian trae Rust 1.85.1, mientras que este repositorio ofrece Rust 1.100.0, recompilado pocas horas después de cada versión upstream."}}, {"@type": "Question", "name": "¿Cómo instalo el último Rust en Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install rust-stable. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Debian son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Está Rust en los repositorios oficiales de Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Sí, pero el archivo oficial de Debian trae Rust 1.85.1, mientras que este repositorio ofrece Rust 1.100.1, recompilado pocas horas después de cada versión upstream."}}, {"@type": "Question", "name": "¿Cómo instalo el último Rust en Debian?", "acceptedAnswer": {"@type": "Answer", "text": "Añade el repositorio deb.griffo.io una sola vez con las instrucciones de arriba y ejecuta: sudo apt install rust-stable. Las nuevas versiones llegan con el sudo apt upgrade habitual."}}, {"@type": "Question", "name": "¿Los paquetes están firmados y cómo se compilan?", "acceptedAnswer": {"@type": "Answer", "text": "Cada paquete está firmado con la clave GPG del repositorio (EA0F721D231FDD3A0A17B9AC7808B4DD62C41256) y se compila a partir de versiones upstream en repositorios públicos de GitHub que cualquiera puede inspeccionar."}}, {"@type": "Question", "name": "¿Qué versiones de Debian son compatibles?", "acceptedAnswer": {"@type": "Answer", "text": "Debian 12 Bookworm, Debian 13 Trixie, Forky y Sid."}}]}</script>
 </div>
 
 <footer class="site-footer">
@@ -453,7 +454,7 @@ apt remove rust-stable</code></pre></div>
   "url": "https://github.com/dariogriffo"
  },
  "datePublished": "2026-11-14",
- "dateModified": "2026-11-14",
+ "dateModified": "2026-11-28",
  "publisher": {
   "@type": "Organization",
   "name": "deb.griffo.io",
