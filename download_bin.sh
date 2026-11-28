@@ -10,6 +10,9 @@
 # Env:
 #   RELEASE_VERSION  version in the release tag when it differs from the
 #                    package version (zig-oldstable); default <package_version>
+#   RELEASE_BUILD    build in the release tag when it differs from the
+#                    package's revision (tree-sitter grammars: one release,
+#                    each package its own revision); default <build_version>
 #   DIST_TAG         tag after the ~ in dist-agnostic names; default griffo
 #   EXCLUDE          "suite:arch" pairs to skip, e.g. "bookworm:riscv64 jammy:riscv64"
 #                    for a build whose glibc floor only some suites meet
@@ -61,7 +64,8 @@ case "$FLAVOUR" in
 esac
 
 RELEASE_VERSION=${RELEASE_VERSION:-$PACKAGE_VERSION}
-BASE_URL=${RELEASE_BASE_URL:-https://github.com/dariogriffo/${REPO}/releases/download/${RELEASE_VERSION}%2B${BUILD_VERSION}}
+RELEASE_BUILD=${RELEASE_BUILD:-$BUILD_VERSION}
+BASE_URL=${RELEASE_BASE_URL:-https://github.com/dariogriffo/${REPO}/releases/download/${RELEASE_VERSION}%2B${RELEASE_BUILD}}
 CURRENT="${PACKAGE_NAME}_${PACKAGE_VERSION}-${BUILD_VERSION}"
 DIST_TAG=${DIST_TAG:-griffo}
 
