@@ -23,8 +23,9 @@ PASSWORD=${2:-}
 # Derivatives name their own release (LMDE 7 is "gigi", Linux Mint 22 is
 # "wilma") but say which Debian or Ubuntu release they are built on, and
 # that is the suite this repository publishes.
-SUITE=$(. /etc/os-release &&
-  echo "${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME:-}}}")
+# Devuan's testing/unstable say VERSION_CODENAME="freia ceres": keep the first word.
+SUITE=$(. /etc/os-release && VERSION_CODENAME=${VERSION_CODENAME:-} &&
+  echo "${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}")
 [ -n "$SUITE" ] || { echo "Could not detect your Debian version." >&2; exit 1; }
 
 # 1. remove every griffo.io file, old or new
