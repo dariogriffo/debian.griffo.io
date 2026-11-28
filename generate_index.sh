@@ -7,9 +7,10 @@ GPG_KEY="EA0F721D231FDD3A0A17B9AC7808B4DD62C41256"
 
 DISTS=("bookworm" "trixie" "forky" "sid" "jammy" "noble" "questing" "resolute" "stonking")
 # Alias suites, filled by `reprepro pull` from a suite above (conf/pulls), not
-# from staged files: a derivative's own codename (Kali's kali-rolling) mirrors
-# the Debian suite it follows, sharing its pool files. Paid lane only.
-ALIASES=("kali-rolling")
+# from staged files: a derivative's own codename (Kali's kali-rolling, Devuan's
+# daedalus, excalibur, freia and ceres) mirrors the Debian suite it follows,
+# sharing its pool files. Paid lane only.
+ALIASES=("kali-rolling" "daedalus" "excalibur" "freia" "ceres")
 
 # One rejected include must not stall the whole mirror.
 #
