@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="de" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>Neueste Entwicklertools für Devuan per apt installieren</title>
+<meta name="description" content="72 Entwicklertools in der neuesten Upstream-Version für Devuan: Neovim, uv, Zig, lazygit und mehr. Ein apt-Befehl, GPG-signiert, binnen Stunden aktualisiert.">
+<meta name="keywords" content="devuan apt repository, neovim installieren devuan, aktuelle entwicklertools devuan, devuan uv installieren, devuan zig installieren, devuan lazygit">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/de/install-dev-tools-on-devuan.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/de/install-dev-tools-on-devuan.html">
+<meta property="og:title" content="Neueste Entwicklertools für Devuan per apt installieren">
+<meta property="og:description" content="72 Entwicklertools in der neuesten Upstream-Version für Devuan: Neovim, uv, Zig, lazygit und mehr. Ein apt-Befehl, GPG-signiert, binnen Stunden aktualisiert.">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/de/install-dev-tools-on-devuan.html">
+<meta property="twitter:title" content="Neueste Entwicklertools für Devuan per apt installieren">
+<meta property="twitter:description" content="72 Entwicklertools in der neuesten Upstream-Version für Devuan: Neovim, uv, Zig, lazygit und mehr. Ein apt-Befehl, GPG-signiert, binnen Stunden aktualisiert.">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-dev-tools-on-devuan.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/de/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/de/#packages">Pakete</a></li>
+    <li><a href="/de/#install">Installation</a></li>
+    <li><a href="/de/#versions">Versionen</a></li>
+    <li><a href="/de/#source">Quellcode</a></li>
+    <li><a href="/de/#reviews">Bewertungen</a></li>
+    <li><a href="/de/#pricing">Preise</a></li>
+    <li><a href="/de/#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="Sprache wählen"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>Deutsch</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/de/#pricing" class="nav-cta">Pläne ansehen</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü umschalten" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/de/#packages" class="mobile-menu-link" data-index="01">Pakete</a>
+      <a href="/de/#install" class="mobile-menu-link" data-index="02">Installation</a>
+      <a href="/de/#versions" class="mobile-menu-link" data-index="03">Versionen</a>
+      <a href="/de/#source" class="mobile-menu-link" data-index="04">Quellcode</a>
+      <a href="/de/#reviews" class="mobile-menu-link" data-index="05">Bewertungen</a>
+      <a href="/de/#pricing" class="mobile-menu-link" data-index="06">Preise</a>
+      <a href="/de/#faq" class="mobile-menu-link" data-index="07">FAQ</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/de/#pricing" class="btn-primary">Pläne ansehen</a>
+      <p class="mobile-menu-note"><a href="/free.html">Kostenloser Spiegel</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="Scroll-Fortschritt">
+  <span class="side-label">Scrollen</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="Status">
+  <span class="side-label">Status</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>73 Entwickler-Tools, immer aktuell</strong> — neue Upstream-Releases landen innerhalb von Stunden in <code>apt</code>.
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">Discord beitreten</a>
+    </p>
+    <p class="announce-notice">
+      🎁 Der apt-Mirror erfordert ein Abo. <strong>Pläne ab €15 im Jahr</strong>.
+      <a href="/de/#pricing">Preise ansehen</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">Es gibt einen für immer kostenlosen Spiegel</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/de/apt-401-unauthorized.html">apt meldet 401?</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Aktuelle Entwicklertools für Devuan GNU/Linux</h1>
+        <p class="subtitle">72 Entwicklertools in der neuesten Upstream-Version, ein apt-Befehl, GPG-signiert</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ Die kurze Antwort.</strong> Ja, deb.griffo.io funktioniert unter Devuan GNU/Linux. 72 Entwicklertools lassen sich unter Devuan 6 und Devuan 5 und Devuan testing/unstable mit ganz normalem <code>apt</code> installieren, mit demselben Einrichtungsbefehl wie unter Debian und Ubuntu: Er liest <code>VERSION_CODENAME</code> aus <code>/etc/os-release</code> und fragt nach der passenden Suite, unter Devuan 6 (Excalibur) also nach <code>excalibur</code>.
+        </div>
+
+        <p>Devuan ist Debian ohne systemd. Jedes Devuan-Release baut auf genau einem Debian-Release auf (Devuan 6 Excalibur auf Debian 13 trixie, Devuan 5 Daedalus auf Debian 12 bookworm), und sein Archiv reicht die Pakete von Debian durch, daher sind die Entwicklertools auf dem Stand dieses Debian-Releases eingefroren. deb.griffo.io stellt für Devuan eigene Suites bereit, benannt nach seinen Releases und mit denselben Paketen wie die Debian-Suite darunter, sodass sich die Tools unten mit ganz normalem apt installieren lassen.</p>
+
+        <h2>🔍 Welche Suite Ihr Release bekommt</h2>
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th scope="col">Release</th><th scope="col">Basiert auf</th><th scope="col">Suite</th><th scope="col">Verfügbare Tools</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Devuan 6 (Excalibur)</td><td>Debian 13 “Trixie”</td><td><code>excalibur</code></td><td>72</td></tr>
+                <tr><td>Devuan 5 (Daedalus)</td><td>Debian 12 “Bookworm”</td><td><code>daedalus</code></td><td>70</td></tr>
+                <tr><td>Devuan testing/unstable (Freia, Ceres)</td><td>Debian 14 “Forky”</td><td><code>freia</code></td><td>72</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p>Devuan setzt <code>VERSION_CODENAME</code> auf den eigenen Namen (<code>excalibur</code>, <code>daedalus</code>) und setzt kein <code>DEBIAN_CODENAME</code>, daher fragt der Einrichtungsbefehl auf Devuan 6 nach <code>excalibur</code> und auf Devuan 5 nach <code>daedalus</code>. Dieses Repository bedient beide Suites, erzeugt aus den Paketen von trixie und bookworm und zusammen mit ihnen veröffentlicht.</p>
+        <p>Devuan testing und unstable teilen sich eine os-release mit <code>VERSION_CODENAME="freia ceres"</code>. Der Einrichtungsbefehl nimmt das erste Wort, daher bekommen beide die Suite <code>freia</code>, die Debian testing (forky) enthält. Eine Suite <code>ceres</code> (Debian sid) gibt es ebenfalls, für alle, die sie von Hand in die Quellenzeile schreiben.</p>
+        <p>Devuan läuft ohne systemd. Ein Tool, das eine systemd-Unit mitbringt (ein Server wie headscale oder forgejo), lässt sich installieren und ausführen, aber nichts startet die Unit beim Booten: Starten Sie es über Ihr Init-System (sysvinit, OpenRC oder runit) wie jeden anderen Dienst.</p>
+        <p>Devuan wird nur über das Abo-Repository bedient: Der kostenlose Mirror hat keine Devuan-Suites.</p>
+
+        <h2>📦 Repository hinzufügen</h2>
+
+        <div class="install-steps">
+            <h3>Schritt 1: Repository &amp; Schlüssel hinzufügen</h3>
+
+            <div class="variant-toggle" role="group" aria-label="Wählen Sie, wie die Befehle ausgeführt werden"><span class="variant-toggle-label">Befehle ausführen</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">mit sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">als root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <div class="access-cta">
+            <p class="access-cta-text"><strong>Für Schritt 2 brauchen Sie ein Abo.</strong>
+            Wählen Sie einen Jahres- oder Lifetime-Plan. Ihre Zugangsdaten kommen per E-Mail; <a href="/de/apt-401-unauthorized.html#subscribed">so hinterlegen Sie sie</a>, danach installiert sich jedes Tool mit normalem apt.</p>
+            <div class="access-cta-actions">
+                <a href="/de/#pricing" class="btn-secondary">Preise ansehen</a>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>Schritt 2: Beliebige Tools installieren</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install -y neovim ripgrep fzf</code></pre><pre class="variant variant-root"><code>apt install -y neovim ripgrep fzf</code></pre></div>
+        </div>
+
+        <p>So prüfen Sie vorab, welche Suite der Befehl auf Ihrem Rechner wählt:
+        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}</code>.
+        Die Ausgabe sollte eine der Suites aus der Tabelle oben sein.</p>
+
+        <h2>📋 Alle verfügbaren Tools für Devuan</h2>
+        <p>Die Versionen entsprechen dem, was das Repository derzeit für <strong>excalibur</strong> ausliefert
+        (Stand 2026-11-28). Ältere Releases bekommen dieselbe Version, sofern das Tool für sie gebaut wird; die letzte Spalte zeigt, welche das sind. Die Spalte „Archiv von Debian 13“ zeigt, was <code>apt install</code> ohne dieses Repository liefert.</p>
+        <div class="lane-table-wrap">
+        <table class="lane-table distro-tools">
+            <thead>
+                <tr><th scope="col">Tool</th><th scope="col">apt-Paket</th><th scope="col">Version</th><th scope="col">Archiv von Debian 13</th><th scope="col">Devuan 5</th><th scope="col">Devuan testing/unstable</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><a href="/de/install-latest-atuin-in-debian.html">Atuin</a></td><td><code>atuin</code></td><td><span class="version-badge">18.25.1-1~griffo</span></td><td class="vc-lose">18.6.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-atuin-ai-in-debian.html">Atuin AI</a></td><td><code>atuin-ai</code></td><td><span class="version-badge">0.1.0.20261125-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-blesh-in-debian.html">ble.sh</a></td><td><code>ble.sh</code></td><td><span class="version-badge">0.4.0-git20261031.fb1811e-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-btm-in-debian.html">bottom</a></td><td><code>btm</code></td><td><span class="version-badge">0.15.0-2~griffo</span></td><td class="vc-lose">0.10.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-bun-in-debian.html">Bun</a></td><td><code>bun</code></td><td><span class="version-badge">1.4.5-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-cliamp-in-debian.html">cliamp</a></td><td><code>cliamp</code></td><td><span class="version-badge">2.4.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-git-delta-in-debian.html">delta</a></td><td><code>git-delta</code></td><td><span class="version-badge">0.22.0-1~griffo</span></td><td class="vc-lose">0.18.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-deno-in-debian.html">Deno</a></td><td><code>deno</code></td><td><span class="version-badge">2.9.8-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-difftastic-in-debian.html">difftastic</a></td><td><code>difftastic</code></td><td><span class="version-badge">0.72.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-duckdb-in-debian.html">DuckDB</a></td><td><code>duckdb</code></td><td><span class="version-badge">1.5.6-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-eza-in-debian.html">eza</a></td><td><code>eza</code></td><td><span class="version-badge">0.23.5-4~griffo</span></td><td class="vc-lose">0.21.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-fastfetch-in-debian.html">Fastfetch</a></td><td><code>fastfetch</code></td><td><span class="version-badge">2.71.0-1~griffo</span></td><td class="vc-lose">2.40.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-fish-in-debian.html">fish</a></td><td><code>fish</code></td><td><span class="version-badge">4.9.3-2~griffo</span></td><td class="vc-lose">4.0.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-forgejo-in-debian.html">Forgejo</a></td><td><code>forgejo</code></td><td><span class="version-badge">15.0.12-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-forgejo-runner-in-debian.html">Forgejo Runner</a></td><td><code>forgejo-runner</code></td><td><span class="version-badge">13.2.2-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-fresh-editor-in-debian.html">fresh-editor</a></td><td><code>fresh-editor</code></td><td><span class="version-badge">0.5.9-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-fzf-in-debian.html">fzf</a></td><td><code>fzf</code></td><td><span class="version-badge">0.75.0-3~griffo</span></td><td class="vc-lose">0.60.3 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-garage-in-debian.html">Garage</a></td><td><code>garage</code></td><td><span class="version-badge">2.6.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-ghostty-in-debian.html">Ghostty</a></td><td><code>ghostty</code></td><td><span class="version-badge">1.4.0-2~trixie</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-gitui-in-debian.html">GitUI</a></td><td><code>gitui</code></td><td><span class="version-badge">0.28.1-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-gpu-screen-recorder-cli-in-debian.html">GPU Screen Recorder</a></td><td><code>gpu-screen-recorder-cli</code></td><td><span class="version-badge">6.1.6-1~trixie</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-handy-in-debian.html">Handy</a></td><td><code>handy</code></td><td><span class="version-badge">0.10.2-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-headscale-in-debian.html">Headscale</a></td><td><code>headscale</code></td><td><span class="version-badge">0.29.8-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-helix-in-debian.html">Helix</a></td><td><code>helix</code></td><td><span class="version-badge">25.07.1-4~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-herdr-in-debian.html">herdr</a></td><td><code>herdr</code></td><td><span class="version-badge">0.9.5-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-herdr-app-in-debian.html">Herdr Desktop</a></td><td><code>herdr-app</code></td><td><span class="version-badge">0.1.18-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-jjui-in-debian.html">jjui</a></td><td><code>jjui</code></td><td><span class="version-badge">0.10.14-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-jujutsu-in-debian.html">Jujutsu</a></td><td><code>jujutsu</code></td><td><span class="version-badge">0.47.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-just-in-debian.html">just</a></td><td><code>just</code></td><td><span class="version-badge">1.59.0-3~griffo</span></td><td class="vc-lose">1.40.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-k9s-in-debian.html">k9s</a></td><td><code>k9s</code></td><td><span class="version-badge">0.51.0-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-kitty-in-debian.html">kitty</a></td><td><code>kitty</code></td><td><span class="version-badge">0.51.1-1~griffo</span></td><td class="vc-lose">0.41.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-lazydocker-in-debian.html">lazydocker</a></td><td><code>lazydocker</code></td><td><span class="version-badge">0.25.2-4~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-lazygit-in-debian.html">lazygit</a></td><td><code>lazygit</code></td><td><span class="version-badge">0.66.3-2~griffo</span></td><td class="vc-lose">0.50.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-lazyjira-in-debian.html">lazyjira</a></td><td><code>lazyjira</code></td><td><span class="version-badge">2.19.2-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-lnav-in-debian.html">lnav</a></td><td><code>lnav</code></td><td><span class="version-badge">0.14.1-2~griffo</span></td><td class="vc-lose">0.12.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-lowfi-in-debian.html">lowfi</a></td><td><code>lowfi</code></td><td><span class="version-badge">2.0.7-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✗</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-mitmproxy-in-debian.html">mitmproxy</a></td><td><code>mitmproxy</code></td><td><span class="version-badge">12.3.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-neovim-in-debian.html">Neovim</a></td><td><code>neovim</code></td><td><span class="version-badge">0.12.6-2~griffo</span></td><td class="vc-lose">0.10.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-nushell-in-debian.html">Nushell</a></td><td><code>nushell</code></td><td><span class="version-badge">0.117.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-oh-my-posh-in-debian.html">Oh My Posh</a></td><td><code>oh-my-posh</code></td><td><span class="version-badge">33.4.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-rclone-in-debian.html">rclone</a></td><td><code>rclone</code></td><td><span class="version-badge">1.76.0-2~griffo</span></td><td class="vc-lose">1.60.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-restic-in-debian.html">restic</a></td><td><code>restic</code></td><td><span class="version-badge">0.20.0-3~griffo</span></td><td class="vc-lose">0.18.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-rgrc-in-debian.html">rgrc</a></td><td><code>rgrc</code></td><td><span class="version-badge">0.6.35-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-ripgrep-in-debian.html">ripgrep</a></td><td><code>ripgrep</code></td><td><span class="version-badge">16.0.0-1~griffo</span></td><td class="vc-lose">14.1.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-ruff-in-debian.html">Ruff</a></td><td><code>ruff</code></td><td><span class="version-badge">0.17.6-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-rumdl-in-debian.html">rumdl</a></td><td><code>rumdl</code></td><td><span class="version-badge">0.3.8-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-rust-in-debian.html">Rust</a></td><td><code>rust-stable</code></td><td><span class="version-badge">1.100.1-1~griffo</span></td><td class="vc-lose">1.85.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-serie-in-debian.html">Serie</a></td><td><code>serie</code></td><td><span class="version-badge">0.11.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-spotifast-in-debian.html">Spotifast</a></td><td><code>spotifast</code></td><td><span class="version-badge">0.17.2-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-starship-in-debian.html">Starship</a></td><td><code>starship</code></td><td><span class="version-badge">1.27.0-2~griffo</span></td><td class="vc-lose">1.22.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-superfile-in-debian.html">superfile</a></td><td><code>superfile</code></td><td><span class="version-badge">1.6.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-television-in-debian.html">Television</a></td><td><code>television</code></td><td><span class="version-badge">0.15.9-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-termusic-in-debian.html">Termusic</a></td><td><code>termusic</code></td><td><span class="version-badge">0.13.2-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-tigerbeetle-in-debian.html">TigerBeetle</a></td><td><code>tigerbeetle</code></td><td><span class="version-badge">0.17.9-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-tldr-in-debian.html">tldr</a></td><td><code>tldr</code></td><td><span class="version-badge">1.13.1-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✗</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-tmux-in-debian.html">tmux</a></td><td><code>tmux</code></td><td><span class="version-badge">3.8-1~griffo</span></td><td class="vc-lose">3.5a 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-tree-sitter-cli-in-debian.html">tree-sitter-cli</a></td><td><code>tree-sitter-cli</code></td><td><span class="version-badge">0.27.2-1~griffo</span></td><td class="vc-lose">0.22.6 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-uncloud-in-debian.html">Uncloud</a></td><td><code>uncloud</code></td><td><span class="version-badge">0.22.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-unregistry-in-debian.html">Unregistry</a></td><td><code>unregistry</code></td><td><span class="version-badge">0.4.3-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-uv-in-debian.html">uv</a></td><td><code>uv</code></td><td><span class="version-badge">0.13.10-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-viu-in-debian.html">viu</a></td><td><code>viu</code></td><td><span class="version-badge">1.6.1-4~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-workmux-in-debian.html">workmux</a></td><td><code>workmux</code></td><td><span class="version-badge">0.1.284-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-yazi-in-debian.html">Yazi</a></td><td><code>yazi</code></td><td><span class="version-badge">26.9.1-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-yq-in-debian.html">yq</a></td><td><code>yq</code></td><td><span class="version-badge">4.54.3-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-yt-dlp-in-debian.html">yt-dlp</a></td><td><code>yt-dlp</code></td><td><span class="version-badge">2026.11.23-1~griffo</span></td><td class="vc-lose">2025.04.30 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zapfast-in-debian.html">ZapFast</a></td><td><code>zapfast</code></td><td><span class="version-badge">0.21.3-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zapzap-in-debian.html">ZapZap</a></td><td><code>zapzap</code></td><td><span class="version-badge">7.5.1-2~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zed-in-debian.html">Zed</a></td><td><code>zed</code></td><td><span class="version-badge">1.30.2-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zellij-in-debian.html">Zellij</a></td><td><code>zellij</code></td><td><span class="version-badge">0.46.1-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zig-in-debian.html">Zig</a></td><td><code>zig-stable</code></td><td><span class="version-badge">0.17.0-3~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zls-in-debian.html">ZLS</a></td><td><code>zls</code></td><td><span class="version-badge">0.17.0-1~griffo</span></td><td class="vc-lose">🚫 nicht paketiert</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/de/install-latest-zoxide-in-debian.html">zoxide</a></td><td><code>zoxide</code></td><td><span class="version-badge">0.10.0-3~griffo</span></td><td class="vc-lose">0.9.7 🛑</td><td>✓</td><td>✓</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="access-cta">
+            <p class="access-cta-text"><strong>Alle 72 Tools unter Devuan, ein Abo.</strong>
+            Es kostet <span data-amount="15">€15</span> im Jahr oder einmalig <span data-amount="150">€150</span> für immer.</p>
+            <div class="access-cta-actions">
+                <a href="/de/#pricing" class="btn-secondary">Preise ansehen</a>
+            </div>
+        </div>
+
+        <h2>❓ Häufige Fragen</h2>
+        <h3>Warum nicht einfach die Debian-Suite auf Devuan verwenden?</h3>
+        <p>Das geht: trixie in der Quellenzeile auf Devuan 6 liefert genau dieselben Pakete. Die Devuan-Suites gibt es, damit der Einrichtungsbefehl unverändert funktioniert, denn die os-release von Devuan nennt nur das eigene Release.</p>
+        <h3>Warum gibt es für Devuan keinen kostenlosen Mirror?</h3>
+        <p>Der kostenlose Mirror enthält nur die Release-Suites von Debian und Ubuntu. Die Devuan-Suites gehören zum Abo-Repository.</p>
+        <h3>Ist deb.griffo.io ein offizielles Repository von Devuan?</h3>
+        <p>Nein. Es ist ein inoffizielles Repository, das von Dario Griffo betreut wird und in keiner Verbindung zu Devuan steht. Jedes Paket wird automatisch aus dem offiziellen Upstream-Release gebaut, die Paketierung ist Open Source auf GitHub, und das Archiv ist GPG-signiert.</p>
+        <h3>Kostet das etwas?</h3>
+        <p>Das Repository ist ein Abo (€15 pro Jahr oder einmalig €150).</p>
+        <h3>Wie entferne ich das Repository wieder?</h3>
+        <p>Löschen Sie /etc/apt/sources.list.d/deb.griffo.io.list und /etc/apt/keyrings/deb.griffo.io.gpg und führen Sie dann sudo apt update aus. Bereits installierte Tools bleiben, bis Sie sie mit apt remove entfernen.</p>
+
+        <h2>🔗 Weiterführend</h2>
+        <ul>
+            <li><a href="/de/install-dev-tools-on-linux-mint.html">Aktuelle Entwicklertools für Linux Mint</a></li>
+            <li><a href="/de/install-dev-tools-on-lmde.html">Aktuelle Entwicklertools für Linux Mint Debian Edition (LMDE)</a></li>
+            <li><a href="/de/install-dev-tools-on-pop-os.html">Aktuelle Entwicklertools für Pop!_OS</a></li>
+            <li><a href="/de/install-dev-tools-on-zorin-os.html">Aktuelle Entwicklertools für Zorin OS</a></li>
+            <li><a href="/de/install-dev-tools-on-elementary-os.html">Aktuelle Entwicklertools für elementary OS</a></li>
+            <li><a href="/de/install-dev-tools-on-kde-neon.html">Aktuelle Entwicklertools für KDE neon</a></li>
+            <li><a href="/de/install-dev-tools-on-raspberry-pi-os.html">Aktuelle Entwicklertools für Raspberry Pi OS</a></li>
+            <li><a href="/de/install-dev-tools-on-proxmox-ve.html">Aktuelle Entwicklertools für Proxmox VE</a></li>
+            <li><a href="/de/install-dev-tools-on-wsl.html">Aktuelle Entwicklertools für WSL (Windows-Subsystem für Linux)</a></li>
+            <li><a href="/de/install-dev-tools-on-kali-linux.html">Aktuelle Entwicklertools für Kali Linux</a></li>
+            <li><a href="/de/">Alle Pakete von deb.griffo.io</a></li>
+        </ul>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">Kostenloser Spiegel</a>
+    <a href="/how-packages-are-built.html">Wie Pakete gebaut werden</a>
+    <a href="/supported-architectures.html">Architekturen</a>
+    <a href="/de/how-subscriptions-work.html">So funktioniert der Zugang</a>
+    <a href="/terms.html">Nutzungsbedingungen</a>
+    <a href="/de/privacy.html">Datenschutz</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. Alle Rechte vorbehalten.</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io/de/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Entwicklertools für Devuan",
+     "item": "https://deb.griffo.io/de/install-dev-tools-on-devuan.html"
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "name": "Die neuesten Entwicklertools unter Devuan installieren",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "name": "Das Repository deb.griffo.io hinzufügen",
+     "text": "Signaturschlüssel importieren und das Repository hinzufügen; die Suite wird aus /etc/os-release gelesen (excalibur unter Devuan 6 (Excalibur))."
+    },
+    {
+     "@type": "HowToStep",
+     "name": "Die Tools installieren",
+     "text": "Ausführen: sudo apt install -y neovim ripgrep fzf"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Warum nicht einfach die Debian-Suite auf Devuan verwenden?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Das geht: trixie in der Quellenzeile auf Devuan 6 liefert genau dieselben Pakete. Die Devuan-Suites gibt es, damit der Einrichtungsbefehl unverändert funktioniert, denn die os-release von Devuan nennt nur das eigene Release."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Warum gibt es für Devuan keinen kostenlosen Mirror?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Der kostenlose Mirror enthält nur die Release-Suites von Debian und Ubuntu. Die Devuan-Suites gehören zum Abo-Repository."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ist deb.griffo.io ein offizielles Repository von Devuan?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nein. Es ist ein inoffizielles Repository, das von Dario Griffo betreut wird und in keiner Verbindung zu Devuan steht. Jedes Paket wird automatisch aus dem offiziellen Upstream-Release gebaut, die Paketierung ist Open Source auf GitHub, und das Archiv ist GPG-signiert."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Kostet das etwas?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Das Repository ist ein Abo (€15 pro Jahr oder einmalig €150)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Wie entferne ich das Repository wieder?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Löschen Sie /etc/apt/sources.list.d/deb.griffo.io.list und /etc/apt/keyrings/deb.griffo.io.gpg und führen Sie dann sudo apt update aus. Bereits installierte Tools bleiben, bis Sie sie mit apt remove entfernen."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

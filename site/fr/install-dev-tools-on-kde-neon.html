@@ -212,10 +212,10 @@
             <div class="variant-toggle" role="group" aria-label="Choisissez comment exécuter les commandes"><span class="variant-toggle-label">Exécuter les commandes</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">avec sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">en root</button></div></div>
             <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 Il existe un miroir gratuit pour toujours.</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> distribue des paquets gratuitement pour toujours — sans compte, sans abonnement, au plus 2 mois derrière l'upstream, correctifs de sécurité immédiats. Il contient aujourd'hui cliamp, Forgejo Runner, Ghostty, lazydocker, Oh My Posh, Uncloud et Zed ; tout autre outil peut y être ajouté sur demande.</p>
@@ -237,7 +237,7 @@ apt update</code></pre></div>
         </div>
 
         <p>Pour vérifier ce que la commande choisira sur votre machine avant de la lancer :
-        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}</code>.
+        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}</code>.
         Elle doit afficher l'une des suites du tableau ci-dessus.</p>
 
         <h2>📋 Tous les outils disponibles sur KDE neon</h2>
@@ -352,6 +352,7 @@ apt update</code></pre></div>
             <li><a href="/fr/install-dev-tools-on-proxmox-ve.html">Les derniers outils de dev sur Proxmox VE</a></li>
             <li><a href="/fr/install-dev-tools-on-wsl.html">Les derniers outils de dev sur WSL (Sous-système Windows pour Linux)</a></li>
             <li><a href="/fr/install-dev-tools-on-kali-linux.html">Les derniers outils de dev sur Kali Linux</a></li>
+            <li><a href="/fr/install-dev-tools-on-devuan.html">Les derniers outils de dev sur Devuan GNU/Linux</a></li>
             <li><a href="/fr/">Tous les paquets servis par deb.griffo.io</a></li>
         </ul>
     </div>

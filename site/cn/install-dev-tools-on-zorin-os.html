@@ -213,10 +213,10 @@
             <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
             <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre></div>
 <div class="notice-box free-lane">
   <p><strong>🆓 有一个永久免费的镜像。</strong> <a href="https://deb-free.griffo.io">deb-free.griffo.io</a> 永久免费提供软件包 — 无需账号、无需订阅，最多落后上游 2 个月，安全修复立即发布。目前收录 cliamp、Forgejo Runner、Ghostty、lazydocker、Oh My Posh、Uncloud 和 Zed；其他任何工具都可应请求加入。</p>
@@ -238,7 +238,7 @@ apt update</code></pre></div>
         </div>
 
         <p>运行之前，可以先查看命令在你的机器上会选择哪个套件：
-        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}</code>。
+        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}</code>。
         输出应当是上表中的某个套件。</p>
 
         <h2>📋 Zorin OS 上可用的全部工具</h2>
@@ -352,6 +352,7 @@ apt update</code></pre></div>
             <li><a href="/cn/install-dev-tools-on-proxmox-ve.html">Proxmox VE 上的最新开发工具</a></li>
             <li><a href="/cn/install-dev-tools-on-wsl.html">WSL（适用于 Linux 的 Windows 子系统） 上的最新开发工具</a></li>
             <li><a href="/cn/install-dev-tools-on-kali-linux.html">Kali Linux 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-devuan.html">Devuan GNU/Linux 上的最新开发工具</a></li>
             <li><a href="/cn/">deb.griffo.io 提供的全部软件包</a></li>
         </ul>
     </div>

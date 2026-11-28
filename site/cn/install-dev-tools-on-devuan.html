@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-install-variant="sudo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iOS Safari auto-links anything that looks like a date, a phone number or
+     an address and paints it link-blue. On a site made of version strings
+     (0.14.8-1~bookworm), release dates and suite lists (22.04, 24.04, 25.10)
+     that fires constantly, and only on mobile, which is why the desktop
+     rendering looked fine. -->
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<script>
+/* sudo/root preference, applied before first paint so a returning "as root"
+   visitor never sees the sudo commands flash. Also marks the document as
+   scripted, which is what reveals the toggle, a switch that cannot switch is
+   worse than no switch.
+
+   Failure modes, all of which must still render "with sudo":
+     nothing stored / garbage stored / localStorage throwing / attribute absent
+   The CSS selector is :not([data-install-variant="root"]):not([...="extrepo"]),
+   so the default is the absence of a decision rather than a value that must be
+   present. "extrepo" is only offered on Debian pages; site.js degrades it to
+   sudo where the page has no such button, which cannot be checked here because
+   this runs before the body exists — and needs no checking, since a block with
+   no extrepo form shows its sudo form under that value anyway. */
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  try {
+    var v = localStorage.getItem('deb-griffo-install-variant');
+    if (v === 'root' || v === 'sudo' || v === 'extrepo') { d.setAttribute('data-install-variant', v); }
+  } catch (e) {}
+})();
+</script>
+<title>用 apt 在 Devuan 上安装最新开发工具 | deb.griffo.io</title>
+<meta name="description" content="在 Devuan 上用 apt 获取 72 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta name="keywords" content="devuan apt 仓库, devuan 安装 neovim, devuan 最新开发工具, devuan 安装 uv, devuan 安装 zig, devuan lazygit">
+<meta name="author" content="Dario Griffo">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://deb.griffo.io/cn/install-dev-tools-on-devuan.html">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://deb.griffo.io/cn/install-dev-tools-on-devuan.html">
+<meta property="og:title" content="用 apt 在 Devuan 上安装最新开发工具 | deb.griffo.io">
+<meta property="og:description" content="在 Devuan 上用 apt 获取 72 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta property="og:image" content="https://deb.griffo.io/logo.webp">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://deb.griffo.io/cn/install-dev-tools-on-devuan.html">
+<meta property="twitter:title" content="用 apt 在 Devuan 上安装最新开发工具 | deb.griffo.io">
+<meta property="twitter:description" content="在 Devuan 上用 apt 获取 72 款保持上游最新版本的开发工具，包括 Neovim、uv、Zig、lazygit 等。只需添加一次仓库，之后一条 apt 命令即可安装，所有软件包经 GPG 签名，上游每次发布后数小时内自动更新，无需 PPA，也无需手动编译。">
+<meta property="twitter:image" content="https://deb.griffo.io/logo.webp">
+<link rel="alternate" hreflang="en" href="https://deb.griffo.io/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="zh-CN" href="https://deb.griffo.io/cn/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="de" href="https://deb.griffo.io/de/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="es" href="https://deb.griffo.io/es/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="fr" href="https://deb.griffo.io/fr/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="ja" href="https://deb.griffo.io/ja/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="ru" href="https://deb.griffo.io/ru/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="pt-BR" href="https://deb.griffo.io/pt-br/install-dev-tools-on-devuan.html">
+<link rel="alternate" hreflang="x-default" href="https://deb.griffo.io/install-dev-tools-on-devuan.html">
+<!-- The stylesheet first, because it is the only thing here that blocks the
+     render. The font preloads below do not: font-display is swap, so text
+     paints in the metrics-matched fallback and swaps later. Asking for them
+     first, as this used to, handed two of a limited HTTP/1.1 connection pool
+     to resources nothing is waiting on. -->
+<link rel="stylesheet" href="/assets/css/site.min.css">
+<!-- The latin subsets, which is what these two weights resolve to on every page
+     that is not Russian. The URL has to match what the stylesheet asks for
+     exactly, or the file is fetched twice. -->
+<link rel="preload" href="/assets/fonts/Montserrat-Regular.latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Montserrat-Light.latin.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Ahrefs Web Analytics -->
+<script src="https://analytics.ahrefs.com/analytics.js" data-key="Tfn1JogRFJRGXrcnXLz7pw" async></script>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="5" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+<div class="atmosphere"></div>
+<nav class="top-nav" id="topNav">
+  <a href="/cn/" class="nav-brand">
+    <img src="/assets/img/logo.webp" alt="deb.griffo.io logo" width="26" height="26">
+    deb.griffo.io
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cn/#packages">软件包</a></li>
+    <li><a href="/cn/#install">安装</a></li>
+    <li><a href="/cn/#versions">版本</a></li>
+    <li><a href="/cn/#source">源码</a></li>
+    <li><a href="/cn/#reviews">评价</a></li>
+    <li><a href="/cn/#pricing">价格</a></li>
+    <li><a href="/cn/#faq">常见问题</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="lang-dropdown">
+      <button class="lang-button" id="langButton" aria-label="选择语言"
+              aria-expanded="false" aria-haspopup="true">
+        <span aria-hidden="true">🌐</span><span>中文</span>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu">
+        <a href="/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇬🇧</span><span>English</span></a>
+        <a href="/cn/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇨🇳</span><span>中文</span></a>
+        <a href="/de/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇩🇪</span><span>Deutsch</span></a>
+        <a href="/es/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇪🇸</span><span>Español</span></a>
+        <a href="/fr/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇫🇷</span><span>Français</span></a>
+        <a href="/ja/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇯🇵</span><span>日本語</span></a>
+        <a href="/ru/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇷🇺</span><span>Русский</span></a>
+        <a href="/pt-br/install-dev-tools-on-devuan.html" class="lang-option" role="menuitem"><span aria-hidden="true">🇧🇷</span><span>Português (Brasil)</span></a>
+      </div>
+    </div>
+    <a href="/cn/#pricing" class="nav-cta">查看方案</a>
+    <button class="nav-toggle" id="navToggle" aria-label="切换菜单" aria-expanded="false">
+      <span class="toggle-bar"></span><span class="toggle-bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href="/cn/#packages" class="mobile-menu-link" data-index="01">软件包</a>
+      <a href="/cn/#install" class="mobile-menu-link" data-index="02">安装</a>
+      <a href="/cn/#versions" class="mobile-menu-link" data-index="03">版本</a>
+      <a href="/cn/#source" class="mobile-menu-link" data-index="04">源码</a>
+      <a href="/cn/#reviews" class="mobile-menu-link" data-index="05">评价</a>
+      <a href="/cn/#pricing" class="mobile-menu-link" data-index="06">价格</a>
+      <a href="/cn/#faq" class="mobile-menu-link" data-index="07">常见问题</a>
+    </div>
+    <!-- .nav-cta is hidden below 900px because it will not fit beside the
+         brand; without this the phone had no route to pricing at all. -->
+    <div class="mobile-menu-foot">
+      <a href="/cn/#pricing" class="btn-primary">查看方案</a>
+      <p class="mobile-menu-note"><a href="/free.html">免费镜像</a></p>
+    </div>
+  </div>
+</div>
+
+<nav class="side-panel left" aria-label="滚动进度">
+  <span class="side-label">滚动</span>
+  <div class="side-track"><div class="side-track-fill" id="leftTrack"></div></div>
+  <div class="side-dot active"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout" id="scrollPct">00</div>
+</nav>
+
+<nav class="side-panel right" aria-label="状态">
+  <span class="side-label">状态</span>
+  <div class="side-track"><div class="side-track-fill" id="rightTrack"></div></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot active"></div>
+  <div class="side-dot"></div><div class="side-dot"></div><div class="side-dot"></div>
+  <div class="side-readout">APT</div>
+</nav>
+
+<div class="announce">
+  <div class="announce-inner">
+    <p>
+      <!-- The clause that follows the bold count carries its own leading
+           space: English opens it with a comma, every other language
+           opens it with a spaced dash. Do not add one here. -->
+      ⚡ <strong>73 个开发者工具，始终保持最新</strong> — 上游每次发布后数小时内即可通过 <code>apt</code> 获取。
+      <!-- general channel; the package-request prompt uses a different
+           invite on purpose, see DISCORD_* in sitegen/layout.py -->
+      <a href="https://discord.gg/E2yHQNkuZy">加入 Discord</a>
+    </p>
+    <p class="announce-notice">
+      🎁 apt 镜像需要订阅。<strong>方案每年 €15 起</strong>。
+      <a href="/cn/#pricing">查看价格</a>
+      <!-- the free lane is named in the same breath as the paywall, on purpose -->
+      <span class="announce-sep">·</span>
+      🆓 <a href="/free.html">有一个永久免费的镜像</a>
+      <span class="announce-sep">·</span>
+      🔐 <a href="/cn/apt-401-unauthorized.html">apt 报 401？</a>
+    </p>
+  </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>Devuan GNU/Linux 上的最新开发工具</h1>
+        <p class="subtitle">72 款开发工具，保持上游最新版本，一条 apt 命令即可安装，经 GPG 签名</p>
+    </div>
+
+    <div class="content">
+        <div class="highlight-box">
+            <strong>⚡ 简短回答。</strong> 可以，deb.griffo.io 支持 Devuan GNU/Linux。在 Devuan 6、Devuan 5、Devuan testing/unstable 上，72 款开发工具可以直接用 <code>apt</code> 安装，配置命令与 Debian 和 Ubuntu 完全相同：它从 <code>/etc/os-release</code> 读取 <code>VERSION_CODENAME</code>，并请求对应的套件，在 Devuan 6（Excalibur） 上即为 <code>excalibur</code>。
+        </div>
+
+        <p>Devuan 是不带 systemd 的 Debian。每个 Devuan 版本都构建在一个 Debian 版本之上（Devuan 6 Excalibur 基于 Debian 13 trixie，Devuan 5 Daedalus 基于 Debian 12 bookworm），它的软件源原样提供 Debian 的软件包，因此其中的开发工具停留在该 Debian 版本的版本上。deb.griffo.io 为 Devuan 提供专属套件，以 Devuan 的版本命名，内容与其底层的 Debian 套件相同，所以下面的工具用普通的 apt 即可安装。</p>
+
+        <h2>🔍 你的版本对应哪个套件</h2>
+        <div class="lane-table-wrap">
+        <table class="lane-table">
+            <thead>
+                <tr><th scope="col">版本</th><th scope="col">基于</th><th scope="col">套件</th><th scope="col">可用工具</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Devuan 6（Excalibur）</td><td>Debian 13 “Trixie”</td><td><code>excalibur</code></td><td>72</td></tr>
+                <tr><td>Devuan 5（Daedalus）</td><td>Debian 12 “Bookworm”</td><td><code>daedalus</code></td><td>70</td></tr>
+                <tr><td>Devuan testing/unstable（Freia、Ceres）</td><td>Debian 14 “Forky”</td><td><code>freia</code></td><td>72</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p>Devuan 把 <code>VERSION_CODENAME</code> 设为自己的名字（<code>excalibur</code>、<code>daedalus</code>），并且不设置 <code>DEBIAN_CODENAME</code>，所以配置命令在 Devuan 6 上请求 <code>excalibur</code>，在 Devuan 5 上请求 <code>daedalus</code>。本仓库提供这两个套件，它们由 trixie 和 bookworm 的软件包生成，并与之同时发布。</p>
+        <p>Devuan 的 testing 和 unstable 共用同一个 os-release，其中 <code>VERSION_CODENAME="freia ceres"</code>。配置命令只取第一个词，因此两者都会得到 <code>freia</code> 套件，其中是 Debian testing（forky）的软件包。另外还有 <code>ceres</code> 套件（Debian sid），供手动写入源配置行的用户使用。</p>
+        <p>Devuan 不使用 systemd。附带 systemd 单元的工具（例如 headscale 或 forgejo 这样的服务器）可以安装和运行，但开机时不会有任何东西启动该单元：请像其他服务一样，通过你的 init 系统（sysvinit、OpenRC 或 runit）启动它。</p>
+        <p>Devuan 只由订阅仓库提供：免费镜像中没有 Devuan 套件。</p>
+
+        <h2>📦 添加仓库</h2>
+
+        <div class="install-steps">
+            <h3>步骤 1：添加仓库和密钥</h3>
+
+            <div class="variant-toggle" role="group" aria-label="选择运行命令的方式"><span class="variant-toggle-label">运行命令</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">使用 sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">以 root</button></div></div>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+apt update</code></pre></div>
+        </div>
+
+        <div class="access-cta">
+            <p class="access-cta-text"><strong>第 2 步需要订阅。</strong>
+            选择年度或终身方案。凭据会通过邮件发送给你；<a href="/cn/apt-401-unauthorized.html#subscribed">按此方式保存</a>后，任何工具都能直接用 apt 安装。</p>
+            <div class="access-cta-actions">
+                <a href="/cn/#pricing" class="btn-secondary">查看价格</a>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <h3>步骤 2：安装任意工具</h3>
+            <div class="code-block" data-variants="1"><pre class="variant variant-sudo"><code>sudo apt install -y neovim ripgrep fzf</code></pre><pre class="variant variant-root"><code>apt install -y neovim ripgrep fzf</code></pre></div>
+        </div>
+
+        <p>运行之前，可以先查看命令在你的机器上会选择哪个套件：
+        <code>. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}</code>。
+        输出应当是上表中的某个套件。</p>
+
+        <h2>📋 Devuan 上可用的全部工具</h2>
+        <p>表中版本为仓库当前为 <strong>excalibur</strong> 提供的版本（更新于 2026-11-28）。只要工具为较旧的版本构建，它们得到的也是同一个版本；最后一列标明了是哪些工具。“Debian 13 官方仓库”一列是不使用本仓库时 <code>apt install</code> 得到的版本。</p>
+        <div class="lane-table-wrap">
+        <table class="lane-table distro-tools">
+            <thead>
+                <tr><th scope="col">工具</th><th scope="col">apt 软件包</th><th scope="col">版本</th><th scope="col">Debian 13 官方仓库</th><th scope="col">Devuan 5</th><th scope="col">Devuan testing/unstable</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><a href="/cn/install-latest-atuin-in-debian.html">Atuin</a></td><td><code>atuin</code></td><td><span class="version-badge">18.25.1-1~griffo</span></td><td class="vc-lose">18.6.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-atuin-ai-in-debian.html">Atuin AI</a></td><td><code>atuin-ai</code></td><td><span class="version-badge">0.1.0.20261125-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-blesh-in-debian.html">ble.sh</a></td><td><code>ble.sh</code></td><td><span class="version-badge">0.4.0-git20261031.fb1811e-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-btm-in-debian.html">bottom</a></td><td><code>btm</code></td><td><span class="version-badge">0.15.0-2~griffo</span></td><td class="vc-lose">0.10.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-bun-in-debian.html">Bun</a></td><td><code>bun</code></td><td><span class="version-badge">1.4.5-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-cliamp-in-debian.html">cliamp</a></td><td><code>cliamp</code></td><td><span class="version-badge">2.4.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-git-delta-in-debian.html">delta</a></td><td><code>git-delta</code></td><td><span class="version-badge">0.22.0-1~griffo</span></td><td class="vc-lose">0.18.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-deno-in-debian.html">Deno</a></td><td><code>deno</code></td><td><span class="version-badge">2.9.8-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-difftastic-in-debian.html">difftastic</a></td><td><code>difftastic</code></td><td><span class="version-badge">0.72.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-duckdb-in-debian.html">DuckDB</a></td><td><code>duckdb</code></td><td><span class="version-badge">1.5.6-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-eza-in-debian.html">eza</a></td><td><code>eza</code></td><td><span class="version-badge">0.23.5-4~griffo</span></td><td class="vc-lose">0.21.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-fastfetch-in-debian.html">Fastfetch</a></td><td><code>fastfetch</code></td><td><span class="version-badge">2.71.0-1~griffo</span></td><td class="vc-lose">2.40.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-fish-in-debian.html">fish</a></td><td><code>fish</code></td><td><span class="version-badge">4.9.3-2~griffo</span></td><td class="vc-lose">4.0.2 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-forgejo-in-debian.html">Forgejo</a></td><td><code>forgejo</code></td><td><span class="version-badge">15.0.12-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-forgejo-runner-in-debian.html">Forgejo Runner</a></td><td><code>forgejo-runner</code></td><td><span class="version-badge">13.2.2-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-fresh-editor-in-debian.html">fresh-editor</a></td><td><code>fresh-editor</code></td><td><span class="version-badge">0.5.9-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-fzf-in-debian.html">fzf</a></td><td><code>fzf</code></td><td><span class="version-badge">0.75.0-3~griffo</span></td><td class="vc-lose">0.60.3 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-garage-in-debian.html">Garage</a></td><td><code>garage</code></td><td><span class="version-badge">2.6.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-ghostty-in-debian.html">Ghostty</a></td><td><code>ghostty</code></td><td><span class="version-badge">1.4.0-2~trixie</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-gitui-in-debian.html">GitUI</a></td><td><code>gitui</code></td><td><span class="version-badge">0.28.1-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-gpu-screen-recorder-cli-in-debian.html">GPU Screen Recorder</a></td><td><code>gpu-screen-recorder-cli</code></td><td><span class="version-badge">6.1.6-1~trixie</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-handy-in-debian.html">Handy</a></td><td><code>handy</code></td><td><span class="version-badge">0.10.2-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-headscale-in-debian.html">Headscale</a></td><td><code>headscale</code></td><td><span class="version-badge">0.29.8-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-helix-in-debian.html">Helix</a></td><td><code>helix</code></td><td><span class="version-badge">25.07.1-4~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-herdr-in-debian.html">herdr</a></td><td><code>herdr</code></td><td><span class="version-badge">0.9.5-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-herdr-app-in-debian.html">Herdr Desktop</a></td><td><code>herdr-app</code></td><td><span class="version-badge">0.1.18-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-jjui-in-debian.html">jjui</a></td><td><code>jjui</code></td><td><span class="version-badge">0.10.14-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-jujutsu-in-debian.html">Jujutsu</a></td><td><code>jujutsu</code></td><td><span class="version-badge">0.47.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-just-in-debian.html">just</a></td><td><code>just</code></td><td><span class="version-badge">1.59.0-3~griffo</span></td><td class="vc-lose">1.40.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-k9s-in-debian.html">k9s</a></td><td><code>k9s</code></td><td><span class="version-badge">0.51.0-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-kitty-in-debian.html">kitty</a></td><td><code>kitty</code></td><td><span class="version-badge">0.51.1-1~griffo</span></td><td class="vc-lose">0.41.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-lazydocker-in-debian.html">lazydocker</a></td><td><code>lazydocker</code></td><td><span class="version-badge">0.25.2-4~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-lazygit-in-debian.html">lazygit</a></td><td><code>lazygit</code></td><td><span class="version-badge">0.66.3-2~griffo</span></td><td class="vc-lose">0.50.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-lazyjira-in-debian.html">lazyjira</a></td><td><code>lazyjira</code></td><td><span class="version-badge">2.19.2-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-lnav-in-debian.html">lnav</a></td><td><code>lnav</code></td><td><span class="version-badge">0.14.1-2~griffo</span></td><td class="vc-lose">0.12.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-lowfi-in-debian.html">lowfi</a></td><td><code>lowfi</code></td><td><span class="version-badge">2.0.7-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✗</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-mitmproxy-in-debian.html">mitmproxy</a></td><td><code>mitmproxy</code></td><td><span class="version-badge">12.3.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-neovim-in-debian.html">Neovim</a></td><td><code>neovim</code></td><td><span class="version-badge">0.12.6-2~griffo</span></td><td class="vc-lose">0.10.4 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-nushell-in-debian.html">Nushell</a></td><td><code>nushell</code></td><td><span class="version-badge">0.117.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-oh-my-posh-in-debian.html">Oh My Posh</a></td><td><code>oh-my-posh</code></td><td><span class="version-badge">33.4.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-rclone-in-debian.html">rclone</a></td><td><code>rclone</code></td><td><span class="version-badge">1.76.0-2~griffo</span></td><td class="vc-lose">1.60.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-restic-in-debian.html">restic</a></td><td><code>restic</code></td><td><span class="version-badge">0.20.0-3~griffo</span></td><td class="vc-lose">0.18.0 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-rgrc-in-debian.html">rgrc</a></td><td><code>rgrc</code></td><td><span class="version-badge">0.6.35-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-ripgrep-in-debian.html">ripgrep</a></td><td><code>ripgrep</code></td><td><span class="version-badge">16.0.0-1~griffo</span></td><td class="vc-lose">14.1.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-ruff-in-debian.html">Ruff</a></td><td><code>ruff</code></td><td><span class="version-badge">0.17.6-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-rumdl-in-debian.html">rumdl</a></td><td><code>rumdl</code></td><td><span class="version-badge">0.3.8-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-rust-in-debian.html">Rust</a></td><td><code>rust-stable</code></td><td><span class="version-badge">1.100.1-1~griffo</span></td><td class="vc-lose">1.85.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-serie-in-debian.html">Serie</a></td><td><code>serie</code></td><td><span class="version-badge">0.11.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-spotifast-in-debian.html">Spotifast</a></td><td><code>spotifast</code></td><td><span class="version-badge">0.17.2-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-starship-in-debian.html">Starship</a></td><td><code>starship</code></td><td><span class="version-badge">1.27.0-2~griffo</span></td><td class="vc-lose">1.22.1 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-superfile-in-debian.html">superfile</a></td><td><code>superfile</code></td><td><span class="version-badge">1.6.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-television-in-debian.html">Television</a></td><td><code>television</code></td><td><span class="version-badge">0.15.9-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-termusic-in-debian.html">Termusic</a></td><td><code>termusic</code></td><td><span class="version-badge">0.13.2-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-tigerbeetle-in-debian.html">TigerBeetle</a></td><td><code>tigerbeetle</code></td><td><span class="version-badge">0.17.9-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-tldr-in-debian.html">tldr</a></td><td><code>tldr</code></td><td><span class="version-badge">1.13.1-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✗</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-tmux-in-debian.html">tmux</a></td><td><code>tmux</code></td><td><span class="version-badge">3.8-1~griffo</span></td><td class="vc-lose">3.5a 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-tree-sitter-cli-in-debian.html">tree-sitter-cli</a></td><td><code>tree-sitter-cli</code></td><td><span class="version-badge">0.27.2-1~griffo</span></td><td class="vc-lose">0.22.6 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-uncloud-in-debian.html">Uncloud</a></td><td><code>uncloud</code></td><td><span class="version-badge">0.22.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-unregistry-in-debian.html">Unregistry</a></td><td><code>unregistry</code></td><td><span class="version-badge">0.4.3-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-uv-in-debian.html">uv</a></td><td><code>uv</code></td><td><span class="version-badge">0.13.10-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-viu-in-debian.html">viu</a></td><td><code>viu</code></td><td><span class="version-badge">1.6.1-4~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-workmux-in-debian.html">workmux</a></td><td><code>workmux</code></td><td><span class="version-badge">0.1.284-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-yazi-in-debian.html">Yazi</a></td><td><code>yazi</code></td><td><span class="version-badge">26.9.1-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-yq-in-debian.html">yq</a></td><td><code>yq</code></td><td><span class="version-badge">4.54.3-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-yt-dlp-in-debian.html">yt-dlp</a></td><td><code>yt-dlp</code></td><td><span class="version-badge">2026.11.23-1~griffo</span></td><td class="vc-lose">2025.04.30 🛑</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zapfast-in-debian.html">ZapFast</a></td><td><code>zapfast</code></td><td><span class="version-badge">0.21.3-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zapzap-in-debian.html">ZapZap</a></td><td><code>zapzap</code></td><td><span class="version-badge">7.5.1-2~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zed-in-debian.html">Zed</a></td><td><code>zed</code></td><td><span class="version-badge">1.30.2-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zellij-in-debian.html">Zellij</a></td><td><code>zellij</code></td><td><span class="version-badge">0.46.1-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zig-in-debian.html">Zig</a></td><td><code>zig-stable</code></td><td><span class="version-badge">0.17.0-3~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zls-in-debian.html">ZLS</a></td><td><code>zls</code></td><td><span class="version-badge">0.17.0-1~griffo</span></td><td class="vc-lose">🚫 未收录</td><td>✓</td><td>✓</td></tr>
+                <tr><td><a href="/cn/install-latest-zoxide-in-debian.html">zoxide</a></td><td><code>zoxide</code></td><td><span class="version-badge">0.10.0-3~griffo</span></td><td class="vc-lose">0.9.7 🛑</td><td>✓</td><td>✓</td></tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="access-cta">
+            <p class="access-cta-text"><strong>Devuan 上的全部 72 款工具，一个订阅全部包含。</strong>
+            每年 <span data-amount="15">€15</span>，或一次性 <span data-amount="150">€150</span> 终身使用。</p>
+            <div class="access-cta-actions">
+                <a href="/cn/#pricing" class="btn-secondary">查看价格</a>
+            </div>
+        </div>
+
+        <h2>❓ 常见问题</h2>
+        <h3>为什么不在 Devuan 上直接使用 Debian 套件？</h3>
+        <p>可以这样做：在 Devuan 6 的源配置行中写 trixie，得到的软件包完全相同。提供 Devuan 套件，是为了让配置命令无需修改即可使用，因为 Devuan 的 os-release 只给出它自己的版本名。</p>
+        <h3>为什么 Devuan 没有免费镜像？</h3>
+        <p>免费镜像只提供 Debian 和 Ubuntu 的发行版套件。Devuan 套件属于订阅仓库。</p>
+        <h3>deb.griffo.io 是 Devuan 的官方仓库吗？</h3>
+        <p>不是。这是由 Dario Griffo 维护的非官方仓库，与 Devuan 没有任何关联。每个软件包都根据上游官方发布自动构建，打包代码在 GitHub 上开源，软件源经过 GPG 签名。</p>
+        <h3>需要付费吗？</h3>
+        <p>本仓库采用订阅制（每年 15 欧元，或一次性 150 欧元）。</p>
+        <h3>如何移除这个仓库？</h3>
+        <p>删除 /etc/apt/sources.list.d/deb.griffo.io.list 和 /etc/apt/keyrings/deb.griffo.io.gpg，然后运行 sudo apt update。已经安装的工具会一直保留，直到你用 apt remove 卸载它们。</p>
+
+        <h2>🔗 相关页面</h2>
+        <ul>
+            <li><a href="/cn/install-dev-tools-on-linux-mint.html">Linux Mint 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-lmde.html">Linux Mint Debian Edition (LMDE) 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-pop-os.html">Pop!_OS 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-zorin-os.html">Zorin OS 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-elementary-os.html">elementary OS 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-kde-neon.html">KDE neon 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-raspberry-pi-os.html">Raspberry Pi OS 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-proxmox-ve.html">Proxmox VE 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-wsl.html">WSL（适用于 Linux 的 Windows 子系统） 上的最新开发工具</a></li>
+            <li><a href="/cn/install-dev-tools-on-kali-linux.html">Kali Linux 上的最新开发工具</a></li>
+            <li><a href="/cn/">deb.griffo.io 提供的全部软件包</a></li>
+        </ul>
+    </div>
+</div>
+<footer class="site-footer">
+  <!-- The links used to be pipe-separated inside the copyright sentence, which
+       on a phone wrapped into a ladder of stray "|" characters at the start of
+       every line. They are their own row now, separated by space, which is a
+       separator a line break cannot strand. -->
+  <p class="footer-links">
+    <a href="https://github.com/dariogriffo">GitHub</a>
+    <a href="/free.html">免费镜像</a>
+    <a href="/how-packages-are-built.html">软件包如何构建</a>
+    <a href="/supported-architectures.html">架构</a>
+    <a href="/cn/how-subscriptions-work.html">访问方式说明</a>
+    <a href="/terms.html">条款和条件</a>
+    <a href="/cn/privacy.html">隐私政策</a>
+  </p>
+  <p class="footer-legal">&copy; 2026 Dario Griffo. 保留所有权利。</p>
+  <p>deb.griffo.io is not affiliated with Debian. Debian is a registered trademark owned by Software in the Public Interest, Inc.</p>
+  <p>deb.griffo.io is not affiliated with Canonical. Ubuntu is a registered trademark of Canonical Ltd.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "deb.griffo.io",
+     "item": "https://deb.griffo.io/cn/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Devuan 上的开发工具",
+     "item": "https://deb.griffo.io/cn/install-dev-tools-on-devuan.html"
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "name": "在 Devuan 上安装最新的开发工具",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "name": "添加 deb.griffo.io 仓库",
+     "text": "导入签名密钥并添加仓库；套件从 /etc/os-release 中读取（在 Devuan 6（Excalibur） 上为 excalibur）。"
+    },
+    {
+     "@type": "HowToStep",
+     "name": "安装工具",
+     "text": "运行：sudo apt install -y neovim ripgrep fzf"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "为什么不在 Devuan 上直接使用 Debian 套件？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "可以这样做：在 Devuan 6 的源配置行中写 trixie，得到的软件包完全相同。提供 Devuan 套件，是为了让配置命令无需修改即可使用，因为 Devuan 的 os-release 只给出它自己的版本名。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "为什么 Devuan 没有免费镜像？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "免费镜像只提供 Debian 和 Ubuntu 的发行版套件。Devuan 套件属于订阅仓库。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "deb.griffo.io 是 Devuan 的官方仓库吗？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "不是。这是由 Dario Griffo 维护的非官方仓库，与 Devuan 没有任何关联。每个软件包都根据上游官方发布自动构建，打包代码在 GitHub 上开源，软件源经过 GPG 签名。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "需要付费吗？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "本仓库采用订阅制（每年 15 欧元，或一次性 150 欧元）。"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "如何移除这个仓库？",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "删除 /etc/apt/sources.list.d/deb.griffo.io.list 和 /etc/apt/keyrings/deb.griffo.io.gpg，然后运行 sudo apt update。已经安装的工具会一直保留，直到你用 apt remove 卸载它们。"
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script src="/assets/js/site.js" defer></script>
+<script>
+  // gtag.js is async, but async only means "do not block the parser": it still
+  // competes for one of a limited number of HTTP/1.1 connections and it still
+  // ran ~95ms of forced reflow on the main thread while the page was painting.
+  // PageSpeed Insights attributed the last of this page's forced reflow to it,
+  // at gtag/js:909 and :912.
+  //
+  // The measurement calls below queue on dataLayer immediately, the way they
+  // always did. Only the library's arrival is moved: to the first idle moment,
+  // to the first sign of a real visitor, or to a 3s deadline, whichever comes
+  // first. Six runs each way: 100/100/100/100/100/100 against
+  // 94/99/94/94/94/94, LCP 1.7s against 3.0s.
+  //
+  // The cost is honest and worth stating: a visitor who leaves before the
+  // library loads is not counted. The deadline bounds that to the first three
+  // seconds, and anyone who scrolls or taps is counted at once.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FKYKE1SD5C');
+  (function () {
+    var done = false;
+    var EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
+    function load() {
+      if (done) { return; }
+      done = true;
+      EVENTS.forEach(function (e) { window.removeEventListener(e, load); });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-FKYKE1SD5C';
+      document.head.appendChild(s);
+    }
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, load, { once: true, passive: true });
+    });
+    if ('requestIdleCallback' in window) { requestIdleCallback(load, { timeout: 3000 }); }
+    else { setTimeout(load, 3000); }
+  })();
+</script>
+<!-- ttics: first-party, cookieless analytics; stores nothing on the device.
+     Deferred, so it never competes with the first paint. -->
+<script src="/assets/js/ttics.js" defer></script>
+</body>
+</html>

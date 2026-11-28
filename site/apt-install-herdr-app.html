@@ -191,10 +191,10 @@
             <div class="variant-toggle" role="group" aria-label="Choose how to run the commands"><span class="variant-toggle-label">Run the commands</span><div class="variant-switch"><button type="button" class="variant-btn" data-variant="sudo" aria-pressed="true">with sudo</button><button type="button" class="variant-btn" data-variant="root" aria-pressed="false">as root</button><button type="button" class="variant-btn" data-variant="extrepo" aria-pressed="false">with extrepo</button></div></div>
             <div class="code-block" data-variants="extrepo"><pre class="variant variant-sudo"><code>sudo install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 sudo apt update</code></pre><pre class="variant variant-root"><code>install -d -m 0755 /etc/apt/keyrings
 curl -fsSL https://deb.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | gpg --dearmor --yes -o /etc/apt/keyrings/deb.griffo.io.gpg
-echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
+echo &quot;deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main&quot; | tee /etc/apt/sources.list.d/deb.griffo.io.list &gt; /dev/null
 apt update</code></pre><pre class="variant variant-extrepo"><code>sudo apt install extrepo
 sudo extrepo enable griffo
 sudo apt update</code></pre></div>
@@ -225,9 +225,9 @@ sudo apt update</code></pre></div>
         <h3>Debian</h3>
         <table class="controls-table">
             <tr><th>Debian release</th><th>Suite</th><th>Herdr Desktop version</th></tr>
-            <tr><td>Debian 12 “Bookworm”<br><span class="suite-also">also <a href="/install-dev-tools-on-lmde.html">LMDE 6</a>, <a href="/install-dev-tools-on-raspberry-pi-os.html">Raspberry Pi OS (Bookworm)</a>, <a href="/install-dev-tools-on-proxmox-ve.html">Proxmox VE 8</a></span></td><td><a href="/install-herdr-app-on-debian-12-bookworm.html">bookworm</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
-            <tr><td>Debian 13 “Trixie”<br><span class="suite-also">also <a href="/install-dev-tools-on-lmde.html">LMDE 7</a>, <a href="/install-dev-tools-on-raspberry-pi-os.html">Raspberry Pi OS</a>, <a href="/install-dev-tools-on-proxmox-ve.html">Proxmox VE 9</a></span></td><td><a href="/install-herdr-app-on-debian-13-trixie.html">trixie</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
-            <tr><td>Debian 14 “Forky”</td><td><a href="/install-herdr-app-on-debian-14-forky.html">forky</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
+            <tr><td>Debian 12 “Bookworm”<br><span class="suite-also">also <a href="/install-dev-tools-on-lmde.html">LMDE 6</a>, <a href="/install-dev-tools-on-raspberry-pi-os.html">Raspberry Pi OS (Bookworm)</a>, <a href="/install-dev-tools-on-proxmox-ve.html">Proxmox VE 8</a>, <a href="/install-dev-tools-on-devuan.html">Devuan 5</a></span></td><td><a href="/install-herdr-app-on-debian-12-bookworm.html">bookworm</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
+            <tr><td>Debian 13 “Trixie”<br><span class="suite-also">also <a href="/install-dev-tools-on-lmde.html">LMDE 7</a>, <a href="/install-dev-tools-on-raspberry-pi-os.html">Raspberry Pi OS</a>, <a href="/install-dev-tools-on-proxmox-ve.html">Proxmox VE 9</a>, <a href="/install-dev-tools-on-devuan.html">Devuan 6</a></span></td><td><a href="/install-herdr-app-on-debian-13-trixie.html">trixie</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
+            <tr><td>Debian 14 “Forky”<br><span class="suite-also">also <a href="/install-dev-tools-on-devuan.html">Devuan testing</a></span></td><td><a href="/install-herdr-app-on-debian-14-forky.html">forky</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
             <tr><td>Debian Sid</td><td><a href="/install-herdr-app-on-debian-sid.html">sid</a></td><td><span class="version-badge">0.1.18-1~griffo</span></td></tr>
         </table>
         <h3>Ubuntu</h3>
@@ -394,7 +394,7 @@ sudo apt update</code></pre></div>
      "@type": "HowToStep",
      "position": 2,
      "name": "Add the repository",
-     "text": "echo \"deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-$VERSION_CODENAME}}) main\" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list",
+     "text": "echo \"deb [signed-by=/etc/apt/keyrings/deb.griffo.io.gpg] https://deb.griffo.io/apt $(. /etc/os-release; echo ${DEBIAN_CODENAME:-${UBUNTU_CODENAME:-${VERSION_CODENAME%% *}}}) main\" | sudo tee /etc/apt/sources.list.d/deb.griffo.io.list",
      "url": "https://deb.griffo.io/apt-install-herdr-app.html"
     },
     {
